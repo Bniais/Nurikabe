@@ -1,7 +1,9 @@
 class MainApplication
     # sauveagrdes contient l'ensemble des sauvegardes (recompenses, parties, scores et parametres)
     attr_reader :sauvegardes
+    # mode actuellement selectionne
     attr_reader :mode
+    # liste des fenetres de l'application
     attr_reader :listeFenetre
 
     # Methode qui permet d'initialiser le jeu

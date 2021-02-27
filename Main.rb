@@ -3,8 +3,8 @@ require 'gtk3'
 Gtk.init
 
 window = Gtk::Window.new
-window.signal_connect('destroy') {
-   Gtk.main_quit
+window.signal_connect('destroy'){
+   Gtk.main_quit()
 }
 
 button = Gtk::Button.new('Bonjour tout le monde')

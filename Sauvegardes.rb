@@ -12,7 +12,7 @@ class Sauvegardes
 
     # Methode qui charge toutes les sauvegardes
     def charger()
-        #
+        # return un booleen
     end
 
     # Methode qui retourne la sauvegarde d'une partie pour un mode et une grille donnes

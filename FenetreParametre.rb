@@ -1,9 +1,10 @@
 load "Fenetre.rb"
 
-# Classe qui gere la fenetre du menu
+# Classe qui gere la fenetre des parametres
 class FenetreParametre < Fenetre
     # sauvegarde des parametres
     attr_reader :sauvegardeParametre
+
 
     # Methode qui permet de creer une nouvelle sauvegarde de parametres
     def creer(parametres)

@@ -5,6 +5,7 @@ class Fenetre
     # application
     attr_reader :application
 
+
     # Methode pour creer une fenetre
     def creer()
         #

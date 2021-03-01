@@ -2,6 +2,7 @@
 class SauvegardeParametre
     attr_reader :parametre
 
+
     #  Methode qui permet de sauvegarder les parametres
     def sauvegarder(parametre)
         #

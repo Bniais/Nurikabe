@@ -1,7 +1,10 @@
 # Classe qui gere les grilles
 class Grille
+    # numero de la grille
     attr_reader :numero
+    # tableau des cases de la grille
     attr_reader :tabCases
+    # niveau de difficulte
     attr_reader :difficulte
     # attr_reader :grille
 

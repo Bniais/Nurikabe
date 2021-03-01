@@ -9,7 +9,7 @@ window.signal_connect('destroy'){
 
 button = Gtk::Button.new('Bonjour tout le monde')
 button.signal_connect('clicked') {
-   print "Bonjour !\n"
+   puts "Bonjour !"
 }
 window.add(button)
 
@@ -17,4 +17,4 @@ window.show_all
 
 Gtk.main
 
-print "Terminé\n"
+puts "Terminé"

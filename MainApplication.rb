@@ -1,3 +1,4 @@
+# Classe principale
 class MainApplication
     # sauveagrdes contient l'ensemble des sauvegardes (recompenses, parties, scores et parametres)
     attr_reader :sauvegardes

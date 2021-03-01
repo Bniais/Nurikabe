@@ -7,8 +7,8 @@ class SauvegardePartie
         #
     end
 
-    # Methode qui permet de charger une partie
-    def charger(partie)
+    # Methode qui permet de charger une partie donnee
+    def charger(chemin)
         #
     end
 end

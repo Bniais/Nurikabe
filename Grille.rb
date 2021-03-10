@@ -59,18 +59,29 @@ class Grille
     # Methode qui permet de savoir si la grille est terminee ou non
     def grilleTerminee?()
         # return un booleen
+        if grille[numero].nbDifference() != 0
+            print "il reste encore #{grille[numero].nbDifference()}"
+            return false
+        else
+            print "Bravo ! Tu as réussi"
+        end
+            
     end
 
     # Methode qui permet d'afficher la grille
     def afficher()
-
-        #
+        for i in 0..tabCases.size
+            for j in 0..tabCases.size
+                print "| #{tabCases [x][y]} "
+            end
+                print "|"
+        end
     end
 
     # Methode qui permet de mettre a jour l'etat d'une case donnee
     def mettreAJour(uneCase,uneCouleur)
         #
-        setCouleur(uneCase,uneCouleur)
+        uneCase.setCouleur(uneCouleur)
 
     end
 
@@ -78,14 +89,12 @@ class Grille
     def ajouterGrille(unChemin)
         #return boolean
 
-        
-        
-
     end
 
     # Methode qui envoie la grille suivante
     def grilleSuivante()
-        #
+        #return Grille
+        numero += 1
 
     end
 
@@ -99,11 +108,30 @@ class Grille
         #
     end
 
-    def nbDifference(grille)
+    def nbDifference()
         #return int
+        int erreur = 0
+        for i in 0..tabCases.size
+            for j in 0..tabCases.size
+                if tabCases[i][j].getCouleur == grille[numero].tabCases[i][j].getCouleur     
+                        erreur += 1                             
+                end                                                                          
+            end
+        end
+
+        return erreur             
+
     end
 
-    def firstDifference(grille)
+    def firstDifference()
         #return case
+        for i in 0..tabCases.size
+            for j in 0..tabCases.size
+                if tabCases[i][j].getCouleur != grille[numero].tabCases[i][j].getCouleur     
+                    return tabCases[i][j]                                                    
+                end                                                                          
+            end
+        end                                                                       
     end
+
 end

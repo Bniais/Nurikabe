@@ -2,14 +2,22 @@ class Case
 
   attr_accessor :couleur, :positionX, :positionY
 
-  def Case.creer( uneCouleur, posX, posY)
-    #
-    @couleur = uneCouleur
-    @positionX = posX
-    @positionY = posY
+  def Case.creer(uneCouleur, posX, posY)
+      #
+      new(uneCouleur,posX,posY)
 
   end
 
+  def initialize(uneCouleur,posX,posY)
+
+      @couleur = uneCouleur
+      @positionX = posX
+      @positionX = posY
+      
+  end
+
+
+  private_class_method :new
 
   #donne a couleur de la case
   def getCouleur()

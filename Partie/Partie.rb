@@ -14,7 +14,7 @@ class Partie
 
     # Methode qui creer une grille
     def creer(grille, mode)
-      new()
+      new(grille, mode)
     end
 
     # Methode qui retourne la grille

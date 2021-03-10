@@ -3,7 +3,7 @@ class PartieTuto < Partie
     attr_accessor :grille, :progression, :senarios
 
     #ceer une partie en mode survie
-    def creer()
+    def PartieTuto.creer()
       #
     end
 

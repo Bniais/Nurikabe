@@ -1,40 +1,31 @@
 class Partie
 
-    attr_accessor :grilleBase, :grilleEnCours, :mode, :tabCoup , :enPause , :completion, :nbAideUtilise, :chrono, :sauvegardes
+    #attr_accessor :grilleBase, :grilleEnCours, :mode, :tabCoup , :enPause, :nbAideUtilise, :chrono, :sauvegardes
+    attr_reader :grilleBase, :grilleEnCours, :mode, :tabCoup, :enPause
 
     private_class_method :new
 
-    def initialize(grille, mode)
-      @indiceCoup = -1
+    def initialize(grille, mode, parametres, sauvegardes) #Créer une nouvelle partie
       @grilleBase = grille
       @mode = mode
+      @parametres = parametres
+      @sauvegardes = sauvegardes #TODO Charger la partie si une sauvegarde correspond à la partie
+
+      @tabCoup = new Array();
+      @enPause = false
+
+      @nbAideUtilise = 0
+      @indiceCoup = -1
+      @chrono = Chrono.creer(0) #mode == SURVIE ? CHRONO_SURVIE : 0
+      @chrono.demarrer()
+
       @grilleEnCours = Marshal.load( Marshal.dump(grille) ) #verif que ça marche
       @grilleEnCours.raz()
     end
 
     # Methode qui creer une grille
-    def creer(grille, mode)
-      new(grille, mode)
-    end
-
-    # Methode qui retourne la grille
-    def getGrilleBase()
-      return grilleBase
-    end
-
-    # Methode qui donne le mode de jeu
-    def getMode()
-      return mode
-    end
-
-    # Methode qui retourne le tableau des coups
-    def getTabCoups()
-      return tabCoup
-    end
-
-    # Methode qui retourne un boolean pour savoir si la partie est en pause
-    def estEnPause?()
-        return enPause
+    def Partie.creer(grille, mode, parametres, sauvegardes)
+      new(grille, mode, parametres, sauvegardes)
     end
 
     # Methode qui retourne en arrière (le coup)
@@ -79,12 +70,12 @@ class Partie
 
     # Methode qui met en pause la partie
     def mettrePause()
-        
+       @chrono.mettreEnPause()
     end
 
     #Methode qui reprend la partie
     def reprendrePartie()
-      #void
+      @chrono.demarrer()
     end
 
     # Methode qui ajoute un coup
@@ -98,10 +89,6 @@ class Partie
       end
     end
 
-    # Methode qui supprime un coup
-    def supprimerCoup(indice)
-        #void
-    end
 
     #remet a 0 une grille
     def raz()
@@ -110,29 +97,30 @@ class Partie
     end
 
     #methode pour termier la partie
-    def termierPartie()
-      #void
+    def terminerPartie()
+      #supprimer sauvegarde si elle existe
+      #sauvegarder score si besoin
+      #sauvegarder Recompenses si besoin
     end
 
     # Methode qui ajoute un malus
-    def ajouterMalus(int)
-      #appel interface
+    def ajouterMalus(n)
+      @chrono.ajouterMalus(n)
     end
 
     #affiche la portee des cases
     def afficherPortee(case_)
-      #appel interface
+      #Ne fait rien de base, dans les sous-classe, peut ajouterMalus
     end
-
 
     #affiche le nombre de blocs
     def afficheeNbBloc(case_)
-      #appel interface
+      #Ne fait rien de base, dans les sous-classe, peut ajouterMalus
     end
 
     #affiche les mur de 2 bloc par 2 bloc(en carré)
     def afficherMur2x2()
-      #appel interface
+      #Ne fait rien de base, dans les sous-classe, peut ajouterMalus
     end
 
     #Verifie l'erreur
@@ -155,5 +143,4 @@ class Partie
     def donneIndice()
       #return void
     end
-
 end

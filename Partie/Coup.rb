@@ -1,9 +1,9 @@
-class Coup < Partie
+class Coup
   private_class_method :new
 
-  attr_accessor :case, :couleur, :couleurBase
+  attr_reader :case, :couleur, :couleurBase
 
-  def creer(case_, couleur, couleurBase)
+  def Coup.creer(case_, couleur, couleurBase)
     new(case_, couleur, couleurBase)
   end
 

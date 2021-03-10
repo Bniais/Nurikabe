@@ -1,34 +1,34 @@
-class Chrono < Partie
+class Chrono
 
     attr_accessor :temps, :Malus
 
-    def creer(int)
-      #
+    private_class_method :new
+
+    def Chrono.creer(t)
+      new(t)
     end
 
-    #donne le tmeps du chrono
-    def getTemps()
-      #return int
+    def initialize(t)
+        @malus = 0
+        @time = t
+        @starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     end
 
-    #donne le nombre de malus 
-    def getMalus()
-      #return int
-    end
-
-    #?
+    #
     def top(mode)
-      #return boolean
+      ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      @time += (ending - @starting) * (mode == SURVIE ? -1 : 1)
+      @starting = ending
     end
 
     #savoir sir le chrono est nul
-    def enNul?()
-      #return boolean
+    def estNul?()
+      return @time <= 0
     end
 
 
     #lance le chrono
-    def demerrer()
+    def demarrer()
       #return void
     end
 
@@ -38,8 +38,8 @@ class Chrono < Partie
     end
 
     #Ajoute un malus au chrono
-    def addMalus (int)
-      #return void
+    def addMalus(m)
+      @malus += m
     end
 
 end

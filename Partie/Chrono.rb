@@ -4,21 +4,25 @@ class Chrono
 
     private_class_method :new
 
-    def Chrono.creer(t)
-      new(t)
+    def Chrono.creer()
+      new()
     end
 
-    def initialize(t)
-        @malus = 0
-        @time = t
-        @starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    def initialize()
+      @malus = 0
+      @pause = false
+      @time = 0
+      @starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     end
 
-    #
-    def top(mode)
-      ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      @time += (ending - @starting) * (mode == SURVIE ? -1 : 1)
-      @starting = ending
+    def top()
+      if(!@pause)
+        ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+        @time += (ending - @starting) * (@mode == Mode::SURVIE ? -1 : 1)
+        @starting = ending
+      end
+
+      return estNul?()
     end
 
     #savoir sir le chrono est nul
@@ -29,12 +33,14 @@ class Chrono
 
     #lance le chrono
     def demarrer()
-      #return void
+       @pause = false
+      top()
     end
 
     #met en pause le chrono
     def mettreEnPause()
-      #return void
+      top()
+      @pause = true
     end
 
     #Ajoute un malus au chrono
@@ -43,3 +49,5 @@ class Chrono
     end
 
 end
+
+Chrono.creer

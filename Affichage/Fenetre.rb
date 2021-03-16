@@ -10,7 +10,6 @@ class Fenetre
 
     # Methode pour creer une fenetre
     def creer(title)
-
         @menu = Gtk::Window.new(title)
         @menu.set_default_size(745,671)
         @menu.set_resizable(false)

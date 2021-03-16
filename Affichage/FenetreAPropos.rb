@@ -5,6 +5,7 @@ require "gtk3"
 class FenetreAPropos < Fenetre
 
 
+
     # Constructeur de la fenetre A Propos
     def initialize(uneFenetre)
         @maFenetre = uneFenetre

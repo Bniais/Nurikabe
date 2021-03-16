@@ -1,9 +1,49 @@
 load "Fenetre.rb"
-load "FenetreAPropos.rb"
 require "gtk3"
+
 
 # Classe qui gere la fenetre du menu
 class FenetreMenu < Fenetre
+    @maFenetre = nil
+    # Constructeur de la class FenetreMenu
+    def initialize(window)
+        
+       @maFenetre = window
+    end
+
+    # Methode qui permet de quitter l'application
+    def onDestroy()
+        puts "Fin de l'application"
+        Gtk.main_quit()
+    end
+
+    # Methode d'affichage
+    def afficheToi()
+        builder = Gtk::Builder.new()
+        builder.add_from_file('Template_2.glade')
+        builder.connect_signals{ |handler| method(handler) }
+        
+        stack = Gtk::Stack.new()
+
+        view_one = builder.get_object('FenetreMenu1')
+        view_two = builder.get_object('FenetreMenu2')
+        view_three = builder.get_object('FenetreMenu3')
+
+        stack.add_named(view_one, "view one" )
+        stack.add_named(view_two, "view two" )
+        stack.add_named(view_three, "view three" )
+
+        @maFenetre = builder.get_object('FenetreMenu1')
+        @maFenetre.add(stack)
+        @maFenetre.show()
+    end
+    
+    def activation()
+        stack.set_visible_child(self.view_two)
+    end
+
+
+
     # Methode qui renvoie le mode choisi par l'utilisateur
     def listenerChoixMode()
         #
@@ -21,29 +61,30 @@ class FenetreMenu < Fenetre
 
     # Methode qui permet d'ouvrir la fenetre des parametres
     def listenerOuvrirOption()
-        #
+        
     end
 
     # Methode qui permet d'ouvrir la fenetre 'A propos'
     def listenerOuvrirAPropos()
-        window = Gtk::Window.new("First example")
-        window.set_size_request(740, 715)
-        window.set_border_width(10)
-        @APropos.creeToi(window)
-        @APropos.afficheToi()
+
     end
 
     # Methode qui permet de quitter la fenetre de menu
     def listenerQuitter()
-        #
+        
     end
 end
 
-#Test ouverture fenetre à propos
+
+
+## CODE DE TEST DE LA CLASS
 Gtk.init
 
-bonjour.creer("Menu principal")
+window = Gtk::Window.new()
+fenetreMenu = FenetreMenu.new(window)
+fenetreMenu.afficheToi()
 
-bonjour.listenerOuvrirAPropos()
+# quitter quand la fenetre est detruite
+window.signal_connect("destroy") { onDestroy() }
 
 Gtk.main

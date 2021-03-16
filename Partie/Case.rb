@@ -12,7 +12,7 @@ class Case
 
       @couleur = uneCouleur
       @positionX = posX
-      @positionX = posY
+      @positionY = posY
       
   end
 
@@ -43,7 +43,7 @@ class Case
   #change la couleur de la case
   def setCouleur( nouvelleCouleur )
     #return void
-    couleur = nouvelleCouleur
+    @couleur = nouvelleCouleur
 
   end
 

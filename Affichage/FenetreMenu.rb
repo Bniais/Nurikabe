@@ -23,23 +23,30 @@ class FenetreMenu < Fenetre
         builder.add_from_file('Template_2.glade')
         builder.connect_signals{ |handler| method(handler) }
         
-        stack = Gtk::Stack.new()
+        @stack = Gtk::Stack.new()
+        @stack.set_transition_type( 0 )
 
-        view_one = builder.get_object('FenetreMenu1')
-        view_two = builder.get_object('FenetreMenu2')
-        view_three = builder.get_object('FenetreMenu3')
+        @view_one = builder.get_object('FenetreMenu1')
+        @view_two = builder.get_object('FenetreMenu2')
+        @view_three = builder.get_object('FenetreMenu3')
 
-        stack.add_named(view_one, "view one" )
-        stack.add_named(view_two, "view two" )
-        stack.add_named(view_three, "view three" )
+       @view_one.set_visible(true)
+
+        # @stack.add_named(@view_one, "view one" )
+        # @stack.add_named(@view_two, "view two" )
+        # @stack.add_named(@view_three, "view three" )
 
         @maFenetre = builder.get_object('FenetreMenu1')
-        @maFenetre.add(stack)
+        @maFenetre.add(@stack)
         @maFenetre.show()
     end
     
     def activation()
-        stack.set_visible_child(self.view_two)
+        @view_one.set_visible(false)
+        @view_two.set_visible(true)
+        # puts  @stack.visible_child(  )
+       # @stack.set_visible_child(@view_two)
+        # puts  @stack.visible_child(  )
     end
 
 
@@ -81,6 +88,7 @@ end
 Gtk.init
 
 window = Gtk::Window.new()
+window.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
 fenetreMenu = FenetreMenu.new(window)
 fenetreMenu.afficheToi()
 

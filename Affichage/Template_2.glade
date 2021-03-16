@@ -611,6 +611,7 @@
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="image-position">right</property>
+                <signal name="released" handler="onDestroy" swapped="no"/>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
@@ -857,6 +858,7 @@
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="image-position">right</property>
+                <signal name="released" handler="onDestroy" swapped="no"/>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>

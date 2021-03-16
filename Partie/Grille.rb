@@ -36,7 +36,7 @@ class Grille
         #
         for i in 0..tabCases.length-1
             for j in 0..tabCases.length-1
-                if tabCases[i][j].couleur < $ILE_1         # -1 = couleur blanche
+                if tabCases[i][j].couleur < Couleur::ILE_1         # -1 = couleur blanche
                     mettreAJour( tabCases[i][j],-1)      # -2 = couleur grise 
                 end                                      # -3 = couleur noir
             end
@@ -49,9 +49,9 @@ class Grille
         
         for i in 0..tabCases.size-1
             for j in 0..tabCases.size-1
-                if tabCases[i][j].couleur == $GRIS || tabCases[i][j].couleur == $NOIR   # -1 = couleur blanche
-                    mettreAJour( tabCases[i][j],-1)                                     # -2 = couleur grise 
-                end                                                                     # -3 = couleur noir
+                if tabCases[i][j].couleur == Couleur::GRIS || tabCases[i][j].couleur == Couleur::NOIR   # -1 = couleur blanche
+                    mettreAJour( tabCases[i][j],-1)                                                     # -2 = couleur grise 
+                end                                                                                     # -3 = couleur noir
             end
         end                                                                        
     end

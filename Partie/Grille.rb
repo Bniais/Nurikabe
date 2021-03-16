@@ -1,3 +1,4 @@
+load 'Case.rb'
 # Classe qui gere les grilles
 class Grille
     # numero de la grille
@@ -22,7 +23,7 @@ class Grille
         @numero, @tabCases = numero, tabCases
     end
 
-    # Methode qui renvoie une case donnee en focntion de ses coordonnees
+    # Methode qui renvoie une case donnee en fonction de ses coordonnees
     def getCase(x,y)
         # return Case
         return tabCases[x][y]
@@ -31,11 +32,9 @@ class Grille
     # Methode qui permet d'initialiser une grille
     def initialiser()
         #
-        int i,j;
-
-        for i in 0..tabCases.size
-            for j in 0..tabCases.size
-                if tabCases[i][j].getCouleur < 0         # -1 = couleur blanche
+        for i in 0..tabCases.length-1
+            for j in 0..tabCases.length-1
+                if tabCases[i][j].couleur < $ILE_1         # -1 = couleur blanche
                     mettreAJour( tabCases[i][j],-1)      # -2 = couleur grise 
                 end                                      # -3 = couleur noir
             end
@@ -45,11 +44,10 @@ class Grille
     # Methode qui remet a zero la grille
     def raz()
         #
-        int i,j;
-
-        for i in 0..tabCases.size
-            for j in 0..tabCases.size
-                if tabCases[i][j].getCouleur == -2 || tabCases[i][j].getCouleur == -3   # -1 = couleur blanche
+        
+        for i in 0..tabCases.size-1
+            for j in 0..tabCases.size-1
+                if tabCases[i][j].couleur == $GRIS || tabCases[i][j].couleur == $NOIR   # -1 = couleur blanche
                     mettreAJour( tabCases[i][j],-1)                                     # -2 = couleur grise 
                 end                                                                     # -3 = couleur noir
             end
@@ -70,11 +68,11 @@ class Grille
 
     # Methode qui permet d'afficher la grille
     def afficher()
-        for i in 0..tabCases.size
-            for j in 0..tabCases.size
-                print "| #{tabCases [x][y]} "
+        for i in 0..tabCases.size-1
+            for j in 0..tabCases.size-1
+                print "| #{tabCases[i][j].couleur} "
             end
-                print "|"
+                print "|\n"
         end
     end
 
@@ -108,12 +106,14 @@ class Grille
         #
     end
 
+    #renvoie le nombre d'erreur dans la grille 
+    
     def nbDifference()
         #return int
         int erreur = 0
         for i in 0..tabCases.size
             for j in 0..tabCases.size
-                if tabCases[i][j].getCouleur == grille[numero].tabCases[i][j].getCouleur     
+                if tabCases[i][j].couleur == grille[numero].tabCases[i][j].couleur     
                         erreur += 1                             
                 end                                                                          
             end
@@ -123,11 +123,13 @@ class Grille
 
     end
 
+    #renvoie la premiere erreur trouver dans la grille
+
     def firstDifference()
         #return case
         for i in 0..tabCases.size
             for j in 0..tabCases.size
-                if tabCases[i][j].getCouleur != grille[numero].tabCases[i][j].getCouleur     
+                if tabCases[i][j].couleur != grille[numero].tabCases[i][j].couleur     
                     return tabCases[i][j]                                                    
                 end                                                                          
             end

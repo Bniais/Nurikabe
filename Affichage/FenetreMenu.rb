@@ -37,7 +37,7 @@ class FenetreMenu < Fenetre
         # @stack.add_named(@view_three, "view three" )
 
         @maFenetre = builder.get_object('FenetreMenu1')
-        @maFenetre.add(@stack)
+        # @maFenetre.add(@stack)
         @maFenetre.show()
     end
     

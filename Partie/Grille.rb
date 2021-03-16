@@ -1,5 +1,7 @@
 load 'Case.rb'
+
 # Classe qui gere les grilles
+
 class Grille
     # numero de la grille
     attr_reader :numero

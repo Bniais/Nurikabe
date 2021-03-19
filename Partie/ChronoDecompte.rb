@@ -18,5 +18,4 @@ class ChronoDecompte < Chrono
       end
       return estNul?()
     end
-
 end

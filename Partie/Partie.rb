@@ -1,6 +1,7 @@
 load 'Grille.rb'
 load 'Chrono.rb'
 load 'Mode.rb'
+
 class Partie
     #TODO definir constantes
 
@@ -157,132 +158,134 @@ class Partie
     
       result = nil
 
-      for i in 0..grilleEnCours.tabCases.size
-        for j in 0..grilleEnCours.tabCases.size
-          #1. Island of 1
-          result = indiceIle1(i, j)
+      #1. Island of 1
+      result = indiceIle1(i, j)
 
-          if(result != nil)
-            return result
-          end
-
-          #2. Clues separated by one square
-          result = indiceIleAdjacente(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #3. Diagonally adjacent clues
-          result = indiceIleAdjacenteDiagonal(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #4. Surrounding a completed island
-          result = indiceIleComplete(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #5. Surrounded square
-          result = indiceCaseIsolee(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #6. Wall expansion
-          result = indiceExpensionMur(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #7. Wall continuity
-          result = indiceContinuiteMur(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #8. Island expansion from a clue
-          result = indiceExpensionImpasse(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #9. Island expandable only in two directions
-          result = indiceExpension2Dir(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #10. Hidden island expansion
-          result = indiceExpensionCachee(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #11. Island continuity
-          result = indiceContinuiteIle(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #12. Avoiding wall area of 2x2
-          result = indiceEviter2x2(i, j)
-
-          if(result != nil)
-            return result
-          end
-
-          #13. Unreachable square
-          result = indiceInatteignable(i, j)
-
-          if(result != nil)
-            return result
-          end
-        end
+      if(result != nil)
+        return result
       end
 
-      return nil #Aucune aide possible
+      #2. Clues separated by one square
+      result = indiceIleAdjacente(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #3. Diagonally adjacent clues
+      result = indiceIleAdjacenteDiagonal(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #4. Surrounding a completed island
+      result = indiceIleComplete(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #5. Surrounded square
+      result = indiceCaseIsolee(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #6. Wall expansion
+      result = indiceExpensionMur(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #7. Wall continuity
+      result = indiceContinuiteMur(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #8. Island expansion from a clue
+      result = indiceExpensionImpasse(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #9. Island expandable only in two directions
+      result = indiceExpension2Dir(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #10. Hidden island expansion
+      result = indiceExpensionCachee(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #11. Island continuity
+      result = indiceContinuiteIle(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #12. Avoiding wall area of 2x2
+      result = indiceEviter2x2(i, j)
+
+      if(result != nil)
+        return result
+      end
+
+      #13. Unreachable square
+      result = indiceInatteignable(i, j)
+
+      return result
     end
 
     def indiceIle1(i, j)
-      if grilleEnCours.tabCases[i][j].couleur == ILE_1
-        #On regarde les cases autours
-        if i+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS #On ne corrige pas les erreurs donc on ne traite pas les cases blanches
-          return [INDICE_ILE_1, grilleEnCours.tabCases[i+1][j]]
-        elsif j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-          return [INDICE_ILE_1, grilleEnCours.tabCases[i][j+1]]
-        elsif j-1 >= 0 && grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-          return [INDICE_ILE_1, grilleEnCours.tabCases[i][j-1]]
-        elsif i-1 >= 0 && grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-          return [INDICE_ILE_1, grilleEnCours.tabCases[i-1][j]]
+      for i in 0..grilleEnCours.tabCases.size-1
+        for j in 0..grilleEnCours.tabCases.size-1
+          if grilleEnCours.tabCases[i][j].couleur == ILE_1
+            #On regarde les cases autours
+            if i+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS #On ne corrige pas les erreurs donc on ne traite pas les cases blanches
+              return [INDICE_ILE_1, grilleEnCours.tabCases[i+1][j]]
+            elsif j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
+              return [INDICE_ILE_1, grilleEnCours.tabCases[i][j+1]]
+            elsif j-1 >= 0 && grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
+              return [INDICE_ILE_1, grilleEnCours.tabCases[i][j-1]]
+            elsif i-1 >= 0 && grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
+              return [INDICE_ILE_1, grilleEnCours.tabCases[i-1][j]]
+            end
+          end
         end
       end
+      
 
       return nil #On n'a pas trouvé
     end
 
     def indiceIleAdjacente(i, j)
-      if grilleEnCours.tabCases[i][j].estIle?()
-        #On regarde si les cases à 2 distances sont des iles et que la case au milieu n'est pas noire
-        if i+2 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS && tabCases[i+2][j].estIle?()
-          return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i+1][j]]
-        elsif j+2 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS && tabCases[i][j+2].estIle?()
-          return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i][j+1]]
-        elsif j-2 >= 0 && grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS && tabCases[i][j-2].estIle?()
-          return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i][j-1]]
-        elsif i-2 >= 0 && grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS && tabCases[i-2][j].estIle?()
-          return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i-1][j]]
+
+      for i in 0..grilleEnCours.tabCases.size-1
+        for j in 0..grilleEnCours.tabCases.size-1
+          if grilleEnCours.tabCases[i][j].estIle?()
+            #On regarde si les cases à 2 distances sont des iles et que la case au milieu n'est pas noire
+            if i+2 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS && tabCases[i+2][j].estIle?()
+              return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i+1][j]]
+            elsif j+2 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS && tabCases[i][j+2].estIle?()
+              return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i][j+1]]
+            elsif j-2 >= 0 && grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS && tabCases[i][j-2].estIle?()
+              return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i][j-1]]
+            elsif i-2 >= 0 && grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS && tabCases[i-2][j].estIle?()
+              return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i-1][j]]
+            end
+          end
         end
       end
 
@@ -290,37 +293,42 @@ class Partie
     end
 
     def indiceIleAdjacenteDiagonal(i, j)
-      if grilleEnCours.tabCases[i][j].estIle?()
-        #On regarde si les cases à 2 distances sont des iles et que la case au milieu n'est pas noire
-        if i+1 < grilleEnCours.tabCases.size && j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j+1].estIle?()
-          if grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
-            return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i+1][j]]
-          elsif grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-            return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j+1]]
-          end
-        end
+      for i in 0..grilleEnCours.tabCases.size-1
+        for j in 0..grilleEnCours.tabCases.size-1
 
-        if i+1 < grilleEnCours.tabCases.size && j-1 >= 0 && grilleEnCours.tabCases[i+1][j-1].estIle?()
-          if grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
-            return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i+1][j]]
-          elsif grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-            return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j-1]]
-          end
-        end
+          if grilleEnCours.tabCases[i][j].estIle?()
+            #On regarde si les cases à 2 distances sont des iles et que la case au milieu n'est pas noire
+            if i+1 < grilleEnCours.tabCases.size && j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j+1].estIle?()
+              if grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
+                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i+1][j]]
+              elsif grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
+                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j+1]]
+              end
+            end
 
-        if i-1 >= 0 && j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i-1][j+1].estIle?()
-          if grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-            return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i-1][j]]
-          elsif grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-            return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j+1]]
-          end
-        end
+            if i+1 < grilleEnCours.tabCases.size && j-1 >= 0 && grilleEnCours.tabCases[i+1][j-1].estIle?()
+              if grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
+                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i+1][j]]
+              elsif grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
+                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j-1]]
+              end
+            end
 
-        if i-1 >= 0 && j-1 >= 0 && grilleEnCours.tabCases[i-1][j-1].estIle?()
-          if grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-            return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i-1][j]]
-          elsif grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-            return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j-1]]
+            if i-1 >= 0 && j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i-1][j+1].estIle?()
+              if grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
+                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i-1][j]]
+              elsif grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
+                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j+1]]
+              end
+            end
+
+            if i-1 >= 0 && j-1 >= 0 && grilleEnCours.tabCases[i-1][j-1].estIle?()
+              if grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
+                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i-1][j]]
+              elsif grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
+                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j-1]]
+              end
+            end
           end
         end
       end
@@ -375,9 +383,16 @@ class Partie
     end
 
     def indiceEviter2x2(i, j)
-      if grilleEnCours.tabCases[i][j].couleur == Couleur::NOIR
+      for i in 0..grilleEnCours.tabCases.size-2 # -2 car inutil de regarder la dernière ligne et collone car pas de voisins droits et bas
+        for j in 0..grilleEnCours.tabCases.size-2
+          #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 3 noirs et 1 gris
+          nbNoir = 0
+          nbGris = 0
+          
 
+        end
       end
+
       return nil
     end
 
@@ -385,5 +400,5 @@ class Partie
       return nil
     end
 end
-
-p = Partie.creer(Grille.creer(2, [[1,0],[-1, 2]]), 2, nil, nil)
+print Couleur::GRIS
+p = Partie.creer(Grille.creer(2, [[Case.creer(1, 0, 0),Case.creer(0, 1, 0)],[Case.creer(-1, 0, 1), Case.creer(2, 1, 1)]]), 2, nil, nil)

@@ -1,7 +1,7 @@
 require 'gtk3'
 
 # Classe abstraite qui gere l'interface
-class Fenetre 
+class Fenetre
     # titre de la fenetre
     attr_accessor :titre
     # application
@@ -10,23 +10,31 @@ class Fenetre
 
     # Methode pour creer une fenetre
     def creer(title)
-        @menu = Gtk::Window.new(title)
-        @menu.set_default_size(745,671)
-        @menu.set_resizable(false)
-        
+       new(title)
+
+    end
+
+    # Methode privee pour l'initialisation
+    def initialize(title)
+        @application = Gtk::Window.new(title)
+        @application.set_default_size(745,671)
+        @application.set_resizable(false)
+        @application.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
+        @application.border_width = 10
+        @titre = title
     end
 
     # Methode qui permet d'ouvrir la fenetre
     def ouvrir()
-        @menu.show_all
+        @application.show_all
     end
 
     # Methode qui permet de fermer la fenetre
     def listenerQuitter()
 
-        @menu.signal_connect('destroy'){
+        @application.signal_connect('destroy'){
             Gtk.main_quit()
         }
-        
+
     end
 end

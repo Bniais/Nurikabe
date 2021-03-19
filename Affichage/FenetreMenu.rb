@@ -204,7 +204,7 @@ end
 
 ##################### CODE DE TEST DE LA CLASSE #####################
 
-fenetreMenu = FenetreMenu.new("Nurikabe")
+fenetreMenu = FenetreMenu.creer("Nurikabe")
 fenetreMenu.afficheToi()
 
 

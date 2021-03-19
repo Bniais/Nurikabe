@@ -7,9 +7,10 @@ class Fenetre
     # application
     attr_reader :application
 
+    private_class_method :new
 
     # Methode pour creer une fenetre
-    def creer(title)
+    def Fenetre.creer(title)
        new(title)
 
     end

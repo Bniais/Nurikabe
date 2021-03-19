@@ -21,7 +21,6 @@ class Fenetre
         @application.set_default_size(745,671)
         @application.set_resizable(false)
         @application.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
-        @application.border_width = 10
         @titre = title
     end
 

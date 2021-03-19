@@ -23,6 +23,14 @@ class Grille
     # Methode privee pour l'initialisation
     def initialize(numero, tabCases)
         @numero, @tabCases = numero, tabCases
+
+        for i in 0..tabCases.length-1
+           for j in 0..tabCases.length-1
+               if tabCases[i][j].couleur < Couleur::ILE_1         # -1 = couleur blanche
+                    mettreAJour( tabCases[i][j],Couleur::GRIS)      # -2 = couleur grise 
+               end                                      # -3 = couleur noir
+            end
+        end        
     end
 
     # Methode qui renvoie une case donnee en fonction de ses coordonnees
@@ -31,26 +39,14 @@ class Grille
         return tabCases[x][y]
     end
 
-    # Methode qui permet d'initialiser une grille
-    def initialiser()
-        #
-        for i in 0..tabCases.length-1
-            for j in 0..tabCases.length-1
-                if tabCases[i][j].couleur < Couleur::ILE_1         # -1 = couleur blanche
-                    mettreAJour( tabCases[i][j],-1)      # -2 = couleur grise 
-                end                                      # -3 = couleur noir
-            end
-        end                                                                        
-    end
-
     # Methode qui remet a zero la grille
     def raz()
         #
         
         for i in 0..tabCases.size-1
             for j in 0..tabCases.size-1
-                if tabCases[i][j].couleur == Couleur::GRIS || tabCases[i][j].couleur == Couleur::NOIR   # -1 = couleur blanche
-                    mettreAJour( tabCases[i][j],-1)                                                     # -2 = couleur grise 
+                if tabCases[i][j].couleur == Couleur::BLANC || tabCases[i][j].couleur == Couleur::NOIR   # -1 = couleur blanche
+                    mettreAJour( tabCases[i][j],Couleur::GRIS)                                                     # -2 = couleur grise 
                 end                                                                                     # -3 = couleur noir
             end
         end                                                                        
@@ -139,3 +135,18 @@ class Grille
     end
 
 end
+
+
+
+
+
+c = Case.creer(Couleur::NOIR,0,0)
+c1 = Case.creer(Couleur::BLANC,0,1)
+c2 = Case.creer(Couleur::GRIS,1,0)
+c3 = Case.creer(Couleur::ILE_1,1,1)
+
+tab = [[c,c1],[c2,c3]]
+
+g = Grille.creer(1,tab)
+
+g.afficher()

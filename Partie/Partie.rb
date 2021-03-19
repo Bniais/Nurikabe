@@ -1,6 +1,7 @@
 load 'Grille.rb'
 load 'Chrono.rb'
 load 'Mode.rb'
+load 'Indice/Indice.rb'
 
 class Partie
     #TODO definir constantes
@@ -9,10 +10,9 @@ class Partie
 
     private_class_method :new
 
-    def initialize(grille, mode, parametres, sauvegardes) #Créer une nouvelle partie
+    def initialize(grille, parametres, sauvegardes) #Créer une nouvelle partie
 
       @grilleBase = grille
-      @mode = mode
       @parametres = parametres
       @sauvegardes = sauvegardes #TODO Charger la partie si une sauvegarde correspond à la partie
 
@@ -29,12 +29,12 @@ class Partie
       @chrono.demarrer()
 
       @grilleEnCours = Marshal.load( Marshal.dump(grille) ) #verif que ça marche
-      @grilleEnCours.raz()
+      #@grilleEnCours.raz() #recommence à 0, ne pas faire en cas de sauvegarde trouvée
     end
 
     # Methode qui creer une grille
-    def Partie.creer(grille, mode, parametres, sauvegardes)
-      new(grille, mode, parametres, sauvegardes)
+    def Partie.creer(grille, parametres, sauvegardes)
+      new(grille, parametres, sauvegardes)
     end
 
     # Methode qui retourne en arrière (le coup)
@@ -159,108 +159,108 @@ class Partie
       result = nil
 
       #1. Island of 1
-      result = indiceIle1(i, j)
+      result = indiceIle1()
 
       if(result != nil)
         return result
       end
 
       #2. Clues separated by one square
-      result = indiceIleAdjacente(i, j)
+      result = indiceIleAdjacente()
 
       if(result != nil)
         return result
       end
 
       #3. Diagonally adjacent clues
-      result = indiceIleAdjacenteDiagonal(i, j)
+      result = indiceIleAdjacenteDiagonal()
 
       if(result != nil)
         return result
       end
 
-      #4. Surrounding a completed island
-      result = indiceIleComplete(i, j)
+      #4. Avoiding wall area of 2x2
+      result = indiceEviter2x2()
 
       if(result != nil)
         return result
       end
 
-      #5. Surrounded square
-      result = indiceCaseIsolee(i, j)
+      #5. Surrounding a completed island
+      result = indiceIleComplete()
 
       if(result != nil)
         return result
       end
 
-      #6. Wall expansion
-      result = indiceExpensionMur(i, j)
+      #6. Surrounded square
+      result = indiceCaseIsolee()
 
       if(result != nil)
         return result
       end
 
-      #7. Wall continuity
-      result = indiceContinuiteMur(i, j)
+      #7. Wall expansion
+      result = indiceExpensionMur()
 
       if(result != nil)
         return result
       end
 
-      #8. Island expansion from a clue
-      result = indiceExpensionImpasse(i, j)
+      #8. Wall continuity
+      result = indiceContinuiteMur()
 
       if(result != nil)
         return result
       end
 
-      #9. Island expandable only in two directions
-      result = indiceExpension2Dir(i, j)
+      #9. Island expansion from a clue
+      result = indiceExpensionIle()
 
       if(result != nil)
         return result
       end
 
-      #10. Hidden island expansion
-      result = indiceExpensionCachee(i, j)
+      #10. Island expandable only in two directions
+      result = indiceExpension2Dir()
 
       if(result != nil)
         return result
       end
 
-      #11. Island continuity
-      result = indiceContinuiteIle(i, j)
+      #11. Hidden island expansion
+      result = indiceExpensionCachee()
 
       if(result != nil)
         return result
       end
 
-      #12. Avoiding wall area of 2x2
-      result = indiceEviter2x2(i, j)
+      #12. Island continuity
+      result = indiceContinuiteIle()
 
       if(result != nil)
         return result
       end
 
       #13. Unreachable square
-      result = indiceInatteignable(i, j)
+      result = indiceInatteignable()
 
       return result
     end
 
-    def indiceIle1(i, j)
+    def indiceIle1()
       for i in 0..grilleEnCours.tabCases.size-1
         for j in 0..grilleEnCours.tabCases.size-1
-          if grilleEnCours.tabCases[i][j].couleur == ILE_1
+          if grilleEnCours.tabCases[i][j].couleur == Couleur::ILE_1
             #On regarde les cases autours
             if i+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS #On ne corrige pas les erreurs donc on ne traite pas les cases blanches
-              return [INDICE_ILE_1, grilleEnCours.tabCases[i+1][j]]
+              return [Indice::INDICE_ILE_1, grilleEnCours.tabCases[i+1][j]]
             elsif j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-              return [INDICE_ILE_1, grilleEnCours.tabCases[i][j+1]]
+              return [Indice::INDICE_ILE_1, grilleEnCours.tabCases[i][j+1]]
             elsif j-1 >= 0 && grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-              return [INDICE_ILE_1, grilleEnCours.tabCases[i][j-1]]
+              return [Indice::INDICE_ILE_1, grilleEnCours.tabCases[i][j-1]]
             elsif i-1 >= 0 && grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-              return [INDICE_ILE_1, grilleEnCours.tabCases[i-1][j]]
+              return [Indice::INDICE_ILE_1, grilleEnCours.tabCases[i-1][j]]
             end
           end
         end
@@ -270,20 +270,20 @@ class Partie
       return nil #On n'a pas trouvé
     end
 
-    def indiceIleAdjacente(i, j)
+    def indiceIleAdjacente()
 
       for i in 0..grilleEnCours.tabCases.size-1
         for j in 0..grilleEnCours.tabCases.size-1
           if grilleEnCours.tabCases[i][j].estIle?()
             #On regarde si les cases à 2 distances sont des iles et que la case au milieu n'est pas noire
             if i+2 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS && tabCases[i+2][j].estIle?()
-              return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i+1][j]]
+              return [Indice::INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i+1][j]]
             elsif j+2 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS && tabCases[i][j+2].estIle?()
-              return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i][j+1]]
+              return [Indice::INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i][j+1]]
             elsif j-2 >= 0 && grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS && tabCases[i][j-2].estIle?()
-              return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i][j-1]]
+              return [Indice::INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i][j-1]]
             elsif i-2 >= 0 && grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS && tabCases[i-2][j].estIle?()
-              return [INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i-1][j]]
+              return [Indice::INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i-1][j]]
             end
           end
         end
@@ -292,7 +292,7 @@ class Partie
       return nil #On n'a pas trouvé
     end
 
-    def indiceIleAdjacenteDiagonal(i, j)
+    def indiceIleAdjacenteDiagonal()
       for i in 0..grilleEnCours.tabCases.size-1
         for j in 0..grilleEnCours.tabCases.size-1
 
@@ -300,33 +300,33 @@ class Partie
             #On regarde si les cases à 2 distances sont des iles et que la case au milieu n'est pas noire
             if i+1 < grilleEnCours.tabCases.size && j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j+1].estIle?()
               if grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
-                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i+1][j]]
+                return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i+1][j]]
               elsif grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j+1]]
+                return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j+1]]
               end
             end
 
             if i+1 < grilleEnCours.tabCases.size && j-1 >= 0 && grilleEnCours.tabCases[i+1][j-1].estIle?()
               if grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
-                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i+1][j]]
+                return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i+1][j]]
               elsif grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j-1]]
+                return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j-1]]
               end
             end
 
             if i-1 >= 0 && j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i-1][j+1].estIle?()
               if grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i-1][j]]
+                return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i-1][j]]
               elsif grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j+1]]
+                return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j+1]]
               end
             end
 
             if i-1 >= 0 && j-1 >= 0 && grilleEnCours.tabCases[i-1][j-1].estIle?()
               if grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i-1][j]]
+                return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i-1][j]]
               elsif grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-                return [INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j-1]]
+                return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j-1]]
               end
             end
           end
@@ -336,69 +336,99 @@ class Partie
       return nil
     end
 
-    def indiceIleComplete(i, j)
-      if grilleEnCours.tabCases[i][j].estIle?()
-        #On regarde si l'île est complète
-        if nbCaseIle(grilleEnCours.tabCases[i][j]) == grilleEnCours.tabCases[i][j].couleur
-          #On regarde si une case frontalière à l'île est grise
-          #Parcours des cases de l'île :
-          #TODO
+    def indiceIleComplete()
+      for i in 0..grilleEnCours.tabCases.size-1
+        for j in 0..grilleEnCours.tabCases.size-1
+          if grilleEnCours.tabCases[i][j].estIle?()
+            #On regarde si l'île est complète
+            if nbCaseIle(grilleEnCours.tabCases[i][j]) == grilleEnCours.tabCases[i][j].couleur
+              #On regarde si une case frontalière à l'île est grise
+              #Parcours des cases de l'île :
+              #TODO
+            end
+          end
+          return nil
         end
       end
-      return nil
     end
 
     def nbCaseIle(case_)
       #Compte le nombre de cases blanches appartenant à l'île
     end
 
-    def indiceCaseIsolee(i, j)
+    def indiceCaseIsolee()
       #Parcours en profondeur en cherchant une ile, si pas trouver, on a indice
       return nil
     end
 
-    def indiceExpensionMur(i, j)
+    def indiceExpensionMur()
       #On compte le nombre de cases adjacentes grises, si une seule et il existe des cases noires non-reliée, indice
       return nil
     end
 
-    def indiceContinuiteMur(i, j)
+    def indiceContinuiteMur()
       return nil
     end
 
-    def indiceExpensionImpasse(i, j)
+    def indiceExpensionIle()
       return nil
     end
 
-    def indiceExpension2Dir(i, j)
+    def indiceExpension2Dir()
       return nil
     end
 
-    def indiceExpensionCachee(i, j)
+    def indiceExpensionCachee()
       return nil
     end
 
-    def indiceContinuiteIle(i, j)
+    def indiceContinuiteIle()
       return nil
     end
 
-    def indiceEviter2x2(i, j)
+    def verifPresque2x2(i,j)
+      #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 3 noirs et 1 gris
+      nbNoir = 0
+      caseGrise = nil
+      for x in i..i+1
+        for y in j..j+1
+          if grilleEnCours.tabCases[x][y].couleur == Couleur::NOIR
+              nbNoir+=1;
+          elsif caseGrise == nil && grilleEnCours.tabCases[x][y].couleur == Couleur::GRIS
+            caseGrise = grilleEnCours.tabCases[x][y];
+          else
+            return nil
+          end
+        end
+      end
+
+      if(nbNoir == 3 && caseGrise != nil)
+        return caseGrise
+      else
+        return nil
+      end
+    end
+
+    def indiceEviter2x2()
       for i in 0..grilleEnCours.tabCases.size-2 # -2 car inutil de regarder la dernière ligne et collone car pas de voisins droits et bas
         for j in 0..grilleEnCours.tabCases.size-2
-          #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 3 noirs et 1 gris
-          nbNoir = 0
-          nbGris = 0
-          
-
+          result = verifPresque2x2(i,j)
+          if(result != nil)
+            return [Indice::INDICE_EVITER_2x2, result]
+          end
         end
       end
 
       return nil
     end
 
-    def indiceInatteignable(i, j)
+    def indiceInatteignable()
+      #Parcours en largeur pour trouver le chemin le plus court de chaque case vers chaque île, ou sinon simplifier en ignorant les murs et îles mais donne moins d'indice (ou faire les deux pour mêler performance et accuracy)
       return nil
     end
 end
-print Couleur::GRIS
-p = Partie.creer(Grille.creer(2, [[Case.creer(1, 0, 0),Case.creer(0, 1, 0)],[Case.creer(-1, 0, 1), Case.creer(2, 1, 1)]]), 2, nil, nil)
+
+p = Partie.creer(Grille.creer(2, [[Case.creer(Couleur::NOIR, 0, 0) ,Case.creer(Couleur::NOIR, 1, 0)],[Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::GRIS, 1, 1)]]), nil, nil)
+p.grilleEnCours.afficher
+print [Indice::MESSAGES[p.donneIndice()[0]], p.donneIndice()[1]] #fait une erreur si pas d'indice trouvé
+#testé INDICE_ILE_1 et INDICE_EVITER_2x2

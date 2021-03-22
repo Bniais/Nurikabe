@@ -19,6 +19,7 @@ class Fenetre
     def initialize(title)
         @application = Gtk::Window.new(title)
         @application.set_default_size(745,671)
+        @application.set_height_request(790)
         @application.set_resizable(false)
         @application.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
         @titre = title

@@ -1,6 +1,7 @@
 load "Fenetre.rb"
 load "../Partie/Mode.rb"
 load "../Partie/Difficulte.rb"
+# load "FenetreAPropos.rb"
 require "gtk3"
 
 Gtk.init
@@ -11,9 +12,13 @@ class FenetreMenu < Fenetre
     # Methode privee pour l'initialisation
    def initialize(title)
         super(title)
-        @viewOne = creerViewOne()
-        @viewTwo = creerViewTwo()
-        @viewThree = creerViewThree()
+        @viewMenuPrincipal = creerViewMenuPrincipal()
+        @viewContreLaMontre = creerViewContreLaMontre()
+        @viewSurvie = creerViewSurvie()
+       # @viewAPropos = creerViewAPropos()
+
+        @mode = nil
+        @difficulte = nil
     end
 
     # Methode qui permet de quitter l'application
@@ -33,175 +38,265 @@ class FenetreMenu < Fenetre
         setmargin(titre,0,0,70,70)
         @mainBox.pack_start(titre)
 
-        # ajout des 3 vues à la fenêtre
-        @mainBox.pack_start(@viewOne)
-        @mainBox.pack_start(@viewTwo)
-        @mainBox.pack_start(@viewThree)
+        # ajout des vues à la fenêtre
+        @mainBox.pack_start(@viewMenuPrincipal)
+        @mainBox.pack_start(@viewContreLaMontre)
+        @mainBox.pack_start(@viewSurvie)
+        # @mainBox.pack_start(@viewAPropos)
 
         # quitter quand la fenetre est detruite
         @application.signal_connect("destroy") { detruire() }
 
+        # ajout de la box princiaple a la fenetre
         @application.add(@mainBox)
         self.ouvrir()
 
-        # cacher les vues 2 et 3 par defaut
-        @viewTwo.hide()
-        @viewThree.hide()
+        # cacher les vues par defaut
+        @viewContreLaMontre.hide()
+        @viewSurvie.hide()
+      #  @viewAPropos.hide()
+
+
+        # A continuer !!
+        puts @mainBox.count()
     end
 
     # Methode qui permet de creer la vue 1
-    def creerViewOne()
+    def creerViewMenuPrincipal()
         box = Gtk::Box.new(:vertical, 10)
 
         # creation de la grille avec les boutons de modes
         modes = Gtk::Grid.new()
-        setmargin(modes,0,15,70,70)
 
         # creation des boutons de mode de jeu
         btnLibre = Gtk::Button.new()
         setBold(btnLibre,"Libre")
+        setmargin(btnLibre,0,15,70,70)
 
         btnContre = Gtk::Button.new()
         setBold(btnContre,"Contre-la-montre")
+        setmargin(btnContre,0,15,70,70)
 
         btnSurvie = Gtk::Button.new()
         setBold(btnSurvie,"Survie")
+        setmargin(btnSurvie,0,15,70,70)
+
+        btnTuto = Gtk::Button.new()
+        setBold(btnTuto,"Tutoriel")
+        setmargin(btnTuto,0,15,70,70)
 
         # gestion des évènements
         btnLibre.signal_connect("clicked") do
             puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
             @mode = Mode::LIBRE
         end
         btnContre.signal_connect("clicked") do
             puts "click contre-la-montre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
+            @viewMenuPrincipal.set_visible(false)
+            @viewContreLaMontre.set_visible(true)
             @mode = Mode::CONTRE_LA_MONTRE
         end
         btnSurvie.signal_connect("clicked") do
             puts "click survie"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
+            @viewMenuPrincipal.set_visible(false)
+            @viewSurvie.set_visible(true)
             @mode = Mode::SURVIE
+        end
+        btnTuto.signal_connect("clicked") do
+            puts "click tuto"
+            @mode = Mode::TUTORIEL
         end
 
         # attachement des boutons de mode de jeu
         modes.attach(btnLibre, 0, 0, 1, 1)
-        modes.attach(btnContre, 1, 0, 1, 1)
-        modes.attach(btnSurvie, 2, 0, 1, 1)
+        modes.attach(btnContre, 0, 1, 1, 1)
+        modes.attach(btnSurvie, 0, 2, 1, 1)
+        modes.attach(btnTuto, 0, 3, 1, 1)
         modes.set_column_homogeneous(true)
         box.pack_start(modes)
 
-        # ajout du bouton de chargement de sauvegarde + classement
-        btnSauvegarde = Gtk::Button.new(:label => "Charger une sauvegarde")
-        btnSauvegarde.set_height_request(60)
-        setmargin(btnSauvegarde,0,15,70,70)
-
-        btnClassement = Gtk::Button.new(:label => "Classement")
-        btnClassement.set_height_request(60)
-        setmargin(btnClassement,0,15,70,70)
-
-        box.pack_start(btnSauvegarde)
-        box.pack_start(btnClassement)
-
         # ajout des boutons du bas
         ajouterBtnBas(box)
         return box
     end
 
-    # Methode qui permet de creer la vue 2
-    def creerViewTwo()
+    # Methode qui permet de creer la vue pour les choix contre-la-montre
+    def creerViewContreLaMontre()
         box = Gtk::Box.new(:vertical, 10)
-        boxNiv = Gtk::Box.new(:vertical, 10)
-        # creation de la grille avec les boutons de modes
-        niveaux = Gtk::Grid.new()
-        setmargin(niveaux,0,15,70,70)
 
+        # creation de la grille avec les boutons de modes
+        modes = Gtk::Grid.new()
+
+        # creation des boutons de mode de jeu
+        btnLibre = Gtk::Button.new()
+        setBold(btnLibre,"Libre")
+        setmargin(btnLibre,0,15,70,70)
+
+        btnContre = Gtk::Button.new()
+        setBold(btnContre,"Contre-la-montre")
+        setmargin(btnContre,0,15,70,70)
+
+        gridContreLaMontre = Gtk::Grid.new()
         # creation des boutons de choix de niveaux
         btnFacile = Gtk::Button.new()
         setBold(btnFacile,"Facile")
+        setmargin(btnFacile,0,15,70,15)
+        btnFacile.set_width_request(215)
 
         btnMoyen = Gtk::Button.new()
         setBold(btnMoyen,"Moyen")
+        setmargin(btnMoyen,0,15,15,15)
+        btnMoyen.set_width_request(215)
 
         btnDifficile = Gtk::Button.new()
         setBold(btnDifficile,"Difficile")
-
-        btnRetour = Gtk::Button.new()
-        setBold(btnRetour,"Retour")
-
-        # gestion des évènements
-        btnFacile.signal_connect("clicked") do
-            puts "click facile"
-            @viewTwo.set_visible(false)
-            @viewThree.set_visible(true)
-            @difficulte = Difficulte::FACILE
-        end
-        btnMoyen.signal_connect("clicked") do
-            puts "click moyen"
-            @viewTwo.set_visible(false)
-            @viewThree.set_visible(true)
-            @difficulte = Difficulte::MOYEN
-        end
-        btnDifficile.signal_connect("clicked") do
-            puts "click difficile"
-            @viewTwo.set_visible(false)
-            @viewThree.set_visible(true)
-            @difficulte = Difficulte::DIFFICILE
-        end
-        btnRetour.signal_connect("clicked") do
-            puts "retour clique"
-            @viewTwo.set_visible(false)
-            @viewOne.set_visible(true)
-        end
+        setmargin(btnDifficile,0,15,15,70)
+        btnDifficile.set_width_request(215)
 
         # attachement des boutons de choix de niveaux
-        niveaux.attach(btnFacile, 0, 0, 1, 1)
-        niveaux.attach(btnMoyen, 1, 0, 1, 1)
-        niveaux.attach(btnDifficile, 2, 0, 1, 1)
-        niveaux.attach(btnRetour, 3, 0, 1, 1)
-        niveaux.set_column_homogeneous(true)
-        boxNiv.pack_start(niveaux)
-        box.pack_start(boxNiv)
+        gridContreLaMontre.attach(btnFacile,    0, 0, 1, 1)
+        gridContreLaMontre.attach(btnMoyen,     1, 0, 1, 1)
+        gridContreLaMontre.attach(btnDifficile, 2, 0, 1, 1)
 
-        # ajout du bouton de chargement de sauvegarde + classement
-        btnSauvegarde = Gtk::Button.new(:label => "Charger une sauvegarde")
-        btnSauvegarde.set_height_request(60)
-        btnClassement = Gtk::Button.new(:label => "Classement")
-        btnClassement.set_height_request(60)
-        box.pack_start(btnSauvegarde)
-        box.pack_start(btnClassement)
+        btnSurvie = Gtk::Button.new()
+        setBold(btnSurvie,"Survie")
+        setmargin(btnSurvie,0,15,70,70)
 
-        # ajout des boutons du bas
+        btnTuto = Gtk::Button.new()
+        setBold(btnTuto,"Tutoriel")
+        setmargin(btnTuto,0,15,70,70)
+
+        # gestion des évènements
+        btnLibre.signal_connect("clicked") do
+            puts "click libre"
+            @mode = Mode::LIBRE
+        end
+        btnContre.signal_connect("clicked") do
+            puts "click contre-la-montre"
+            @view.set_visible(false)
+            @viewContreLaMontre.set_visible(true)
+            @mode = Mode::CONTRE_LA_MONTRE
+        end
+        btnSurvie.signal_connect("clicked") do
+            puts "click survie"
+            @viewContreLaMontre.set_visible(false)
+            @viewSurvie.set_visible(true)
+            @mode = Mode::SURVIE
+        end
+        btnTuto.signal_connect("clicked") do
+            puts "click tuto"
+            @mode = Mode::TUTORIEL
+        end
+
+        # attachement des boutons de mode de jeu
+        modes.attach(btnLibre, 0, 0, 1, 1)
+        modes.attach(gridContreLaMontre, 0, 1, 1, 1)
+        modes.attach(btnSurvie, 0, 2, 1, 1)
+        modes.attach(btnTuto, 0, 3, 1, 1)
+        modes.set_column_homogeneous(true)
+
+        box.pack_start(modes)
+
         ajouterBtnBas(box)
         return box
     end
 
-    # Methode qui permet de creer la vue 3
-    def creerViewThree()
+    # Methode qui permet de creer la vue pour les choix survie
+    def creerViewSurvie()
         box = Gtk::Box.new(:vertical, 10)
+
         # creation de la grille avec les boutons de modes
-        btnLancement = Gtk::Button.new(:label => "Lancer une partie")
-        box.pack_start(btnLancement, :expand => true, :fill => true)
+        modes = Gtk::Grid.new()
 
-        # ajout du bouton de chargement de sauvegarde + classement
-        btnSauvegarde = Gtk::Button.new(:label => "Charger une sauvegarde")
-        btnSauvegarde.set_height_request(60)
-        btnClassement = Gtk::Button.new(:label => "Classement")
-        btnClassement.set_height_request(60)
-        box.pack_start(btnSauvegarde, :expand => true, :fill => true)
-        box.pack_start(btnClassement, :expand => true, :fill => true)
+        # creation des boutons de mode de jeu
+        btnLibre = Gtk::Button.new()
+        setBold(btnLibre,"Libre")
+        setmargin(btnLibre,0,15,70,70)
 
-        # ajout des boutons du bas
+        btnContre = Gtk::Button.new()
+        setBold(btnContre,"Contre-la-montre")
+        setmargin(btnContre,0,15,70,70)
+
+        gridSurvie = Gtk::Grid.new()
+        # creation des boutons de choix de niveaux
+        btnFacile = Gtk::Button.new()
+        setBold(btnFacile,"Facile")
+        setmargin(btnFacile,0,15,70,15)
+        btnFacile.set_width_request(215)
+
+        btnMoyen = Gtk::Button.new()
+        setBold(btnMoyen,"Moyen")
+        setmargin(btnMoyen,0,15,15,15)
+        btnMoyen.set_width_request(215)
+
+        btnDifficile = Gtk::Button.new()
+        setBold(btnDifficile,"Difficile")
+        setmargin(btnDifficile,0,15,15,70)
+        btnDifficile.set_width_request(215)
+
+        # attachement des boutons de choix de niveaux
+        gridSurvie.attach(btnFacile,    0, 0, 1, 1)
+        gridSurvie.attach(btnMoyen,     1, 0, 1, 1)
+        gridSurvie.attach(btnDifficile, 2, 0, 1, 1)
+
+    #    gridSurvie.set_row_homogeneous(true)
+     #   gridSurvie.set_column_homogeneous(true)
+
+        btnContre = Gtk::Button.new()
+        setBold(btnContre,"Contre-la-montre")
+        setmargin(btnContre,0,15,70,70)
+
+        btnTuto = Gtk::Button.new()
+        setBold(btnTuto,"Tutoriel")
+        setmargin(btnTuto,0,15,70,70)
+
+        # gestion des évènements
+        btnLibre.signal_connect("clicked") do
+            puts "click libre"
+            @mode = Mode::LIBRE
+        end
+        btnContre.signal_connect("clicked") do
+            puts "click contre-la-montre"
+            @viewSurvie.set_visible(false)
+            @viewContreLaMontre.set_visible(true)
+            @mode = Mode::CONTRE_LA_MONTRE
+        end
+        btnTuto.signal_connect("clicked") do
+            puts "click tuto"
+            @mode = Mode::TUTORIEL
+        end
+
+        #  ligne - colonne
+        # attachement des boutons de mode de jeu
+        modes.attach(btnLibre, 0, 0, 1, 1)
+        modes.attach(btnContre, 0, 1, 1, 1)
+        modes.attach(gridSurvie, 0, 2, 1, 1)
+        modes.attach(btnTuto, 0, 3, 1, 1)
+        modes.set_column_homogeneous(true)
+        box.pack_start(modes, :expand => true, :fill => true)
+
         ajouterBtnBas(box)
-
         return box
     end
 
     # Methode qui permet d'ajouter les boutons 'parametres', 'a propos' et 'quitter'
     def ajouterBtnBas(box)
+        btnClassement = Gtk::Button.new(:label => "Classement")
+        btnClassement.set_height_request(60)
+        setmargin(btnClassement,15,15,70,70)
+
+        # AJOUT SEPARATEUR
+        monSeparateur = Gtk::Separator.new(:horizontal)
+        setmargin(monSeparateur,0,0,80,80)
+        box.pack_start( monSeparateur )
+
+        box.pack_start(btnClassement)
+
+        # AJOUT SEPARATEUR
+        monSeparateur = Gtk::Separator.new(:horizontal)
+        setmargin(monSeparateur,0,0,80,80)
+        box.pack_start( monSeparateur )
+
         grilleBas = Gtk::Grid.new()
         setmargin(grilleBas,15,0,70,70)
 
@@ -209,6 +304,13 @@ class FenetreMenu < Fenetre
         btnParam = Gtk::Button.new(:label => "Paramètres")
         btnParam.set_height_request(60)
         btnAPropos = Gtk::Button.new(:label => "A propos")
+
+        btnAPropos.signal_connect("clicked") do
+            puts "click a Propos"
+            @viewMenuPrincipal.set_visible(false)
+            @viewAPropos.set_visible(true)
+        end
+
         labelBtnQuit = Gtk::Label.new()
 
         labelBtnQuit.set_markup("<span foreground='#a4a400000000' >Quitter</span>");
@@ -242,25 +344,13 @@ class FenetreMenu < Fenetre
 
     # Methode qui permet d'ouvrir la fenetre des parametres
     def listenerOuvrirOption()
-
+        @viewAPropos.set_visible(true)
     end
 
     # Methode qui permet d'ouvrir la fenetre 'A propos'
-    def listenerOuvrirAPropos()
-        box = Gtk::Box.new(:vertical,10)
-
-        btnPrecedent = Gtk:Button.new(:label => "Precedent")
-
-        headbar = Gtk::Headerbar.new()
-        scroll = Gtk::ScrolledWindow.new()
-        aPropos = Gtk::TextView.new()
-        texte = Gtk::TextBuffer.new()
-
-        box.pack_start(btnPrecedent)
-        box.pack_start(headbar)
-        box.pack_start(scroll)
-        scroll.add(aPropos)
-
+    def creerViewAPropos()
+        # @viewAPropos =
+        # @fenetreAPropos.afficheToi()
     end
 
     # Methode qui permet de quitter la fenetre de menu
@@ -269,7 +359,7 @@ class FenetreMenu < Fenetre
     end
 
     def setmargin( obj , top, bottom, left, right)
-        obj.set_margin_top(top);
+        obj.set_margin_top(top)
         obj.set_margin_bottom(bottom)
         obj.set_margin_left(left)
         obj.set_margin_right(right)

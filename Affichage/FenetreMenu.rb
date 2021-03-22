@@ -15,7 +15,7 @@ class FenetreMenu < Fenetre
         @viewMenuPrincipal = creerViewMenuPrincipal()
         @viewContreLaMontre = creerViewContreLaMontre()
         @viewSurvie = creerViewSurvie()
-       # @viewAPropos = creerViewAPropos()
+        @viewAPropos = creerViewAPropos()
 
         @mode = nil
         @difficulte = nil
@@ -54,7 +54,7 @@ class FenetreMenu < Fenetre
         # cacher les vues par defaut
         @viewContreLaMontre.hide()
         @viewSurvie.hide()
-      #  @viewAPropos.hide()
+        @viewAPropos.hide()
 
 
         # A continuer !!
@@ -308,6 +308,8 @@ class FenetreMenu < Fenetre
         btnAPropos.signal_connect("clicked") do
             puts "click a Propos"
             @viewMenuPrincipal.set_visible(false)
+            @viewContreLaMontre.set_visible(false)
+            @viewSurvie.set_visible(false)
             @viewAPropos.set_visible(true)
         end
 
@@ -349,8 +351,31 @@ class FenetreMenu < Fenetre
 
     # Methode qui permet d'ouvrir la fenetre 'A propos'
     def creerViewAPropos()
-        # @viewAPropos =
-        # @fenetreAPropos.afficheToi()
+        box = Gtk::Box.new(:vertical)
+
+        headBar = Gtk::HeaderBar.new()
+        headBar.set_title("Nurikabe")
+        headBar.set_subtitle("A propos")
+        headBar.set_show_close_button(true)
+        box.pack_start(headBar)
+        # BACK BTN
+        btnBack = Gtk::Button.new("Retour")
+        btnBack.set_margin(5)
+        btnBack.set_margin_right(0)
+        puts btnBack.alignment()
+        box.pack_start(btnBack)
+
+        # TextView
+        scroll = Gtk::ScrolledWindow.new( )
+        scroll.set_height_request( 623 )
+
+        textBuff = Gtk::TextBuffer.new()
+        textView = Gtk::TextView.new( textBuff )
+        textView.set_editable(false)
+        scroll.add( textView )
+
+        box.pack_start(scroll)
+        return box
     end
 
     # Methode qui permet de quitter la fenetre de menu

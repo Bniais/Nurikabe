@@ -5,7 +5,7 @@ require "gtk3"
 class FenetreAPropos < Fenetre
     # Constructeur de la fenetre A Propos
     def initialize(uneFenetre)
-        @maFenetre = uneFenetre
+        @application = uneFenetre
     end
 
     # methode initialize dans methode creeToi
@@ -15,13 +15,13 @@ class FenetreAPropos < Fenetre
 
     def afficheToi()
         # BOX VERTICAL
-        vbox = Gtk::VBox.new(false, 3)
+        vbox = Gtk::Box.new(:vertical)
 
         headBar = Gtk::HeaderBar.new()
         headBar.set_title("Nurikabe")
         headBar.set_subtitle("A propos")
         headBar.set_show_close_button(true)
-        vbox.add(headBar)
+        vbox.pack_start(headBar)
         # BACK BTN
         btnBack = Gtk::Button.new("Retour")
         btnBack.set_margin(5)
@@ -36,14 +36,14 @@ class FenetreAPropos < Fenetre
         textBuff = Gtk::TextBuffer.new()
         textView = Gtk::TextView.new( textBuff )
         textView.set_editable(false)
-        scroll.add( textView )
+        scroll.pack_start( textView )
 
         vbox.pack_start(scroll)
 
         # ADD VBOX
-        @maFenetre.add(vbox)
-        @maFenetre.signal_connect("delete-event") { |_widget| Gtk.main_quit }
-        @maFenetre.show_all()
+        @application.pack_start(vbox)
+        @application.signal_connect("delete-event") { |_widget| Gtk.main_quit }
+        @application.show_all()
     end
 
     # Methode qui permet de revenir a la fenetre precedente

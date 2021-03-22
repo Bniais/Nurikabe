@@ -341,25 +341,121 @@ class Partie
         for j in 0..grilleEnCours.tabCases.size-1
           if grilleEnCours.tabCases[i][j].estIle?()
             #On regarde si l'île est complète
-            if nbCaseIle(grilleEnCours.tabCases[i][j]) == grilleEnCours.tabCases[i][j].couleur
-              #On regarde si une case frontalière à l'île est grise
+            vu = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
+            if nbCaseIle(grilleEnCours.tabCases[i][j], vu) == grilleEnCours.tabCases[i][j].couleur
               #Parcours des cases de l'île :
-              #TODO
+              for x in 0..vu.size-1
+                for y in 0..vu.size-1
+                  if(vu[x][y]) 
+                    #On regarde si une case frontalière à l'île est grise
+                    if x+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[x+1][y].couleur == Couleur::GRIS #On ne corrige pas les erreurs donc on ne traite pas les cases blanches
+                      return [Indice::INDICE_ILE_COMPLETE, grilleEnCours.tabCases[x+1][j]]
+                    elsif y+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[x][y+1].couleur == Couleur::GRIS
+                      return [Indice::INDICE_ILE_COMPLETE, grilleEnCours.tabCases[x][y+1]]
+                    elsif y-1 >= 0 && grilleEnCours.tabCases[x][j-1].couleur == Couleur::GRIS
+                      return [Indice::INDICE_ILE_COMPLETE, grilleEnCours.tabCases[x][y-1]]
+                    elsif x-1 >= 0 && grilleEnCours.tabCases[x-1][j].couleur == Couleur::GRIS
+                      return [Indice::INDICE_ILE_COMPLETE, grilleEnCours.tabCases[x-1][y]]
+                    end
+                    
+                  end
+                end
+              end
             end
           end
-          return nil
+        end
+      end
+      return nil
+    end
+
+    def nbCaseIle(case_, vu) #vu doit être 
+      #Compte le nombre de cases blanches appartenant à l'île
+      i = case_.positionX
+      j = case_.positionY
+    
+      return parcoursIle(vu, i, j)
+    end
+
+    def parcoursIle(vu, i, j)
+      if( i < 0 || j < 0 || i >= grilleEnCours.tabCases.size || j >= grilleEnCours.tabCases.size || vu[i][j] )
+        return 0
+      else   
+        if(grilleEnCours.tabCases[i][j].couleur == Couleur::BLANC || grilleEnCours.tabCases[i][j].estIle?)
+          vu[i][j] = true
+          return 1 + [parcoursIle(vu, i+1, j), parcoursIle(vu, i, j+1), parcoursIle(vu, i-1, j), parcoursIle(vu, i, j-1)].max()
+        else
+          return 0
         end
       end
     end
 
-    def nbCaseIle(case_)
-      #Compte le nombre de cases blanches appartenant à l'île
-    end
-
     def indiceCaseIsolee()
-      #Parcours en profondeur en cherchant une ile, si pas trouver, on a indice
+      for i in 0..grilleEnCours.tabCases.size-1
+        for j in 0..grilleEnCours.tabCases.size-1
+          if grilleEnCours.tabCases[i][j].couleur == Couleur::GRIS
+            #Parcours en profondeur en cherchant une ile, si pas trouver, on a indice
+            found = false
+            leeTab = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,-1)}
+            leeTab[i][j] = 0
+            lastChanges = Array.new(0)
+            nextChanges = Array.new(0)
+            lastChanges.push(grilleEnCours.tabCases[i][j])
+            
+            depth = 1
+            while(!lastChanges.empty? && !found)
+              lastChanges.each{|c| 
+                if(found)
+                  break
+                end
+                #On regarde les cases autour
+                x = c.positionX
+                y = c.positionY
+                
+                casesEnvironnantes = Array.new(0)
+                if( x+1 < grilleEnCours.tabCases.size)
+                  casesEnvironnantes.push(grilleEnCours.tabCases[x+1][y])
+                end
+                if( y+1 < grilleEnCours.tabCases.size)
+                  casesEnvironnantes.push(grilleEnCours.tabCases[x][y+1])
+                end
+                if( x-1 >=0)
+                  casesEnvironnantes.push(grilleEnCours.tabCases[x-1][y])
+                end
+                if( y-1 >=0)
+                  casesEnvironnantes.push(grilleEnCours.tabCases[x][y-1])
+                end
+
+                casesEnvironnantes.each{ |cc|
+                  if(leeTab[cc.positionX][cc.positionY] == -1)
+                    if(cc.estIle?)
+                      found = true
+                      break
+                    elsif(cc.couleur != Couleur::NOIR)
+                      leeTab[cc.positionX][cc.positionY] = depth
+                      nextChanges.push(grilleEnCours.tabCases[cc.positionX][cc.positionY])
+                    end
+                  end
+                }
+              }
+
+              lastChanges = Array.new(nextChanges)
+              nextChanges = Array.new(0)
+              print lastChanges
+              depth+=1
+            end
+
+            if(!found)
+              return [Indice::INDICE_CASE_ISOLEE, grilleEnCours.tabCases[i][j]]
+            end
+          end
+        end
+      end
+
+
+      
       return nil
     end
+
 
     def indiceExpensionMur()
       #On compte le nombre de cases adjacentes grises, si une seule et il existe des cases noires non-reliée, indice
@@ -428,7 +524,9 @@ class Partie
     end
 end
 
-p = Partie.creer(Grille.creer(2, [[Case.creer(Couleur::NOIR, 0, 0) ,Case.creer(Couleur::NOIR, 1, 0)],[Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::GRIS, 1, 1)]]), nil, nil)
+p = Partie.creer(Grille.creer(2, [[Case.creer(Couleur::ILE_1, 0, 0) ,Case.creer(Couleur::NOIR, 1, 0)],[Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::GRIS, 1, 1)]]), nil, nil)
 p.grilleEnCours.afficher
 print [Indice::MESSAGES[p.donneIndice()[0]], p.donneIndice()[1]] #fait une erreur si pas d'indice trouvé
-#testé INDICE_ILE_1 et INDICE_EVITER_2x2
+#Testé : INDICE_ILE_1, INDICE_EVITER_2x2
+#Moyennement testé : INDICE_ILE_COMPLETE, INDICE_CASE_ISOLEE
+#Pas testé : INDICE_ADJACENT, INDICE_ADJACENT_DIAG

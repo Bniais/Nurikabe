@@ -1,6 +1,7 @@
 load "Fenetre.rb"
 load "../Partie/Mode.rb"
 load "../Partie/Difficulte.rb"
+# load "FenetreAPropos.rb"
 require "gtk3"
 
 Gtk.init
@@ -11,10 +12,11 @@ class FenetreMenu < Fenetre
     # Methode privee pour l'initialisation
    def initialize(title)
         super(title)
-        @viewOne = creerViewOne()
+        @viewMenuPrincipal = creerViewMenuPrincipal()
         @viewContreLaMontre = creerViewContreLaMontre()
         @viewSurvie = creerViewSurvie()
-        @fenetreAPropos = creerViewAPropos()
+       # @viewAPropos = creerViewAPropos()
+
         @mode = nil
         @difficulte = nil
     end
@@ -36,25 +38,31 @@ class FenetreMenu < Fenetre
         setmargin(titre,0,0,70,70)
         @mainBox.pack_start(titre)
 
-        # ajout des 3 vues à la fenêtre
-        @mainBox.pack_start(@viewOne)
+        # ajout des vues à la fenêtre
+        @mainBox.pack_start(@viewMenuPrincipal)
         @mainBox.pack_start(@viewContreLaMontre)
         @mainBox.pack_start(@viewSurvie)
+        # @mainBox.pack_start(@viewAPropos)
 
         # quitter quand la fenetre est detruite
         @application.signal_connect("destroy") { detruire() }
 
+        # ajout de la box princiaple a la fenetre
         @application.add(@mainBox)
         self.ouvrir()
 
-        # cacher les vues contre-la-montre et survie par defaut
+        # cacher les vues par defaut
         @viewContreLaMontre.hide()
         @viewSurvie.hide()
-        @fenetreAPropos.hide()
+      #  @viewAPropos.hide()
+
+
+        # A continuer !!
+        puts @mainBox.count()
     end
 
     # Methode qui permet de creer la vue 1
-    def creerViewOne()
+    def creerViewMenuPrincipal()
         box = Gtk::Box.new(:vertical, 10)
 
         # creation de la grille avec les boutons de modes
@@ -84,13 +92,13 @@ class FenetreMenu < Fenetre
         end
         btnContre.signal_connect("clicked") do
             puts "click contre-la-montre"
-            @viewOne.set_visible(false)
+            @viewMenuPrincipal.set_visible(false)
             @viewContreLaMontre.set_visible(true)
             @mode = Mode::CONTRE_LA_MONTRE
         end
         btnSurvie.signal_connect("clicked") do
             puts "click survie"
-            @viewOne.set_visible(false)
+            @viewMenuPrincipal.set_visible(false)
             @viewSurvie.set_visible(true)
             @mode = Mode::SURVIE
         end
@@ -106,7 +114,6 @@ class FenetreMenu < Fenetre
         modes.attach(btnTuto, 0, 3, 1, 1)
         modes.set_column_homogeneous(true)
         box.pack_start(modes)
-
 
         # ajout des boutons du bas
         ajouterBtnBas(box)
@@ -297,6 +304,13 @@ class FenetreMenu < Fenetre
         btnParam = Gtk::Button.new(:label => "Paramètres")
         btnParam.set_height_request(60)
         btnAPropos = Gtk::Button.new(:label => "A propos")
+
+        btnAPropos.signal_connect("clicked") do
+            puts "click a Propos"
+            @viewMenuPrincipal.set_visible(false)
+            @viewAPropos.set_visible(true)
+        end
+
         labelBtnQuit = Gtk::Label.new()
 
         labelBtnQuit.set_markup("<span foreground='#a4a400000000' >Quitter</span>");
@@ -330,12 +344,13 @@ class FenetreMenu < Fenetre
 
     # Methode qui permet d'ouvrir la fenetre des parametres
     def listenerOuvrirOption()
-
+        @viewAPropos.set_visible(true)
     end
 
     # Methode qui permet d'ouvrir la fenetre 'A propos'
     def creerViewAPropos()
-        @fenetreAPropos.afficheToi()
+        # @viewAPropos =
+        # @fenetreAPropos.afficheToi()
     end
 
     # Methode qui permet de quitter la fenetre de menu

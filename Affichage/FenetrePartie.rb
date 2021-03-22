@@ -18,18 +18,18 @@ class FenetrePartie < Fenetre
          # creation du label pour le titre
           titre = Gtk::Label.new("Partie libre")
           @mainBox.pack_start(titre, :expand => true, :fill => true)
-  
+
           # ajout des 3 vues à la fenêtre
           @mainBox.pack_start(@viewOne, :expand => true, :fill => true)
           #@mainBox.pack_start(@viewTwo, :expand => true, :fill => true)
           #@mainBox.pack_start(@viewThree, :expand => true, :fill => true)
-  
+
           # quitter quand la fenetre est detruite
           @application.signal_connect("destroy") { detruire() }
-  
+
           @application.add(@mainBox)
           self.ouvrir()
-  
+
           # cacher les vues 2 et 3 par defaut
           #@viewTwo.hide()
           #@viewThree.hide()
@@ -41,7 +41,7 @@ class FenetrePartie < Fenetre
         @viewOne = creerViewOne()
         #@viewTwo = creerViewTwo(false)
         #@viewThree = creerViewThree(false)
-        
+
     end
 
 
@@ -107,15 +107,15 @@ class FenetrePartie < Fenetre
         end
 
         # attachement des boutons de mode de jeu
-        controle.attach(btnPause, 0, 0, 1, 1) 
-        controle.attach(btnRetour, 1, 0, 1, 1) 
-        controle.attach(btnReinit, 2, 0, 1, 1) 
-        controle.attach(btnAide, 3, 0, 1, 1) 
-        controle.attach(btnInfo, 4, 0, 1, 1) 
-        controle.attach(btnParam, 5, 0, 1, 1) 
+        controle.attach(btnPause, 0, 0, 1, 1)
+        controle.attach(btnRetour, 1, 0, 1, 1)
+        controle.attach(btnReinit, 2, 0, 1, 1)
+        controle.attach(btnAide, 3, 0, 1, 1)
+        controle.attach(btnInfo, 4, 0, 1, 1)
+        controle.attach(btnParam, 5, 0, 1, 1)
 
-    
-       
+
+
         controle.set_column_homogeneous(true)
         box.pack_start(controle, :expand => true, :fill => true)
 
@@ -140,7 +140,7 @@ class FenetrePartie < Fenetre
 
     # Methode qui permet de mettre a jour l'affichage d'une case donnee
     def changerEtatCase()
-        # 
+        #
     end
 
     # Methode ..................
@@ -188,4 +188,4 @@ fenetrePartie= FenetrePartie.creer("Nurikabe")
 fenetrePartie.creer()
 
 
-Gtk.main
+Gtk.main5

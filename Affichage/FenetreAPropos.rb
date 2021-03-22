@@ -3,18 +3,15 @@ require "gtk3"
 
 # Classe qui gere la fenetre 'A propos'
 class FenetreAPropos < Fenetre
-
-
-
     # Constructeur de la fenetre A Propos
     def initialize(uneFenetre)
         @maFenetre = uneFenetre
     end
-    
+
     # methode initialize dans methode creeToi
-    def creeToi(uneFenetre)
-        new(uneFenetre)
-    end
+    # def creeToi(uneFenetre)
+    #     new(uneFenetre)
+    # end
 
     def afficheToi()
         # BOX VERTICAL
@@ -62,9 +59,8 @@ window.set_border_width(0)
 window.set_size_request(740, 715)
 window.set_border_width(10)
 
-fenetre = FenetreAPropos.new(window)
+fenetre = FenetreAPropos.creer("A propos")
 fenetre.afficheToi()
 
 
 Gtk.main
-

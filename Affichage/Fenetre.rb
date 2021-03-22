@@ -12,7 +12,6 @@ class Fenetre
     # Methode pour creer une fenetre
     def Fenetre.creer(title)
        new(title)
-
     end
 
     # Methode privee pour l'initialisation

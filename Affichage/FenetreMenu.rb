@@ -14,6 +14,8 @@ class FenetreMenu < Fenetre
         @viewOne = creerViewOne()
         @viewTwo = creerViewTwo()
         @viewThree = creerViewThree()
+        @mode = nil
+        @difficulte = nil
     end
 
     # Methode qui permet de quitter l'application

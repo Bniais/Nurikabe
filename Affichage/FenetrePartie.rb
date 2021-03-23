@@ -17,7 +17,7 @@ class FenetrePartie < Fenetre
 
        
         provider = Gtk::CssProvider.new
-        provider.load(path: "Style.css")
+        provider.load(path: "style.css")
         Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
 
          # creation de la box principale
@@ -42,14 +42,14 @@ class FenetrePartie < Fenetre
 
 
     #Creation de bouttons 
-    def creerBoutonBarreOutil(label)
-        labelButton = Gtk::Label.new(label)
-        button = Gtk::Button.new()
-        button.add(labelButton)
-       # button.relief = Gtk::ReliefStyle::NONE
-        button.set_margin_left(5)
-        button.set_margin_right(5)
-        return button
+    def creerBoutonBarreOutil(iconName)
+        btn = Gtk::Button.new()
+        image = Gtk::Image.new(:icon_name => iconName, :size => :LARGE_TOOLBAR)
+        btn.add(image)
+        btn.set_margin_left(5)
+        btn.set_margin_right(5)
+        btn.name = "btntoolbar"
+        return btn
     end
 
     def creerSeparateurBarreOutil()
@@ -70,19 +70,19 @@ class FenetrePartie < Fenetre
         box.set_height_request(50)
 
         # creation des boutons de mode de jeu
-        btnNewFile = creerBoutonBarreOutil("NF")
-        btnSave = creerBoutonBarreOutil("SV")
-        btnPrint = creerBoutonBarreOutil("PT")
-        btnSetting = creerBoutonBarreOutil("ST")
-        btnUndo = creerBoutonBarreOutil("UN")
-        btnRedo = creerBoutonBarreOutil("RD")
-        btnPlay = creerBoutonBarreOutil("PL")
-        btnPause = creerBoutonBarreOutil("PS")
-        btnHelp = creerBoutonBarreOutil("HL")
-        btnInfo = creerBoutonBarreOutil("IF")
-        btnClear = creerBoutonBarreOutil("CL")
-        btnVerif = creerBoutonBarreOutil("VF")
-        btnQuit = creerBoutonBarreOutil("QT")
+        btnNewFile = creerBoutonBarreOutil("document-new")
+        btnSave = creerBoutonBarreOutil("document-save")
+        btnPrint = creerBoutonBarreOutil("document-print")
+        btnSetting = creerBoutonBarreOutil("document-properties")
+        btnUndo = creerBoutonBarreOutil("undo")
+        btnRedo = creerBoutonBarreOutil("redo")
+        btnPlay = creerBoutonBarreOutil("player_play")
+        btnPause = creerBoutonBarreOutil("player_pause")
+        btnHelp = creerBoutonBarreOutil("hint")
+        btnInfo = creerBoutonBarreOutil("help-contents")
+        btnClear = creerBoutonBarreOutil("gtk-clear")
+        btnVerif = creerBoutonBarreOutil("gtk-apply")
+        btnQuit = creerBoutonBarreOutil("gtk-quit")
 
         
         #Gestion des evenemeents
@@ -194,9 +194,9 @@ class FenetrePartie < Fenetre
 
         btn.name = "grid-cell"
 
-        if line == colonne == 0
+        if line == 0 && colonne == 0
             btn.name = "grid-cell-left grid-cell-top"
-        elsif line == colonne == 10
+        elsif line == 0 && colonne == 10
             btn.name = "grid-cell-right grid-cell-bottom"
         elsif line == 0
             btn.name = "grid-cell-left"

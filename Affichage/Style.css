@@ -1,0 +1,29 @@
+
+#grid-cell, #grid-cell-left, #grid-cell-right, #grid-cell-top, #grid-cell-bottom {
+    background-image: none;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 0px;
+}
+
+#grid-cell-left {
+    border-left-width: 2px;
+}
+
+#grid-cell-right {
+    border-right-width: 2px;
+}
+
+#grid-cell-top {
+    border-top-width: 2px;
+}
+
+#grid-cell-bottom {
+    border-bottom-width: 2px;
+}
+
+#grid-cell:active{
+    background-image: none;
+    background-color: rgba(136, 0, 255, 0.603);
+}
+

@@ -2,6 +2,8 @@ load "Fenetre.rb"
 
 # Classe qui gere la fenetre pendant la partie
 class FenetrePartie < Fenetre
+
+    
     # grille de la partie actuelle
     attr_accessor :grille
     # ensembles des sons (effets sonores) de la partie
@@ -12,238 +14,207 @@ class FenetrePartie < Fenetre
 
     # Methode qui permet de creer une nouvelle partie
     def creer()
+
+       
+        provider = Gtk::CssProvider.new
+        provider.load(path: "Style.css")
+        Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
+
          # creation de la box principale
          @mainBox = Gtk::Box.new(:vertical, 10)
 
-         # creation du label pour le titre
-          titre = Gtk::Label.new("Partie libre")
-          @mainBox.pack_start(titre, :expand => true, :fill => true)
+         # ajout des 3 vues à la fenêtre
+         @mainBox.pack_start(@viewOne, :expand => false, :fill => true)
 
-          # ajout des 3 vues à la fenêtre
-          @mainBox.pack_start(@viewOne, :expand => true, :fill => true)
-          #@mainBox.pack_start(@viewTwo, :expand => true, :fill => true)
-          #@mainBox.pack_start(@viewThree, :expand => true, :fill => true)
-
-          # quitter quand la fenetre est detruite
+         # quitter quand la fenetre est detruite
           @application.signal_connect("destroy") { detruire() }
 
           @application.add(@mainBox)
           self.ouvrir()
 
-          # cacher les vues 2 et 3 par defaut
-          #@viewTwo.hide()
-          #@viewThree.hide()
     end
 
     # Methode qui permet d'initialiser la grille de la fenetre
     def initialize(title)
         super(title)
-        @viewOne = creerViewOne()
-        #@viewTwo = creerViewTwo(false)
-        #@viewThree = creerViewThree(false)
-
+        @viewOne = creerBarreOutil()
     end
 
 
+    #Creation de bouttons 
+    def creerBoutonBarreOutil(label)
+        labelButton = Gtk::Label.new(label)
+        button = Gtk::Button.new()
+        button.add(labelButton)
+       # button.relief = Gtk::ReliefStyle::NONE
+        button.set_margin_left(5)
+        button.set_margin_right(5)
+        return button
+    end
+
+    def creerSeparateurBarreOutil()
+        monSeparateur = Gtk::Separator.new(:horizontal)
+        monSeparateur.set_margin_left(5)
+        monSeparateur.set_margin_right(5)
+        monSeparateur.set_margin_top(10)
+        monSeparateur.set_margin_bottom(10)
+        return monSeparateur
+    end
 
 
-
-    def creerViewOne()
-
-        box = Gtk::Box.new(:vertical, 10)
-        # creation de la grille avec les boutons de controle
-        controle = Gtk::Grid.new()
-
-
-
-        controle.margin = 15
-
-        #controle.margin-bottom =
-
+    def creerBarreOutil()
+        # BOX HORIZONTAL
+        mainBox = Gtk::Box.new(:vertical, 0)
+        
+        box = Gtk::Box.new(:horizontal, 0)
+        box.set_height_request(50)
 
         # creation des boutons de mode de jeu
-        btnPause = Gtk::Button.new(:label => "Pause")
-        btnRetour = Gtk::Button.new(:label => "Retour")
-        btnReinit = Gtk::Button.new(:label => "REinit")
-        btnAide = Gtk::Button.new(:label => "Aide")
-        btnInfo = Gtk::Button.new(:label => "Into")
-        btnParam = Gtk::Button.new(:label => "Param")
+        btnNewFile = creerBoutonBarreOutil("NF")
+        btnSave = creerBoutonBarreOutil("SV")
+        btnPrint = creerBoutonBarreOutil("PT")
+        btnSetting = creerBoutonBarreOutil("ST")
+        btnUndo = creerBoutonBarreOutil("UN")
+        btnRedo = creerBoutonBarreOutil("RD")
+        btnPlay = creerBoutonBarreOutil("PL")
+        btnPause = creerBoutonBarreOutil("PS")
+        btnHelp = creerBoutonBarreOutil("HL")
+        btnInfo = creerBoutonBarreOutil("IF")
+        btnClear = creerBoutonBarreOutil("CL")
+        btnVerif = creerBoutonBarreOutil("VF")
+        btnQuit = creerBoutonBarreOutil("QT")
 
-
-        # creation du label pour le titre
-        titre = Gtk::Label.new("Partie libre")
-
-        # gestion des évènements
+        
+        #Gestion des evenemeents
+        btnNewFile.signal_connect("clicked") do
+            puts "click NewFile"
+        end
+        btnSave.signal_connect("clicked") do
+            puts "click Save"
+        end
+        btnPrint.signal_connect("clicked") do
+            puts "click Print"
+        end
+        btnSetting.signal_connect("clicked") do
+            puts "click Setting"
+        end
+        btnUndo.signal_connect("clicked") do
+            puts "click Undo"
+        end
+        btnRedo.signal_connect("clicked") do
+            puts "click Redo"
+        end
+        btnPlay.signal_connect("clicked") do
+            puts "click Play"
+        end
         btnPause.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
+            puts "click Pause"
         end
-
-        btnRetour.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
+        btnHelp.signal_connect("clicked") do
+            puts "click Help"
         end
-
-        # gestion des évènements
-        btnReinit.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
-        end
-
-
-        # gestion des évènements
-        btnAide.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
-        end
-
-
-        # gestion des évènements
         btnInfo.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
+            puts "click Info"
+        end
+        btnClear.signal_connect("clicked") do
+            puts "click Clear"
+        end
+        btnVerif.signal_connect("clicked") do
+            puts "click Verif"
+        end
+        btnQuit.signal_connect("clicked") do
+            puts "click Quit"
         end
 
 
 
-        # gestion des évènements
-        btnParam.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
-        end
-
+  
         # attachement des boutons de mode de jeu
-        controle.attach(btnPause, 0, 0, 1, 1)
-        controle.attach(btnRetour, 1, 0, 1, 1)
-        controle.attach(btnReinit, 2, 0, 1, 1)
-        controle.attach(btnAide, 3, 0, 1, 1)
-        controle.attach(btnInfo, 4, 0, 1, 1)
-        controle.attach(btnParam, 5, 0, 1, 1)
+        box.add(btnNewFile)
+        box.add(btnSave)
+        box.add(btnPrint)
+        box.add(creerSeparateurBarreOutil)  # SEPARATOR
+        box.add(btnSetting)
+        box.add(creerSeparateurBarreOutil)  # SEPARATOR
+        box.add(btnUndo)
+        box.add(btnRedo)
+        box.add(creerSeparateurBarreOutil)  # SEPARATOR
+        box.add(btnPlay)
+        box.add(btnPause)
+        box.add(btnHelp)
+        box.add(btnInfo)
+        box.add(creerSeparateurBarreOutil)  # SEPARATOR
+        box.add(btnClear)
+        box.add(btnVerif)
+        box.add(creerSeparateurBarreOutil)  # SEPARATOR
+        box.add(btnQuit)
 
+        mainBox.add(box)
+        mainBox.add( Gtk::Separator.new(:horizontal) )
+        mainBox.add(creerNomGrille)
+        mainBox.add(creerGrille)
+        return mainBox
+    end
 
-
-        controle.set_column_homogeneous(true)
-        box.pack_start(controle, :expand => true, :fill => true)
-
-
-        # ajout des boutons du bas
-        #ajouterBtnBas(box)
-        return box
+    def creerNomGrille()
+        nomGrille = Gtk::Label.new()
+        nomGrille.set_markup("<span size='30000' > Grille #</span>")
+        nomGrille.set_margin_top(15)
+        nomGrille.set_margin_bottom(15)
     end
 
 
 
-    def creerViewTwo()
-        box = Gtk::Box.new(:vertical, 10)
-        # creation de la grille avec les boutons de controle
-        controle = Gtk::Grid.new()
+    def creerGrille()
+        
+        
+        maGrille = Gtk::Grid.new()
+        maGrille.set_height_request(671-140)
+        maGrille.set_width_request(671-140)
+        maGrille.set_row_homogeneous(true)
+        maGrille.set_column_homogeneous(true)
+
+        maGrille.set_margin_left(70)
+        maGrille.set_margin_right(70)
 
 
 
-        # creation des boutons de mode de jeu
-
-        for a in 0..9
-            for b in 0..9
-                btngrille = Gtk::Button.new(:label => "#{a} #{b}")
-
-
-         btnPause.signal_connect("clicked") do
-             puts "click libre"
-             @viewOne.set_visible(false)
-             @viewTwo.set_visible(true)
-         end
-
-
-        # gestion des évènements
-        btnPause.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
+        for ligne in 0..10
+            for colonne in 0..10
+                maGrille.attach( creerBouttonGrille(ligne,colonne) , ligne,colonne,1,1)
+            end
         end
-
-        btnRetour.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
-        end
-
-        # gestion des évènements
-        btnReinit.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
-        end
-
-
-        # gestion des évènements
-        btnAide.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
-        end
-
-
-        # gestion des évènements
-        btnInfo.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
-        end
-
-
-
-        # gestion des évènements
-        btnParam.signal_connect("clicked") do
-            puts "click libre"
-            @viewOne.set_visible(false)
-            @viewTwo.set_visible(true)
-        end
-
-        # attachement des boutons de mode de jeu
-        controle.attach(btnPause, 0, 0, 1, 1)
-        controle.attach(btnRetour, 1, 0, 1, 1)
-        controle.attach(btnReinit, 2, 0, 1, 1)
-        controle.attach(btnAide, 3, 0, 1, 1)
-        controle.attach(btnInfo, 4, 0, 1, 1)
-        controle.attach(btnParam, 5, 0, 1, 1)
-
-
-
-        controle.set_column_homogeneous(true)
-        box.pack_start(controle, :expand => true, :fill => true)
-
-        # ajout du bouton de classement
-        box.pack_start(Gtk::Button.new(:label => "Classement"), :expand => true, :fill => true)
-
-        # ajout des boutons du bas
-        #ajouterBtnBas(box)
-        return box
+        
+        puts @application.size
+        return maGrille
     end
 
+    def creerBouttonGrille(line,colonne)
+        btn = Gtk::Button.new(:label => line.to_s)
 
+        btn.name = "grid-cell"
 
+        if line == colonne == 0
+            btn.name = "grid-cell-left grid-cell-top"
+        elsif line == colonne == 10
+            btn.name = "grid-cell-right grid-cell-bottom"
+        elsif line == 0
+            btn.name = "grid-cell-left"
+        elsif line == 10
+            btn.name = "grid-cell-right"   
+        elsif colonne == 0 
+            btn.name = "grid-cell-top"
+        elsif colonne == 10
+            btn.name = "grid-cell-bottom"
+        end
 
-
-
-
-
-
-
-
-
-
-
+        return btn
+    end
 
 
     # Methode qui permet de mettre a jour le chrono
-    def rafraichirTemps()
-        #
+    def rafraichirTemps()   
+        
     end
 
     # Methode qui permet de mettre a jour l'affichage d'une case donnee
@@ -251,6 +222,7 @@ class FenetrePartie < Fenetre
         #
     end
 
+    
     # Methode ..................
     def listenerBoutonCase()
         #
@@ -296,4 +268,5 @@ fenetrePartie= FenetrePartie.creer("Nurikabe")
 fenetrePartie.creer()
 
 
-Gtk.main5
+
+Gtk.main

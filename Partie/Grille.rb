@@ -129,7 +129,7 @@ end
 
 
 
-
+=begin
 c = Case.creer(Couleur::NOIR,0,0)
 c1 = Case.creer(Couleur::BLANC,0,1)
 c2 = Case.creer(Couleur::GRIS,1,0)
@@ -140,3 +140,4 @@ tab = [[c,c1],[c2,c3]]
 g = Grille.creer(1,tab)
 
 g.afficher()
+=end

@@ -22,7 +22,12 @@ class Fenetre
         @application.set_resizable(false)
         @application.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
         @titre = title
+
+        provider = Gtk::CssProvider.new
+        provider.load(path: "style.css")
+        Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
     end
+
 
     # Methode qui permet d'ouvrir la fenetre
     def ouvrir()

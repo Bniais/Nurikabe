@@ -1,32 +1,34 @@
 
-#grid-cell, #grid-cell-left, #grid-cell-right, #grid-cell-top, #grid-cell-bottom {
+ window {
+    background-color: white;
+    transition-duration: 0.5s
+}
+
+* {
+    color: rgb(49, 49, 49);
+}
+
+
+#grid-cell , #grid-cell-block, #grid-cell-round{
     background-image: none;
     border-width: 1px;
     border-color: black;
     border-radius: 0px;
+    color: rgb(49, 49, 49);
 }
 
-#grid-cell-left {
-    border-left-width: 2px;
+#grid-cell-block{
+    background-color:  rgb(49, 49, 49);
 }
 
-#grid-cell-right {
-    border-right-width: 2px;
-}
-
-#grid-cell-top {
-    border-top-width: 2px;
-}
-
-#grid-cell-bottom {
-    border-bottom-width: 2px;
-}
-
-#grid-cell:active{
-    background-image: none;
-    background-color: rgba(136, 0, 255, 0.603);
-}
 
 #btn-toolbar{
-    
+    background-image: none;
+    border-style: none;
+}
+
+frame {
+    border-width: 2px;
+    border-color: black;
+    padding: 0px 0px;
 }

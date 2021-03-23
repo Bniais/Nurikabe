@@ -1,0 +1,23 @@
+@import "style.css";
+
+window {
+    background-color: rgb(49, 49, 49);
+    transition-duration: 0.5s
+}
+
+* {
+    color: rgb(156, 156, 156);
+    transition-duration: 0.5s
+}
+
+#grid-cell, #grid-cell-block, #grid-cell-round{
+    border-color: rgb(195, 195, 195);
+}
+
+#grid-cell-block{
+    background-color: rgb(156, 156, 156);
+}
+
+separator {
+    background-color: rgb(136, 136, 136);
+}

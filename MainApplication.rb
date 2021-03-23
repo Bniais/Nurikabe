@@ -1,3 +1,9 @@
+# load "Affichage/FenetreAPropos.rb"
+# load "Affichage/FenetreMenu.rb"
+# load "Affichage/FenetreParametre.rb"
+# load "Affichage/FenetrePartie.rb"
+
+
 # Classe principale
 class MainApplication
     # sauveagrdes contient l'ensemble des sauvegardes (recompenses, parties, scores et parametres)
@@ -9,7 +15,11 @@ class MainApplication
 
     # Methode qui permet d'initialiser le jeu
     def initialiser()
-        #
+        # @listeFenetre = []
+        # @listeFenetre << FenetreMenu.creer("Nurikabe") # << = push()
+        # @listeFenetre << FenetreAPropos.creer("Nurikabe")
+        # @listeFenetre << FenetreParametre.creer("Nurikabe")
+        # @listeFenetre << FenetrePartie.creer("Nurikabe")
     end
 
     # Methode qui permet de lancer une partie avec :

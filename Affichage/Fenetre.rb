@@ -31,10 +31,8 @@ class Fenetre
 
     # Methode qui permet de fermer la fenetre
     def listenerQuitter()
-
         @application.signal_connect('destroy'){
             Gtk.main_quit()
         }
-
     end
 end

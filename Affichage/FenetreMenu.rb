@@ -1,7 +1,7 @@
 load "Fenetre.rb"
 load "../Partie/Mode.rb"
 load "../Partie/Difficulte.rb"
-# load "FenetreAPropos.rb"
+load "FenetreAPropos.rb"
 require "gtk3"
 
 Gtk.init
@@ -15,7 +15,9 @@ class FenetreMenu < Fenetre
         @viewMenuPrincipal = creerViewMenuPrincipal()
         @viewContreLaMontre = creerViewContreLaMontre()
         @viewSurvie = creerViewSurvie()
-        @viewAPropos = creerViewAPropos()
+
+        @fp = FenetreAPropos.new()
+        @viewAPropos = @fp.view
 
         @mode = nil
         @difficulte = nil
@@ -32,17 +34,11 @@ class FenetreMenu < Fenetre
         # creation de la box principale
         @mainBox = Gtk::Box.new(:vertical, 0)
 
-       # creation du label pour le titre
-        titre = Gtk::Label.new()
-        titre.set_markup("<span weight = 'ultrabold' size = '100000' >Nurikabe</span>")
-        setmargin(titre,0,0,70,70)
-        @mainBox.pack_start(titre)
-
         # ajout des vues à la fenêtre
         @mainBox.pack_start(@viewMenuPrincipal)
         @mainBox.pack_start(@viewContreLaMontre)
         @mainBox.pack_start(@viewSurvie)
-        # @mainBox.pack_start(@viewAPropos)
+        @mainBox.pack_start(@viewAPropos)
 
         # quitter quand la fenetre est detruite
         @application.signal_connect("destroy") { detruire() }
@@ -56,14 +52,19 @@ class FenetreMenu < Fenetre
         @viewSurvie.hide()
         @viewAPropos.hide()
 
-
         # A continuer !!
-        puts @mainBox.count()
+        # puts @mainBox.count()
     end
 
     # Methode qui permet de creer la vue 1
     def creerViewMenuPrincipal()
         box = Gtk::Box.new(:vertical, 10)
+
+         # creation du label pour le titre
+        titre = Gtk::Label.new()
+        titre.set_markup("<span weight = 'ultrabold' size = '100000' >Nurikabe</span>")
+        setmargin(titre,0,0,70,70)
+        box.pack_start(titre)
 
         # creation de la grille avec les boutons de modes
         modes = Gtk::Grid.new()
@@ -123,6 +124,12 @@ class FenetreMenu < Fenetre
     # Methode qui permet de creer la vue pour les choix contre-la-montre
     def creerViewContreLaMontre()
         box = Gtk::Box.new(:vertical, 10)
+
+         # creation du label pour le titre
+        titre = Gtk::Label.new()
+        titre.set_markup("<span weight = 'ultrabold' size = '100000' >Nurikabe</span>")
+        setmargin(titre,0,0,70,70)
+        box.pack_start(titre)
 
         # creation de la grille avec les boutons de modes
         modes = Gtk::Grid.new()
@@ -204,6 +211,12 @@ class FenetreMenu < Fenetre
     # Methode qui permet de creer la vue pour les choix survie
     def creerViewSurvie()
         box = Gtk::Box.new(:vertical, 10)
+
+         # creation du label pour le titre
+        titre = Gtk::Label.new()
+        titre.set_markup("<span weight = 'ultrabold' size = '100000' >Nurikabe</span>")
+        setmargin(titre,0,0,70,70)
+        box.pack_start(titre)
 
         # creation de la grille avec les boutons de modes
         modes = Gtk::Grid.new()
@@ -346,36 +359,7 @@ class FenetreMenu < Fenetre
 
     # Methode qui permet d'ouvrir la fenetre des parametres
     def listenerOuvrirOption()
-        @viewAPropos.set_visible(true)
-    end
-
-    # Methode qui permet d'ouvrir la fenetre 'A propos'
-    def creerViewAPropos()
-        box = Gtk::Box.new(:vertical)
-
-        headBar = Gtk::HeaderBar.new()
-        headBar.set_title("Nurikabe")
-        headBar.set_subtitle("A propos")
-        headBar.set_show_close_button(true)
-        box.pack_start(headBar)
-        # BACK BTN
-        btnBack = Gtk::Button.new("Retour")
-        btnBack.set_margin(5)
-        btnBack.set_margin_right(0)
-        puts btnBack.alignment()
-        box.pack_start(btnBack)
-
-        # TextView
-        scroll = Gtk::ScrolledWindow.new( )
-        scroll.set_height_request( 623 )
-
-        textBuff = Gtk::TextBuffer.new()
-        textView = Gtk::TextView.new( textBuff )
-        textView.set_editable(false)
-        scroll.add( textView )
-
-        box.pack_start(scroll)
-        return box
+        # @viewAPropos.set_visible(true)
     end
 
     # Methode qui permet de quitter la fenetre de menu

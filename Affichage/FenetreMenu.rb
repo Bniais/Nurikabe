@@ -2,6 +2,7 @@ load "Fenetre.rb"
 load "../Partie/Mode.rb"
 load "../Partie/Difficulte.rb"
 load "FenetreAPropos.rb"
+load "FenetreParametre.rb"
 require "gtk3"
 
 Gtk.init
@@ -18,6 +19,9 @@ class FenetreMenu < Fenetre
 
         @fp = FenetreAPropos.new()
         @viewAPropos = @fp.view
+
+        @fparam = FenetreParametre.new()
+        @viewParam = @fparam.view
 
         @mode = nil
         @difficulte = nil
@@ -39,6 +43,7 @@ class FenetreMenu < Fenetre
         @mainBox.pack_start(@viewContreLaMontre)
         @mainBox.pack_start(@viewSurvie)
         @mainBox.pack_start(@viewAPropos)
+        @mainBox.pack_start(@viewParam)
 
         # quitter quand la fenetre est detruite
         @application.signal_connect("destroy") { detruire() }
@@ -51,6 +56,7 @@ class FenetreMenu < Fenetre
         @viewContreLaMontre.hide()
         @viewSurvie.hide()
         @viewAPropos.hide()
+        @viewParam.hide()
 
         # A continuer !!
         # puts @mainBox.count()
@@ -323,7 +329,18 @@ class FenetreMenu < Fenetre
             @viewMenuPrincipal.set_visible(false)
             @viewContreLaMontre.set_visible(false)
             @viewSurvie.set_visible(false)
+            @viewParam.set_visible(false)
             @viewAPropos.set_visible(true)
+        end
+
+
+        btnParam.signal_connect("clicked") do
+            puts "click a Propos"
+            @viewMenuPrincipal.set_visible(false)
+            @viewContreLaMontre.set_visible(false)
+            @viewSurvie.set_visible(false)
+            @viewAPropos.set_visible(false)
+            @viewParam.set_visible(true)
         end
 
         labelBtnQuit = Gtk::Label.new()

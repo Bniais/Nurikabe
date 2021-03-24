@@ -1,4 +1,3 @@
-load "Fenetre.rb"
 
 # Classe qui gere la fenetre des parametres
 class FenetreParametre

@@ -1,6 +1,3 @@
-load "Fenetre.rb"
-# require "gtk3"
-# Gtk.init
 
 # Classe qui gere la fenetre 'A propos'
 class FenetreAPropos

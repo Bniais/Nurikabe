@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 load 'Fenetre.rb'
 load '../Partie/Mode.rb'
 load '../Partie/Difficulte.rb'
@@ -12,10 +10,10 @@ Gtk.init
 
 # Classe qui gere la fenetre du menu
 class FenetreMenu < Fenetre
-
   attr_reader :indexCourant
   attr_accessor :views
 
+  # Constantes utilisees pour les changements de vue
   MENU = 0
   CONTRE_LA_MONTRE = 1
   SURVIE = 2
@@ -54,7 +52,7 @@ class FenetreMenu < Fenetre
     # creation de la box principale
     @mainBox = Gtk::Box.new(:vertical, 0)
 
-    # ajout des vues à la fenêtre
+    # ajout des vues à la fenetre
     (0..4).each do |i|
       @mainBox.pack_start(@views[i])
     end
@@ -66,18 +64,17 @@ class FenetreMenu < Fenetre
     @application.add(@mainBox)
     self.ouvrir()
 
-    # cacher les vues par defaut
+    # cacher toutes les vues sauf celle du menu principal
     (1..4).each do |i|
       @views[i].hide()
     end
-
   end
 
   # Methode qui permet de creer la vue 1
   def creerViewMenuPrincipal()
     box = Gtk::Box.new(:vertical, 10)
 
-    # creation du label pour le titre
+    # creation du label pour le titre + ajout à la box
     titre = Gtk::Label.new()
     titre.set_markup("<span weight = 'ultrabold' size = '100000' >Nurikabe</span>")
     setmargin(titre, 0, 0, 70, 70)
@@ -85,55 +82,44 @@ class FenetreMenu < Fenetre
 
     # creation de la grille avec les boutons de modes
     modes = Gtk::Grid.new()
+    tabLabels = ['Libre', 'Contre-la-montre', 'Survie', 'Tutoriel']
+    listeBtn = Array.new()
 
-    # creation des boutons de mode de jeu
-    btnLibre = Gtk::Button.new()
-    setBold(btnLibre, 'Libre')
-    setmargin(btnLibre, 0, 15, 70, 70)
+    # creation des boutons de mode de jeu + attachement à la grille
+    for x in 0..3
+      listeBtn << Gtk::Button.new()
+      setBold(listeBtn.at(x), tabLabels.at(x))
+      setmargin(listeBtn.at(x), 0, 15, 70, 70)
+      modes.attach(listeBtn.at(x),  0, x, 1, 1)
+    end
 
-    btnContre = Gtk::Button.new()
-    setBold(btnContre, 'Contre-la-montre')
-    setmargin(btnContre, 0, 15, 70, 70)
+    modes.set_column_homogeneous(true)
+    # ajout de la grille de boutons à la box
+    box.pack_start(modes)
 
-    btnSurvie = Gtk::Button.new
-    setBold(btnSurvie, 'Survie')
-    setmargin(btnSurvie, 0, 15, 70, 70)
-
-    btnTuto = Gtk::Button.new
-    setBold(btnTuto, 'Tutoriel')
-    setmargin(btnTuto, 0, 15, 70, 70)
-
-    # gestion des évènements
-    btnLibre.signal_connect('clicked') do
+    # gestion des évènements des boutons
+    listeBtn[0].signal_connect('clicked') do
       puts 'click libre'
       @mode = Mode::LIBRE
     end
-    btnContre.signal_connect('clicked') do
+    listeBtn[1].signal_connect('clicked') do
       puts 'click contre-la-montre'
       changerVue(@indexCourant, CONTRE_LA_MONTRE)
       @mode = Mode::CONTRE_LA_MONTRE
     end
-    btnSurvie.signal_connect('clicked') do
+    listeBtn[2].signal_connect('clicked') do
       puts 'click survie'
       changerVue(@indexCourant, SURVIE)
       @mode = Mode::SURVIE
     end
-    btnTuto.signal_connect('clicked') do
+    listeBtn[3].signal_connect('clicked') do
       puts 'click tuto'
       @mode = Mode::TUTORIEL
     end
 
-    # attachement des boutons de mode de jeu
-    modes.attach(btnLibre,  0, 0, 1, 1)
-    modes.attach(btnContre, 0, 1, 1, 1)
-    modes.attach(btnSurvie, 0, 2, 1, 1)
-    modes.attach(btnTuto,   0, 3, 1, 1)
-    modes.set_column_homogeneous(true)
-    box.pack_start(modes)
-
     # ajout des boutons du bas
     ajouterBtnBas(box)
-    box
+    return box
   end
 
   # Methode qui permet de creer la vue pour les choix contre-la-montre
@@ -148,77 +134,70 @@ class FenetreMenu < Fenetre
 
     # creation de la grille avec les boutons de modes
     modes = Gtk::Grid.new()
+    tabLabels = ['Libre', 'Survie', 'Tutoriel']
+    listeBtn = Array.new()
 
     # creation des boutons de mode de jeu
-    btnLibre = Gtk::Button.new()
-    setBold(btnLibre, 'Libre')
-    setmargin(btnLibre, 0, 15, 70, 70)
-
-    btnContre = Gtk::Button.new()
-    setBold(btnContre, 'Contre-la-montre')
-    setmargin(btnContre, 0, 15, 70, 70)
-
-    gridContreLaMontre = Gtk::Grid.new()
-    # creation des boutons de choix de niveaux
-    btnFacile = Gtk::Button.new()
-    setBold(btnFacile, 'Facile')
-    setmargin(btnFacile, 0, 15, 70, 15)
-    btnFacile.set_width_request(215)
-
-    btnMoyen = Gtk::Button.new()
-    setBold(btnMoyen, 'Moyen')
-    setmargin(btnMoyen, 0, 15, 15, 15)
-    btnMoyen.set_width_request(215)
-
-    btnDifficile = Gtk::Button.new()
-    setBold(btnDifficile, 'Difficile')
-    setmargin(btnDifficile, 0, 15, 15, 70)
-    btnDifficile.set_width_request(215)
-
-    # attachement des boutons de choix de niveaux
-    gridContreLaMontre.attach(btnFacile,    0, 0, 1, 1)
-    gridContreLaMontre.attach(btnMoyen,     1, 0, 1, 1)
-    gridContreLaMontre.attach(btnDifficile, 2, 0, 1, 1)
-
-    btnSurvie = Gtk::Button.new()
-    setBold(btnSurvie, 'Survie')
-    setmargin(btnSurvie, 0, 15, 70, 70)
-
-    btnTuto = Gtk::Button.new()
-    setBold(btnTuto, 'Tutoriel')
-    setmargin(btnTuto, 0, 15, 70, 70)
+    for x in 0..2
+      listeBtn << Gtk::Button.new()
+      setBold(listeBtn.at(x), tabLabels.at(x))
+      setmargin(listeBtn.at(x), 0, 15, 70, 70)
+    end
 
     # gestion des évènements
-    btnLibre.signal_connect('clicked') do
+    listeBtn[0].signal_connect('clicked') do
       puts 'click libre'
       @mode = Mode::LIBRE
     end
-    btnContre.signal_connect('clicked') do
-      puts 'click contre-la-montre'
-      changerVue(@indexCourant, CONTRE_LA_MONTRE)
-      @mode = Mode::CONTRE_LA_MONTRE
-    end
-    btnSurvie.signal_connect('clicked') do
+    listeBtn[1].signal_connect('clicked') do
       puts 'click survie'
       changerVue(@indexCourant, SURVIE)
       @mode = Mode::SURVIE
     end
-    btnTuto.signal_connect('clicked') do
+    listeBtn[2].signal_connect('clicked') do
       puts 'click tuto'
       @mode = Mode::TUTORIEL
     end
 
+    # creation de la grille des boutons de niveau pour le mode Contre-la-montre
+    gridContreLaMontre = Gtk::Grid.new()
+    tabLabelsNiv = ['Facile', 'Moyen', 'Difficile']
+    listeBtnNiv = Array.new()
+
+    # creation des boutons de niveaux + attachement
+    for x in 0..2
+      listeBtnNiv << Gtk::Button.new()
+      setBold(listeBtnNiv.at(x), tabLabelsNiv.at(x))
+      setmargin(listeBtnNiv.at(x), 0, 15, 70, 15)
+      listeBtnNiv.at(x).set_width_request(180)
+      gridContreLaMontre.attach(listeBtnNiv.at(x), x, 0, 1, 1)
+    end
+
+    # gestion des evenements
+    listeBtnNiv[0].signal_connect('clicked') do
+      puts 'click facile'
+      @difficulte = Difficulte::FACILE
+    end
+    listeBtnNiv[1].signal_connect('clicked') do
+      puts 'click moyen'
+      @difficulte = Difficulte::MOYEN
+    end
+    listeBtnNiv[2].signal_connect('clicked') do
+      puts 'click difficile'
+      @difficulte = Difficulte::DIFFICILE
+    end
+
     # attachement des boutons de mode de jeu
-    modes.attach(btnLibre, 0, 0, 1, 1)
+    modes.attach(listeBtn[0], 0, 0, 1, 1)
     modes.attach(gridContreLaMontre, 0, 1, 1, 1)
-    modes.attach(btnSurvie, 0, 2, 1, 1)
-    modes.attach(btnTuto, 0, 3, 1, 1)
+    modes.attach(listeBtn[1], 0, 2, 1, 1)
+    modes.attach(listeBtn[2], 0, 3, 1, 1)
     modes.set_column_homogeneous(true)
 
     box.pack_start(modes)
 
     ajouterBtnBas(box)
-    box
+    return box
   end
 
   # Methode qui permet de creer la vue pour les choix survie
@@ -234,71 +213,70 @@ class FenetreMenu < Fenetre
     # creation de la grille avec les boutons de modes
     modes = Gtk::Grid.new()
 
+    tabLabels = ['Libre', 'Contre-la-montre', 'Tutoriel']
+    listeBtn = Array.new()
+
     # creation des boutons de mode de jeu
-    btnLibre = Gtk::Button.new()
-    setBold(btnLibre, 'Libre')
-    setmargin(btnLibre, 0, 15, 70, 70)
-
-    btnContre = Gtk::Button.new()
-    setBold(btnContre, 'Contre-la-montre')
-    setmargin(btnContre, 0, 15, 70, 70)
-
-    gridSurvie = Gtk::Grid.new()
-    # creation des boutons de choix de niveaux
-    btnFacile = Gtk::Button.new()
-    setBold(btnFacile, 'Facile')
-    setmargin(btnFacile, 0, 15, 70, 15)
-    btnFacile.set_width_request(215)
-
-    btnMoyen = Gtk::Button.new()
-    setBold(btnMoyen, 'Moyen')
-    setmargin(btnMoyen, 0, 15, 15, 15)
-    btnMoyen.set_width_request(215)
-
-    btnDifficile = Gtk::Button.new()
-    setBold(btnDifficile, 'Difficile')
-    setmargin(btnDifficile, 0, 15, 15, 70)
-    btnDifficile.set_width_request(215)
-
-    # attachement des boutons de choix de niveaux
-    gridSurvie.attach(btnFacile,    0, 0, 1, 1)
-    gridSurvie.attach(btnMoyen,     1, 0, 1, 1)
-    gridSurvie.attach(btnDifficile, 2, 0, 1, 1)
-
-    btnContre = Gtk::Button.new()
-    setBold(btnContre, 'Contre-la-montre')
-    setmargin(btnContre, 0, 15, 70, 70)
-
-    btnTuto = Gtk::Button.new()
-    setBold(btnTuto, 'Tutoriel')
-    setmargin(btnTuto, 0, 15, 70, 70)
+    for x in 0..2
+      listeBtn << Gtk::Button.new()
+      setBold(listeBtn.at(x), tabLabels.at(x))
+      setmargin(listeBtn.at(x), 0, 15, 70, 70)
+    end
 
     # gestion des évènements
-    btnLibre.signal_connect('clicked') do
+    listeBtn[0].signal_connect('clicked') do
       puts 'click libre'
       @mode = Mode::LIBRE
     end
-    btnContre.signal_connect('clicked') do
+    listeBtn[1].signal_connect('clicked') do
       puts 'click contre-la-montre'
       changerVue(@indexCourant, CONTRE_LA_MONTRE)
       @mode = Mode::CONTRE_LA_MONTRE
     end
-    btnTuto.signal_connect('clicked') do
+    listeBtn[2].signal_connect('clicked') do
       puts 'click tuto'
       @mode = Mode::TUTORIEL
     end
 
-    #  ligne - colonne
+    # creation de la grille des niveaux
+    gridSurvie = Gtk::Grid.new()
+    tabLabelsNiv = ['Facile', 'Moyen', 'Difficile']
+    listeBtnNiv = Array.new()
+
+    # creation des boutons de niveaux + attachement
+    for x in 0..2
+      listeBtnNiv << Gtk::Button.new()
+      setBold(listeBtnNiv.at(x), tabLabelsNiv.at(x))
+      setmargin(listeBtnNiv.at(x), 0, 15, 70, 15)
+      listeBtnNiv.at(x).set_width_request(180)
+      gridSurvie.attach(listeBtnNiv.at(x), x, 0, 1, 1)
+    end
+
+    # gestion des evenements
+    listeBtnNiv[0].signal_connect('clicked') do
+      puts 'click facile'
+      @difficulte = Difficulte::FACILE
+    end
+    listeBtnNiv[1].signal_connect('clicked') do
+      puts 'click moyen'
+      @difficulte = Difficulte::MOYEN
+    end
+    listeBtnNiv[2].signal_connect('clicked') do
+      puts 'click difficile'
+      @difficulte = Difficulte::DIFFICILE
+    end
+
     # attachement des boutons de mode de jeu
-    modes.attach(btnLibre, 0, 0, 1, 1)
-    modes.attach(btnContre, 0, 1, 1, 1)
+    modes.attach(listeBtn[0], 0, 0, 1, 1)
+    modes.attach(listeBtn[1], 0, 1, 1, 1)
     modes.attach(gridSurvie, 0, 2, 1, 1)
-    modes.attach(btnTuto, 0, 3, 1, 1)
+    modes.attach(listeBtn[2], 0, 3, 1, 1)
+
     modes.set_column_homogeneous(true)
     box.pack_start(modes, expand: true, fill: true)
 
     ajouterBtnBas(box)
-    box
+    return box
   end
 
   # Methode qui permet d'ajouter les boutons 'parametres', 'a propos' et 'quitter'
@@ -364,26 +342,27 @@ class FenetreMenu < Fenetre
   end
 
   # Methode qui renvoie la grille choisie par l'utilisateur
-  def listenerChoixGrille
+  # def listenerChoixGrille
+  # #
+  # end
   #
-  end
-
-  # Methode qui permet d'ouvrir la fenetre des parametres
-  def listenerOuvrirOption
-    #
-  end
-
-  # Methode qui permet de quitter la fenetre de menu
-  def listenerQuitter
+  # # Methode qui permet d'ouvrir la fenetre des parametres
+  # def listenerOuvrirOption
+  #   #
+  # end
   #
-  end
+  # # Methode qui permet de quitter la fenetre de menu
+  # def listenerQuitter
+  # #
+  # end
 
+  # Methode qui permet de gerer les marges d'un objet
   def setmargin(obj, top, bottom, left, right)
     obj.set_margin_top(top)
     obj.set_margin_bottom(bottom)
     obj.set_margin_left(left)
     obj.set_margin_right(right)
-    nil
+    return obj
   end
 
   # Methode qui permet de mettre en gras un label

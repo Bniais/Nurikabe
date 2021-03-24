@@ -17,11 +17,9 @@ class MainApplication
     def initialiser()
         @listeFenetre = []
         @listeFenetre << FenetreMenu.creer("Nurikabe") # << = push()
-        @listeFenetre << FenetreAPropos.creer("Nurikabe")
-        @listeFenetre << FenetreParametre.creer("Nurikabe")
+        # @listeFenetre << FenetreAPropos.creer("Nurikabe")
+        # @listeFenetre << FenetreParametre.creer("Nurikabe")
         @listeFenetre << FenetrePartie.creer("Nurikabe")
-
-        @listeFenetre[0].afficher()
     end
 
     # Methode qui permet de lancer une partie avec :

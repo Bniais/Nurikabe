@@ -1,84 +1,219 @@
+require './Fenetre.rb'
 
-# Classe qui gere la fenetre des parametres
-class FenetreParametre
-    # sauvegarde des parametres
-    attr_reader :sauvegardeParametre
+class FenetreParametre < Fenetre
 
-    attr_accessor :view
 
-    private_class_method :new
-
-    def FenetreParametre.creer(menuPrincipal)
-        new(menuPrincipal)
+    def initialize()
+        self
     end
 
-    def initialize(menuPrincipal)
-        @menuPrincipal = menuPrincipal
-        @view = creerViewParametre()
-        puts "View parametres initialise"
+    def self.initaliseToi()
+        new()
     end
 
-    def creerViewParametre()
-        box = Gtk::Box.new(:vertical, 10)
-        box.set_width_request(745)
+    def afficheToi()
+        @@window.add( creationInterface )
+        @@window.show_all
+        return self
+    end
 
-        grille = Gtk::Grid.new()
+    def creationInterface()
+        box = Gtk::Box.new(:vertical)
 
-        labelBtnRetour = Gtk::Label.new()
-        labelBtnRetour.set_markup("<span foreground='#a4a400000000' >Retour</span>");
-        # creation du bouton de retour
-        @btnRetour = Gtk::Button.new()
-        @btnRetour.add(labelBtnRetour)
-        setmargin(@btnRetour,20,15,70,70)
-        @btnRetour.set_height_request(40)
+        # BACK BUTTON
+        btnBoxH = Gtk::ButtonBox.new(:horizontal)
+        btnBoxH.layout = :start
+        btnBack = Gtk::Button.new(:label => "BACK")
+        setmargin(btnBack,5,5,5,0)
+        btnBoxH.add(btnBack)
+        box.add(btnBoxH) #ADD
+        
+        # SEPARATOR
+        box.add( Gtk::Separator.new(:vertical) ) #ADD
 
-        @btnRetour.signal_connect("clicked") do
-            @menuPrincipal.changerVue(@menuPrincipal.indexCourant, FenetreMenu::MENU)
-        end
-
-        grille.attach(@btnRetour, 0, 0, 1, 1)
-
-        # creation du menu
-        menu = Gtk::Box.new(:vertical, 0)
-        tabLabels = ['Jeu', 'Utilisateur', 'Interface', 'Audio']
-        listeBtn = Array.new()
-        x = 0
-
-        # creation des boutons du menu
-        for y in 0..7
-                if(y%2 == 0)
-                    listeBtn << Gtk::Button.new(:label => tabLabels.at(x))
-                    # setmargin(listeBtn.at(x), 0, 1, 0, 70)
-                    listeBtn.at(x).set_height_request(50)
-                    listeBtn.at(x).set_width_request(150)
-                    menu.pack_start(listeBtn.at(x))
-                    x = x + 1
-                else
-                    separateur = Gtk::Separator.new(:horizontal)
-                    menu.pack_start(separateur)
-                end
-        end
-
-        # attach(widget, left, top, width, height)
-        grille.attach(menu, 0, 1, 1, 1)
-
-        textBuff = Gtk::TextBuffer.new()
-        textBuff.text = "affichage a venir"
-
-        textView = Gtk::TextView.new()
-        textView.set_buffer(textBuff)
-        textView.set_editable(false)
-        textView.set_wrap_mode(Gtk::WrapMode::WORD)
-        # textView.set_width_request(700)
-        # setmargin(textView,80,15,70,70)
-        grille.attach(textView, 1, 1, 1, 1)
-
-        box.pack_start(grille)
+        # VUE PRINCIPAL
+        box.add( creationStack ) #ADD    
 
         return box
     end
 
-     def setmargin( obj , top, bottom, left, right)
+    def creationStack
+        box = Gtk::Box.new(:horizontal)
+        sidebar = Gtk::StackSidebar.new
+        sidebar.set_width_request(160)
+        sidebar.set_height_request(650)
+        sidebar.name = "sidebar"
+        box.pack_start(sidebar, :expand => false, :fill => false, :padding => 0)
+
+        stack = Gtk::Stack.new
+        stack.transition_type = :slide_up_down
+        sidebar.stack = stack
+
+        widget = Gtk::Separator.new(:vertical)
+        box.pack_start(widget, :expand => false, :fill => false, :padding => 0)
+
+        box.pack_start(stack, :expand => true, :fill => true, :padding => 0)
+
+        pages = ["Jeu","Utilisateur","Interface","Audio"]
+
+        # Jeu
+        title = "Jeu"
+        vueJeu = creationVueJeu
+        stack.add_named(vueJeu, title) # ADD NAMED CHILDREN
+        stack.child_set_property(vueJeu, "title", title) # SET A TITLE TO A CHILDREN
+
+        # Utilisateur
+        title = "Utilisateur"
+        vueUtilisateur = creationVueUtilisateur
+        stack.add_named(vueUtilisateur, title)
+        stack.child_set_property(vueUtilisateur, "title", title)   
+       
+        # Interface
+        title = "Interface"
+        vueInterface = creationVueInterface
+        stack.add_named(vueInterface, title)
+        stack.child_set_property(vueInterface, "title", title)   
+
+        # AUDIO
+        title = "Audio"
+        vueAudio = creationVueAudio
+        stack.add_named(vueAudio, title)
+        stack.child_set_property(vueAudio, "title", title)
+        return box
+    end
+
+    ###### JEU 
+    def creationVueJeu
+        box = Gtk::Box.new(:vertical)
+        title = Gtk::Label.new()
+        title.set_markup("<span size='25000'>Jeu</span>")
+        setmargin(title,15,10,0,0)
+
+        box.add(title) #ADD
+
+        # AIDE CASES GRISES
+        switch = Gtk::Switch.new()
+        switch.halign = :start
+        switch.signal_connect('notify::active') { |s| switchAideCasesGrises(s) }
+        box.add( creationBoxVerticalPourVue("Cases grises :" , switch) ) #ADD
+        
+        # AIDE COMPTEUR D'ILOT
+        switch = Gtk::Switch.new()
+        switch.halign = :start
+        switch.signal_connect('notify::active') { |s| switchAideCompteurIlot(s) }
+        box.add( creationBoxVerticalPourVue("Compteur d'ilot :" , switch) ) #ADD
+
+        # AIDE AFFICHAGE PORTEE
+        switch = Gtk::Switch.new()
+        switch.halign = :start
+        switch.signal_connect('notify::active') { |s| switchAideAffichagePortee(s) }
+        box.add( creationBoxVerticalPourVue("Affichage portee :" , switch) ) #ADD
+
+        # AIDE MURS 2x2
+        switch = Gtk::Switch.new()
+        switch.halign = :start
+        switch.signal_connect('notify::active') { |s| switchAideMurs2x2(s) }
+        box.add( creationBoxVerticalPourVue("Murs 2x2 :" , switch) ) #ADD
+        return box
+    end
+    ### SIGNAL CONNECTS DE JEU
+    # AIDE CASES GRISES
+    def switchAideCasesGrises(s)
+        puts s
+    end 
+    # AIDE COMPTEUR ILOT
+    def switchAideCompteurIlot(s)
+        puts s
+    end 
+    # AIDE AFFICHAGE PORTEE
+    def switchAideAffichagePortee(s)
+        puts s
+    end 
+    # AIDE MURS 2x2
+    def switchAideMurs2x2(s)
+        puts s
+    end 
+
+    ###### UTILISATEUR 
+    def creationVueUtilisateur
+        box = Gtk::Box.new(:vertical)
+        title = Gtk::Label.new()
+        title.set_markup("<span size='25000'>Utilisateur</span>")
+        setmargin(title,15,10,0,0)
+        box.add(title)
+        return box
+    end
+    ### SIGNAL CONNECTS DE UTILISATEUR
+
+    ###### INTERFACE 
+    def creationVueInterface
+        box = Gtk::Box.new(:vertical)
+        title = Gtk::Label.new()
+        title.set_markup("<span size='25000'>Interface</span>")
+        setmargin(title,15,10,0,0)
+
+        box.add(title) #ADD
+
+        # DARK MORD
+        switch = Gtk::Switch.new()
+        switch.halign = :start
+        switch.signal_connect('notify::active') { |s| switchModeSombre(s) }
+        box.add( creationBoxVerticalPourVue("Mode sombre :" , switch) ) #ADD
+
+        # CHOOSE LANGUE
+        combo = Gtk::ComboBoxText.new()
+        combo.halign = :fill
+        combo.append("FR_fr","Francais")
+        combo.set_active(0)
+        box.add( creationBoxVerticalPourVue("Choisir une langue :" , combo) ) #ADD
+        
+        # IMPORT LANGUE
+        picker = Gtk::FileChooserButton.new("Pick a file", :open)
+        picker.halign = :fill
+        picker.local_only = true
+        box.add( creationBoxVerticalPourVue("Importer une langue :" , picker) ) #ADD
+
+        return box
+    end
+    ### SIGNAL CONNECTS DE INTERFACE
+    # MODE SOMBRE
+    def switchModeSombre(s)
+        provider = Gtk::CssProvider.new
+        if s.active? 
+            provider.load(path: "style_dark.css")
+        else
+            provider.load(path: "style.css") 
+        end
+        Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
+    end
+
+    ###### AUDIO 
+    def creationVueAudio
+        box = Gtk::Box.new(:vertical)
+        title = Gtk::Label.new()
+        title.set_markup("<span size='25000'>Audio</span>")
+        setmargin(title,15,10,0,0)
+        box.add(title)
+        return box
+    end
+    ### SIGNAL CONNECTS DE AUDIO
+
+
+
+
+    # Permet de creer un element nom + objet
+    def creationBoxVerticalPourVue( title, obj )
+        box = Gtk::Box.new(:horizontal,20)
+        box.set_homogeneous(true)
+        setmargin(box,5,5,70,70)
+        label = Gtk::Label.new(title )
+        label.halign = :end
+        box.add( label )#ADD
+        box.add( obj )#ADD
+        return box
+    end
+
+    def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)
         obj.set_margin_bottom(bottom)
         obj.set_margin_left(left)
@@ -86,66 +221,14 @@ class FenetreParametre
         return nil
     end
 
-    # Methode qui permet de mettre en gras un label
-    def setBold(btn, nom)
-        label = Gtk::Label.new()
-        label.set_markup("<span weight = 'ultrabold'>"+nom+"</span>")
-        btn.add(label)
-        btn.set_height_request(70)
-    end
-
-    # Methode qui permet de creer une nouvelle sauvegarde de parametres
-    def creer(parametres)
-        #
-    end
-
-    # Methode qui renvoie l'option choisi par l'utilisateur pour les cases grises
-    def listenerSwitchCaseGrise()
-        #
-    end
-
-    # Methode qui renvoie l'option choisi par l'utilisateur pour le compteur des ilots
-    def listenerSwitchCompteurIlot()
-        #
-    end
-
-    # Methode qui renvoie l'option choisi par l'utilisateur pour l'affichage de la portee
-    def listenerSwitchAfficherPortee()
-        #
-    end
-
-    # Methode qui renvoie l'option choisi par l'utilisateur pour le comportement du clic a la souris
-    def listenerComportementSouris()
-        #
-    end
-
-    # Methode qui renvoie la langue choisie par l'utilisateur
-    def listenerChangerLangue()
-        #
-    end
-
-    # Methode qui renvoie la valeur du volume choisie par l'utilisateur
-    def listenerChangerVolume()
-        #
-    end
-
-    # Methode qui permet d'aller a l'onglet 'Jeu'
-    def listenerOngletJeu()
-        #
-    end
-
-    # Methode qui permet d'aller a l'onglet 'Interface'
-    def listenerOngletInterface()
-        #
-    end
-
-    # Methode qui permet d'aller a l'onglet 'Audio'
-    def listenerOngletAudio()
-        #
-    end
-
-    # Methode.............
-    def listenerRetourArriere()
-        #
-    end
 end
+
+
+maFenetrePrincipale = Fenetre.creer("Titre")
+maFenetrePrincipale.ouvrir()
+
+maFenetreParametre = FenetreParametre.initaliseToi
+maFenetreParametre.afficheToi
+
+
+Gtk.main

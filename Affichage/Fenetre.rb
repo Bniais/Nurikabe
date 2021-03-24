@@ -31,13 +31,19 @@ class Fenetre
 
     # Methode qui permet d'ouvrir la fenetre
     def ouvrir()
-        @application.show_all
+        @application.show_all()
+    end
+
+    # Methode qui permet de quitter l'application
+    def detruire()
+        puts "Fin de l'application"
+        Gtk.main_quit
     end
 
     # Methode qui permet de fermer la fenetre
     def listenerQuitter()
         @application.signal_connect('destroy'){
-            Gtk.main_quit()
+          detruire()
         }
     end
 end

@@ -7,7 +7,14 @@ class FenetreParametre
 
     attr_accessor :view
 
-    def initialize()
+    private_class_method :new
+
+    def FenetreParametre.creer(menuPrincipal)
+        new(menuPrincipal)
+    end
+
+    def initialize(menuPrincipal)
+        @menuPrincipal = menuPrincipal
         @view = creerViewParametre()
         puts "View parametres initialise"
     end
@@ -27,12 +34,17 @@ class FenetreParametre
         setmargin(@btnRetour,20,15,70,70)
         @btnRetour.set_height_request(40)
 
+        @btnRetour.signal_connect("clicked") do
+            @menuPrincipal.changerVue(@menuPrincipal.indexCourant, FenetreMenu::MENU)
+        end
+
         grille.attach(@btnRetour, 0, 0, 1, 1)
 
         textBuff = Gtk::TextBuffer.new()
         textBuff.text = "LES PARAMETRES : A VENIR PROCHAINEMENT"
 
-        textView = Gtk::TextView.new( textBuff )
+        textView = Gtk::TextView.new()
+        textView.set_buffer(textBuff)
         textView.set_editable(false)
         textView.set_wrap_mode(Gtk::WrapMode::WORD)
         textView.set_width_request(700)

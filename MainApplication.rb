@@ -1,7 +1,7 @@
-# load "Affichage/FenetreAPropos.rb"
-# load "Affichage/FenetreMenu.rb"
-# load "Affichage/FenetreParametre.rb"
-# load "Affichage/FenetrePartie.rb"
+load "Affichage/FenetreAPropos.rb"
+load "Affichage/FenetreMenu.rb"
+load "Affichage/FenetreParametre.rb"
+load "Affichage/FenetrePartie.rb"
 
 
 # Classe principale
@@ -15,11 +15,13 @@ class MainApplication
 
     # Methode qui permet d'initialiser le jeu
     def initialiser()
-        # @listeFenetre = []
-        # @listeFenetre << FenetreMenu.creer("Nurikabe") # << = push()
-        # @listeFenetre << FenetreAPropos.creer("Nurikabe")
-        # @listeFenetre << FenetreParametre.creer("Nurikabe")
-        # @listeFenetre << FenetrePartie.creer("Nurikabe")
+        @listeFenetre = []
+        @listeFenetre << FenetreMenu.creer("Nurikabe") # << = push()
+        @listeFenetre << FenetreAPropos.creer("Nurikabe")
+        @listeFenetre << FenetreParametre.creer("Nurikabe")
+        @listeFenetre << FenetrePartie.creer("Nurikabe")
+
+        @listeFenetre[0].afficher()
     end
 
     # Methode qui permet de lancer une partie avec :

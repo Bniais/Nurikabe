@@ -29,7 +29,7 @@ class FenetreMenu < Fenetre
     end
 
     # Methode d'affichage
-    def afficheToi()
+    def afficher()
         # creation de la box principale
         @mainBox = Gtk::Box.new(:vertical, 0)
 
@@ -418,7 +418,7 @@ end
 ##################### CODE DE TEST DE LA CLASSE #####################
 
 fenetreMenu = FenetreMenu.creer("Nurikabe")
-fenetreMenu.afficheToi()
+fenetreMenu.afficher()
 
 
 Gtk.main

@@ -7,8 +7,15 @@ class FenetreAPropos
     attr_accessor :view
     attr_accessor :btnRetour
 
+    private_class_method :new
+
+    def FenetreAPropos.creer(menuPrincipal)
+        new(menuPrincipal)
+    end
+
     # Constructeur de la fenetre A Propos
-    def initialize()
+    def initialize(menuPrincipal)
+        @menuPrincipal = menuPrincipal
         @view = creerViewAPropos()
         puts "View a propos initialise"
     end
@@ -30,6 +37,10 @@ class FenetreAPropos
         setmargin(@btnRetour,20,15,70,70)
         @btnRetour.set_height_request(40)
 
+        @btnRetour.signal_connect("clicked") do
+            @menuPrincipal.changerVue(@menuPrincipal.indexCourant, FenetreMenu::MENU)
+        end
+
         grille.attach(@btnRetour, 0, 0, 1, 1)
 
         textBuff = Gtk::TextBuffer.new()
@@ -39,7 +50,8 @@ class FenetreAPropos
 
         Itaque tum Scaevola cum in eam ipsam mentionem incidisset, exposuit nobis sermonem Laeli de amicitia habitum ab illo secum et cum altero genero, C. Fannio Marci filio, paucis diebus post mortem Africani."
 
-        textView = Gtk::TextView.new( textBuff )
+        textView = Gtk::TextView.new()
+        textView.set_buffer(textBuff)
         textView.set_editable(false)
         textView.set_wrap_mode(Gtk::WrapMode::WORD)
         textView.set_width_request(700)
@@ -81,7 +93,7 @@ end
 # window.set_border_width(10)
 
 # fenetre = FenetreAPropos.creer("A propos")
-# fenetre.afficheToi()
+# fenetre.afficher()
 
 
 # Gtk.main

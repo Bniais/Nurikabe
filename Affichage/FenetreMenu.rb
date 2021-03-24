@@ -11,7 +11,7 @@ Gtk.init
 # Classe qui gere la fenetre du menu
 class FenetreMenu < Fenetre
   attr_reader :indexCourant
-  attr_accessor :views
+  attr_reader :views
 
   # Constantes utilisees pour les changements de vue
   MENU = 0

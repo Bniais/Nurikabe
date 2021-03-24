@@ -1,8 +1,7 @@
 
 # Classe qui gere la fenetre 'A propos'
 class FenetreAPropos
-    attr_accessor :view
-    attr_accessor :btnRetour
+    attr_reader :view
 
     private_class_method :new
 
@@ -23,12 +22,11 @@ class FenetreAPropos
         box = Gtk::Box.new(:vertical, 10)
         box.set_width_request(745)
 
-        # # creation de la grille avec les boutons de modes
         grille = Gtk::Grid.new()
 
         labelBtnRetour = Gtk::Label.new()
         labelBtnRetour.set_markup("<span foreground='#a4a400000000' >Retour</span>");
-        # creation des boutons de mode de jeu
+        # creation du bouton de retour
         @btnRetour = Gtk::Button.new()
         @btnRetour.add(labelBtnRetour)
         setmargin(@btnRetour,20,15,70,70)
@@ -68,13 +66,6 @@ class FenetreAPropos
         return nil
     end
 
-    # Methode qui permet de mettre en gras un label
-    def setBold(btn, nom)
-        label = Gtk::Label.new()
-        label.set_markup("<span weight = 'ultrabold'>"+nom+"</span>")
-        btn.add(label)
-        btn.set_height_request(70)
-    end
 
     # # Methode qui permet de revenir a la fenetre precedente
     # def listenerRetourArriere()
@@ -82,15 +73,3 @@ class FenetreAPropos
     # end
 end
 
-## CODE DE TEST DE LA CLASS
-# window = Gtk::Window.new()
-# window.set_margin(0)
-# window.set_border_width(0)
-# window.set_size_request(740, 715)
-# window.set_border_width(10)
-
-# fenetre = FenetreAPropos.creer("A propos")
-# fenetre.afficher()
-
-
-# Gtk.main

@@ -2,6 +2,7 @@ require './Fenetre.rb'
 require './FenetreParametre.rb'
 require './FenetreAPropos.rb'
 require './FenetreClassement.rb'
+require './FenetrePartie.rb'
 
 class FenetreMenu < Fenetre
 
@@ -37,7 +38,7 @@ class FenetreMenu < Fenetre
           box.add( setmargin(listeBtn.at(x), 0, 15, 70, 70) )
         end
         # gestion des évènements des boutons
-        listeBtn[0].signal_connect('clicked') { puts 'click libre' }
+        listeBtn[0].signal_connect('clicked') { Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
 
         listeBtn[1].signal_connect('clicked') { |btn|
             puts "CONTRE LA MONTRE"; creationHBoxDifficulte(box,2,btn,3,listeBtn[2])

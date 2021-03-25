@@ -1,4 +1,4 @@
-load "Fenetre.rb"
+require "./Fenetre.rb"
 
 # TAMPORAIRE EN ATTENDANT LA CLASS CELL
 ## TAMPORAIRE EN ATTENDANT LA CLASS CELL
@@ -43,77 +43,46 @@ class Cell < Gtk::Button
 
 end
 
-# Classe qui gere la fenetre pendant la partie
+
+
+
+# Classe qui gere la fenetre 'A propos'
 class FenetrePartie < Fenetre
 
-    
-    # grille de la partie actuelle
-    attr_accessor :grille
-    # ensembles des sons (effets sonores) de la partie
-    attr_accessor :son
-    # parametres personnalises par l'utilisateur
-    attr_accessor :parametre
-
-
-    # Methode qui permet de creer une nouvelle partie
-    def creer()
-         # creation de la frame principale
-         @mainFrame = Gtk::Box.new(:vertical)
-
-         # ajout des elements
-         @gameGrid = nil
-         @mainFrame.add(creeToolbar)
-         @mainFrame.add(creeNomGrille)
-         @mainFrame.add(creeGrille)
-         
-         # ajout de l'element a la fenetre
-         @application.add(@mainFrame)
-         self.ouvrir()
+    def initialize() 
+        self
     end
 
-
-
-
-    # Methode qui permet d'initialiser la grille de la fenetre
-    def initialize(title)
-        super(title)
+    def self.afficheToi( lastView )
+        Fenetre.set_subtitle("Partie")
+        Fenetre.add( FenetrePartie.new().creationInterface( lastView ) )
+        Fenetre.show_all
+        return self
     end
 
+    def creationInterface( lastView )
 
+        box = Gtk::Box.new(:vertical)
+       
+        #TOOLBAR
+        box.add(creeToolbar)#ADD
 
+        ## Nom de la grille
+        nomGrille = Gtk::Label.new()
+        nomGrille.set_markup("<span size='30000' > Grille #</span>")
+        nomGrille.set_margin_top(15)
+        nomGrille.set_margin_bottom(15)
+        box.add(nomGrille)#ADD
 
+        #GRILLE
+        box.add(creeGrille)#ADD
 
-    #Methode qui permet de cree un bouton 
-    #qui sera dans la toolbar
-    def creeBouttonToolbar(iconName)
-        btn = Gtk::Button.new()
-        image = Gtk::Image.new(:icon_name => iconName, :size => :LARGE_TOOLBAR) 
-        btn.add(image) 
-        btn.set_margin_left(5); btn.set_margin_right(5);
-        btn.name = "btn-toolbar" # BTN STYLE
-        return btn
+        return box
     end
-    private :creeBouttonToolbar
-
-
-
-
-
-    #Methode qui permet de cree un separateur 
-    #qui sera dans la toolbar
-    def creerSeparatorToolbar()
-        monSeparateur = Gtk::Separator.new(:horizontal)
-        monSeparateur.set_margin_left(5);monSeparateur.set_margin_right(5);monSeparateur.set_margin_top(10);monSeparateur.set_margin_bottom(10)
-        return monSeparateur
-    end
-    private :creerSeparatorToolbar
-
-
-
-
 
     # Methode qui permet de cree
     # la toolbar
+    private
     def creeToolbar()
         # BOX HORIZONTAL
         mainToolbar = Gtk::Box.new(:vertical, 0)
@@ -123,7 +92,7 @@ class FenetrePartie < Fenetre
 
         # creation des boutons de mode de jeu
         btnNewFile = creeBouttonToolbar("document-new");   btnSave = creeBouttonToolbar("document-save")
-        btnPrint = creeBouttonToolbar("document-print");   btnSetting = creeBouttonToolbar("document-properties")
+        btnSetting = creeBouttonToolbar("document-properties")
         btnUndo = creeBouttonToolbar("undo");              btnRedo = creeBouttonToolbar("redo")
         btnPlay = creeBouttonToolbar("player_play");       btnPause = creeBouttonToolbar("player_pause")
         btnHelp = creeBouttonToolbar("hint");              btnInfo = creeBouttonToolbar("help-contents")
@@ -131,78 +100,29 @@ class FenetrePartie < Fenetre
         btnQuit = creeBouttonToolbar("gtk-quit")
         
         #Gestion des evenemeents
-        btnNewFile.signal_connect("clicked") do
-            puts "click NewFile"
-        end
-        btnSave.signal_connect("clicked") do
-            puts "click Save"
-        end
-
-        btnPrint.signal_connect("clicked") do
-            puts "click Print"
-            # DARK MODE
-            if @count == nil
-                @count = 0
-            end
-            @count = @count + 1;
-            provider = Gtk::CssProvider.new
-            if( @count%2 != 0 )
-                provider.load(path: "style_dark.css")
-            else 
-                provider.load(path: "style.css")   
-            end
-            Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
-        end
-
-        btnSetting.signal_connect("clicked") do
-            puts "click Setting"
-        end
-
-        btnUndo.signal_connect("clicked") do
-            puts "click Undo"
-        end
-
-        btnRedo.signal_connect("clicked") do
-            puts "click Redo"
-        end
-
-        btnPlay.signal_connect("clicked") do
-            puts "click Play"
-        end
-
-        btnPause.signal_connect("clicked") do
-            puts "click Pause"
-        end
-
-        btnHelp.signal_connect("clicked") do
-            puts "click Help"
-        end
-
-        btnInfo.signal_connect("clicked") do
-            puts "click Info"
-        end
-
-        btnClear.signal_connect("clicked") do
+        btnNewFile.signal_connect("clicked"){puts "click NewFile"}
+        btnSave.signal_connect("clicked")   {puts "click Save"}
+        btnSetting.signal_connect("clicked"){ Fenetre.deleteChildren; FenetreParametre.afficheToi( FenetrePartie )  }
+        btnUndo.signal_connect("clicked")   {puts "click Undo"}
+        btnRedo.signal_connect("clicked")   {puts "click Redo"}
+        btnPlay.signal_connect("clicked")   {puts "click Play"}
+        btnPause.signal_connect("clicked")  {puts "click Pause"}
+        btnHelp.signal_connect("clicked")   { puts "click Help"}
+        btnInfo.signal_connect("clicked")   { puts "click Info" }
+        btnClear.signal_connect("clicked")  { 
             puts "click Clear"
             tab = @gameGrid.children
             for i in 0...tab.length
                 tab.at(i).resetCell
             end
-        end
-
-        btnVerif.signal_connect("clicked") do
-            puts "click Verif"
-        end
-
-        btnQuit.signal_connect("clicked") do
-            puts "click Quit"
-            Gtk.main_quit
-        end
+        }
+        btnVerif.signal_connect("clicked")  {puts "click Verif"}
+        btnQuit.signal_connect("clicked")   { Fenetre.deleteChildren; FenetreMenu.afficheToi( FenetrePartie ) }
 
   
         # attachement des boutons de mode de jeu
         box.add(btnNewFile);    box.add(btnSave)
-        box.add(btnPrint);      box.add(creerSeparatorToolbar)  # SEPARATOR
+        box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(btnSetting);    box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(btnUndo);       box.add(btnRedo)
         box.add(creerSeparatorToolbar)  # SEPARATOR
@@ -217,25 +137,8 @@ class FenetrePartie < Fenetre
         mainToolbar.add( Gtk::Separator.new(:horizontal) )
         return mainToolbar
     end
-    
-    
-    
-    
-    # Methode qui permet de cree le
-    # nom de la grille
-    def creeNomGrille()
-        nomGrille = Gtk::Label.new()
-        nomGrille.set_markup("<span size='30000' > Grille #</span>")
-        nomGrille.set_margin_top(15)
-        nomGrille.set_margin_bottom(15)
-        return nomGrille
-    end
-    private :creeNomGrille
-    
-    
-    
-    
-    # Methode qui permet de cree
+
+       # Methode qui permet de cree
     # une cellule destiner a la grille
     def creeCelluleGrille(line,colonne)
         btn = Cell.new(:label => line.to_s)
@@ -252,9 +155,7 @@ class FenetrePartie < Fenetre
     end
     private :creeCelluleGrille
 
-
-
-
+    ## METHODE QUI CREE UNE GRILLE
     def creeGrille()
         tmpGrilleSize = 10
 
@@ -282,6 +183,43 @@ class FenetrePartie < Fenetre
         return maFrame
     end
 
+    private
+    def setmargin( obj , top, bottom, left, right)
+        obj.set_margin_top(top)
+        obj.set_margin_bottom(bottom)
+        obj.set_margin_left(left)
+        obj.set_margin_right(right)
+        return nil
+    end
+
+    #Methode qui permet de cree un bouton 
+    #qui sera dans la toolbar
+    private
+    def creeBouttonToolbar(iconName)
+        btn = Gtk::Button.new()
+        image = Gtk::Image.new(:icon_name => iconName, :size => :LARGE_TOOLBAR) 
+        btn.add(image) 
+        btn.set_margin_left(5); btn.set_margin_right(5);
+        btn.name = "btn-toolbar" # BTN STYLE
+        return btn
+    end
+
+    #Methode qui permet de cree un separateur 
+    #qui sera dans la toolbar
+    private
+    def creerSeparatorToolbar()
+        monSeparateur = Gtk::Separator.new(:horizontal)
+        monSeparateur.set_margin_left(5);monSeparateur.set_margin_right(5);monSeparateur.set_margin_top(10);monSeparateur.set_margin_bottom(10)
+        return monSeparateur
+    end
+
+end
+
+
+=begin
+
+# Classe qui gere la fenetre pendant la partie
+class FenetrePartie < Fenetre
 
     # Methode qui permet de mettre a jour le chrono
     def rafraichirTemps()   
@@ -341,3 +279,5 @@ fenetrePartie.creer()
 
 
 Gtk.main
+
+=end

@@ -2,15 +2,15 @@ require './Fenetre.rb'
 
 
 # Classe qui gere la fenetre 'A propos'
-class FenetreAPropos < Fenetre
+class FenetreClassement < Fenetre
 
     def initialize() 
         self
     end
 
     def self.afficheToi( lastView )
-        Fenetre.set_subtitle("A Propos")
-        Fenetre.add( FenetreAPropos.new().creationInterface( lastView ) )
+        Fenetre.set_subtitle("Classement")
+        Fenetre.add( FenetreClassement.new().creationInterface( lastView ) )
         Fenetre.show_all
         return self
     end

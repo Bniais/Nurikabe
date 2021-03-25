@@ -5,23 +5,27 @@ require 'gtk3'
 class Fenetre
 
     @@window = nil 
+    @@modeSombre = false
+    @@cssProviderDarkMode = Gtk::CssProvider.new; @@cssProviderDarkMode.load(path: "style_dark.css")
 
     ## METHODE D'INITIALISATION
     private
     def initialize()
         @@window = Gtk::Window.new()
         @@window.set_default_size(745,850);     @@window.set_width_request(745);    @@window.set_height_request(850);   @@window.set_resizable(false) #WINDOW PARAMS
-        @@window.signal_connect("destroy") { Gtk.main_quit } ## EXIT SIGNAL     #@@window.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
+        @@window.signal_connect("destroy") { Fenetre.exit } ## EXIT SIGNAL     
+        @@window.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
 
         @@header = Gtk::HeaderBar.new
         @@header.show_close_button = true;      @@header.name = "headerbar" #FOR CSS
         @@header.title = "Nurikabe"     ;       @@header.subtitle = "-"
         @@window.titlebar = @@header #ADD HEADER
 
-        #LOAD CSS
         provider = Gtk::CssProvider.new
         provider.load(path: "style.css")
         Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
+
+        Fenetre.set_modeSombre(@@modeSombre)
     end
 
     ## INITALISE UNE SEUL FOIS UNE FENETRE
@@ -69,6 +73,26 @@ class Fenetre
                 @@window.remove( childs.at(0) )
             end
         end
+    end
+
+    def self.set_modeSombre(statut)
+        @@modeSombre = statut
+        provider = Gtk::CssProvider.new
+        if statut 
+            Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderDarkMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
+        else
+            Gtk::StyleContext.remove_provider_for_screen(Gdk::Screen.default,@@cssProviderDarkMode)
+        end
+    end
+
+    def self.modeSombre?
+        return @@modeSombre
+    end
+
+    ## SE QUITTER
+    def self.exit()
+        # FAIRE DES TRUCS 
+        Gtk.main_quit
     end
 
 =begin

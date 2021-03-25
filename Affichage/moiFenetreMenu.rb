@@ -1,5 +1,7 @@
 require './Fenetre.rb'
 require './FenetreParametre.rb'
+require './FenetreAPropos.rb'
+require './FenetreClassement.rb'
 
 class FenetreMenu < Fenetre
 
@@ -36,8 +38,13 @@ class FenetreMenu < Fenetre
         end
         # gestion des évènements des boutons
         listeBtn[0].signal_connect('clicked') { puts 'click libre' }
-        listeBtn[1].signal_connect('clicked') { puts 'click contre-la-montre' }
-        listeBtn[2].signal_connect('clicked') { puts 'click survie' }
+
+        listeBtn[1].signal_connect('clicked') { |btn|
+            puts "CONTRE LA MONTRE"; creationHBoxDifficulte(box,2,btn,3,listeBtn[2])
+        }
+        listeBtn[2].signal_connect('clicked') { |btn|
+            puts "SURVI"; creationHBoxDifficulte(box,3,btn,2,listeBtn[1])    
+        }
         listeBtn[3].signal_connect('clicked') { puts 'click tuto' }
     
         # AJOUT SEPARATEUR
@@ -47,6 +54,7 @@ class FenetreMenu < Fenetre
         # ajout des boutons du bas
         btnClassement = Gtk::Button.new(label: 'Classement')
         btnClassement.set_height_request(60)
+        btnClassement.signal_connect('clicked') { Fenetre.remove(box); FenetreClassement.afficheToi( FenetreMenu ) }
         box.add( setmargin(btnClassement, 15, 15, 70, 70) ) #ADD
 
         # AJOUT SEPARATEUR
@@ -58,18 +66,21 @@ class FenetreMenu < Fenetre
         hBox.set_homogeneous(true)
 
         btnParam = Gtk::Button.new(label: 'Paramètres')
+        setmargin(btnParam,0,0,0,5 )
         btnParam.set_height_request(60)
         btnParam.signal_connect('clicked') { Fenetre.remove(box); FenetreParametre.afficheToi( FenetreMenu ) }
         hBox.add(btnParam)#ADD
 
         btnAPropos = Gtk::Button.new(label: 'A propos')
+        setmargin(btnAPropos,0,0,0,5 )
+        btnAPropos.signal_connect('clicked') { Fenetre.remove(box); FenetreAPropos.afficheToi( FenetreMenu ) }
         hBox.add(btnAPropos)#ADD
 
         labelBtnQuit = Gtk::Label.new
         labelBtnQuit.set_markup("<span foreground='#a4a400000000' >Quitter</span>")
-        
         btnQuit = Gtk::Button.new
         btnQuit.add(labelBtnQuit)
+        btnQuit.signal_connect("clicked") { Fenetre.exit }
         hBox.add(btnQuit)#ADD
 
         box.add( setmargin(hBox, 15, 0, 70, 70) ) #ADD
@@ -96,6 +107,34 @@ class FenetreMenu < Fenetre
     end
 
 
+    def creationHBoxDifficulte( box, position , remove , positionOtherDifficulty , btnOtherMode )
+
+        if box.children[positionOtherDifficulty] != btnOtherMode
+            box.remove( box.children[positionOtherDifficulty] )
+            box.add(btnOtherMode)
+            box.reorder_child(btnOtherMode, positionOtherDifficulty)
+        end
+
+        box.remove(remove) #DELETE
+
+        hBox = Gtk::Box.new(:horizontal)
+        hBox.set_height_request(70); hBox.set_homogeneous(true)
+        hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
+        hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
+        hBox.add ( Gtk::Button.new() )
+
+        hBox.children[0].signal_connect("clicked"){ puts "FACILE" }
+        hBox.children[1].signal_connect("clicked"){ puts "MOYEN" }
+        hBox.children[2].signal_connect("clicked"){ puts "DIFFICLE" }
+
+        setBold( hBox.children[0] , "FACILE" )
+        setBold( hBox.children[1] , "MOYEN" )
+        setBold( hBox.children[2] , "DIFFICLE" )
+
+        box.add( setmargin(hBox,0,15,70,70) ) #ADD
+        box.reorder_child( hBox , position  ) #REORDER
+        Fenetre.show_all
+    end
 end
 
 FenetreMenu.afficheToi( FenetreMenu )

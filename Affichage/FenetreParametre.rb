@@ -10,8 +10,6 @@ class FenetreParametre < Fenetre
     end
 
     def self.afficheToi( lastView )
-
-
         Fenetre.set_subtitle("Parametre")
         Fenetre.add( FenetreParametre.new().creationInterface( lastView ) )
         Fenetre.show_all
@@ -191,13 +189,9 @@ class FenetreParametre < Fenetre
     # MODE SOMBRE
     private
     def switchModeSombre(s)
-        provider = Gtk::CssProvider.new
-        if s.active? 
-            provider.load(path: "style_dark.css")
-        else
-            provider.load(path: "style.css") 
-        end
-        Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
+        puts "here"
+        Fenetre.set_modeSombre(s.active?)
+        puts "switch"
     end
 
     ###### AUDIO 

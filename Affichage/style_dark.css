@@ -22,3 +22,14 @@ separator {
     background-color: rgb(136, 136, 136);
     opacity: 0.3;
 }
+
+button {
+    background: rgb(34, 34, 34);
+    border-color:  rgb(34, 34, 34);
+}
+
+button:hover {
+    background: rgb(22, 22, 22);
+    border-color:  rgb(22, 22, 22);
+    box-shadow: 0px 0px 5px 0.8px rgb(22, 22, 22);
+}

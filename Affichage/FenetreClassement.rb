@@ -35,7 +35,10 @@ class FenetreClassement < Fenetre
         # VUE PRINCIPAL
         # EDIT HERE
         # ADD CONTENT HERE IN BOX
-
+        bestscore = Gtk::Label.new()
+        bestscore.set_markup("<span weight = 'ultrabold' size = '10000' >Meilleur score: </span>")
+        
+        
         return box
     end
 

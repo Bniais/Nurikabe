@@ -1,15 +1,15 @@
 require './Fenetre.rb'
 
-
 class FenetreParametre < Fenetre
 
-
+    @@instanceParametre = nil
     
     def initialize() 
         self
     end
 
     def self.afficheToi( lastView )
+        @@instanceParametre = Parametre.getInstance()
         Fenetre.set_subtitle("Parametre")
         Fenetre.add( FenetreParametre.new().creationInterface( lastView ) )
         Fenetre.show_all
@@ -98,25 +98,29 @@ class FenetreParametre < Fenetre
         # AIDE CASES GRISES
         switch = Gtk::Switch.new()
         switch.halign = :start
-        switch.signal_connect('notify::active') { |s| switchAideCasesGrises(s) }
+        switch.set_active( @@instanceParametre.casesGrises? )
+        switch.signal_connect('notify::active') { |s| @@instanceParametre.set_casesGrises(s.active?) }
         box.add( creationBoxVerticalPourVue("Cases grises :" , switch) ) #ADD
         
         # AIDE COMPTEUR D'ILOT
         switch = Gtk::Switch.new()
         switch.halign = :start
-        switch.signal_connect('notify::active') { |s| switchAideCompteurIlot(s) }
+        switch.set_active( @@instanceParametre.compteurIlots? )
+        switch.signal_connect('notify::active') { |s|  @@instanceParametre.set_compteurIlots(s.active?) }
         box.add( creationBoxVerticalPourVue("Compteur d'ilot :" , switch) ) #ADD
 
         # AIDE AFFICHAGE PORTEE
         switch = Gtk::Switch.new()
         switch.halign = :start
-        switch.signal_connect('notify::active') { |s| switchAideAffichagePortee(s) }
+        switch.set_active( @@instanceParametre.affichagePortee? )
+        switch.signal_connect('notify::active') { |s| @@instanceParametre.set_affichagePortee(s.active?) }
         box.add( creationBoxVerticalPourVue("Affichage portee :" , switch) ) #ADD
 
         # AIDE MURS 2x2
         switch = Gtk::Switch.new()
         switch.halign = :start
-        switch.signal_connect('notify::active') { |s| switchAideMurs2x2(s) }
+        switch.set_active( @@instanceParametre.mur2x2? )
+        switch.signal_connect('notify::active') { |s| @@instanceParametre.set_mur2x2(s.active?) }
         box.add( creationBoxVerticalPourVue("Murs 2x2 :" , switch) ) #ADD
         return box
     end
@@ -166,9 +170,9 @@ class FenetreParametre < Fenetre
 
         # DARK MORD
         switch = Gtk::Switch.new()
-        switch.set_active( Fenetre.modeSombre? )
         switch.halign = :start
-        switch.signal_connect('notify::active') { |s| switchModeSombre(s) }
+        switch.set_active( @@instanceParametre.modeSombre? )
+        switch.signal_connect('notify::active') { |s| @@instanceParametre.set_modeSombre(s.active?) }
         box.add( creationBoxVerticalPourVue("Mode sombre :" , switch) ) #ADD
 
         # CHOOSE LANGUE

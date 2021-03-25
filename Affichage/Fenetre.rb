@@ -1,11 +1,11 @@
 require 'gtk3'
+require './../Parametres/Parametre.rb'
 
 # Classe abstraite qui gere l'interface
 # DESIGN PATTERN SINGLETON
 class Fenetre
 
     @@window = nil 
-    @@modeSombre = false
     @@cssProviderDarkMode = Gtk::CssProvider.new; @@cssProviderDarkMode.load(path: "style_dark.css")
 
     ## METHODE D'INITIALISATION
@@ -24,12 +24,12 @@ class Fenetre
         provider = Gtk::CssProvider.new
         provider.load(path: "style.css")
         Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
-
-        Fenetre.set_modeSombre(@@modeSombre)
+        Parametre.initialiseToi
+        Fenetre.set_modeSombre(Parametre.getInstance.modeSombre?)
     end
 
     ## INITALISE UNE SEUL FOIS UNE FENETRE
-    def self.initaliseToi()
+    def self.initialiseToi()
         puts @@window
         if @@window == nil 
             new()
@@ -76,17 +76,12 @@ class Fenetre
     end
 
     def self.set_modeSombre(statut)
-        @@modeSombre = statut
         provider = Gtk::CssProvider.new
         if statut 
             Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderDarkMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
         else
             Gtk::StyleContext.remove_provider_for_screen(Gdk::Screen.default,@@cssProviderDarkMode)
         end
-    end
-
-    def self.modeSombre?
-        return @@modeSombre
     end
 
     ## SE QUITTER
@@ -142,4 +137,5 @@ class Fenetre
 end
 
 ################## INITALISATION DE LA FENETRE ###################################
-Fenetre.initaliseToi()
+Fenetre.initialiseToi()
+Parametre.initialiseToi()

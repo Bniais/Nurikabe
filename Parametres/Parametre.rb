@@ -22,25 +22,74 @@ class Parametre
     # volume
     attr_accessor :volume
 
+    @@instanceParametre = nil
+
+    def initialize()
+        @casesGrises = false
+        @compteurIlot = false
+        @affichagePortee = false
+        @murs2x2 = false
+        @modeSombre = true
+    end
+
+    def self.initialiseToi()
+        if @@instanceParametre == nil 
+            @@instanceParametre = new()
+        else
+            puts "Parametre allready initalize"
+        end
+    end
+
+    def self.getInstance()
+        return @@instanceParametre
+    end
 
     # Methode qui permet de savoir si l'option des cases grises est activee ou pas
     def casesGrises?()
-        # return un booleen
+        return @casesGrises
+    end
+    # Methode qui permet de set le parametre case grise
+    def set_casesGrises(statut)
+        puts statut
+        @casesGrises = statut
     end
 
     # Methode qui permet de savoir si l'aide visuelle 'compteur ilots' est activee
     def compteurIlots?()
-        # return un booleen
+        return @compteurIlot
+    end
+    # Methode qui permet de set le parametre compteur ilots
+    def set_compteurIlots(statut)
+        @compteurIlot = statut
     end
 
     # Methode qui permet de savoir si l'aide visuelle 'afficher portee' est activee
     def affichagePortee?()
-        # return un booleen
+        return @affichagePortee
+    end
+    # Methode qui permet de set le parametre affichage portee
+    def set_affichagePortee(statut)
+        @affichagePortee = statut
     end
 
     # Methode qui permet de savoir si l'aide visuelle 'afficher les murs 2x2' est activee
     def mur2x2?()
-        # return un booleen
+        return @murs2x2
+    end
+    # Methode qui permet de set le parametre murs 2x2
+    def set_mur2x2(statut)
+        puts "je suis la"
+        @murs2x2 = statut
+    end
+
+    # Methode qui permet de savoir si
+    def modeSombre?()
+        return @modeSombre
+    end
+    # Methode qui permet de set le mode sombre
+    def set_modeSombre(statut)
+        @modeSombre = statut
+        Fenetre.set_modeSombre(@modeSombre)
     end
 
     # Methode qui permet de connaitre le comportement de la souris

@@ -5,7 +5,7 @@ window {
     transition-duration: 0.5s
 }
 
-* {
+*:not(separator) {
     color: rgb(156, 156, 156);
     transition-duration: 0.5s
 }
@@ -20,4 +20,5 @@ window {
 
 separator {
     background-color: rgb(136, 136, 136);
+    opacity: 0.3;
 }

@@ -2,29 +2,32 @@ require './Fenetre.rb'
 
 class FenetreParametre < Fenetre
 
+    @@lastView = nil
 
-    def initialize()
+    
+    def initialize() 
         self
     end
 
-    def self.initaliseToi()
-        new()
-    end
+    def self.afficheToi( lastView )
+        @@lastView = lastView
 
-    def afficheToi()
-        Fenetre.deleteChildren
-        Fenetre.add( creationInterface )
+        Fenetre.set_subtitle("Parametre")
+        Fenetre.add( FenetreParametre.new().creationInterface( @@lastView ) )
         Fenetre.show_all
         return self
     end
 
-    def creationInterface()
+    
+    def creationInterface( lastView )
         box = Gtk::Box.new(:vertical)
 
         # BACK BUTTON
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => "BACK")
+        btnBack.signal_connect("clicked") { @@window.remove(box) ; @@lastView.afficheToi( nil ) ; @@lastView = nil }
+        @@lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
         box.add(btnBoxH) #ADD
@@ -38,6 +41,7 @@ class FenetreParametre < Fenetre
         return box
     end
 
+    private
     def creationStack
         box = Gtk::Box.new(:horizontal)
         sidebar = Gtk::StackSidebar.new
@@ -84,6 +88,7 @@ class FenetreParametre < Fenetre
     end
 
     ###### JEU 
+    private
     def creationVueJeu
         box = Gtk::Box.new(:vertical)
         title = Gtk::Label.new()
@@ -119,23 +124,28 @@ class FenetreParametre < Fenetre
     end
     ### SIGNAL CONNECTS DE JEU
     # AIDE CASES GRISES
+    private
     def switchAideCasesGrises(s)
         puts s
     end 
     # AIDE COMPTEUR ILOT
+    private
     def switchAideCompteurIlot(s)
         puts s
     end 
     # AIDE AFFICHAGE PORTEE
+    private
     def switchAideAffichagePortee(s)
         puts s
     end 
     # AIDE MURS 2x2
+    private
     def switchAideMurs2x2(s)
         puts s
     end 
 
     ###### UTILISATEUR 
+    private
     def creationVueUtilisateur
         box = Gtk::Box.new(:vertical)
         title = Gtk::Label.new()
@@ -147,6 +157,7 @@ class FenetreParametre < Fenetre
     ### SIGNAL CONNECTS DE UTILISATEUR
 
     ###### INTERFACE 
+    private
     def creationVueInterface
         box = Gtk::Box.new(:vertical)
         title = Gtk::Label.new()
@@ -178,6 +189,7 @@ class FenetreParametre < Fenetre
     end
     ### SIGNAL CONNECTS DE INTERFACE
     # MODE SOMBRE
+    private
     def switchModeSombre(s)
         provider = Gtk::CssProvider.new
         if s.active? 
@@ -189,6 +201,7 @@ class FenetreParametre < Fenetre
     end
 
     ###### AUDIO 
+    private
     def creationVueAudio
         box = Gtk::Box.new(:vertical)
         title = Gtk::Label.new()
@@ -203,6 +216,7 @@ class FenetreParametre < Fenetre
 
 
     # Permet de creer un element nom + objet
+    private
     def creationBoxVerticalPourVue( title, obj )
         box = Gtk::Box.new(:horizontal,20)
         box.set_homogeneous(true)
@@ -214,6 +228,7 @@ class FenetreParametre < Fenetre
         return box
     end
 
+    private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)
         obj.set_margin_bottom(bottom)
@@ -226,12 +241,7 @@ end
 
 
 Fenetre.initaliseToi()
-
-maFenetreParametre = FenetreParametre.initaliseToi
-maFenetreParametre.afficheToi
-Fenetre.set_subtitle("Parametre")
-
-
+FenetreParametre.afficheToi( FenetreParametre )
 Fenetre.show_all()
 
 Gtk.main

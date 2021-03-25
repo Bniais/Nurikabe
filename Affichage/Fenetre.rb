@@ -16,7 +16,11 @@ class Fenetre
         @@header.show_close_button = true;      @@header.name = "headerbar" #FOR CSS
         @@header.title = "Nurikabe"     ;       @@header.subtitle = "-"
         @@window.titlebar = @@header #ADD HEADER
-        puts "Initalisation terminer"
+
+        #LOAD CSS
+        provider = Gtk::CssProvider.new
+        provider.load(path: "style.css")
+        Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
     end
 
     ## INITALISE UNE SEUL FOIS UNE FENETRE
@@ -48,6 +52,13 @@ class Fenetre
     def self.add(obj)
         @@window.add(obj)
     end
+
+    ## SUPPRIMER UN ELEMENT A LE FENETRE
+    def self.remove(obj)
+        @@window.remove(obj)
+    end
+
+    
 
     ## DELETE ALL CHILD EXCEPT HEADERBAR
     def self.deleteChildren()

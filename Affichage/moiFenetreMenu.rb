@@ -46,7 +46,7 @@ class FenetreMenu < Fenetre
         listeBtn[2].signal_connect('clicked') { |btn|
             puts "SURVI"; creationHBoxDifficulte(box,3,btn,2,listeBtn[1])    
         }
-        listeBtn[3].signal_connect('clicked') { puts 'click tuto' }
+        listeBtn[3].signal_connect('clicked') { Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
     
         # AJOUT SEPARATEUR
         separateur = Gtk::Separator.new(:horizontal)  
@@ -124,9 +124,9 @@ class FenetreMenu < Fenetre
         hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
         hBox.add ( Gtk::Button.new() )
 
-        hBox.children[0].signal_connect("clicked"){ puts "FACILE" }
-        hBox.children[1].signal_connect("clicked"){ puts "MOYEN" }
-        hBox.children[2].signal_connect("clicked"){ puts "DIFFICLE" }
+        hBox.children[0].signal_connect("clicked"){ Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
+        hBox.children[1].signal_connect("clicked"){ Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
+        hBox.children[2].signal_connect("clicked"){ Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
 
         setBold( hBox.children[0] , "FACILE" )
         setBold( hBox.children[1] , "MOYEN" )

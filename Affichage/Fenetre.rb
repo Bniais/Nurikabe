@@ -9,7 +9,7 @@ class Fenetre
     private
     def initialize()
         @@window = Gtk::Window.new()
-        @@window.set_default_size(745,671);     @@window.set_width_request(745);    @@window.set_height_request(790);   @@window.set_resizable(false) #WINDOW PARAMS
+        @@window.set_default_size(745,850);     @@window.set_width_request(745);    @@window.set_height_request(850);   @@window.set_resizable(false) #WINDOW PARAMS
         @@window.signal_connect("destroy") { Gtk.main_quit } ## EXIT SIGNAL     #@@window.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
 
         @@header = Gtk::HeaderBar.new
@@ -118,5 +118,5 @@ end
 
 
 
-#####################################################
-
+################## INITALISATION DE LA FENETRE ###################################
+Fenetre.initaliseToi()

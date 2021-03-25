@@ -1,5 +1,6 @@
 require './Fenetre.rb'
 
+
 class FenetreParametre < Fenetre
 
     @@lastView = nil
@@ -26,7 +27,7 @@ class FenetreParametre < Fenetre
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => "BACK")
-        btnBack.signal_connect("clicked") { @@window.remove(box) ; @@lastView.afficheToi( nil ) ; @@lastView = nil }
+        btnBack.signal_connect("clicked") { Fenetre.remove(box) ; @@lastView.afficheToi( nil ) ; @@lastView = nil }
         @@lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
@@ -46,7 +47,7 @@ class FenetreParametre < Fenetre
         box = Gtk::Box.new(:horizontal)
         sidebar = Gtk::StackSidebar.new
         sidebar.set_width_request(160)
-        sidebar.set_height_request(650)
+        sidebar.set_height_request(705)
         sidebar.name = "sidebar"
         box.pack_start(sidebar, :expand => false, :fill => false, :padding => 0)
 
@@ -239,9 +240,9 @@ class FenetreParametre < Fenetre
 
 end
 
-
-Fenetre.initaliseToi()
-FenetreParametre.afficheToi( FenetreParametre )
+=begin
+FenetreParametre.afficheToi( FenetreParame tre )
 Fenetre.show_all()
 
 Gtk.main
+=end

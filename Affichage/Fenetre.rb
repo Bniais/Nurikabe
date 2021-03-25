@@ -64,14 +64,14 @@ class Fenetre
     end
 
     
-
     ## DELETE ALL CHILD EXCEPT HEADERBAR
     def self.deleteChildren()
-        childs = @@window.children
-        for i in 0...childs.length
-            if childs.at(0) != @@window.titlebar 
-                @@window.remove( childs.at(0) )
+        i = 0
+        while @@window.children.length > 1
+            if( @@window.children[i] == @@window.titlebar )
+                i += 1
             end
+            @@window.remove( @@window.children[i] )
         end
     end
 

@@ -12,8 +12,9 @@ class FenetreParametre < Fenetre
     end
 
     def afficheToi()
-        @@window.add( creationInterface )
-        @@window.show_all
+        Fenetre.deleteChildren
+        Fenetre.add( creationInterface )
+        Fenetre.show_all
         return self
     end
 
@@ -224,11 +225,13 @@ class FenetreParametre < Fenetre
 end
 
 
-maFenetrePrincipale = Fenetre.creer("Titre")
-maFenetrePrincipale.ouvrir()
+Fenetre.initaliseToi()
 
 maFenetreParametre = FenetreParametre.initaliseToi
 maFenetreParametre.afficheToi
+Fenetre.set_subtitle("Parametre")
 
+
+Fenetre.show_all()
 
 Gtk.main

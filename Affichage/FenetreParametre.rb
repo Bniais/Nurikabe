@@ -3,7 +3,6 @@ require './Fenetre.rb'
 
 class FenetreParametre < Fenetre
 
-    @@lastView = nil
 
     
     def initialize() 
@@ -11,24 +10,24 @@ class FenetreParametre < Fenetre
     end
 
     def self.afficheToi( lastView )
-        @@lastView = lastView
+
 
         Fenetre.set_subtitle("Parametre")
-        Fenetre.add( FenetreParametre.new().creationInterface( @@lastView ) )
+        Fenetre.add( FenetreParametre.new().creationInterface( lastView ) )
         Fenetre.show_all
         return self
     end
 
     
-    def creationInterface( lastView )
+    def creationInterface( lastView)
         box = Gtk::Box.new(:vertical)
 
         # BACK BUTTON
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => "BACK")
-        btnBack.signal_connect("clicked") { Fenetre.remove(box) ; @@lastView.afficheToi( nil ) ; @@lastView = nil }
-        @@lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
+        btnBack.signal_connect("clicked") { Fenetre.remove(box) ; lastView.afficheToi( nil ) ; }
+        lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
         box.add(btnBoxH) #ADD

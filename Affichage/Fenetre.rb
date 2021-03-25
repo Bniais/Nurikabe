@@ -1,6 +1,7 @@
 require 'gtk3'
 
 # Classe abstraite qui gere l'interface
+# DESIGN PATTERN SINGLETON
 class Fenetre
 
     @@window = nil 
@@ -115,8 +116,6 @@ class Fenetre
 =end
 
 end
-
-
 
 ################## INITALISATION DE LA FENETRE ###################################
 Fenetre.initaliseToi()

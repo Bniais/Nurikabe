@@ -166,6 +166,7 @@ class FenetreParametre < Fenetre
 
         # DARK MORD
         switch = Gtk::Switch.new()
+        switch.set_active( Fenetre.modeSombre? )
         switch.halign = :start
         switch.signal_connect('notify::active') { |s| switchModeSombre(s) }
         box.add( creationBoxVerticalPourVue("Mode sombre :" , switch) ) #ADD

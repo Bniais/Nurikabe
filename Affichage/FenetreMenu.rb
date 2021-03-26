@@ -77,12 +77,11 @@ class FenetreMenu < Fenetre
         btnAPropos.signal_connect('clicked') { Fenetre.remove(box); FenetreAPropos.afficheToi( FenetreMenu ) }
         hBox.add(btnAPropos)#ADD
 
-        labelBtnQuit = Gtk::Label.new
-        labelBtnQuit.set_markup("<span foreground='#a4a400000000' >Quitter</span>")
-        btnQuit = Gtk::Button.new
-        btnQuit.add(labelBtnQuit)
-        btnQuit.signal_connect("clicked") { Fenetre.exit }
-        hBox.add(btnQuit)#ADD
+        btnQuitter = Gtk::Button.new(label: 'Quitter')
+        btnQuitter.name = "btnQuitter"
+        setmargin(btnQuitter,0,0,0,5 )
+        btnQuitter.signal_connect("clicked") { Fenetre.exit }
+        hBox.add(btnQuitter)#ADD
 
         box.add( setmargin(hBox, 15, 0, 70, 70) ) #ADD
 

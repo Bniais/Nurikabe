@@ -29,11 +29,21 @@ separator {
     border-width: 1px;
     border-color: black;
     border-radius: 0px;
-    color: rgb(49, 49, 49);
+    color: rgb(173, 171, 171);
+    background-color:rgb(238, 238, 238);
 }
 
-#grid-cell-block{
-    background-color:  rgb(49, 49, 49);
+
+#grid-cell * , #grid-cell-round *{
+    color: rgb(0, 0, 0);
+}
+
+#grid-cell-block {
+    background-color:  rgb(0, 0, 0);
+}
+
+#grid-cell-block *{
+    color:white;
 }
 
 
@@ -42,8 +52,19 @@ separator {
     border-style: none;
 }
 
+
 frame {
     border-width: 2px;
     border-color: black;
     padding: 0px 0px;
+}
+
+#btnQuitter{
+    background-color: red;
+}
+
+#timer {
+    color: rgb(160, 63, 63);
+    box-shadow: 0px 0px 5px 0.8px rgb(39, 39, 39);
+    border-radius: 10px;
 }

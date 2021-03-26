@@ -96,14 +96,13 @@ class Grille
     end
 
     #renvoie le nombre d'erreur dans la grille 
-    
-    def nbDifference()
+    def nbDifference(grilleCmp)
 			#return int
-			int erreur = 0
-			for i in 0..tabCases.size
-				for j in 0..tabCases.size
-					if tabCases[i][j].couleur == grille[numero].tabCases[i][j].couleur     
-							erreur += 1                             
+			erreur = 0
+			for i in 0..tabCases.size - 1
+				for j in 0..tabCases.size - 1
+					if tabCases[i][j].couleur != grilleCmp.tabCases[i][j].couleur     
+						erreur += 1                             
 					end                                                                          
 				end
 			end
@@ -113,11 +112,10 @@ class Grille
     end
 
     #renvoie la premiere erreur trouver dans la grille
-
     def firstDifference()
 			#return case
-			for i in 0..tabCases.size
-				for j in 0..tabCases.size
+			for i in 0..tabCases.size - 1
+				for j in 0..tabCases.size - 1
 					if tabCases[i][j].couleur != grille[numero].tabCases[i][j].couleur     
 						return tabCases[i][j]                                                    
 					end                                                                          

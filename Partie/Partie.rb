@@ -45,11 +45,11 @@ class Partie
       
       @indiceCoup -= 1 #On passe au coup précédent    
 
-      if(@indiceCoup <= 0)
-        #désactiver le bouton
-        return false #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
-      else
+      if(@indiceCoup > 0)
         return true
+      else
+         return false #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
+        #désactiver le bouton
       end
     end
 
@@ -67,11 +67,11 @@ class Partie
 
       @indiceCoup += 1 #On passe au coup suivant
 
-      if(@indiceCoup+1 < tabCoup.size)
+      if(@indiceCoup < tabCoup.size)
         #désactiver le bouton
-        return false #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en avant
+        return true #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en avant
       else
-        return true
+        return false
       end
     end
 

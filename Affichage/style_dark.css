@@ -5,23 +5,42 @@ window {
     transition-duration: 0.5s
 }
 
+#headerbar * > label {
+    color: black;
+}
+
+
 *:not(separator) {
     color: rgb(156, 156, 156);
     transition-duration: 0.5s
 }
 
-#grid-cell, #grid-cell-block, #grid-cell-round{
-    border-color: rgb(195, 195, 195);
+
+#grid-cell , #grid-cell-block , #grid-cell-round {
+    background-image: none;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 0px;
+    color: rgb(173, 171, 171);
+    background-color:rgb(173, 171, 171);
+}
+
+
+#grid-cell * , #grid-cell-round *{
+    color: rgb(0, 0, 0);
 }
 
 #grid-cell-block{
-    background-color: rgb(156, 156, 156);
+    background-color:  rgb(0, 0, 0);
+    color:black;
 }
+
 
 separator {
     background-color: rgb(136, 136, 136);
     opacity: 0.3;
 }
+
 
 button {
     background: rgb(34, 34, 34);
@@ -29,7 +48,14 @@ button {
 }
 
 button:hover {
-    background: rgb(22, 22, 22);
+    background: rgb(0, 0, 0);
     border-color:  rgb(22, 22, 22);
-    box-shadow: 0px 0px 5px 0.8px rgb(22, 22, 22);
+    box-shadow: 0px 0px 5px 0.8px rgb(0, 0, 0);
 }
+
+scrollingview
+
+latexview
+
+
+

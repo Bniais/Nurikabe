@@ -103,7 +103,7 @@ Lorem Ipsum is simply dummy text of the printing and
         # setmargin(textView,80,15,70,70)
 
         scroll = Gtk::ScrolledWindow.new();
-        scroll.set_size_request(200, 600)
+        scroll.set_size_request(200, 700)
         # setmargin(scroll,80,15,70,70)
         scroll.add_with_viewport(textView);
 

@@ -42,7 +42,7 @@ class FenetreClassement < Fenetre
         refresh = Gtk::Button.new("Actualiser")
         choixGrille = Gtk::ComboBoxText.new()
         menu.attach(refresh,0,0,1,1)
-        menu.attach(refresh,1,0,1,1)
+        menu.attach(choixGrille,1,0,1,1)
         box.add(menu)
 
         affScores = Gtk::Grid.new()

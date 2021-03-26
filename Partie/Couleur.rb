@@ -1,6 +1,6 @@
 class Couleur
-    NOIR = -3
-    GRIS = -2
+    NOIR = -2
+    GRIS = -3
     BLANC = -1
     ILE_1 = 1
     ILE_2 = 2

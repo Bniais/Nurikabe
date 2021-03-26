@@ -1,4 +1,4 @@
-load 'Case.rb'
+require_relative 'Case.rb'
 
 # Classe qui gere les grilles
 
@@ -50,6 +50,7 @@ class Grille
 				return false
 			else
 				print "Bravo ! Tu as réussi"
+				return true
 			end
             
     end

@@ -33,7 +33,8 @@ class Chrono
 
     #lance le chrono
     def demarrer()
-       @pause = false
+      @pause = false
+      @starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       top()
     end
 
@@ -41,6 +42,7 @@ class Chrono
     def mettreEnPause()
       top()
       @pause = true
+      
     end
 
     #Ajoute un malus au chrono

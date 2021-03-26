@@ -1,4 +1,4 @@
-load 'Couleur.rb'
+require_relative 'Couleur.rb'
 
 class Case
 

@@ -3,7 +3,8 @@ class SauvegardeScore
     attr_reader :score
 
     # Methode qui permet de sauvegarder un score
-    def sauvegarder(score)
+    def sauvegarder(monscore)
+        @score = monscore
         #
     end
 

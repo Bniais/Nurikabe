@@ -42,7 +42,7 @@ class Partie
   def retourArriere()#TOTEST
     if(@indiceCoup > 0) #vérification normalement inutile puisque le bouton devrait être disable
       coupPrecedent = tabCoup.at(@indiceCoup-1)
-      coupPrecedent.case.setCouleur(coupPrecedent.baseCouleur)
+      coupPrecedent.case.setCouleur(coupPrecedent.couleurBase)
       
       @indiceCoup -= 1 #On passe au coup précédent    
 
@@ -90,7 +90,7 @@ class Partie
 
   # Methode qui ajoute un coup
   def ajouterCoup(coup)#TOTEST
-    if(coup.couleur != coup.case.couleur) 
+    if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1) 
       coup.case.couleur = coup.couleur
 
       tabCoup.pop(tabCoup.size - @indiceCoup - 1) #supprimer les coups annulés
@@ -668,13 +668,21 @@ class Partie
     return nil
   end
 end
-=begin
+
 p = Partie.creer(Grille.creer(4, 
-[[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0)],
-[Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1)],
-[Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::GRIS, 2, 2), Case.creer(Couleur::GRIS, 3, 2)],
-[Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3), Case.creer(Couleur::ILE_4, 3, 3)]
+[
+[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0)],
+[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0)],
+[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0)],
+[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0)],
+[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0)],
+[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0)],
+[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0)],
+[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0)],
+[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0)],
+[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0),Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0)]
 ]), nil, nil)
+
 p.grilleEnCours.afficher
 puts [Indice::MESSAGES[p.donneIndice()[0]], p.donneIndice()[1]] #fait une erreur si pas d'indice trouvé
 
@@ -692,4 +700,3 @@ p.grilleEnCours.afficher
 #Testé : INDICE_ILE_1, INDICE_EVITER_2x2, INDICE_ILE_INATTEIGNABLE, INDICE_CASE_ISOLEE,INDICE_ILE_COMPLETE
 #Moyennement testé : 
 #Pas testé : INDICE_ADJACENT, INDICE_ADJACENT_DIAG
-=end

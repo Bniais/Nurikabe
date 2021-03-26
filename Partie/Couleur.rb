@@ -11,4 +11,9 @@ class Couleur
     ILE_7 = 7
     ILE_8 = 8
     ILE_9 = 9
+
+
+    def EstIle?(couleur)
+        return couleur >= ILE_1
+    end
 end

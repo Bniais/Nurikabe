@@ -42,7 +42,6 @@ class Chrono
     def mettreEnPause()
       top()
       @pause = true
-      
     end
 
     #Ajoute un malus au chrono

@@ -36,6 +36,11 @@ separator {
 
 #grid-cell * , #grid-cell-round *{
     color: rgb(0, 0, 0);
+    font-size: 35px; 
+}
+
+#grid-cell-round * {
+    font-size: 22px;
 }
 
 #grid-cell-block {

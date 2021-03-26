@@ -37,6 +37,10 @@ class Partie
     new(grille, parametres, sauvegardes)
   end
 
+  def peutRetourArriere?()
+    return @indiceCoup > 0
+  end
+
   # Methode qui retourne en arrière (le coup)
   def retourArriere()#TOTEST
     if(@indiceCoup > 0) #vérification normalement inutile puisque le bouton devrait être disable
@@ -44,16 +48,14 @@ class Partie
       coupPrecedent.case.setCouleur(coupPrecedent.couleurBase)
       
       @indiceCoup -= 1 #On passe au coup précédent    
-
-      if(@indiceCoup > 0)
-        return true
-      else
-         return false #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
-        #désactiver le bouton
-      end
     end
 
-    return false #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
+    return peutRetourArriere? #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
+  end
+
+
+  def peutRetourAvant?()
+    return @indiceCoup < tabCoup.size
   end
 
   # Methode qui revient en avant(le coup)
@@ -65,16 +67,9 @@ class Partie
       
 
       @indiceCoup += 1 #On passe au coup suivant
-
-      if(@indiceCoup < tabCoup.size)
-        #désactiver le bouton
-        return true #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en avant
-      else
-        return false
-      end
     end
 
-    return false #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en avant
+    return peutRetourAvant? #Pour dire aux fonctions appelantes si on peut encore aller en avant
   end
 
   # Methode qui met en pause la partie
@@ -104,6 +99,8 @@ class Partie
   #remet a 0 une grille
   def raz()#TOTEST
     grilleEnCours.raz()
+    @indiceCoup = 0
+    @tabCoup = Array.new(0);
   end
 
   #methode pour termier la partie

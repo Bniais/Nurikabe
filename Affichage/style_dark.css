@@ -31,7 +31,7 @@ window {
 }
 
 #grid-cell-block{
-    background-color:  rgb(0, 0, 0);
+    background-color:  rgb(49, 49, 49);
     color:black;
 }
 
@@ -48,14 +48,11 @@ button {
 }
 
 button:hover {
-    background: rgb(0, 0, 0);
+    background: rgb(22, 22, 22);
     border-color:  rgb(22, 22, 22);
-    box-shadow: 0px 0px 5px 0.8px rgb(0, 0, 0);
+    box-shadow: 0px 0px 5px 0.8px rgb(22, 22, 22);
 }
 
-scrollingview
-
-latexview
-
-
-
+#btnQuitter{
+    background-color: rgb(165, 40, 40);
+}

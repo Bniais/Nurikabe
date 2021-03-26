@@ -5,6 +5,11 @@ window {
     transition-duration: 0.5s
 }
 
+separator {
+    background-color: rgb(136, 136, 136);
+    opacity: 0.3;
+}
+
 #headerbar * > label {
     color: black;
 }
@@ -15,7 +20,6 @@ window {
     transition-duration: 0.5s
 }
 
-
 #grid-cell , #grid-cell-block , #grid-cell-round {
     background-image: none;
     border-width: 1px;
@@ -25,7 +29,6 @@ window {
     background-color:rgb(173, 171, 171);
 }
 
-
 #grid-cell * , #grid-cell-round *{
     color: rgb(0, 0, 0);
 }
@@ -34,13 +37,6 @@ window {
     background-color:  rgb(49, 49, 49);
     color:black;
 }
-
-
-separator {
-    background-color: rgb(136, 136, 136);
-    opacity: 0.3;
-}
-
 
 button {
     background: rgb(34, 34, 34);

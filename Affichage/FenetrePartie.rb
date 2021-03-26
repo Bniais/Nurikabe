@@ -103,7 +103,8 @@ class FenetrePartie < Fenetre
         box.add(nomGrille)#ADD
 
         #GRILLE
-        box.add(creeGrille)#ADD
+        @frameGrille = creeGrille
+        box.add(@frameGrille)#ADD
 
         #TIMER
         @monTimer = Gtk::Label.new()
@@ -125,44 +126,53 @@ class FenetrePartie < Fenetre
         
         box = Gtk::Box.new(:horizontal, 0)
         box.set_height_request(50)
-
         # creation des boutons de mode de jeu
         btnNewGame = creeBouttonToolbar("add");            btnSetting = creeBouttonToolbar("document-properties")
-        btnUndo = creeBouttonToolbar("undo");              btnRedo = creeBouttonToolbar("redo")
-        btnPlay = creeBouttonToolbar("player_play");       btnPause = creeBouttonToolbar("player_pause")
+        @btnUndo = creeBouttonToolbar("undo");             @btnRedo = creeBouttonToolbar("redo")
+        @btnPlay = creeBouttonToolbar("player_play");      @btnPause = creeBouttonToolbar("player_pause")
         btnHelp = creeBouttonToolbar("hint");              btnInfo = creeBouttonToolbar("help-contents")
-        btnClear = creeBouttonToolbar("gtk-clear");        btnVerif = creeBouttonToolbar("gtk-apply")
+        btnClear = creeBouttonToolbar("gtk-clear");       btnVerif = creeBouttonToolbar("gtk-apply")
         btnQuit = creeBouttonToolbar("gtk-quit")
+
+        disableBtn(@btnUndo); disableBtn(@btnRedo); disableBtn(@btnPlay);
+        
         
         #Gestion des evenemeents
-        btnNewGame.signal_connect("clicked"){puts "click NewFile"}
-        btnSetting.signal_connect("clicked"){ Fenetre.deleteChildren; @@maPartie.mettrePause; FenetreParametre.afficheToi( FenetrePartie );   }
-        btnUndo.signal_connect("clicked")   {
-            @@maPartie.retourArriere
-            @@maPartie.grilleEnCours.afficher
+        btnNewGame.signal_connect("clicked"){puts "click NewFile"} # NOUVELLE PARTIE
+        btnSetting.signal_connect("clicked"){ Fenetre.deleteChildren; @@maPartie.mettrePause; FenetreParametre.afficheToi( FenetrePartie );   } # LANCER LES REGLAGLES
+        @btnUndo.signal_connect("clicked")   {
+            enableBtn(@btnRedo) 
+            statut = @@maPartie.retourArriere
             for i in 0...@@maGrille.size
                 for j in 0...@@maGrille[i].size
                     @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
                 end
             end
+            if statut == false
+                disableBtn(@btnUndo)
+            end
         }
-        btnRedo.signal_connect("clicked")   {
-            @@maPartie.retourAvant
+        @btnRedo.signal_connect("clicked")   {
+            puts "dans redo"
+            enableBtn(@btnUndo)
+            statut = @@maPartie.retourAvant
+            puts statut
             for i in 0...@@maGrille.size
                 for j in 0...@@maGrille[i].size
                     @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
                 end
             end
+            if statut == false
+                puts "next possible"
+                disableBtn(@btnRedo)
+            end
         }
-        btnPlay.signal_connect("clicked")   { @@maPartie.reprendrePartie}
-        btnPause.signal_connect("clicked")  { @@maPartie.mettrePause }
-
+        @btnPlay.signal_connect("clicked")   { @@maPartie.reprendrePartie; enableBtn(@btnPause); disableBtn(@btnPlay); @frameGrille.name = "fenetreGrille" }
+        @btnPause.signal_connect("clicked")  { @@maPartie.mettrePause; disableBtn(@btnPause); enableBtn(@btnPlay); @frameGrille.name = "fenetreGrilleHide" }
         btnHelp.signal_connect("clicked")   { 
             indice = @@maPartie.donneIndice
             if ( indice != nil)
                 puts [Indice::MESSAGES[indice[0]],indice[1]] #fait une erreur si pas d'indice trouvé
-            else    
-                puts "PAS D: INDICE"
             end
         }
         btnInfo.signal_connect("clicked")   { puts "click Info" }
@@ -173,24 +183,19 @@ class FenetrePartie < Fenetre
                     @@maGrille[i][j].resetCell
                 end
             end
+            @btnUndo.name = @btnRedo.name = "btnHide"
         }
-        btnVerif.signal_connect("clicked")  {
-            puts @@maPartie.verifierErreur
-        }
-        btnQuit.signal_connect("clicked")   { 
-            @@maPartie = nil
-            Fenetre.deleteChildren; 
-            FenetreMenu.afficheToi( FenetrePartie )
-        }
+        btnVerif.signal_connect("clicked")  { puts @@maPartie.verifierErreur }
+        btnQuit.signal_connect("clicked")   { @@maPartie = nil;     Fenetre.deleteChildren;     FenetreMenu.afficheToi( FenetrePartie ) }
 
   
         # attachement des boutons de mode de jeu
         box.add(btnNewGame); 
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(btnSetting);    box.add(creerSeparatorToolbar)  # SEPARATOR
-        box.add(btnUndo);       box.add(btnRedo)
+        box.add(@btnUndo);       box.add(@btnRedo)
         box.add(creerSeparatorToolbar)  # SEPARATOR
-        box.add(btnPlay);       box.add(btnPause)
+        box.add(@btnPlay);       box.add(@btnPause)
         box.add(btnHelp);       box.add(btnInfo)
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(btnClear);      box.add(btnVerif)
@@ -202,26 +207,35 @@ class FenetrePartie < Fenetre
         return mainToolbar
     end
 
+    private 
+    def disableBtn(btn)
+        btn.name = "btnHide"
+        btn.set_sensitive(false)
+    end
+
+    private 
+    def enableBtn(btn)
+        btn.name = "btn-toolbar"
+        btn.set_sensitive(true)
+    end
        # Methode qui permet de cree
     # une cellule destiner a la grille
     def creeCelluleGrille(line,colonne,color)
 
         btn = Cell.new()
         btn.changerStatut( @@maPartie.grilleEnCours.tabCases[colonne][line].couleur )
-        btn.set_x(line);btn.set_y(colonne)
-        btn.set_height_request(5)
-        btn.set_width_request(5)
+        btn.set_x(line);    btn.set_y(colonne); btn.set_height_request(5);  btn.set_width_request(5)
 
         btn.signal_connect "clicked" do |handler| 
-            puts "BTN CLICKED {X:#{handler.x};Y:#{handler.y}}"
             maCellule = @@maPartie.grilleEnCours.tabCases[handler.y][handler.x]
             prochaineCouleur = maCellule.couleur + 1
             if prochaineCouleur == 0
                 prochaineCouleur = Couleur::GRIS
             end
-            @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
-            @@maPartie.grilleEnCours.afficher
-            handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur )
+            if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) ) 
+                handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur )
+                enableBtn(@btnUndo)
+            end
         end
         return btn
     end
@@ -232,11 +246,11 @@ class FenetrePartie < Fenetre
 
         # Frame exterieur pour que les rebord et la meme epaisseur
         maFrame = Gtk::Frame.new()
+        maFrame.name = "fenetreGrille"
         maFrame.set_margin_left(70); maFrame.set_margin_right(70); maFrame.set_margin_top(15)
         
         # grid pour placer la grille de jeu dedans
         maGrille = Gtk::Grid.new()
-        maGrille.name = "grid"
         maGrille.set_height_request(671-140);   maGrille.set_width_request(671-140)
         maGrille.set_row_homogeneous(true);     maGrille.set_column_homogeneous(true)
 

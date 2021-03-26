@@ -35,10 +35,20 @@ class FenetreClassement < Fenetre
         # VUE PRINCIPAL
         # EDIT HERE
         # ADD CONTENT HERE IN BOX
-        bestscore = Gtk::Label.new()
-        bestscore.set_markup("<span weight = 'ultrabold' size = '10000' >Meilleur score: </span>")
-        
-        
+        bestscore = Gtk::Label.new("Meilleur score: ")
+        box.add(bestscore)
+
+        menu = Gtk::Grid.new()
+        refresh = Gtk::Button.new("Actualiser")
+        choixGrille = Gtk::ComboBoxText.new()
+        menu.attach(refresh,0,0,1,1)
+        menu.attach(refresh,1,0,1,1)
+        box.add(menu)
+
+        affScores = Gtk::Grid.new()
+        rankJoueur = Gtk::TextView.new()
+        score = Gtk::TextView.new()
+
         return box
     end
 

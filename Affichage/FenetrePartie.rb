@@ -21,6 +21,7 @@ class Cell < Gtk::Button
             self.name = "grid-cell"
             self.set_label(color.to_s)
         elsif color == Couleur::NOIR
+            self.set_label("")
             self.name = "grid-cell-block"
         elsif color == Couleur::GRIS
             self.set_label("")
@@ -58,6 +59,8 @@ class FenetrePartie < Fenetre
         if @@maPartie == nil
             @@maPartie = Partie.creer(Grille.creer(4, [[Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::BLANC, 2, 0),Case.creer(Couleur::BLANC, 3, 0)],[Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1)], [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::NOIR, 2, 2), Case.creer(Couleur::NOIR, 3, 2)],[Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::ILE_4, 3, 3)]]), nil, nil)
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
+        else
+            @@maPartie.reprendrePartie
         end
         Fenetre.set_subtitle( @@maPartie.class.to_s )
         maFenetrePartie = FenetrePartie.new()
@@ -71,9 +74,16 @@ class FenetrePartie < Fenetre
 
     def threadChronometre
         Thread.new do
-            while 1
-                sleep(0.5)
+            @cpt = 0
+            while @@maPartie != nil
+                @cpt += 1
+                if @cpt%4 == 0
+                    @monTimer.name = "timer"
+                elsif @cpt%4 == 2
+                    @monTimer.name = "timer_respire"
+                end
                 @monTimer.set_markup("<span size='25000' >" + @@maPartie.chrono.getTemps + "</span>")
+                sleep(0.5)
             end
         end
     end
@@ -97,7 +107,8 @@ class FenetrePartie < Fenetre
 
         #TIMER
         @monTimer = Gtk::Label.new()
-        setmargin(@monTimer,20,0,300,300)
+        setmargin(@monTimer,20,0,0,0)
+        @monTimer.halign = :center
         @monTimer.name = "timer"
         @monTimer.set_markup("<span size='25000' >00:00</span>")
         box.add( @monTimer )
@@ -125,7 +136,7 @@ class FenetrePartie < Fenetre
         
         #Gestion des evenemeents
         btnNewGame.signal_connect("clicked"){puts "click NewFile"}
-        btnSetting.signal_connect("clicked"){ Fenetre.deleteChildren; FenetreParametre.afficheToi( FenetrePartie )  }
+        btnSetting.signal_connect("clicked"){ Fenetre.deleteChildren; @@maPartie.mettrePause; FenetreParametre.afficheToi( FenetrePartie );   }
         btnUndo.signal_connect("clicked")   {
             @@maPartie.retourArriere
             @@maPartie.grilleEnCours.afficher

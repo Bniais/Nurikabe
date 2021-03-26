@@ -2,6 +2,8 @@ class Chrono
 
     private_class_method :new
 
+    attr_reader :pause
+
     def Chrono.creer()
       new()
     end
@@ -22,6 +24,7 @@ class Chrono
 
       return estNul?()
     end
+    
 
     #savoir sir le chrono est nul
     def estNul?()

@@ -1,7 +1,5 @@
 class Chrono
 
-    attr_accessor :temps, :Malus
-
     private_class_method :new
 
     def Chrono.creer()
@@ -47,6 +45,10 @@ class Chrono
     #Ajoute un malus au chrono
     def addMalus(m)
       @malus += m
+    end
+
+    def getTemps()
+      return (@time/60).to_s + ":" (@time%60).to_s
     end
 
 end

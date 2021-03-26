@@ -29,7 +29,7 @@ class Parametre
         @compteurIlot = false
         @affichagePortee = false
         @murs2x2 = false
-        @modeSombre = true
+        @modeSombre = false
     end
 
     def self.initialiseToi()

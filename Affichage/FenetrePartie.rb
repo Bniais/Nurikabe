@@ -60,9 +60,22 @@ class FenetrePartie < Fenetre
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
         end
         Fenetre.set_subtitle( @@maPartie.class.to_s )
-        Fenetre.add( FenetrePartie.new().creationInterface( lastView ) )
+        maFenetrePartie = FenetrePartie.new()
+        Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
+
+        maFenetrePartie.threadChronometre
+        
         return self
+    end
+
+    def threadChronometre
+        Thread.new do
+            while 1
+                sleep(0.5)
+                @monTimer.set_markup("<span size='25000' >" + @@maPartie.chrono.getTemps + "</span>")
+            end
+        end
     end
 
     def creationInterface( lastView )
@@ -83,11 +96,11 @@ class FenetrePartie < Fenetre
         box.add(creeGrille)#ADD
 
         #TIMER
-        monTimer = Gtk::Label.new()
-        setmargin(monTimer,20,0,300,300)
-        monTimer.name = "timer"
-        monTimer.set_markup("<span size='25000' >00:00</span>")
-        box.add( monTimer )
+        @monTimer = Gtk::Label.new()
+        setmargin(@monTimer,20,0,300,300)
+        @monTimer.name = "timer"
+        @monTimer.set_markup("<span size='25000' >00:00</span>")
+        box.add( @monTimer )
 
         return box
     end
@@ -115,6 +128,7 @@ class FenetrePartie < Fenetre
         btnSetting.signal_connect("clicked"){ Fenetre.deleteChildren; FenetreParametre.afficheToi( FenetrePartie )  }
         btnUndo.signal_connect("clicked")   {
             @@maPartie.retourArriere
+            @@maPartie.grilleEnCours.afficher
             for i in 0...@@maGrille.size
                 for j in 0...@@maGrille[i].size
                     @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
@@ -129,8 +143,8 @@ class FenetrePartie < Fenetre
                 end
             end
         }
-        btnPlay.signal_connect("clicked")   {puts "click Play"}
-        btnPause.signal_connect("clicked")  {puts "click Pause"}
+        btnPlay.signal_connect("clicked")   { @@maPartie.reprendrePartie}
+        btnPause.signal_connect("clicked")  { @@maPartie.mettrePause }
 
         btnHelp.signal_connect("clicked")   { 
             indice = @@maPartie.donneIndice

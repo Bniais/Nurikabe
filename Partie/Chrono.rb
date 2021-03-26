@@ -48,7 +48,8 @@ class Chrono
     end
 
     def getTemps()
-      return (@time/60).to_s + ":" (@time%60).to_s
+      top()
+      return (@time.to_i/60).to_s + ":" + (@time.to_i%60).to_s
     end
 
 end

@@ -1,4 +1,5 @@
 # Classe qui contient l'ensemble des sauvegardes
+load 'Partie.rb'
 class Sauvegardes
     # tableau des sauvegardes de parties
     attr_accessor :sauvegardePartie
@@ -17,7 +18,7 @@ class Sauvegardes
 
     # Methode qui retourne la sauvegarde d'une partie pour un mode et une grille donnes
     def getSauvegardePartie(mode,grille)
-        #
+        
     end
 
     # Methode qui supprime la sauvegarde d'une partie donnee

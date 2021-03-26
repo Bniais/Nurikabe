@@ -459,7 +459,7 @@ class Partie
     for i in 0..grilleEnCours.tabCases.size-1
       for j in 0..grilleEnCours.tabCases.size-1
 
-        if(!vuBloc[i][j] && BlocgrilleEnCours.tabCases[i][j].couleur == Couleur::NOIR)
+        if(!vuBloc[i][j] && grilleEnCours.tabCases[i][j].couleur == Couleur::NOIR)
           vu = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
         
           lastChanges = Array.new(0)
@@ -668,26 +668,28 @@ class Partie
     return nil
   end
 end
-
+=begin
 p = Partie.creer(Grille.creer(4, 
-[[Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::BLANC, 2, 0),Case.creer(Couleur::BLANC, 3, 0)],
-[Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1)],
-[Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::NOIR, 2, 2), Case.creer(Couleur::NOIR, 3, 2)],
-[Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::ILE_4, 3, 3)]
+[[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0)],
+[Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1)],
+[Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::GRIS, 2, 2), Case.creer(Couleur::GRIS, 3, 2)],
+[Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3), Case.creer(Couleur::ILE_4, 3, 3)]
 ]), nil, nil)
 p.grilleEnCours.afficher
-print [Indice::MESSAGES[p.indiceIleComplete()[0]], p.indiceIleComplete()[1]] #fait une erreur si pas d'indice trouvé
+puts [Indice::MESSAGES[p.donneIndice()[0]], p.donneIndice()[1]] #fait une erreur si pas d'indice trouvé
 
 
 
-          maCellule = p.grilleEnCours.tabCases[2][2]
-          prochaineCouleur = maCellule.couleur + 1
-          if prochaineCouleur == 0
-              prochaineCouleur = Couleur::GRIS
-          end
-          p.ajouterCoup( Coup.creer( maCellule , prochaineCouleur, maCellule.couleur ) )
-          p.grilleEnCours.afficher
-          #handler.changeStatut
+maCellule = p.grilleEnCours.tabCases[2][2]
+prochaineCouleur = maCellule.couleur + 1
+if prochaineCouleur == 0
+    prochaineCouleur = Couleur::GRIS
+end
+p.ajouterCoup( Coup.creer( maCellule , prochaineCouleur, maCellule.couleur ) )
+p.grilleEnCours.afficher
+
+#handler.changeStatut
 #Testé : INDICE_ILE_1, INDICE_EVITER_2x2, INDICE_ILE_INATTEIGNABLE, INDICE_CASE_ISOLEE,INDICE_ILE_COMPLETE
 #Moyennement testé : 
 #Pas testé : INDICE_ADJACENT, INDICE_ADJACENT_DIAG
+=end

@@ -7,7 +7,7 @@ require 'digest'
 class Partie
   #TODO definir constantes
 
-  attr_reader :grilleBase, :grilleEnCours, :mode, :tabCoup, :enPause
+  attr_reader :grilleBase, :grilleEnCours, :mode, :tabCoup, :chrono
 
   private_class_method :new
 
@@ -18,10 +18,9 @@ class Partie
     @sauvegardes = sauvegardes #TODO Charger la partie si une sauvegarde correspond à la partie
 
     @tabCoup = Array.new(0);
-    @enPause = false
 
     @nbAideUtilise = 0
-    @indiceCoup = -1
+    @indiceCoup = 0
     if(mode == Mode::SURVIE)
       @chrono = ChronoDecompte.creer()
     else
@@ -59,12 +58,13 @@ class Partie
 
   # Methode qui revient en avant(le coup)
   def retourAvant()#TOTEST
-    if(@indiceCoup+1 < tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
-
+    if(@indiceCoup < tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
+      puts "good"
       #On annule en passant au coup suivant
-      coupSuivant = tabCoup.at(@indiceCoup+1)
+      coupSuivant = tabCoup.at(@indiceCoup)
       coupSuivant.case.setCouleur(coupSuivant.couleur)
       
+
       @indiceCoup += 1 #On passe au coup suivant
 
       if(@indiceCoup+1 < tabCoup.size)
@@ -93,7 +93,7 @@ class Partie
     if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1) 
       coup.case.couleur = coup.couleur
 
-      tabCoup.pop(tabCoup.size - @indiceCoup - 1) #supprimer les coups annulés
+      tabCoup.pop(tabCoup.size - @indiceCoup) #supprimer les coups annulés
       tabCoup.push(coup)
       @indiceCoup += 1
       return true

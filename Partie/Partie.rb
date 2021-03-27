@@ -841,7 +841,7 @@ class Partie
     return nil
   end
 end
-begin
+=begin
 p = Partie.creer(Grille.creer(4, 
     [
       [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 3, 1)],
@@ -856,4 +856,5 @@ id = p.donneIndice()
 if(id != nil)
   print [Indice::MESSAGES[id [0]], id[1].positionX, id [1].positionY] #fait une erreur si pas d'indice trouvé
 end
+=end
 

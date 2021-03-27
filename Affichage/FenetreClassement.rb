@@ -20,6 +20,7 @@ class FenetreClassement < Fenetre
         box = Gtk::Box.new(:vertical)
 
         # BACK BUTTON
+
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => "BACK")

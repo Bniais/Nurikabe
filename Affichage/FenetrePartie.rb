@@ -58,7 +58,14 @@ class FenetrePartie < Fenetre
 
     def self.afficheToi( lastView )
         if @@maPartie == nil
-            @@maPartie = Partie.creer(Grille.creer(4, [[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0)],[Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1)], [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::GRIS, 2, 2), Case.creer(Couleur::GRIS, 3, 2)],[Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3), Case.creer(Couleur::ILE_4, 3, 3)]]), nil, nil)
+            @@maPartie = Partie.creer(Grille.creer(4, 
+            [
+              [Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::GRIS, 3, 1)],
+              [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 3, 1)],
+              [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::GRIS, 3, 2), Case.creer(Couleur::GRIS, 3, 1)],
+              [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3), Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 3, 1)],
+              [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 3, 1)]
+            ]), nil, nil)
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
         end
 
@@ -76,20 +83,34 @@ class FenetrePartie < Fenetre
         return self
     end
 
+    ## Methode qui permet de mettre a jours de chronometre
     def threadChronometre
         Thread.new do
-            @cpt = 0
+            @indiceRespiration = 0
             while @@maPartie != nil
-                @cpt += 1
-                if @cpt%4 == 0
+                @indiceRespiration += 1
+                if @indiceRespiration%4 == 0
                     @monTimer.name = "timer"
-                elsif @cpt%4 == 2
+                elsif @indiceRespiration%4 == 2
                     @monTimer.name = "timer_respire"
                 end
                 @monTimer.set_markup("<span size='25000' >" + @@maPartie.chrono.getTemps + "</span>")
                 sleep(0.5)
             end
         end
+    end
+
+    def show_standard_message_dialog
+        dialog = Gtk::MessageDialog.new(:parent => @@window,
+                                        :flags => [:modal, :destroy_with_parent],
+                                        :type => :info,
+                                        :buttons => :ok,
+                                        :message => <<-MESSAGE)
+    This message has been popped up the following
+    number of times:
+    MESSAGE
+        dialog.run
+        dialog.destroy
     end
 
     def creationInterface( lastView )
@@ -133,55 +154,47 @@ class FenetrePartie < Fenetre
         # creation des boutons de mode de jeu
         btnNewGame = creeBouttonToolbar("add");            btnSetting = creeBouttonToolbar("document-properties")
         @btnUndo = creeBouttonToolbar("undo");             @btnRedo = creeBouttonToolbar("redo")
-        @btnPlay = creeBouttonToolbar("player_play");      @btnPause = creeBouttonToolbar("player_pause")
-        @btnHelp = creeBouttonToolbar("hint");             @btnInfo = creeBouttonToolbar("help-contents")
+        @btnUndoUndo = creeBouttonToolbar("start");@btnPlay = creeBouttonToolbar("player_play");      
+        @btnPause = creeBouttonToolbar("player_pause");    @btnHelp = creeBouttonToolbar("hint");             
         @btnClear = creeBouttonToolbar("gtk-clear");       @btnVerif = creeBouttonToolbar("gtk-apply")
         btnQuit = creeBouttonToolbar("gtk-quit")
         # Disable btn att bottom of game
         
         # SET BTN ENABLE/DISABLE
-        disableBtn(@btnRedo); disableBtn(@btnUndo)
+        disableBtn(@btnRedo); disableBtn(@btnUndo); disableBtn(@btnUndoUndo)
         if @@maPartie.chrono.pause
-            @@maPartie.mettrePause; disableBtn(@btnPause); disableBtn(@btnHelp); disableBtn(@btnInfo); disableBtn(@btnClear); disableBtn(@btnVerif);
+            @@maPartie.mettrePause; disableBtn(@btnPause); disableBtn(@btnHelp); disableBtn(@btnUndoUndo); disableBtn(@btnClear); disableBtn(@btnVerif);
         else 
             disableBtn(@btnPlay)
             activerBtnApresPause
         end
                 
         #Gestion des evenemeents
-        btnNewGame.signal_connect("clicked"){puts "click NewFile"} # NOUVELLE PARTIE
-        btnSetting.signal_connect("clicked"){ Fenetre.deleteChildren; @@maPartie.mettrePause; FenetreParametre.afficheToi( FenetrePartie );   } # LANCER LES REGLAGLES
-        @btnUndo.signal_connect("clicked"){
-            enableBtn(@btnRedo) 
-            statut = @@maPartie.retourArriere
+        btnNewGame.signal_connect("clicked"){ nouvellePartie } # NOUVELLE PARTIE
+        btnSetting.signal_connect("clicked"){ ouvrirReglage  } # LANCER LES REGLAGLES
+        @btnUndo.signal_connect("clicked"){ retourArriere } # RETOURNER EN ARRIERE
+        @btnRedo.signal_connect("clicked")  { retourAvant } # RETOURNER EN AVANT
+        @btnUndoUndo.signal_connect("clicked")   { 
+            puts "click undo undo" 
+            puts @@maPartie.grilleEnCours.afficher
+            @@maPartie.revenirPositionBonne
+            puts @@maPartie.grilleEnCours.afficher
             for i in 0...@@maGrille.size
                 for j in 0...@@maGrille[i].size
                     @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
                 end
             end
-            statut == false ? disableBtn(@btnUndo) : 1 ; 
-        }
-        @btnRedo.signal_connect("clicked")   {
-            puts "dans redo"
-            enableBtn(@btnUndo)
-            statut = @@maPartie.retourAvant
-            puts statut
-            for i in 0...@@maGrille.size
-                for j in 0...@@maGrille[i].size
-                    @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
-                end
-            end
-            statut == false ? disableBtn(@btnRedo) : 1 ;
+            disableBtn(@btnUndo); disableBtn(@btnRedo); disableBtn(@btnUndoUndo)
         }
         @btnPlay.signal_connect("clicked")   { @@maPartie.reprendrePartie; enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"  }
-        @btnPause.signal_connect("clicked")  { @@maPartie.mettrePause; @@vraiPause = true; puts @@maPartie.chrono.pause; disableBtn(@btnPause); enableBtn(@btnPlay); disableBtn(@btnHelp); disableBtn(@btnInfo); disableBtn(@btnClear); disableBtn(@btnVerif); disableBtn(@btnUndo); disableBtn(@btnRedo); @frameGrille.name = "fenetreGrilleHide" }
+        @btnPause.signal_connect("clicked")  { @@maPartie.mettrePause; @@vraiPause = true; puts @@maPartie.chrono.pause; disableBtn(@btnPause); enableBtn(@btnPlay); disableBtn(@btnHelp); disableBtn(@btnUndoUndo); disableBtn(@btnClear); disableBtn(@btnVerif); disableBtn(@btnUndo); disableBtn(@btnRedo); @frameGrille.name = "fenetreGrilleHide" }
         @btnHelp.signal_connect("clicked")   { 
             indice = @@maPartie.donneIndice
             if ( indice != nil)
                 puts [Indice::MESSAGES[indice[0]],indice[1]] #fait une erreur si pas d'indice trouvé
             end
+            show_standard_message_dialog
         }
-        @btnInfo.signal_connect("clicked")   { puts "click Info" }
         @btnClear.signal_connect("clicked")  { 
             @@maPartie.raz
             for i in 0...@@maGrille.size
@@ -189,7 +202,9 @@ class FenetrePartie < Fenetre
                     @@maGrille[i][j].resetCell
                 end
             end
-            @btnUndo.name = @btnRedo.name = "btnHide"
+            disableBtn(@btnUndo) 
+            disableBtn(@btnRedo)
+            disableBtn(@btnUndoUndo)
         }
         @btnVerif.signal_connect("clicked")  { puts @@maPartie.verifierErreur }
         btnQuit.signal_connect("clicked")   { @@maPartie = nil;     Fenetre.deleteChildren;     FenetreMenu.afficheToi( FenetrePartie ) }
@@ -200,9 +215,10 @@ class FenetrePartie < Fenetre
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(btnSetting);    box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(@btnUndo);       box.add(@btnRedo)
+        box.add(@btnUndoUndo);
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(@btnPlay);       box.add(@btnPause)
-        box.add(@btnHelp);       box.add(@btnInfo)
+        box.add(@btnHelp);       
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(@btnClear);      box.add(@btnVerif)
         box.add(creerSeparatorToolbar)  # SEPARATOR
@@ -213,10 +229,61 @@ class FenetrePartie < Fenetre
         return mainToolbar
     end
 
+
+    ## BTN EVENTS 
+    # EVENT NOUVELLE PARTIE
+    private
+    def nouvellePartie
+        puts "click NewFile"
+    end
+    
+    # EVENT OUVRIR REGLAGE 
+    private 
+    def ouvrirReglage
+        Fenetre.deleteChildren; 
+        @@maPartie.mettrePause; 
+        FenetreParametre.afficheToi( FenetrePartie );
+    end
+
+    # EVENT UNDO
+    private 
+    def retourArriere
+        enableBtn(@btnRedo) 
+        statut = @@maPartie.retourArriere
+        for i in 0...@@maGrille.size
+            for j in 0...@@maGrille[i].size
+                @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
+            end
+        end
+        if statut == false
+             disableBtn(@btnUndo); 
+             disableBtn(@btnUndoUndo);
+        end 
+    end
+
+    # EVENT REDO
+    private 
+    def retourAvant 
+        puts "dans redo"
+        enableBtn(@btnUndo)
+        enableBtn(@btnUndoUndo)
+        statut = @@maPartie.retourAvant
+        puts statut
+        for i in 0...@@maGrille.size
+            for j in 0...@@maGrille[i].size
+               @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
+            end
+        end
+        statut == false ? disableBtn(@btnRedo) : 1 ;
+    end
+
+
+
     private
     def activerBtnApresPause()
         if @@maPartie.peutRetourArriere? 
             enableBtn(@btnUndo)
+            enableBtn(@btnUndoUndo)
         end
         if @@maPartie.peutRetourAvant?
             enableBtn(@btnRedo)
@@ -224,7 +291,6 @@ class FenetrePartie < Fenetre
         enableBtn(@btnClear)
         disableBtn(@btnPlay)
         enableBtn(@btnHelp)
-        enableBtn(@btnInfo)
         enableBtn(@btnVerif);
     end
 
@@ -257,6 +323,7 @@ class FenetrePartie < Fenetre
                 if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) ) 
                     handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur )
                     enableBtn(@btnUndo)
+                    enableBtn(@btnUndoUndo)
                     disableBtn(@btnRedo)
                 end
             end

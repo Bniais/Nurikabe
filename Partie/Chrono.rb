@@ -1,8 +1,8 @@
 class Chrono
 
-    attr_accessor :temps, :Malus
-
     private_class_method :new
+
+    attr_reader :pause
 
     def Chrono.creer()
       new()
@@ -24,6 +24,7 @@ class Chrono
 
       return estNul?()
     end
+    
 
     #savoir sir le chrono est nul
     def estNul?()
@@ -42,7 +43,6 @@ class Chrono
     def mettreEnPause()
       top()
       @pause = true
-      
     end
 
     #Ajoute un malus au chrono
@@ -50,6 +50,9 @@ class Chrono
       @malus += m
     end
 
-end
+    def getTemps()
+      top()
+      return format("%02d", (@time.to_i/60).to_s) + ":" + format("%02d", (@time.to_i%60).to_s)
+    end
 
-Chrono.creer
+end

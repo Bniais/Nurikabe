@@ -7,7 +7,7 @@ require 'digest'
 class Partie
   #TODO definir constantes
 
-  attr_reader :grilleBase, :grilleEnCours, :mode, :tabCoup, :enPause
+  attr_reader :grilleBase, :grilleEnCours, :mode, :tabCoup, :chrono
 
   private_class_method :new
 
@@ -18,10 +18,9 @@ class Partie
     @sauvegardes = sauvegardes #TODO Charger la partie si une sauvegarde correspond à la partie
 
     @tabCoup = Array.new(0);
-    @enPause = false
 
     @nbAideUtilise = 0
-    @indiceCoup = -1
+    @indiceCoup = 0
     if(mode == Mode::SURVIE)
       @chrono = ChronoDecompte.creer()
     else
@@ -38,49 +37,44 @@ class Partie
     new(grille, parametres, sauvegardes)
   end
 
+  def peutRetourArriere?()
+    return @indiceCoup > 0
+  end
+
   # Methode qui retourne en arrière (le coup)
   def retourArriere()#TOTEST
     if(@indiceCoup > 0) #vérification normalement inutile puisque le bouton devrait être disable
       coupPrecedent = tabCoup.at(@indiceCoup-1)
-      coupPrecedent.case.setCouleur(coupPrecedent.baseCouleur)
+      coupPrecedent.case.setCouleur(coupPrecedent.couleurBase)
       
       @indiceCoup -= 1 #On passe au coup précédent    
-
-      if(@indiceCoup <= 0)
-        #désactiver le bouton
-        return false #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
-      else
-        return true
-      end
     end
 
-    return false #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
+    return peutRetourArriere? #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
+  end
+
+
+  def peutRetourAvant?()
+    return @indiceCoup < tabCoup.size
   end
 
   # Methode qui revient en avant(le coup)
   def retourAvant()#TOTEST
-    if(@indiceCoup+1 < tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
-
+    if(@indiceCoup < tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
       #On annule en passant au coup suivant
-      coupSuivant = tabCoup.at(@indiceCoup+1)
+      coupSuivant = tabCoup.at(@indiceCoup)
       coupSuivant.case.setCouleur(coupSuivant.couleur)
       
-      @indiceCoup += 1 #On passe au coup suivant
 
-      if(@indiceCoup+1 < tabCoup.size)
-        #désactiver le bouton
-        return false #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en avant
-      else
-        return true
-      end
+      @indiceCoup += 1 #On passe au coup suivant
     end
 
-    return false #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en avant
+    return peutRetourAvant? #Pour dire aux fonctions appelantes si on peut encore aller en avant
   end
 
   # Methode qui met en pause la partie
   def mettrePause()#TOTEST
-      @chrono.mettreEnPause()
+    @chrono.mettreEnPause()
   end
 
   #Methode qui reprend la partie
@@ -90,10 +84,10 @@ class Partie
 
   # Methode qui ajoute un coup
   def ajouterCoup(coup)#TOTEST
-    if(coup.couleur != coup.case.couleur) 
+    if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1) 
       coup.case.couleur = coup.couleur
 
-      tabCoup.pop(tabCoup.size - @indiceCoup - 1) #supprimer les coups annulés
+      tabCoup.pop(tabCoup.size - @indiceCoup) #supprimer les coups annulés
       tabCoup.push(coup)
       @indiceCoup += 1
       return true
@@ -105,7 +99,8 @@ class Partie
   #remet a 0 une grille
   def raz()#TOTEST
     grilleEnCours.raz()
-    return nil
+    @indiceCoup = 0
+    @tabCoup = Array.new(0);
   end
 
   #methode pour termier la partie
@@ -208,15 +203,22 @@ class Partie
       return result
     end
 
-    #8. Wall continuity
-    result = indiceContinuiteMur()
+    #9. Island expansion from a clue
+    result = indiceExpensionIle()
 
     if(result != nil)
       return result
     end
 
-    #9. Island expansion from a clue
-    result = indiceExpensionIle()
+    #13. Unreachable square
+    result = indiceInatteignable()
+
+     if(result != nil)
+      return result
+    end
+
+    #8. Wall continuity
+    result = indiceContinuiteMur()
 
     if(result != nil)
       return result
@@ -239,14 +241,9 @@ class Partie
     #12. Island continuity
     result = indiceContinuiteIle()
 
-    if(result != nil)
-      return result
-    end
-
-    #13. Unreachable square
-    result = indiceInatteignable()
-
     return result
+
+
   end
 
   def indiceIle1()
@@ -459,30 +456,33 @@ class Partie
     for i in 0..grilleEnCours.tabCases.size-1
       for j in 0..grilleEnCours.tabCases.size-1
 
-        if(!vuBloc[i][j] && BlocgrilleEnCours.tabCases[i][j].couleur == Couleur::NOIR)
+        if(!vuBloc[i][j] && grilleEnCours.tabCases[i][j].couleur == Couleur::NOIR)
           vu = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
-        
           lastChanges = Array.new(0)
           nextChanges = Array.new(0)
           lastChanges.push(grilleEnCours.tabCases[i][j])
-          
           while(!lastChanges.empty?)
+
             lastChanges.each{|c| 
+              
               x = c.positionY
               y = c.positionX
-              vu[x][y] = true
               vuBloc[x][y] = true
+              vu[x][y] = true
 
-              if( x+1 < grilleEnCours.tabCases.size)
-                nextChanges.push(grilleEnCours.tabCases[x+1][y])
+              if( x+1 < grilleEnCours.tabCases.size && !vu[x+1][y] && grilleEnCours.tabCases[x+1][y].couleur == Couleur::NOIR)            
+                nextChanges.push(grilleEnCours.tabCases[x+1][y] )
               end
-              if( y+1 < grilleEnCours.tabCases.size)
+              
+              if( y+1 < grilleEnCours.tabCases.size && !vu[x][y+1] && grilleEnCours.tabCases[x][y+1].couleur == Couleur::NOIR)
                 nextChanges.push(grilleEnCours.tabCases[x][y+1])
               end
-              if( x-1 >=0)
+
+              if( x-1 >=0 && !vu[x-1][y] && grilleEnCours.tabCases[x-1][y].couleur == Couleur::NOIR)
                 nextChanges.push(grilleEnCours.tabCases[x-1][y])
               end
-              if( y-1 >=0)
+
+              if( y-1 >=0 && !vu[x][y-1] && grilleEnCours.tabCases[x][y-1].couleur == Couleur::NOIR)
                 nextChanges.push(grilleEnCours.tabCases[x][y-1])
               end
 
@@ -496,38 +496,36 @@ class Partie
           caseGrise = nil
           autreBloc = false
           plusieursVoisins = false
-          for x in 0..vu.size-1
-            for y in 0..vu.size-1
-              if(vu[x][y])
-
+          for s in 0..grilleEnCours.tabCases.size-1
+            for t in 0..grilleEnCours.tabCases.size-1
+              if(vu[s][t])
                 casesEnvironnantes = Array.new(0)
-                if( x+1 < grilleEnCours.tabCases.size)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[x+1][y])
+                if( s+1 < grilleEnCours.tabCases.size)
+                  casesEnvironnantes.push(grilleEnCours.tabCases[s+1][t])
                 end
-                if( y+1 < grilleEnCours.tabCases.size)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[x][y+1])
+                if( t+1 < grilleEnCours.tabCases.size)
+                  casesEnvironnantes.push(grilleEnCours.tabCases[s][t+1])
                 end
-                if( x-1 >=0)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[x-1][y])
+                if( s-1 >=0)
+                  casesEnvironnantes.push(grilleEnCours.tabCases[s-1][t])
                 end
-                if( y-1 >=0)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[x][y-1])
+                if( t-1 >=0)
+                  casesEnvironnantes.push(grilleEnCours.tabCases[s][t-1])
                 end
 
                 casesEnvironnantes.each{|c|
                   #regarder voisins
-                  if(caseGrise == nil )
+                  if(c.couleur == Couleur::GRIS && caseGrise == nil )
                     caseGrise = c
-                  elsif(c != caseGrise)
-                    #rien faire
+                  elsif(c.couleur == Couleur::GRIS && c != caseGrise)
                     plusieursVoisins = true
-                    x=vu.size+1
-                    y=vu.size+1
+                    s=vu.size+1
+                    t=vu.size+1
                     break
                   end
                 }
                 
-              elsif(autreBloc == false && c.couleur == Couleur::NOIR)
+              elsif(autreBloc == false && grilleEnCours.tabCases[s][t].couleur == Couleur::NOIR)
                 autreBloc = true
               end
             end
@@ -553,10 +551,6 @@ class Partie
   end
 
   def indiceExpension2Dir()
-    return nil
-  end
-
-  def indiceExpensionCachee()
     return nil
   end
 
@@ -670,24 +664,17 @@ class Partie
 end
 
 p = Partie.creer(Grille.creer(4, 
-[[Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::BLANC, 2, 0),Case.creer(Couleur::BLANC, 3, 0)],
-[Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1)],
-[Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::NOIR, 2, 2), Case.creer(Couleur::NOIR, 3, 2)],
-[Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::ILE_4, 3, 3)]
+[
+[Case.creer(Couleur::NOIR, 0, 0) ,Case.creer(Couleur::NOIR, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::GRIS, 3, 0)],
+[Case.creer(Couleur::NOIR, 0, 1) ,Case.creer(Couleur::BLANC, 1, 1),Case.creer(Couleur::BLANC, 2, 1),Case.creer(Couleur::GRIS, 3, 1)],
+[Case.creer(Couleur::NOIR, 0, 2) ,Case.creer(Couleur::BLANC, 1, 2),Case.creer(Couleur::GRIS, 2, 2),Case.creer(Couleur::GRIS, 3, 2)],
+[Case.creer(Couleur::BLANC, 0, 3) ,Case.creer(Couleur::GRIS, 1, 3),Case.creer(Couleur::GRIS, 2, 3),Case.creer(Couleur::NOIR, 3, 3)]
 ]), nil, nil)
+
 p.grilleEnCours.afficher
-print [Indice::MESSAGES[p.indiceIleComplete()[0]], p.indiceIleComplete()[1]] #fait une erreur si pas d'indice trouvé
+puts [Indice::MESSAGES[p.indiceExpensionMur()[0]], p.indiceExpensionMur()[1].positionX, p.indiceExpensionMur()[1].positionY] #fait une erreur si pas d'indice trouvé
 
-
-
-          maCellule = p.grilleEnCours.tabCases[2][2]
-          prochaineCouleur = maCellule.couleur + 1
-          if prochaineCouleur == 0
-              prochaineCouleur = Couleur::GRIS
-          end
-          p.ajouterCoup( Coup.creer( maCellule , prochaineCouleur, maCellule.couleur ) )
-          p.grilleEnCours.afficher
-          #handler.changeStatut
+#handler.changeStatut
 #Testé : INDICE_ILE_1, INDICE_EVITER_2x2, INDICE_ILE_INATTEIGNABLE, INDICE_CASE_ISOLEE,INDICE_ILE_COMPLETE
 #Moyennement testé : 
 #Pas testé : INDICE_ADJACENT, INDICE_ADJACENT_DIAG

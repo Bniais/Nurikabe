@@ -1,4 +1,5 @@
 require "./Fenetre.rb"
+require "./../Partie/Partie.rb"
 
 # TAMPORAIRE EN ATTENDANT LA CLASS CELL
 ## TAMPORAIRE EN ATTENDANT LA CLASS CELL
@@ -15,30 +16,28 @@ class Cell < Gtk::Button
         @y = y
     end
 
-    def changeStatut()
-
-        #INIT
-        if( @saveLabel == nil)
-            @saveLabel = self.children.at(0).label
-        end
-
-        if self.name == "grid-cell"
-            self.name = "grid-cell-block"
-        elsif self.name == "grid-cell-block"
-             self.name = "grid-cell-round"
-             self.children.at(0).label = "●"
-        else 
-            self.children.at(0).label = @saveLabel
-            self.children.at(0).label = @saveLabel
+    def changerStatut(color)
+        if color >= Couleur::ILE_1
             self.name = "grid-cell"
+            self.set_label(color.to_s)
+        elsif color == Couleur::NOIR
+            self.set_label("")
+            self.name = "grid-cell-block"
+        elsif color == Couleur::GRIS
+            self.set_label("")
+            self.name = "grid-cell"
+        elsif color == Couleur::BLANC
+            self.name = "grid-cell-round"
+            self.set_label("●")
         end
     end
 
     def resetCell()
         self.name = "grid-cell"
-        if ( @saveLabel != nil )
-            self.children.at(0).label = @saveLabel
+        if self.label == "●"
+            self.set_label("")
         end
+
     end
 
 end
@@ -49,19 +48,52 @@ end
 # Classe qui gere la fenetre 'A propos'
 class FenetrePartie < Fenetre
 
+    @@maPartie = nil
+    @@maGrille = nil
+    @@vraiPause = false
+
     def initialize() 
         self
     end
 
     def self.afficheToi( lastView )
-        Fenetre.set_subtitle("Partie")
-        Fenetre.add( FenetrePartie.new().creationInterface( lastView ) )
+        if @@maPartie == nil
+            @@maPartie = Partie.creer(Grille.creer(4, [[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::GRIS, 3, 0)],[Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1)], [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::GRIS, 2, 2), Case.creer(Couleur::GRIS, 3, 2)],[Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3), Case.creer(Couleur::ILE_4, 3, 3)]]), nil, nil)
+            @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
+        end
+
+        if !@@vraiPause 
+            @@maPartie.reprendrePartie
+        end
+
+        Fenetre.set_subtitle( @@maPartie.class.to_s )
+        maFenetrePartie = FenetrePartie.new()
+        Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
+
+        maFenetrePartie.threadChronometre
+        
         return self
     end
 
-    def creationInterface( lastView )
+    def threadChronometre
+        Thread.new do
+            @cpt = 0
+            while @@maPartie != nil
+                @cpt += 1
+                if @cpt%4 == 0
+                    @monTimer.name = "timer"
+                elsif @cpt%4 == 2
+                    @monTimer.name = "timer_respire"
+                end
+                @monTimer.set_markup("<span size='25000' >" + @@maPartie.chrono.getTemps + "</span>")
+                sleep(0.5)
+            end
+        end
+    end
 
+    def creationInterface( lastView )
+        puts @@maPartie
         box = Gtk::Box.new(:vertical)
        
         #TOOLBAR
@@ -69,13 +101,22 @@ class FenetrePartie < Fenetre
 
         ## Nom de la grille
         nomGrille = Gtk::Label.new()
-        nomGrille.set_markup("<span size='30000' > Grille #</span>")
-        nomGrille.set_margin_top(15)
-        nomGrille.set_margin_bottom(15)
+        nomGrille.set_markup("<span size='25000' > Grille #" + @@maPartie.grilleBase.numero.to_s + "</span>")
+        nomGrille.set_margin_top(20)
+        nomGrille.set_margin_bottom(10)
         box.add(nomGrille)#ADD
 
         #GRILLE
-        box.add(creeGrille)#ADD
+        @frameGrille = creeGrille
+        box.add(@frameGrille)#ADD
+
+        #TIMER
+        @monTimer = Gtk::Label.new()
+        setmargin(@monTimer,20,0,0,0)
+        @monTimer.halign = :center
+        @monTimer.name = "timer"
+        @monTimer.set_markup("<span size='25000' >00:00</span>")
+        box.add( @monTimer )
 
         return box
     end
@@ -89,47 +130,81 @@ class FenetrePartie < Fenetre
         
         box = Gtk::Box.new(:horizontal, 0)
         box.set_height_request(50)
-
         # creation des boutons de mode de jeu
-        btnNewFile = creeBouttonToolbar("document-new");   btnSave = creeBouttonToolbar("document-save")
-        btnSetting = creeBouttonToolbar("document-properties")
-        btnUndo = creeBouttonToolbar("undo");              btnRedo = creeBouttonToolbar("redo")
-        btnPlay = creeBouttonToolbar("player_play");       btnPause = creeBouttonToolbar("player_pause")
-        btnHelp = creeBouttonToolbar("hint");              btnInfo = creeBouttonToolbar("help-contents")
-        btnClear = creeBouttonToolbar("gtk-clear");        btnVerif = creeBouttonToolbar("gtk-apply")
+        btnNewGame = creeBouttonToolbar("add");            btnSetting = creeBouttonToolbar("document-properties")
+        @btnUndo = creeBouttonToolbar("undo");             @btnRedo = creeBouttonToolbar("redo")
+        @btnPlay = creeBouttonToolbar("player_play");      @btnPause = creeBouttonToolbar("player_pause")
+        @btnHelp = creeBouttonToolbar("hint");             @btnInfo = creeBouttonToolbar("help-contents")
+        @btnClear = creeBouttonToolbar("gtk-clear");       @btnVerif = creeBouttonToolbar("gtk-apply")
         btnQuit = creeBouttonToolbar("gtk-quit")
+        # Disable btn att bottom of game
         
+        # SET BTN ENABLE/DISABLE
+        disableBtn(@btnRedo); disableBtn(@btnUndo)
+        if @@maPartie.chrono.pause
+            @@maPartie.mettrePause; disableBtn(@btnPause); disableBtn(@btnHelp); disableBtn(@btnInfo); disableBtn(@btnClear); disableBtn(@btnVerif);
+        else 
+            disableBtn(@btnPlay)
+            activerBtnApresPause
+        end
+                
         #Gestion des evenemeents
-        btnNewFile.signal_connect("clicked"){puts "click NewFile"}
-        btnSave.signal_connect("clicked")   {puts "click Save"}
-        btnSetting.signal_connect("clicked"){ Fenetre.deleteChildren; FenetreParametre.afficheToi( FenetrePartie )  }
-        btnUndo.signal_connect("clicked")   {puts "click Undo"}
-        btnRedo.signal_connect("clicked")   {puts "click Redo"}
-        btnPlay.signal_connect("clicked")   {puts "click Play"}
-        btnPause.signal_connect("clicked")  {puts "click Pause"}
-        btnHelp.signal_connect("clicked")   { puts "click Help"}
-        btnInfo.signal_connect("clicked")   { puts "click Info" }
-        btnClear.signal_connect("clicked")  { 
-            puts "click Clear"
-            tab = @gameGrid.children
-            for i in 0...tab.length
-                tab.at(i).resetCell
+        btnNewGame.signal_connect("clicked"){puts "click NewFile"} # NOUVELLE PARTIE
+        btnSetting.signal_connect("clicked"){ Fenetre.deleteChildren; @@maPartie.mettrePause; FenetreParametre.afficheToi( FenetrePartie );   } # LANCER LES REGLAGLES
+        @btnUndo.signal_connect("clicked"){
+            enableBtn(@btnRedo) 
+            statut = @@maPartie.retourArriere
+            for i in 0...@@maGrille.size
+                for j in 0...@@maGrille[i].size
+                    @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
+                end
+            end
+            statut == false ? disableBtn(@btnUndo) : 1 ; 
+        }
+        @btnRedo.signal_connect("clicked")   {
+            puts "dans redo"
+            enableBtn(@btnUndo)
+            statut = @@maPartie.retourAvant
+            puts statut
+            for i in 0...@@maGrille.size
+                for j in 0...@@maGrille[i].size
+                    @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
+                end
+            end
+            statut == false ? disableBtn(@btnRedo) : 1 ;
+        }
+        @btnPlay.signal_connect("clicked")   { @@maPartie.reprendrePartie; enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"  }
+        @btnPause.signal_connect("clicked")  { @@maPartie.mettrePause; @@vraiPause = true; puts @@maPartie.chrono.pause; disableBtn(@btnPause); enableBtn(@btnPlay); disableBtn(@btnHelp); disableBtn(@btnInfo); disableBtn(@btnClear); disableBtn(@btnVerif); disableBtn(@btnUndo); disableBtn(@btnRedo); @frameGrille.name = "fenetreGrilleHide" }
+        @btnHelp.signal_connect("clicked")   { 
+            indice = @@maPartie.donneIndice
+            if ( indice != nil)
+                puts [Indice::MESSAGES[indice[0]],indice[1]] #fait une erreur si pas d'indice trouvé
             end
         }
-        btnVerif.signal_connect("clicked")  {puts "click Verif"}
-        btnQuit.signal_connect("clicked")   { Fenetre.deleteChildren; FenetreMenu.afficheToi( FenetrePartie ) }
+        @btnInfo.signal_connect("clicked")   { puts "click Info" }
+        @btnClear.signal_connect("clicked")  { 
+            @@maPartie.raz
+            for i in 0...@@maGrille.size
+                for j in 0...@@maGrille[i].size
+                    @@maGrille[i][j].resetCell
+                end
+            end
+            @btnUndo.name = @btnRedo.name = "btnHide"
+        }
+        @btnVerif.signal_connect("clicked")  { puts @@maPartie.verifierErreur }
+        btnQuit.signal_connect("clicked")   { @@maPartie = nil;     Fenetre.deleteChildren;     FenetreMenu.afficheToi( FenetrePartie ) }
 
   
         # attachement des boutons de mode de jeu
-        box.add(btnNewFile);    box.add(btnSave)
+        box.add(btnNewGame); 
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(btnSetting);    box.add(creerSeparatorToolbar)  # SEPARATOR
-        box.add(btnUndo);       box.add(btnRedo)
+        box.add(@btnUndo);       box.add(@btnRedo)
         box.add(creerSeparatorToolbar)  # SEPARATOR
-        box.add(btnPlay);       box.add(btnPause)
-        box.add(btnHelp);       box.add(btnInfo)
+        box.add(@btnPlay);       box.add(@btnPause)
+        box.add(@btnHelp);       box.add(@btnInfo)
         box.add(creerSeparatorToolbar)  # SEPARATOR
-        box.add(btnClear);      box.add(btnVerif)
+        box.add(@btnClear);      box.add(@btnVerif)
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(btnQuit)
 
@@ -138,18 +213,53 @@ class FenetrePartie < Fenetre
         return mainToolbar
     end
 
+    private
+    def activerBtnApresPause()
+        if @@maPartie.peutRetourArriere? 
+            enableBtn(@btnUndo)
+        end
+        if @@maPartie.peutRetourAvant?
+            enableBtn(@btnRedo)
+        end
+        enableBtn(@btnClear)
+        disableBtn(@btnPlay)
+        enableBtn(@btnHelp)
+        enableBtn(@btnInfo)
+        enableBtn(@btnVerif);
+    end
+
+    private 
+    def disableBtn(btn)
+        btn.name = "btnHide"
+        btn.set_sensitive(false)
+    end
+
+    private 
+    def enableBtn(btn)
+        btn.name = "btn-toolbar"
+        btn.set_sensitive(true)
+    end
        # Methode qui permet de cree
     # une cellule destiner a la grille
-    def creeCelluleGrille(line,colonne)
-        btn = Cell.new(:label => line.to_s)
-        btn.name = "grid-cell"
-        btn.set_x(line);btn.set_y(colonne)
-        btn.set_height_request(5)
-        btn.set_width_request(5)
+    def creeCelluleGrille(line,colonne,color)
+
+        btn = Cell.new()
+        btn.changerStatut( @@maPartie.grilleEnCours.tabCases[colonne][line].couleur )
+        btn.set_x(line);    btn.set_y(colonne); btn.set_height_request(5);  btn.set_width_request(5)
 
         btn.signal_connect "clicked" do |handler| 
-            puts "BTN CLICKED {X:#{handler.x};Y:#{handler.y}}"
-            handler.changeStatut
+            if @btnPause.name != "btnHide"
+                maCellule = @@maPartie.grilleEnCours.tabCases[handler.y][handler.x]
+                prochaineCouleur = maCellule.couleur + 1
+                if prochaineCouleur == 0
+                    prochaineCouleur = Couleur::GRIS
+                end
+                if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) ) 
+                    handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur )
+                    enableBtn(@btnUndo)
+                    disableBtn(@btnRedo)
+                end
+            end
         end
         return btn
     end
@@ -157,29 +267,31 @@ class FenetrePartie < Fenetre
 
     ## METHODE QUI CREE UNE GRILLE
     def creeGrille()
-        tmpGrilleSize = 10
 
         # Frame exterieur pour que les rebord et la meme epaisseur
         maFrame = Gtk::Frame.new()
-        maFrame.set_margin_left(70); maFrame.set_margin_right(70); maFrame.set_margin_top(30)
+        maFrame.name = "fenetreGrille"
+        maFrame.set_margin_left(70); maFrame.set_margin_right(70); maFrame.set_margin_top(15)
         
         # grid pour placer la grille de jeu dedans
         maGrille = Gtk::Grid.new()
-        maGrille.name = "grid"
         maGrille.set_height_request(671-140);   maGrille.set_width_request(671-140)
         maGrille.set_row_homogeneous(true);     maGrille.set_column_homogeneous(true)
 
-        # A MODIFIER
+        maGrilleDeJeu = @@maPartie.grilleEnCours.tabCases
         # boucle pour cree la fenetre de jeu
-        for ligne in 0..tmpGrilleSize
-            for colonne in 0..tmpGrilleSize
-                maGrille.attach( creeCelluleGrille(ligne,colonne) , ligne,colonne,1,1)
+        for ligne in 0...maGrilleDeJeu.size
+            for colonne in 0...maGrilleDeJeu.size
+                cell =  creeCelluleGrille(ligne,colonne, maGrilleDeJeu[colonne][ligne].couleur )
+                @@maGrille[colonne][ligne] = cell
+                maGrille.attach( cell , ligne,colonne,1,1)
             end
         end
         
         # ajout de la grille a la frame
+        # hide if is in pause
+        @@maPartie.chrono.pause ? maFrame.name = "fenetreGrilleHide" : self 
         maFrame.add(maGrille)
-        @gameGrid = maGrille
         return maFrame
     end
 
@@ -215,69 +327,4 @@ class FenetrePartie < Fenetre
 
 end
 
-
-=begin
-
-# Classe qui gere la fenetre pendant la partie
-class FenetrePartie < Fenetre
-
-    # Methode qui permet de mettre a jour le chrono
-    def rafraichirTemps()   
-        
-    end
-
-    # Methode qui permet de mettre a jour l'affichage d'une case donnee
-    def changerEtatCase()
-        #
-    end
-
-    
-    # Methode ..................
-    def listenerBoutonCase()
-        #
-    end
-
-    # Methode pour revenir en arriere (coup precedent)
-    def listenerBoutonPrecedent()
-        #
-    end
-
-    # Methode pour revenir au coup suivant (apres un retour en arriere, un coup suivant est sauvegarde)
-    def listenerBoutonSuivant()
-        #
-    end
-
-    # Methode qui permet de remettre a zero la grille
-    def listenerBoutonRemiseAZero()
-        #
-    end
-
-    # Methode qui permet de mettre en pause la partie
-    def listenerBoutonPause()
-        #
-    end
-
-    # Methode qui permet de quitter la partie
-    def listenerQuitterPartie()
-        #
-    end
-
-    # Methode qui permet de fermer la fenetre de jeu
-    def listenerQuitter()
-        @application.signal_connect('destroy'){
-            Gtk.main_quit()
-        }
-    end
-end
-
-
-##################### CODE DE TEST DE LA CLASSE #####################
-
-fenetrePartie= FenetrePartie.creer("Nurikabe")
-fenetrePartie.creer()
-
-
-
-Gtk.main
-
-=end
+###############################################################

@@ -13,6 +13,17 @@ separator {
     opacity: 0.3;
 }
 
+#fenetreGrille {
+    border-width: 2px;
+    border-color: black;
+    padding: 0px 0px;
+    opacity: 1.0;
+}
+
+#fenetreGrilleHide {
+    opacity: 0;
+}
+
 #sidebar * > label {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -20,10 +31,6 @@ separator {
 
 #headerbar * > label {
     color: white;
-}
-
-#titlebutton{
-    color : blueviolet;
 }
 
 #grid-cell , #grid-cell-block, #grid-cell-round{
@@ -35,9 +42,13 @@ separator {
     background-color:rgb(238, 238, 238);
 }
 
-
 #grid-cell * , #grid-cell-round *{
     color: rgb(0, 0, 0);
+    font-size: 35px;
+}
+
+#grid-cell-round * {
+    font-size: 22px;
 }
 
 #grid-cell-block {
@@ -48,25 +59,37 @@ separator {
     color:white;
 }
 
-
-#btn-toolbar{
+#btn-toolbar , #btnHide{
     background-image: none;
     border-style: none;
 }
 
-
-frame {
-    border-width: 2px;
-    border-color: black;
-    padding: 0px 0px;
-}
-
-#btnQuitter{
-    background-color: rgb(165, 40, 40);
-}
-
-#timer {
+#timer, #timer_respire {
     color: rgb(160, 63, 63);
     box-shadow: 0px 0px 5px 0.8px rgb(39, 39, 39);
     border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    transition-duration: 1s;
+    font-family: 'Abyssinica SIL', serif;
+}
+
+#timer_respire {
+    box-shadow: 0px 0px 9px 2.0px rgb(39, 39, 39);
+}
+
+
+button:hover {
+    background: rgb(255, 255, 255);
+    border-color:  rgb(22, 22, 22);
+    box-shadow: 0px 0px 5px 0.8px rgb(255, 255, 255);
+}
+
+#btnQuitter, #btnQuitter * {
+    background: rgb(243, 73, 51);
+    color:white;
+}
+
+#btnHide {
+    opacity: 0.5;
 }

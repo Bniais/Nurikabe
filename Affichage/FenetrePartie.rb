@@ -20,6 +20,7 @@ class Cell < Gtk::Button
         if color >= Couleur::ILE_1
             self.name = "grid-cell"
             self.set_label(color.to_s)
+            Gtk::StyleContext.add_class(self.style_context() , self )
         elsif color == Couleur::NOIR
             self.set_label("")
             self.name = "grid-cell-block"
@@ -125,6 +126,7 @@ class FenetrePartie < Fenetre
         @monTimer.name = "timer"
         @monTimer.set_markup("<span size='25000' >00:00</span>")
         bottomBox.add( @monTimer)
+
 
         # HELP
         @btnHelpHelp = Gtk::Button.new("Montrer Erreur")

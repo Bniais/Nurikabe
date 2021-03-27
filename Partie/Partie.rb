@@ -143,9 +143,11 @@ class Partie
 
   #revient a la dernière bonne position de jeu
   def revenirPositionBonne() #TOTEST
-    while retourArriere() == true && verifierErreur() != 0
+    while verifierErreur() != 0 && retourArriere() == true
       #Retour en arrière tant que c'est encore possible et que la grille est fausse
     end
+    @tabCoup = Array.new(0)
+    @indiceCoup = 0
   end
 
   #donne un indice sur un coup a jouer
@@ -491,7 +493,6 @@ class Partie
           plusieursVoisins = false
           for s in 0..grilleEnCours.tabCases.size-1
             for t in 0..grilleEnCours.tabCases.size-1
-              print s, t, "\n"
               if(vu[s][t])
                 casesEnvironnantes = Array.new(0)
                 if( s+1 < grilleEnCours.tabCases.size)
@@ -841,7 +842,14 @@ class Partie
   end
 end
 =begin
-p = Partie.creer(Grille.creer(4, [[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::GRIS, 3, 0)],[Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1)], [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::GRIS, 2, 2), Case.creer(Couleur::GRIS, 3, 2)],[Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3), Case.creer(Couleur::ILE_4, 3, 3)]]), nil, nil)
+p = Partie.creer(Grille.creer(4, 
+    [
+      [Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::GRIS, 3, 1)],
+      [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 3, 1)],
+      [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::GRIS, 3, 2), Case.creer(Couleur::GRIS, 3, 1)],
+      [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3), Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 3, 1)],
+      [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 3, 1)]
+    ]), nil, nil)
 
 p.grilleEnCours.afficher
 id = p.donneIndice()

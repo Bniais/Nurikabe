@@ -60,11 +60,11 @@ class FenetrePartie < Fenetre
         if @@maPartie == nil
             @@maPartie = Partie.creer(Grille.creer(4, 
             [
-              [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 3, 1)],
-              [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::BLANC, 3, 1)],
-              [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::BLANC, 3, 1)],
-              [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::NOIR, 3, 3), Case.creer(Couleur::BLANC, 3, 1)],
-              [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::BLANC, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::NOIR, 3, 1)]
+              [Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::GRIS, 4, 0)],
+              [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1)],
+              [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::GRIS, 4, 2)],
+              [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3)],
+              [Case.creer(Couleur::GRIS, 0, 4), Case.creer(Couleur::GRIS, 1, 4), Case.creer(Couleur::GRIS, 2, 4), Case.creer(Couleur::GRIS, 3, 4), Case.creer(Couleur::GRIS, 4, 4)]
             ]), nil, nil)
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
         end
@@ -106,13 +106,37 @@ class FenetrePartie < Fenetre
         @frameGrille = creeGrille
         box.add(@frameGrille)#ADD
 
-        #TIMER
+        #BOTTOM BOX
+        bottomBox = Gtk::Box.new(:horizontal)
+        bottomBox.set_homogeneous(true)
+
+        # NB ERREUR
+
+        @monCompteurErreur = Gtk::Label.new()
+        setmargin(@monCompteurErreur,20,0,0,0)
+        @monCompteurErreur.halign = :end
+        @monCompteurErreur.set_markup("<span size='25000' ></span>")
+        bottomBox.add( @monCompteurErreur ) #ADD
+
+        # TIMER
         @monTimer = Gtk::Label.new()
         setmargin(@monTimer,20,0,0,0)
         @monTimer.halign = :center
         @monTimer.name = "timer"
         @monTimer.set_markup("<span size='25000' >00:00</span>")
-        box.add( @monTimer )
+        bottomBox.add( @monTimer)
+
+        # HELP
+        @btnHelpHelp = Gtk::Button.new("Montrer Erreur")
+        @btnHelpHelp.name = "btnQuitter"
+        setmargin(@btnHelpHelp,20,0,0,0)
+        @btnHelpHelp.halign = :start
+        @btnHelpHelp.signal_connect("clicked") { donnerErreur }
+        bottomBox.add(@btnHelpHelp)
+
+        cacherNbErreur
+
+        box.add( bottomBox )#ADD
 
         return box
     end
@@ -237,6 +261,7 @@ class FenetrePartie < Fenetre
                     prochaineCouleur = Couleur::GRIS
                 end
                 if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) ) 
+                    cacherNbErreur
                     handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur )
                     enableBtn(@btnUndo)
                     enableBtn(@btnUndoUndo)
@@ -253,12 +278,16 @@ class FenetrePartie < Fenetre
     # EVENT NOUVELLE PARTIE
     private
     def nouvellePartie
+        cacherNbErreur
         puts "click NewFile"
+        @monCompteurErreur.set_markup("<span size='25000' ></span>")
     end
     
     # EVENT OUVRIR REGLAGE 
     private 
     def ouvrirReglage
+        cacherNbErreur
+        @monCompteurErreur.set_markup("<span size='25000' ></span>")
         Fenetre.deleteChildren; 
         @@maPartie.mettrePause; 
         FenetreParametre.afficheToi( FenetrePartie );
@@ -267,6 +296,7 @@ class FenetrePartie < Fenetre
     # EVENT UNDO
     private 
     def retourArriere
+        cacherNbErreur
         enableBtn(@btnRedo) 
         statut = @@maPartie.retourArriere
         for i in 0...@@maGrille.size
@@ -283,6 +313,7 @@ class FenetrePartie < Fenetre
     # EVENT REDO
     private 
     def retourAvant 
+        cacherNbErreur
         enableBtn(@btnUndo)
         enableBtn(@btnUndoUndo)
         statut = @@maPartie.retourAvant
@@ -298,6 +329,7 @@ class FenetrePartie < Fenetre
     # EVENT UNDO UNDO 
     private 
     def retourPositionBonne
+        cacherNbErreur
         @@maPartie.revenirPositionBonne
         for i in 0...@@maGrille.size
             for j in 0...@@maGrille[i].size
@@ -310,12 +342,14 @@ class FenetrePartie < Fenetre
     # EVENT PLAY 
     private 
     def play 
+        cacherNbErreur
         @@maPartie.reprendrePartie; enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
     end
 
     # EVENT PAUSE
     private
     def pause 
+        cacherNbErreur
         @@maPartie.mettrePause; 
         @@vraiPause = true; 
         enableBtn(@btnPlay);
@@ -340,6 +374,7 @@ class FenetrePartie < Fenetre
     # EVENT REMISE A ZERO
     private
     def raz 
+        cacherNbErreur
         @@maPartie.raz
         for i in 0...@@maGrille.size
             for j in 0...@@maGrille[i].size
@@ -354,15 +389,36 @@ class FenetrePartie < Fenetre
     # EVENT VERIFIER LA GRILLE
     private 
     def verifier 
-        puts @@maPartie.verifierErreur
+        compteurErreur = @@maPartie.verifierErreur
+
+        @monCompteurErreur.name = ""
+
+        if compteurErreur > 0
+            @btnHelpHelp.name = "btnQuitter"
+            @btnHelpHelp.set_sensitive(true)
+        end
+
+        if compteurErreur <= 1 
+            @monCompteurErreur.set_markup("<span size='25000' >" + compteurErreur.to_s + " erreur</span>")
+        elsif compteurErreur > 1 
+            @monCompteurErreur.set_markup("<span size='25000' >" + compteurErreur.to_s + " erreurs</span>")
+        end
     end
 
     # EVENT QUITTER LA PARTIE
     private 
     def quitter
+        cacherNbErreur
         @@maPartie = nil;     
         Fenetre.deleteChildren;    
         FenetreMenu.afficheToi( FenetrePartie )
+    end
+
+    # EVENEMENT POUR DONNER LES ERREURS
+    private
+    def donnerErreur
+        uneCase = @@maPartie.donnerErreur
+        @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red"
     end
     ##############################################################################
     ####################### FUNCTION #############################################
@@ -395,9 +451,16 @@ class FenetrePartie < Fenetre
         @dialog.add_button( "OK" , 0)
         @dialog.run
         @dialog.destroy
-        @dialog = nil
     end
     
+    ## CACHER LE NOMBRE D'ERREUR
+    private 
+    def cacherNbErreur
+        @monCompteurErreur.name = "hide"
+        @btnHelpHelp.name = "hide"
+        @btnHelpHelp.set_sensitive(false)
+    end
+
     # METHODE QUI PERMET DE GERER L ETAT DES 
     # DIFFERENTS BOUTONS AU RETOUR D UNE PAUSE 
     # OU AU DEBUT D UNE PARTIE SAUVEGARDER

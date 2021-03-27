@@ -33,13 +33,18 @@ separator {
     color: rgb(49, 49, 49);
 }
 
-#grid-cell , #grid-cell-block, #grid-cell-round{
+#grid-cell , #grid-cell-block, #grid-cell-round , #grid-cell-red{
     background-image: none;
     border-width: 1px;
     border-color: black;
     border-radius: 0px;
     color: rgb(173, 171, 171);
     background-color:rgb(238, 238, 238);
+}
+
+#grid-cell-red {
+    border-color: red;
+    border-width: 2px;
 }
 
 #grid-cell * , #grid-cell-round *{
@@ -92,4 +97,12 @@ button:hover {
 
 #btnHide {
     opacity: 0.5;
+}
+
+#hide {
+    opacity: 0.0;
+}
+
+messagedialog {
+    font-size: 20px;
 }

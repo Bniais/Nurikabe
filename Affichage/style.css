@@ -22,7 +22,9 @@ separator {
     color: white;
 }
 
-
+#titlebutton{
+    color : blueviolet;
+}
 
 #grid-cell , #grid-cell-block, #grid-cell-round{
     background-image: none;

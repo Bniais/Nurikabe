@@ -30,7 +30,7 @@ separator {
 }
 
 #headerbar * > label {
-    color: white;
+    color: rgb(49, 49, 49);
 }
 
 #grid-cell , #grid-cell-block, #grid-cell-round{

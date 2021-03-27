@@ -29,7 +29,7 @@ class Partie
     @chrono.demarrer()
 
     @grilleEnCours = Marshal.load( Marshal.dump(grille) ) #verif que ça marche
-    #@grilleEnCours.raz() #recommence à 0, ne pas faire en cas de sauvegarde trouvée
+    @grilleEnCours.raz() #recommence à 0, ne pas faire en cas de sauvegarde trouvée
   end
 
   # Methode qui creer une grille
@@ -841,14 +841,14 @@ class Partie
     return nil
   end
 end
-=begin
+begin
 p = Partie.creer(Grille.creer(4, 
     [
-      [Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::GRIS, 3, 1)],
-      [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 3, 1)],
-      [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::GRIS, 3, 2), Case.creer(Couleur::GRIS, 3, 1)],
-      [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3), Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 3, 1)],
-      [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 3, 1)]
+      [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 3, 1)],
+      [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::BLANC, 3, 1)],
+      [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::BLANC, 3, 1)],
+      [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::NOIR, 3, 3), Case.creer(Couleur::BLANC, 3, 1)],
+      [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::BLANC, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::NOIR, 3, 1)]
     ]), nil, nil)
 
 p.grilleEnCours.afficher
@@ -856,4 +856,4 @@ id = p.donneIndice()
 if(id != nil)
   print [Indice::MESSAGES[id [0]], id[1].positionX, id [1].positionY] #fait une erreur si pas d'indice trouvé
 end
-=end
+

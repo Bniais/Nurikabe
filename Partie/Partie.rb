@@ -30,6 +30,8 @@ class Partie
 
     @grilleEnCours = Marshal.load( Marshal.dump(grille) ) #verif que ça marche
     @grilleEnCours.raz() #recommence à 0, ne pas faire en cas de sauvegarde trouvée
+
+    @grilleBase.afficher
   end
 
   # Methode qui creer une grille
@@ -50,6 +52,7 @@ class Partie
       @indiceCoup -= 1 #On passe au coup précédent    
     end
 
+    @grilleBase.afficher
     return peutRetourArriere? #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
   end
 
@@ -98,7 +101,7 @@ class Partie
 
   #remet a 0 une grille
   def raz()#TOTEST
-    grilleEnCours.raz()
+    @grilleEnCours.raz()
     @indiceCoup = 0
     @tabCoup = Array.new(0);
   end
@@ -133,12 +136,13 @@ class Partie
 
   #Verifie l'erreur
   def verifierErreur()#TOTEST
-    return grilleEnCours.nbDifference(grilleBase)
+    @grilleBase.afficher
+    return @grilleEnCours.nbDifference(@grilleBase)
   end
 
   #donne la position de l'erreur au joueur
   def donnerErreur()#TOTEST
-    return grilleEnCours.firstDifference(grilleBase)
+    return @grilleEnCours.firstDifference(@grilleBase)
   end
 
   #revient a la dernière bonne position de jeu
@@ -242,18 +246,18 @@ class Partie
   end
 
   def indiceIle1()
-    for i in 0..grilleEnCours.tabCases.size-1
-      for j in 0..grilleEnCours.tabCases.size-1
-        if grilleEnCours.tabCases[i][j].couleur == Couleur::ILE_1
+    for i in 0..@grilleEnCours.tabCases.size-1
+      for j in 0..@grilleEnCours.tabCases.size-1
+        if @grilleEnCours.tabCases[i][j].couleur == Couleur::ILE_1
           #On regarde les cases autours
-          if i+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS #On ne corrige pas les erreurs donc on ne traite pas les cases blanches
+          if i+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS #On ne corrige pas les erreurs donc on ne traite pas les cases blanches
             return [Indice::INDICE_ILE_1, grilleEnCours.tabCases[i+1][j]]
-          elsif j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-            return [Indice::INDICE_ILE_1, grilleEnCours.tabCases[i][j+1]]
-          elsif j-1 >= 0 && grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-            return [Indice::INDICE_ILE_1, grilleEnCours.tabCases[i][j-1]]
-          elsif i-1 >= 0 && grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-            return [Indice::INDICE_ILE_1, grilleEnCours.tabCases[i-1][j]]
+          elsif j+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
+            return [Indice::INDICE_ILE_1, @grilleEnCours.tabCases[i][j+1]]
+          elsif j-1 >= 0 && @grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
+            return [Indice::INDICE_ILE_1, @grilleEnCours.tabCases[i][j-1]]
+          elsif i-1 >= 0 && @grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
+            return [Indice::INDICE_ILE_1, @grilleEnCours.tabCases[i-1][j]]
           end
         end
       end
@@ -265,18 +269,18 @@ class Partie
 
   #TOTEST
   def indiceIleAdjacente() #faire indice ile presque finie adjacente ?
-    for i in 0..grilleEnCours.tabCases.size-1
-      for j in 0..grilleEnCours.tabCases.size-1
-        if grilleEnCours.tabCases[i][j].estIle?()
+    for i in 0..@grilleEnCours.tabCases.size-1
+      for j in 0..@grilleEnCours.tabCases.size-1
+        if @grilleEnCours.tabCases[i][j].estIle?()
           #On regarde si les cases à 2 distances sont des iles et que la case au milieu n'est pas noire
-          if i+2 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS && grilleEnCours.tabCases[i+2][j].estIle?()
-            return [Indice::INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i+1][j]]
-          elsif j+2 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS && grilleEnCours.tabCases[i][j+2].estIle?()
-            return [Indice::INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i][j+1]]
-          elsif j-2 >= 0 && grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS && grilleEnCours.tabCases[i][j-2].estIle?()
-            return [Indice::INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i][j-1]]
-          elsif i-2 >= 0 && grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS && grilleEnCours.tabCases[i-2][j].estIle?()
-            return [Indice::INDICE_ILE_ADJACENTE, grilleEnCours.tabCases[i-1][j]]
+          if i+2 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS && @grilleEnCours.tabCases[i+2][j].estIle?()
+            return [Indice::INDICE_ILE_ADJACENTE, @grilleEnCours.tabCases[i+1][j]]
+          elsif j+2 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS && @grilleEnCours.tabCases[i][j+2].estIle?()
+            return [Indice::INDICE_ILE_ADJACENTE, @grilleEnCours.tabCases[i][j+1]]
+          elsif j-2 >= 0 && @grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS && @grilleEnCours.tabCases[i][j-2].estIle?()
+            return [Indice::INDICE_ILE_ADJACENTE, @grilleEnCours.tabCases[i][j-1]]
+          elsif i-2 >= 0 && @grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS && @grilleEnCours.tabCases[i-2][j].estIle?()
+            return [Indice::INDICE_ILE_ADJACENTE, @grilleEnCours.tabCases[i-1][j]]
           end
         end
       end
@@ -286,40 +290,40 @@ class Partie
   end
 
   def indiceIleAdjacenteDiagonal() #TOTEST
-    for i in 0..grilleEnCours.tabCases.size-1
-      for j in 0..grilleEnCours.tabCases.size-1
+    for i in 0..@grilleEnCours.tabCases.size-1
+      for j in 0..@grilleEnCours.tabCases.size-1
 
-        if grilleEnCours.tabCases[i][j].estIle?()
+        if @grilleEnCours.tabCases[i][j].estIle?()
           #On regarde si les cases à 2 distances sont des iles et que la case au milieu n'est pas noire
-          if i+1 < grilleEnCours.tabCases.size && j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i+1][j+1].estIle?()
-            if grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i+1][j]]
-            elsif grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j+1]]
+          if i+1 < @grilleEnCours.tabCases.size && j+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i+1][j+1].estIle?()
+            if @grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
+              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i+1][j]]
+            elsif @grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
+              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i][j+1]]
             end
           end
 
-          if i+1 < grilleEnCours.tabCases.size && j-1 >= 0 && grilleEnCours.tabCases[i+1][j-1].estIle?()
-            if grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i+1][j]]
-            elsif grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j-1]]
+          if i+1 < @grilleEnCours.tabCases.size && j-1 >= 0 && @grilleEnCours.tabCases[i+1][j-1].estIle?()
+            if @grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
+              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i+1][j]]
+            elsif @grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
+              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i][j-1]]
             end
           end
 
-          if i-1 >= 0 && j+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[i-1][j+1].estIle?()
-            if grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i-1][j]]
-            elsif grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j+1]]
+          if i-1 >= 0 && j+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i-1][j+1].estIle?()
+            if @grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
+              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i-1][j]]
+            elsif @grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
+              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i][j+1]]
             end
           end
 
-          if i-1 >= 0 && j-1 >= 0 && grilleEnCours.tabCases[i-1][j-1].estIle?()
-            if grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i-1][j]]
-            elsif grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, grilleEnCours.tabCases[i][j-1]]
+          if i-1 >= 0 && j-1 >= 0 && @grilleEnCours.tabCases[i-1][j-1].estIle?()
+            if @grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
+              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i-1][j]]
+            elsif @grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
+              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i][j-1]]
             end
           end
         end
@@ -330,26 +334,26 @@ class Partie
   end
 
   def indiceIleComplete()
-    for i in 0..grilleEnCours.tabCases.size-1
-      for j in 0..grilleEnCours.tabCases.size-1
-        if grilleEnCours.tabCases[i][j].estIle?()
+    for i in 0..@grilleEnCours.tabCases.size-1
+      for j in 0..@grilleEnCours.tabCases.size-1
+        if @grilleEnCours.tabCases[i][j].estIle?()
           #On regarde si l'île est complète
-          vu = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
+          vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
           
-          if nbCaseIle(grilleEnCours.tabCases[i][j], vu) == grilleEnCours.tabCases[i][j].couleur
+          if nbCaseIle(@grilleEnCours.tabCases[i][j], vu) == @grilleEnCours.tabCases[i][j].couleur
             #Parcours des cases de l'île :
             for x in 0..vu.size-1
               for y in 0..vu.size-1
                 if(vu[x][y]) 
                   #On regarde si une case frontalière à l'île est grise
-                  if x+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[x+1][y].couleur == Couleur::GRIS #On ne corrige pas les erreurs donc on ne traite pas les cases blanches
-                    return [Indice::INDICE_ILE_COMPLETE, grilleEnCours.tabCases[x+1][y]]
-                  elsif y+1 < grilleEnCours.tabCases.size && grilleEnCours.tabCases[x][y+1].couleur == Couleur::GRIS
-                    return [Indice::INDICE_ILE_COMPLETE, grilleEnCours.tabCases[x][y+1]]
-                  elsif y-1 >= 0 && grilleEnCours.tabCases[x][y-1].couleur == Couleur::GRIS
-                    return [Indice::INDICE_ILE_COMPLETE, grilleEnCours.tabCases[x][y-1]]
-                  elsif x-1 >= 0 && grilleEnCours.tabCases[x-1][y].couleur == Couleur::GRIS
-                    return [Indice::INDICE_ILE_COMPLETE, grilleEnCours.tabCases[x-1][y]]
+                  if x+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[x+1][y].couleur == Couleur::GRIS #On ne corrige pas les erreurs donc on ne traite pas les cases blanches
+                    return [Indice::INDICE_ILE_COMPLETE, @grilleEnCours.tabCases[x+1][y]]
+                  elsif y+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[x][y+1].couleur == Couleur::GRIS
+                    return [Indice::INDICE_ILE_COMPLETE, @grilleEnCours.tabCases[x][y+1]]
+                  elsif y-1 >= 0 && @grilleEnCours.tabCases[x][y-1].couleur == Couleur::GRIS
+                    return [Indice::INDICE_ILE_COMPLETE, @grilleEnCours.tabCases[x][y-1]]
+                  elsif x-1 >= 0 && @grilleEnCours.tabCases[x-1][y].couleur == Couleur::GRIS
+                    return [Indice::INDICE_ILE_COMPLETE, @grilleEnCours.tabCases[x-1][y]]
                   end
                   
                 end
@@ -372,10 +376,10 @@ class Partie
 
   def parcoursIle(vu, i, j)
     
-    if( i < 0 || j < 0 || i >= grilleEnCours.tabCases.size || j >= grilleEnCours.tabCases.size || vu[i][j] )
+    if( i < 0 || j < 0 || i >= @grilleEnCours.tabCases.size || j >= @grilleEnCours.tabCases.size || vu[i][j] )
       return 0
     else   
-      if(grilleEnCours.tabCases[i][j].couleur == Couleur::BLANC || grilleEnCours.tabCases[i][j].estIle?)
+      if(@grilleEnCours.tabCases[i][j].couleur == Couleur::BLANC || @grilleEnCours.tabCases[i][j].estIle?)
         vu[i][j] = true
         return 1 + parcoursIle(vu, i+1, j) + parcoursIle(vu, i, j+1) + parcoursIle(vu, i-1, j) + parcoursIle(vu, i, j-1)
       else
@@ -385,16 +389,16 @@ class Partie
   end
 
   def indiceCaseIsolee()
-    for i in 0..grilleEnCours.tabCases.size-1
-      for j in 0..grilleEnCours.tabCases.size-1
-        if grilleEnCours.tabCases[i][j].couleur == Couleur::GRIS
+    for i in 0..@grilleEnCours.tabCases.size-1
+      for j in 0..@grilleEnCours.tabCases.size-1
+        if @grilleEnCours.tabCases[i][j].couleur == Couleur::GRIS
           #Parcours en profondeur en cherchant une ile, si pas trouver, on a indice
           found = false
-          leeTab = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,-1)}
+          leeTab = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,-1)}
           leeTab[i][j] = 0
           lastChanges = Array.new(0)
           nextChanges = Array.new(0)
-          lastChanges.push(grilleEnCours.tabCases[i][j])
+          lastChanges.push(@grilleEnCours.tabCases[i][j])
           
           while(!lastChanges.empty? && !found)
             lastChanges.each{|c| 
@@ -406,17 +410,17 @@ class Partie
               y = c.positionX
               
               casesEnvironnantes = Array.new(0)
-              if( x+1 < grilleEnCours.tabCases.size)
-                casesEnvironnantes.push(grilleEnCours.tabCases[x+1][y])
+              if( x+1 < @grilleEnCours.tabCases.size)
+                casesEnvironnantes.push(@grilleEnCours.tabCases[x+1][y])
               end
-              if( y+1 < grilleEnCours.tabCases.size)
-                casesEnvironnantes.push(grilleEnCours.tabCases[x][y+1])
+              if( y+1 < @grilleEnCours.tabCases.size)
+                casesEnvironnantes.push(@grilleEnCours.tabCases[x][y+1])
               end
               if( x-1 >=0)
-                casesEnvironnantes.push(grilleEnCours.tabCases[x-1][y])
+                casesEnvironnantes.push(@grilleEnCours.tabCases[x-1][y])
               end
               if( y-1 >=0)
-                casesEnvironnantes.push(grilleEnCours.tabCases[x][y-1])
+                casesEnvironnantes.push(@grilleEnCours.tabCases[x][y-1])
               end
 
               casesEnvironnantes.each{ |cc|
@@ -426,7 +430,7 @@ class Partie
                     break
                   elsif(cc.couleur != Couleur::NOIR)
                     leeTab[cc.positionY][cc.positionX] = 0
-                    nextChanges.push(grilleEnCours.tabCases[cc.positionY][cc.positionX])
+                    nextChanges.push(@grilleEnCours.tabCases[cc.positionY][cc.positionX])
                   end
                 end
               }
@@ -437,7 +441,7 @@ class Partie
           end
 
           if(!found)
-            return [Indice::INDICE_CASE_ISOLEE, grilleEnCours.tabCases[i][j]]
+            return [Indice::INDICE_CASE_ISOLEE, @grilleEnCours.tabCases[i][j]]
           end
         end
       end
@@ -447,15 +451,15 @@ class Partie
 
   def indiceExpensionMur()
     #On compte le nombre de cases adjacentes gris adjacentes à un bloc noir, si une seule et il existe des cases noires non-reliée, indice
-    vuBloc = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
-    for i in 0..grilleEnCours.tabCases.size-1
-      for j in 0..grilleEnCours.tabCases.size-1
+    vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
+    for i in 0..@grilleEnCours.tabCases.size-1
+      for j in 0..@grilleEnCours.tabCases.size-1
 
-        if(!vuBloc[i][j] && grilleEnCours.tabCases[i][j].couleur == Couleur::NOIR)
-          vu = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
+        if(!vuBloc[i][j] && @grilleEnCours.tabCases[i][j].couleur == Couleur::NOIR)
+          vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
           lastChanges = Array.new(0)
           nextChanges = Array.new(0)
-          lastChanges.push(grilleEnCours.tabCases[i][j])
+          lastChanges.push(@grilleEnCours.tabCases[i][j])
           while(!lastChanges.empty?)
 
             lastChanges.each{|c| 
@@ -465,20 +469,20 @@ class Partie
               vuBloc[x][y] = true
               vu[x][y] = true
 
-              if( x+1 < grilleEnCours.tabCases.size && !vu[x+1][y] && grilleEnCours.tabCases[x+1][y].couleur == Couleur::NOIR)            
-                nextChanges.push(grilleEnCours.tabCases[x+1][y] )
+              if( x+1 < @grilleEnCours.tabCases.size && !vu[x+1][y] && @grilleEnCours.tabCases[x+1][y].couleur == Couleur::NOIR)            
+                nextChanges.push(@grilleEnCours.tabCases[x+1][y] )
               end
               
-              if( y+1 < grilleEnCours.tabCases.size && !vu[x][y+1] && grilleEnCours.tabCases[x][y+1].couleur == Couleur::NOIR)
-                nextChanges.push(grilleEnCours.tabCases[x][y+1])
+              if( y+1 < @grilleEnCours.tabCases.size && !vu[x][y+1] && @grilleEnCours.tabCases[x][y+1].couleur == Couleur::NOIR)
+                nextChanges.push(@grilleEnCours.tabCases[x][y+1])
               end
 
-              if( x-1 >=0 && !vu[x-1][y] && grilleEnCours.tabCases[x-1][y].couleur == Couleur::NOIR)
-                nextChanges.push(grilleEnCours.tabCases[x-1][y])
+              if( x-1 >=0 && !vu[x-1][y] && @grilleEnCours.tabCases[x-1][y].couleur == Couleur::NOIR)
+                nextChanges.push(@grilleEnCours.tabCases[x-1][y])
               end
 
-              if( y-1 >=0 && !vu[x][y-1] && grilleEnCours.tabCases[x][y-1].couleur == Couleur::NOIR)
-                nextChanges.push(grilleEnCours.tabCases[x][y-1])
+              if( y-1 >=0 && !vu[x][y-1] && @grilleEnCours.tabCases[x][y-1].couleur == Couleur::NOIR)
+                nextChanges.push(@grilleEnCours.tabCases[x][y-1])
               end
 
             }
@@ -491,21 +495,21 @@ class Partie
           caseGrise = nil
           autreBloc = false
           plusieursVoisins = false
-          for s in 0..grilleEnCours.tabCases.size-1
-            for t in 0..grilleEnCours.tabCases.size-1
+          for s in 0..@grilleEnCours.tabCases.size-1
+            for t in 0..@grilleEnCours.tabCases.size-1
               if(vu[s][t])
                 casesEnvironnantes = Array.new(0)
-                if( s+1 < grilleEnCours.tabCases.size)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s+1][t])
+                if( s+1 < @grilleEnCours.tabCases.size)
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s+1][t])
                 end
-                if( t+1 < grilleEnCours.tabCases.size)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s][t+1])
+                if( t+1 < @grilleEnCours.tabCases.size)
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s][t+1])
                 end
                 if( s-1 >=0)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s-1][t])
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s-1][t])
                 end
                 if( t-1 >=0)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s][t-1])
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s][t-1])
                 end
 
                 casesEnvironnantes.each{|c|
@@ -518,7 +522,7 @@ class Partie
                   end
                 }
                 
-              elsif(autreBloc == false && grilleEnCours.tabCases[s][t].couleur == Couleur::NOIR)
+              elsif(autreBloc == false && @grilleEnCours.tabCases[s][t].couleur == Couleur::NOIR)
                 autreBloc = true
               end
             end
@@ -537,15 +541,15 @@ class Partie
 
   def indiceExpensionIle()
     #On compte le nombre de cases grises adjacentes à un bloc d'ile, si une seule, indice
-    vuBloc = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
-    for i in 0..grilleEnCours.tabCases.size-1
-      for j in 0..grilleEnCours.tabCases.size-1
+    vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
+    for i in 0..@grilleEnCours.tabCases.size-1
+      for j in 0..@grilleEnCours.tabCases.size-1
 
-        if(!vuBloc[i][j] && grilleEnCours.tabCases[i][j].estIle?)
-          vu = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
+        if(!vuBloc[i][j] && @grilleEnCours.tabCases[i][j].estIle?)
+          vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
           lastChanges = Array.new(0)
           nextChanges = Array.new(0)
-          lastChanges.push(grilleEnCours.tabCases[i][j])
+          lastChanges.push(@grilleEnCours.tabCases[i][j])
           while(!lastChanges.empty?)
 
             lastChanges.each{|c| 
@@ -555,20 +559,20 @@ class Partie
               vuBloc[x][y] = true
               vu[x][y] = true
 
-              if( x+1 < grilleEnCours.tabCases.size && !vu[x+1][y] && grilleEnCours.tabCases[x+1][y].couleur == Couleur::BLANC)            
-                nextChanges.push(grilleEnCours.tabCases[x+1][y] )
+              if( x+1 < @grilleEnCours.tabCases.size && !vu[x+1][y] && @grilleEnCours.tabCases[x+1][y].couleur == Couleur::BLANC)            
+                nextChanges.push(@grilleEnCours.tabCases[x+1][y] )
               end
               
-              if( y+1 < grilleEnCours.tabCases.size && !vu[x][y+1] && grilleEnCours.tabCases[x][y+1].couleur == Couleur::BLANC)
-                nextChanges.push(grilleEnCours.tabCases[x][y+1])
+              if( y+1 < @grilleEnCours.tabCases.size && !vu[x][y+1] && @grilleEnCours.tabCases[x][y+1].couleur == Couleur::BLANC)
+                nextChanges.push(@grilleEnCours.tabCases[x][y+1])
               end
 
-              if( x-1 >=0 && !vu[x-1][y] && grilleEnCours.tabCases[x-1][y].couleur == Couleur::BLANC)
-                nextChanges.push(grilleEnCours.tabCases[x-1][y])
+              if( x-1 >=0 && !vu[x-1][y] && @grilleEnCours.tabCases[x-1][y].couleur == Couleur::BLANC)
+                nextChanges.push(@grilleEnCours.tabCases[x-1][y])
               end
 
-              if( y-1 >=0 && !vu[x][y-1] && grilleEnCours.tabCases[x][y-1].couleur == Couleur::BLANC)
-                nextChanges.push(grilleEnCours.tabCases[x][y-1])
+              if( y-1 >=0 && !vu[x][y-1] && @grilleEnCours.tabCases[x][y-1].couleur == Couleur::BLANC)
+                nextChanges.push(@grilleEnCours.tabCases[x][y-1])
               end
 
             }
@@ -581,22 +585,22 @@ class Partie
           caseGrise = nil
           plusieursVoisins = false
           nbIle = 0
-          for s in 0..grilleEnCours.tabCases.size-1
-            for t in 0..grilleEnCours.tabCases.size-1
+          for s in 0..@grilleEnCours.tabCases.size-1
+            for t in 0..@grilleEnCours.tabCases.size-1
               if(vu[s][t])
                 nbIle += 1
                 casesEnvironnantes = Array.new(0)
-                if( s+1 < grilleEnCours.tabCases.size)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s+1][t])
+                if( s+1 < @grilleEnCours.tabCases.size)
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s+1][t])
                 end
-                if( t+1 < grilleEnCours.tabCases.size)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s][t+1])
+                if( t+1 < @grilleEnCours.tabCases.size)
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s][t+1])
                 end
                 if( s-1 >=0)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s-1][t])
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s-1][t])
                 end
                 if( t-1 >=0)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s][t-1])
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s][t-1])
                 end
 
                 casesEnvironnantes.each{|c|
@@ -612,7 +616,7 @@ class Partie
             end
           end
 
-          if(nbIle < grilleEnCours.tabCases[i][j].couleur && caseGrise != nil && plusieursVoisins == false)
+          if(nbIle < @grilleEnCours.tabCases[i][j].couleur && caseGrise != nil && plusieursVoisins == false)
             return [Indice::INDICE_EXPENSION_ILE, caseGrise]
           end
 
@@ -625,15 +629,15 @@ class Partie
 
   def indiceExpension2Dir()
     #On compte le nombre de cases grises adjacentes à un bloc d'ile, si deux adjacents diagonalement, indice
-    vuBloc = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
-    for i in 0..grilleEnCours.tabCases.size-1
-      for j in 0..grilleEnCours.tabCases.size-1
+    vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
+    for i in 0..@grilleEnCours.tabCases.size-1
+      for j in 0..@grilleEnCours.tabCases.size-1
 
-        if(!vuBloc[i][j] && grilleEnCours.tabCases[i][j].estIle?)
-          vu = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
+        if(!vuBloc[i][j] && @grilleEnCours.tabCases[i][j].estIle?)
+          vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
           lastChanges = Array.new(0)
           nextChanges = Array.new(0)
-          lastChanges.push(grilleEnCours.tabCases[i][j])
+          lastChanges.push(@grilleEnCours.tabCases[i][j])
           while(!lastChanges.empty?)
 
             lastChanges.each{|c| 
@@ -643,20 +647,20 @@ class Partie
               vuBloc[x][y] = true
               vu[x][y] = true
 
-              if( x+1 < grilleEnCours.tabCases.size && !vu[x+1][y] && grilleEnCours.tabCases[x+1][y].couleur == Couleur::BLANC)            
-                nextChanges.push(grilleEnCours.tabCases[x+1][y] )
+              if( x+1 < @grilleEnCours.tabCases.size && !vu[x+1][y] && @grilleEnCours.tabCases[x+1][y].couleur == Couleur::BLANC)            
+                nextChanges.push(@grilleEnCours.tabCases[x+1][y] )
               end
               
-              if( y+1 < grilleEnCours.tabCases.size && !vu[x][y+1] && grilleEnCours.tabCases[x][y+1].couleur == Couleur::BLANC)
-                nextChanges.push(grilleEnCours.tabCases[x][y+1])
+              if( y+1 < @grilleEnCours.tabCases.size && !vu[x][y+1] && @grilleEnCours.tabCases[x][y+1].couleur == Couleur::BLANC)
+                nextChanges.push(@grilleEnCours.tabCases[x][y+1])
               end
 
-              if( x-1 >=0 && !vu[x-1][y] && grilleEnCours.tabCases[x-1][y].couleur == Couleur::BLANC)
-                nextChanges.push(grilleEnCours.tabCases[x-1][y])
+              if( x-1 >=0 && !vu[x-1][y] && @grilleEnCours.tabCases[x-1][y].couleur == Couleur::BLANC)
+                nextChanges.push(@grilleEnCours.tabCases[x-1][y])
               end
 
-              if( y-1 >=0 && !vu[x][y-1] && grilleEnCours.tabCases[x][y-1].couleur == Couleur::BLANC)
-                nextChanges.push(grilleEnCours.tabCases[x][y-1])
+              if( y-1 >=0 && !vu[x][y-1] && @grilleEnCours.tabCases[x][y-1].couleur == Couleur::BLANC)
+                nextChanges.push(@grilleEnCours.tabCases[x][y-1])
               end
 
             }
@@ -670,22 +674,22 @@ class Partie
           caseGrise2 = nil
           plusieursVoisins = false
           nbIle = 0
-          for s in 0..grilleEnCours.tabCases.size-1
-            for t in 0..grilleEnCours.tabCases.size-1
+          for s in 0..@grilleEnCours.tabCases.size-1
+            for t in 0..@grilleEnCours.tabCases.size-1
               if(vu[s][t])
                 nbIle += 1
                 casesEnvironnantes = Array.new(0)
-                if( s+1 < grilleEnCours.tabCases.size)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s+1][t])
+                if( s+1 < @grilleEnCours.tabCases.size)
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s+1][t])
                 end
-                if( t+1 < grilleEnCours.tabCases.size)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s][t+1])
+                if( t+1 < @grilleEnCours.tabCases.size)
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s][t+1])
                 end
                 if( s-1 >=0)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s-1][t])
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s-1][t])
                 end
                 if( t-1 >=0)
-                  casesEnvironnantes.push(grilleEnCours.tabCases[s][t-1])
+                  casesEnvironnantes.push(@grilleEnCours.tabCases[s][t-1])
                 end
 
                 casesEnvironnantes.each{|c|
@@ -708,14 +712,14 @@ class Partie
 
             end
           end
-          if(nbIle == grilleEnCours.tabCases[i][j].couleur-1 && caseGrise != nil  && caseGrise2 != nil && plusieursVoisins == false)
+          if(nbIle == @grilleEnCours.tabCases[i][j].couleur-1 && caseGrise != nil  && caseGrise2 != nil && plusieursVoisins == false)
             #verif elles sont diag
             if (caseGrise.positionX - caseGrise2.positionX).abs == 1 && (caseGrise.positionY - caseGrise2.positionY).abs == 1
               #verif la case adjacentes est blanche 
-              if grilleEnCours.tabCases[caseGrise.positionY][caseGrise2.positionX].couleur == Couleur::GRIS
-                return [Indice::INDICE_EXPENSION_2D, grilleEnCours.tabCases[caseGrise.positionY][caseGrise2.positionX]]
-              elsif grilleEnCours.tabCases[caseGrise2.positionY][caseGrise.positionX].couleur == Couleur::GRIS
-                return [Indice::INDICE_EXPENSION_2D, grilleEnCours.tabCases[caseGrise2.positionY][caseGrise.positionX]]
+              if @grilleEnCours.tabCases[caseGrise.positionY][caseGrise2.positionX].couleur == Couleur::GRIS
+                return [Indice::INDICE_EXPENSION_2D, @grilleEnCours.tabCases[caseGrise.positionY][caseGrise2.positionX]]
+              elsif @grilleEnCours.tabCases[caseGrise2.positionY][caseGrise.positionX].couleur == Couleur::GRIS
+                return [Indice::INDICE_EXPENSION_2D, @grilleEnCours.tabCases[caseGrise2.positionY][caseGrise.positionX]]
               end
             end 
           end
@@ -742,10 +746,10 @@ class Partie
     caseGrise = nil
     for x in i..i+1
       for y in j..j+1
-        if grilleEnCours.tabCases[x][y].couleur == Couleur::NOIR
+        if @grilleEnCours.tabCases[x][y].couleur == Couleur::NOIR
             nbNoir+=1;
-        elsif caseGrise == nil && grilleEnCours.tabCases[x][y].couleur == Couleur::GRIS
-          caseGrise = grilleEnCours.tabCases[x][y];
+        elsif caseGrise == nil && @grilleEnCours.tabCases[x][y].couleur == Couleur::GRIS
+          caseGrise = @grilleEnCours.tabCases[x][y];
         else
           return nil
         end
@@ -760,8 +764,8 @@ class Partie
   end
 
   def indiceEviter2x2()
-    for i in 0..grilleEnCours.tabCases.size-2 # -2 car inutil de regarder la dernière ligne et collone car pas de voisins droits et bas
-      for j in 0..grilleEnCours.tabCases.size-2
+    for i in 0..@grilleEnCours.tabCases.size-2 # -2 car inutil de regarder la dernière ligne et collone car pas de voisins droits et bas
+      for j in 0..@grilleEnCours.tabCases.size-2
         result = verifPresque2x2(i,j)
         if(result != nil)
           return [Indice::INDICE_EVITER_2x2, result]
@@ -774,17 +778,17 @@ class Partie
 
   def indiceInatteignable() #TOFIX
     #Parcours en largeur pour trouver le chemin le plus court de chaque case vers chaque île, ou sinon simplifier en ignorant les murs et îles mais donne moins d'indice (ou faire les deux pour mêler performance et accuracy)
-    for i in 0..grilleEnCours.tabCases.size-1
-      for j in 0..grilleEnCours.tabCases.size-1
+    for i in 0..@grilleEnCours.tabCases.size-1
+      for j in 0..@grilleEnCours.tabCases.size-1
         
-        if grilleEnCours.tabCases[j][i].couleur == Couleur::GRIS
+        if @grilleEnCours.tabCases[j][i].couleur == Couleur::GRIS
           #Parcours en profondeur en cherchant une ile, si pas trouver, on a indice
           found = false
-          leeTab = Array.new(grilleEnCours.tabCases.size) {Array.new(grilleEnCours.tabCases.size,-1)}
+          leeTab = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,-1)}
           leeTab[i][j] = 0
           lastChanges = Array.new(0)
           nextChanges = Array.new(0)
-          lastChanges.push(grilleEnCours.tabCases[i][j])
+          lastChanges.push(@grilleEnCours.tabCases[i][j])
           
           depth = 1
           while(!lastChanges.empty? && !found)
@@ -797,17 +801,17 @@ class Partie
               y = c.positionY
               
               casesEnvironnantes = Array.new(0)
-              if( x+1 < grilleEnCours.tabCases.size)
-                casesEnvironnantes.push(grilleEnCours.tabCases[x+1][y])
+              if( x+1 < @grilleEnCours.tabCases.size)
+                casesEnvironnantes.push(@grilleEnCours.tabCases[x+1][y])
               end
-              if( y+1 < grilleEnCours.tabCases.size)
-                casesEnvironnantes.push(grilleEnCours.tabCases[x][y+1])
+              if( y+1 < @grilleEnCours.tabCases.size)
+                casesEnvironnantes.push(@grilleEnCours.tabCases[x][y+1])
               end
               if( x-1 >=0)
-                casesEnvironnantes.push(grilleEnCours.tabCases[x-1][y])
+                casesEnvironnantes.push(@grilleEnCours.tabCases[x-1][y])
               end
               if( y-1 >=0)
-                casesEnvironnantes.push(grilleEnCours.tabCases[x][y-1])
+                casesEnvironnantes.push(@grilleEnCours.tabCases[x][y-1])
               end
 
               casesEnvironnantes.each{ |cc|
@@ -823,7 +827,7 @@ class Partie
                     end
                   elsif(cc.couleur != Couleur::NOIR)
                     leeTab[cc.positionX][cc.positionY] = depth
-                    nextChanges.push(grilleEnCours.tabCases[cc.positionX][cc.positionY])
+                    nextChanges.push(@grilleEnCours.tabCases[cc.positionX][cc.positionY])
                   end
                 end
               }
@@ -833,7 +837,7 @@ class Partie
             depth+=1
           end
           if(!found)
-            return [Indice::INDICE_ILE_INATTEIGNABLE, grilleEnCours.tabCases[j][i]]
+            return [Indice::INDICE_ILE_INATTEIGNABLE, @grilleEnCours.tabCases[j][i]]
           end
         end
       end
@@ -857,4 +861,5 @@ if(id != nil)
   print [Indice::MESSAGES[id [0]], id[1].positionX, id [1].positionY] #fait une erreur si pas d'indice trouvé
 end
 =end
+
 

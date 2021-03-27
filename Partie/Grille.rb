@@ -98,10 +98,15 @@ class Grille
     #renvoie le nombre d'erreur dans la grille 
     def nbDifference(grilleCmp)
 			#return int
+			puts "grille cmp : "
+			grilleCmp.afficher
+			puts"\n\n"
 			erreur = 0
 			for i in 0..tabCases.size - 1
 				for j in 0..tabCases.size - 1
-					if tabCases[i][j].couleur != grilleCmp.tabCases[i][j].couleur     
+					
+					if tabCases[i][j].couleur != Couleur::GRIS && tabCases[i][j].couleur != grilleCmp.tabCases[i][j].couleur 
+						puts "diff #{tabCases[i][j].couleur} #{grilleCmp.tabCases[i][j].couleur} at #{i} #{j}"    
 						erreur += 1                             
 					end                                                                          
 				end
@@ -116,7 +121,7 @@ class Grille
 			#return case
 			for i in 0..tabCases.size - 1
 				for j in 0..tabCases.size - 1
-					if tabCases[i][j].couleur != grille[numero].tabCases[i][j].couleur     
+					if tabCases[i][j].couleur != Couleur::GRIS && tabCases[i][j].couleur != grille[numero].tabCases[i][j].couleur     
 						return tabCases[i][j]                                                    
 					end                                                                          
 				end

@@ -28,17 +28,17 @@ class Indice
 	INDICE_ILE_INATTEIGNABLE = 13
 
 	MESSAGES = ["Message non spécifié",
-		"Cette case est adjacente à une île de valeur 1, et ne peut donc pas être blanche",
-		"Cette case est adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées",
-		"Cette case est adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées",
-		"Cette case est adjacente à une île complète, et ne peut donc pas être blanche, sinon l'île déborderait",
-		"Cette case est isolée : il n'y a aucun chemin menant vers une île",
-		"Cette case est une case d'expension obligée pour que le mur adjacent ne soit pas isolé",
-		"Cette case est une case d'expension obligée pour que les deux murs adjacents soient liés",
-		"Cette case est une case d'expension obligée pour que l'île adjacente se dévellope assez",
-		"Une case d'île présente à la diagonale ne peut s'étendre que dans deux direction et ne peut pas atteindre cette case. Dans les deux directions possible, cette case est adjacente et ne peut donc pas être blanche.",
-		"Cette case est une case d'expension obligée pour que l'île adjacente se dévellope assez",
-		"Si cette case était noire, il se formerait un bloc noir de taille 2x2",
-		"Cette case est une case d'expension obligée pour que l'île rejoigne une portion d'île qui lui appartient",
-		"Cette case est trop loin de toutes île et est donc inatteignable"]
+		"Il existe une case adjacente à une île de valeur 1, et qui ne peut donc pas être blanche",
+		"Il existe une case adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées",
+		"Il existe une case adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées",
+		"Il existe une case adjacente à une île complète, elle ne peut donc pas être blanche, sinon l'île déborderait",
+		"Il existe une case isolée : il n'y a aucun chemin qui la mène vers une île",
+		"Il existe une case d'expension obligée pour éviter qu'un mur se retrouve isolé",
+		"Il existe une case d'expension obligée pour éviter que deux murs soient séparés",
+		"Il existe une case d'expension obligée pour qu'une île se dévelloppe",
+		"Il existe une île presque terminée qui ne peut s'étendre que dans deux direction, les deux ayant une case adjacente en commun qui ne pourra donc pas être blanche",
+		"Il existe une case d'expension obligée pour qu'une île se dévellope assez",
+		"Il y a un presque un bloc de mur 2x2, la case restante ne peut donc pas être noire",
+		"Une case blanche qui n'est pas reliée à une île passe nécessairement par une case pour rejoindre l'île",
+		"Une case est trop loin de toutes île et est donc inatteignable"]
 end

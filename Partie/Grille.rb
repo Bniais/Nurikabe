@@ -117,11 +117,11 @@ class Grille
     end
 
     #renvoie la premiere erreur trouver dans la grille
-    def firstDifference()
+    def firstDifference(grilleCmp)
 			#return case
 			for i in 0..tabCases.size - 1
 				for j in 0..tabCases.size - 1
-					if tabCases[i][j].couleur != Couleur::GRIS && tabCases[i][j].couleur != grille[numero].tabCases[i][j].couleur     
+					if tabCases[i][j].couleur != Couleur::GRIS && tabCases[i][j].couleur != grilleCmp.tabCases[i][j].couleur     
 						return tabCases[i][j]                                                    
 					end                                                                          
 				end

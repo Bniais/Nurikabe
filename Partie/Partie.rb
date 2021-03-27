@@ -30,8 +30,6 @@ class Partie
 
     @grilleEnCours = Marshal.load( Marshal.dump(grille) ) #verif que ça marche
     @grilleEnCours.raz() #recommence à 0, ne pas faire en cas de sauvegarde trouvée
-
-    @grilleBase.afficher
   end
 
   # Methode qui creer une grille
@@ -51,8 +49,6 @@ class Partie
       
       @indiceCoup -= 1 #On passe au coup précédent    
     end
-
-    @grilleBase.afficher
     return peutRetourArriere? #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
   end
 
@@ -126,7 +122,7 @@ class Partie
   #affiche le nombre de blocs
   def afficherNbBloc(case_)#TOTEST
     #Dit à l'interface d'afficher
-    return nbCaseIle(case_)
+    return nbCaseIle(case_, Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)})
   end
 
   #affiche les mur de 2 bloc par 2 bloc(en carré)
@@ -136,7 +132,6 @@ class Partie
 
   #Verifie l'erreur
   def verifierErreur()#TOTEST
-    @grilleBase.afficher
     return @grilleEnCours.nbDifference(@grilleBase)
   end
 
@@ -196,7 +191,7 @@ class Partie
     end
 
     #6. Surrounded square
-    result = indiceCaseIsolee()
+    result = indiceCaseIsolee() #DOESNT ALWAYS FIND
 
     if(result != nil)
       return result
@@ -217,7 +212,7 @@ class Partie
     end
 
     #13. Unreachable square
-    result = indiceInatteignable()
+    result = indiceInatteignable()#DOESNT ALWAYS FIND
 
      if(result != nil)
       return result
@@ -545,14 +540,14 @@ class Partie
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
 
-        if(!vuBloc[i][j] && @grilleEnCours.tabCases[i][j].estIle?)
+        if(!vuBloc[i][j] && @grilleEnCours.tabCases[i][j].estIle? && nbCaseIle(@grilleEnCours.tabCases[i][j], Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)}) != @grilleEnCours.tabCases[i][j].couleur)
           vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
           lastChanges = Array.new(0)
           nextChanges = Array.new(0)
           lastChanges.push(@grilleEnCours.tabCases[i][j])
           while(!lastChanges.empty?)
 
-            lastChanges.each{|c| 
+            lastChanges.each{|c| #FAIT CRASH
               
               x = c.positionY
               y = c.positionX
@@ -578,7 +573,7 @@ class Partie
             }
 
             lastChanges = Array.new(nextChanges)
-            nextChanges = Array.new(0)
+            nextChanges = Array.new(0) #FAIT CRASH
           end
 
           #compter les voisins gris
@@ -633,7 +628,7 @@ class Partie
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
 
-        if(!vuBloc[i][j] && @grilleEnCours.tabCases[i][j].estIle?)
+        if(!vuBloc[i][j] && @grilleEnCours.tabCases[i][j].estIle?&& nbCaseIle(@grilleEnCours.tabCases[i][j], Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)}) != @grilleEnCours.tabCases[i][j].couleur)
           vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
           lastChanges = Array.new(0)
           nextChanges = Array.new(0)
@@ -782,6 +777,7 @@ class Partie
       for j in 0..@grilleEnCours.tabCases.size-1
         
         if @grilleEnCours.tabCases[j][i].couleur == Couleur::GRIS
+          print "___", i, " ", j, "\n"
           #Parcours en profondeur en cherchant une ile, si pas trouver, on a indice
           found = false
           leeTab = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,-1)}
@@ -815,7 +811,7 @@ class Partie
               end
 
               casesEnvironnantes.each{ |cc|
-
+                print  depth,":",cc.positionX, " ", cc.positionY, " ", cc.couleur, "\n"
                 if(leeTab[cc.positionX][cc.positionY] == -1)
                   
                   if(cc.estIle?)
@@ -823,9 +819,9 @@ class Partie
                     if(cc.couleur > depth)                     
                       found = true
                       break
-                    
                     end
-                  elsif(cc.couleur != Couleur::NOIR)
+                  end
+                  if(cc.couleur != Couleur::NOIR)
                     leeTab[cc.positionX][cc.positionY] = depth
                     nextChanges.push(@grilleEnCours.tabCases[cc.positionX][cc.positionY])
                   end
@@ -835,6 +831,7 @@ class Partie
             lastChanges = Array.new(nextChanges)
             nextChanges = Array.new(0)
             depth+=1
+            puts ""
           end
           if(!found)
             return [Indice::INDICE_ILE_INATTEIGNABLE, @grilleEnCours.tabCases[j][i]]
@@ -855,8 +852,17 @@ p = Partie.creer(Grille.creer(4,
       [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::BLANC, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::NOIR, 3, 1)]
     ]), nil, nil)
 
+p = Partie.creer(Grille.creer(4, 
+[
+  [Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::GRIS, 4, 0)],
+  [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1)],
+  [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::GRIS, 4, 2)],
+  [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3)],
+  [Case.creer(Couleur::GRIS, 0, 4), Case.creer(Couleur::GRIS, 1, 4), Case.creer(Couleur::GRIS, 2, 4), Case.creer(Couleur::GRIS, 3, 4), Case.creer(Couleur::GRIS, 4, 4)]
+]), nil, nil)
+
 p.grilleEnCours.afficher
-id = p.donneIndice()
+id = p.indiceInatteignable()
 if(id != nil)
   print [Indice::MESSAGES[id [0]], id[1].positionX, id [1].positionY] #fait une erreur si pas d'indice trouvé
 end

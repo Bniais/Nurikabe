@@ -491,6 +491,7 @@ class Partie
           plusieursVoisins = false
           for s in 0..grilleEnCours.tabCases.size-1
             for t in 0..grilleEnCours.tabCases.size-1
+              print s, t, "\n"
               if(vu[s][t])
                 casesEnvironnantes = Array.new(0)
                 if( s+1 < grilleEnCours.tabCases.size)
@@ -512,8 +513,6 @@ class Partie
                     caseGrise = c
                   elsif(c.couleur == Couleur::GRIS && c != caseGrise)
                     plusieursVoisins = true
-                    s=vu.size+1
-                    t=vu.size+1
                     break
                   end
                 }
@@ -842,10 +841,11 @@ class Partie
   end
 end
 =begin
-p = Partie.creer(Grille.creer(4, [[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::GRIS, 1, 0),Case.creer(Couleur::GRIS, 2, 0),Case.creer(Couleur::ILE_7, 3, 0)],[Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1)], [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::ILE_2, 2, 2), Case.creer(Couleur::GRIS, 3, 2)],[Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::ILE_2, 3, 3)]]), nil, nil)
+p = Partie.creer(Grille.creer(4, [[Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_6, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::GRIS, 3, 0)],[Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::GRIS, 3, 1)], [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::GRIS, 2, 2), Case.creer(Couleur::GRIS, 3, 2)],[Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3), Case.creer(Couleur::ILE_4, 3, 3)]]), nil, nil)
 
 p.grilleEnCours.afficher
 id = p.donneIndice()
-print [Indice::MESSAGES[id [0]], id[1].positionX, id [1].positionY] #fait une erreur si pas d'indice trouvé
-
+if(id != nil)
+  print [Indice::MESSAGES[id [0]], id[1].positionX, id [1].positionY] #fait une erreur si pas d'indice trouvé
+end
 =end

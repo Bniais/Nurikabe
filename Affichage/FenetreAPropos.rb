@@ -55,7 +55,7 @@ class FenetreAPropos < Fenetre
         textView.name = "text"
         textView.set_editable(false)
         textView.set_wrap_mode(Gtk::WrapMode::WORD)
-        textView.justification = Gtk::Justification::LEFT
+        textView.justification = Gtk::Justification::CENTER
         # textView.set_width_request(700)
         #setmargin(textView,80,15,70,70)
 

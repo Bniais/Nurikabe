@@ -54,3 +54,7 @@ button:hover {
     background-color: rgb(233, 221, 239);
 }
 
+#text, #text *{
+    background-color: rgb(49, 49, 49);
+    color: rgb(173, 171, 171);
+}

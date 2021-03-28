@@ -37,71 +37,27 @@ class FenetreAPropos < Fenetre
         # EDIT HERE
         # ADD CONTENT HERE IN BOX
         textBuff = Gtk::TextBuffer.new()
-        textBuff.text = "Le Nurikabe (d'un esprit du folklore japonais) est un puzzle japonais dans le style du sudoku.
-      Ce jeu, quelquefois appelé 'îlot dans le courant', est un puzzle à résolution binaire. On peut décider, pour chaque cellule, si elle est blanche ou noire en fonction de certaines règles.
-      Le Nurikabe est un monstre de la mythologie japonaise. Il apparaît la nuit, bloquant le passage aux personnes. Ces derniers temps, il est représenté comme un mur avec des jambes, mais sa réelle forme est un chien à trois yeux ayant les oreilles tombantes. What is Lorem Ipsum?
+        textBuff.text = "
+        Le Nurikabe (ぬりかべ) est un puzzle japonais dans le style du sudoku. Ce jeu, quelquefois appelé « ilot dans le courant », est un puzzle à résolution binaire.
 
-Lorem Ipsum is simply dummy text of the printing and
- typesetting industry. Lorem Ipsum has been the
- industry's standard dummy text ever since the 1500s,
- when an unknown printer took a galley of type and
- scrambled it to make a type specimen book. It has
- survived not only five centuries, but also the leap into
- electronic typesetting, remaining essentially unchanged.
- It was popularised in the 1960s with the release of
- Letraset sheets containing Lorem Ipsum passages, and
- more recently with desktop publishing software like
- Aldus PageMaker including versions of Lorem Ipsum.
+        On peut décider, pour chaque cellule, si elle est blanche ou noir en fonction de règles bien précises. Le puzzle se résout sur une grille rectangulaire de cellules, dont certaines contiennent des nombres. Deux cellules sont connectées si elles sont adjacentes verticalement ou horizontalement, mais pas en diagonale. Les cellules blanches constituent les îlots alors que les cellules noires connectées constituent le fleuve. Le joueur marque d'un point les cellules sans numéro dont il est sûr qu'elles appartiennent à un îlot. 
+        
+                             -----------------------------------------
 
-
-What is Lorem Ipsum?
-
-Lorem Ipsum is simply dummy text of the printing and
- typesetting industry. Lorem Ipsum has been the
- industry's standard dummy text ever since the 1500s,
- when an unknown printer took a galley of type and
- scrambled it to make a type specimen book. It has
- survived not only five centuries, but also the leap into
- electronic typesetting, remaining essentially unchanged.
- It was popularised in the 1960s with the release of
- Letraset sheets containing Lorem Ipsum passages, and
- more recently with desktop publishing software like
- Aldus PageMaker including versions of Lorem Ipsum.
-
- What is Lorem Ipsum?
-
-Lorem Ipsum is simply dummy text of the printing and
- typesetting industry. Lorem Ipsum has been the
- industry's standard dummy text ever since the 1500s,
- when an unknown printer took a galley of type and
- scrambled it to make a type specimen book. It has
- survived not only five centuries, but also the leap into
- electronic typesetting, remaining essentially unchanged.
- It was popularised in the 1960s with the release of
- Letraset sheets containing Lorem Ipsum passages, and
- more recently with desktop publishing software like
- Aldus PageMaker including versions of Lorem Ipsum. 
-
- What is Lorem Ipsum?
-
-Lorem Ipsum is simply dummy text of the printing and
- typesetting industry. Lorem Ipsum has been the
- industry's standard dummy text ever since the 1500s,
- when an unknown printer took a galley of type and
- scrambled it to make a type specimen book. It has
- survived not only five centuries, but also the leap into
- electronic typesetting, remaining essentially unchanged.
- It was popularised in the 1960s with the release of
- Letraset sheets containing Lorem Ipsum passages, and
- more recently with desktop publishing software like
- Aldus PageMaker including versions of Lorem Ipsum."
-
-        textView = Gtk::TextView.new( textBuff )
+        Le mot Nurikabe signifie « Peindre le mur » en japonais. Cela vient en réalité d’un un démon (yokai) de la folklore japonaise. 
+        
+        Sa 1ère apparition dans une peinture remonterait à ce tableau de Tourin Kanou en 1802. Selon la légende, ce Yokai apparaît la nuit, bloquant le passage aux personnes qui souhaitent travers. Impossible de le contourner ni par la gauche, ni par la droite, ni de l’escalader. Le secret pour le faire disparaît est de frapper deux fois le sol à l’aide d’un bâton. 
+        
+        Il existe deux représentations de celui ci. La représentation sous forme d’un chien à trois yeux et ayant les oreilles tombantes est la plus ancienne. La deuxième représenta est celle d’un mur avec des jambes (et quelques fois un visage).
+                
+      "
+        textView = Gtk::TextView.new(textBuff)
+        textView.name = "text"
         textView.set_editable(false)
         textView.set_wrap_mode(Gtk::WrapMode::WORD)
-        textView.justification = Gtk::JUSTIFY_CENTER
+        textView.justification = Gtk::Justification::LEFT
         # textView.set_width_request(700)
-        # setmargin(textView,80,15,70,70)
+        #setmargin(textView,80,15,70,70)
 
         scroll = Gtk::ScrolledWindow.new();
         scroll.set_size_request(200, 700)

@@ -37,7 +37,7 @@ separator {
 #grid-cell , #grid-cell-block, #grid-cell-round , #grid-cell-red{
     background-image: none;
     border-width: 1px;
-    border-color: black;
+    border-color: rgb(219, 124, 61);
     border-radius: 0px;
     color: rgb(173, 171, 171);
     background-color:rgb(238, 238, 238);
@@ -106,4 +106,17 @@ button:hover {
 
 messagedialog {
     font-size: 20px;
+}
+
+
+
+#text, #text *{
+    font-size: 20px;
+    color: rgb(60, 60, 60);
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px 30px 15px 30px ;
+}
+
+#text {
+    letter-spacing: 1px;
 }

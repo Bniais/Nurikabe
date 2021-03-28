@@ -43,13 +43,22 @@ class FenetreClassement < Fenetre
         menu = Gtk::Grid.new()
         refresh = Gtk::Button.new("Actualiser")
         choixGrille = Gtk::ComboBoxText.new()
-        menu.attach(refresh,0,0,1,1)
-        menu.attach(choixGrille,1,0,1,1)
+        choixGrille.append_text("Survie")
+        choixGrille.append_text("Contre-la-montre")
+        choixGrille.append_text("Grille #F11") # Ajouter les différentes grilles du mode Libre
+        menu.attach(refresh,0,0,2,1)
+        menu.attach(choixGrille,2,0,1,1)
+
         box.add(menu)
 
         affScores = Gtk::Grid.new()
-        rankJoueur = Gtk::TextView.new()
-        score = Gtk::TextView.new()
+        textBuff = Gtk::TextBuffer.new()
+        textBuff.text = "1337" # Ici le score du joueur
+        score = Gtk::TextView.new(textBuff)
+        affScores.attach(score,0,0,1,1)
+
+        box.add(affScores)
+
 
         return box
     end

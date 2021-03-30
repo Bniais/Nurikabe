@@ -83,6 +83,10 @@ class SauvegardesParties < Sauvegardes
         @mesParties.push(unePartie)
     end
 
+    def supprimerSauvegardePartie( unePartie )
+        @mesParties.delete(unePartie)
+    end
+
     def nbPartieSauvegarder()
         return @mesParties.size
     end

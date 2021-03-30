@@ -56,8 +56,10 @@ class Langue
     # Methode privee pour l'initialisation
     def initialize(chemin)
         @dico = Marshal.load( File.binread(chemin) )
+
 =begin
         @dico = Hash.new
+        @dico["MESSAGE_DE_VICTOIRE"] = "Félicitations ! Vous avez gagné !"
         @dico["LIBRE"] = "Libre"
         @dico["CONTRELAMONTRE"] = "Contre-La-Montre"
         @dico["SURVIE"] = "Survie"
@@ -99,7 +101,6 @@ class Langue
                 
       "
 =end
-
     end
 
     def tmpSaver (chemin)

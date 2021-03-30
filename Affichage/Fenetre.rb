@@ -10,7 +10,6 @@ class Fenetre
     @@window = nil 
     @@cssProviderDarkMode = Gtk::CssProvider.new; @@cssProviderDarkMode.load(path: "style_dark.css")
     @@lg = nil
-    @@sauvegarde = nil
 
     ## METHODE D'INITIALISATION
     private
@@ -26,7 +25,6 @@ class Fenetre
         @@window.titlebar = @@header #ADD HEADER
 
         Sauvegardes.creer("../Sauvegarde/save.dump")
-        @@sauvegarde = Sauvegardes.getInstance()
 
         Langue.creer("../Parametres/fr.txt")
         @@lg = Langue.getInstance()
@@ -36,7 +34,7 @@ class Fenetre
         Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
         Parametre.initialiseToi
 
-        Fenetre.set_modeSombre( @@sauvegarde.getSauvegardeParametre.modeSombre? )
+        Fenetre.set_modeSombre( Sauvegardes.getInstance.getSauvegardeParametre.modeSombre? )
     end
 
     ## INITALISE UNE SEUL FOIS UNE FENETRE
@@ -98,6 +96,7 @@ class Fenetre
     ## SE QUITTER
     def self.exit()
         # FAIRE DES TRUCS 
+        Sauvegardes.getInstance.sauvegarder(nil)
         Gtk.main_quit
     end
 

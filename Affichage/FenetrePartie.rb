@@ -61,15 +61,19 @@ class FenetrePartie < Fenetre
 
         if @@maPartie == nil
 
-             @@maPartie = Partie.creer(Grille.creer(10,
-             [
-               [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 4, 0)],
-               [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::BLANC, 4, 1)],
-               [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::BLANC, 4, 2)],
-               [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::NOIR, 3, 3), Case.creer(Couleur::BLANC, 4, 3)],
-               [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::BLANC, 2, 4), Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4)]
-               ]), nil, nil)
-
+            if Sauvegardes.getInstance.getSauvegardePartie.nbPartieSauvegarder > 0
+                @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie(0)
+            else
+                @@maPartie = Partie.creer(Grille.creer(10,
+                [
+                    [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 4, 0)],
+                    [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::BLANC, 4, 1)],
+                    [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::BLANC, 4, 2)],
+                    [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::NOIR, 3, 3), Case.creer(Couleur::BLANC, 4, 3)],
+                    [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::BLANC, 2, 4), Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4)]
+                ]), nil, nil)
+                Sauvegardes.getInstance.getSauvegardePartie.ajouterSauvegardePartie(@@maPartie)
+            end
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
         end
 
@@ -353,11 +357,19 @@ class FenetrePartie < Fenetre
                     elsif !@@maPartie.grilleEnCours.tabCases[handler.y][handler.x].estIle?
                         enleverNbCase()
                     end
+
+                    if @@maPartie.partieTerminee? == true 
+                        pause
+                        Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
+                        show_standard_message_dialog(@@lg.gt("MESSAGE_DE_VICTOIRE"))
+                        quitter
+                    end
+
                 else
                     afficherPortee(handler.y, handler.x)
                 end
 
-                
+
             end
         end
 
@@ -515,6 +527,7 @@ class FenetrePartie < Fenetre
     # EVENT QUITTER LA PARTIE
     private
     def quitter
+        Sauvegardes.getInstance.sauvegarder(nil)
         cacherNbErreur
         @@maPartie = nil;
         Fenetre.deleteChildren;

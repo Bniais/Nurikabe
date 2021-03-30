@@ -2,14 +2,13 @@ require './Fenetre.rb'
 
 class FenetreParametre < Fenetre
 
-    @@instanceParametre = nil
+   
     
-    def initialize() 
+    def initialize()    
         self
     end
 
     def self.afficheToi( lastView )
-        @@instanceParametre = @@sauvegarde.getSauvegardeParametre
         Fenetre.set_subtitle(@@lg.gt("PARAMETRES"))
         Fenetre.add( FenetreParametre.new().creationInterface( lastView ) )
         Fenetre.show_all
@@ -99,29 +98,29 @@ class FenetreParametre < Fenetre
         # AIDE CASES GRISES
         switch = Gtk::Switch.new()
         switch.halign = :start
-        switch.set_active( @@instanceParametre.casesGrises? )
-        switch.signal_connect('notify::active') { |s| @@instanceParametre.set_casesGrises(s.active?) }
+        switch.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
+        switch.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?) }
         box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , switch) ) #ADD
         
         # AIDE COMPTEUR D'ILOT
         switch = Gtk::Switch.new()
         switch.halign = :start
-        switch.set_active( @@instanceParametre.compteurIlots? )
-        switch.signal_connect('notify::active') { |s|  @@instanceParametre.set_compteurIlots(s.active?) }
+        switch.set_active( Sauvegardes.getInstance.getSauvegardeParametre.compteurIlots? )
+        switch.signal_connect('notify::active') { |s|  Sauvegardes.getInstance.getSauvegardeParametre.set_compteurIlots(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("COMPTEURILOTS") + " :" , switch) ) #ADD
 
         # AIDE AFFICHAGE PORTEE
         switch = Gtk::Switch.new()
         switch.halign = :start
-        switch.set_active( @@instanceParametre.affichagePortee? )
-        switch.signal_connect('notify::active') { |s| @@instanceParametre.set_affichagePortee(s.active?) }
+        switch.set_active( Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee? )
+        switch.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_affichagePortee(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("AFFICHERPORTER") + " :" , switch) ) #ADD
 
         # AIDE MURS 2x2
         switch = Gtk::Switch.new()
         switch.halign = :start
-        switch.set_active( @@instanceParametre.mur2x2? )
-        switch.signal_connect('notify::active') { |s| @@instanceParametre.set_mur2x2(s.active?) }
+        switch.set_active( Sauvegardes.getInstance.getSauvegardeParametre.mur2x2? )
+        switch.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_mur2x2(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("MURS2x2") + " :" , switch) ) #ADD
         return box
     end
@@ -172,8 +171,8 @@ class FenetreParametre < Fenetre
         # DARK MORD
         switch = Gtk::Switch.new()
         switch.halign = :start
-        switch.set_active( @@instanceParametre.modeSombre? )
-        switch.signal_connect('notify::active') { |s| @@instanceParametre.set_modeSombre(s.active?) }
+        switch.set_active( Sauvegardes.getInstance.getSauvegardeParametre.modeSombre? )
+        switch.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_modeSombre(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("MODESOMBRE") + " :" , switch) ) #ADD
 
         # CHOOSE LANGUE
@@ -191,13 +190,12 @@ class FenetreParametre < Fenetre
 
         return box
     end
+    
     ### SIGNAL CONNECTS DE INTERFACE
     # MODE SOMBRE
     private
     def switchModeSombre(s)
-        puts "here"
         Fenetre.set_modeSombre(s.active?)
-        puts "switch"
     end
 
     ###### AUDIO 

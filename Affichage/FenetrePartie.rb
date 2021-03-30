@@ -1,6 +1,5 @@
 require "./Fenetre.rb"
 require "./../Partie/Partie.rb"
-require "./../Parametres/Langue.rb"
 
 # TAMPORAIRE EN ATTENDANT LA CLASS CELL
 ## TAMPORAIRE EN ATTENDANT LA CLASS CELL
@@ -24,7 +23,7 @@ class Cell < Gtk::Button
         elsif color == Couleur::NOIR
             self.set_label("")
             self.name = "grid-cell-block"
-        elsif color == Couleur::BLANC
+        elsif color == Couleur::GRIS
             self.set_label("")
             self.name = "grid-cell"
         elsif color == Couleur::BLANC
@@ -69,7 +68,7 @@ class FenetrePartie < Fenetre
                [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::BLANC, 4, 2)],
                [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::NOIR, 3, 3), Case.creer(Couleur::BLANC, 4, 3)],
                [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::BLANC, 2, 4), Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4)]
-            ]), nil, nil)
+               ]), nil, nil)
 
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
         end
@@ -222,7 +221,6 @@ class FenetrePartie < Fenetre
 
     ## METHODE QUI CREE UNE GRILLE
     def creeGrille()
-
         # Frame exterieur pour que les rebord et la meme epaisseur
         maFrame = Gtk::Frame.new()
         maFrame.name = "fenetreGrille"
@@ -247,8 +245,79 @@ class FenetrePartie < Fenetre
         # hide if is in pause
         @@maPartie.chrono.pause ? maFrame.name = "fenetreGrilleHide" : self
         maFrame.add(maGrille)
+        
+
         return maFrame
     end
+
+    def afficherNbCase(x, y)
+        res = @@maPartie.afficherNbBloc(@@maPartie.grilleEnCours.tabCases[x][y])
+        puts "yay : ", res[0]
+        if(res[0] > 1 || @@maPartie.grilleEnCours.tabCases[x][y].estIle?)
+            #trouver île
+            found = false
+            for i in 0...@@maPartie.grilleEnCours.tabCases.size
+                for j in 0...@@maPartie.grilleEnCours.tabCases.size
+                    if res[1][i][j]
+
+                        if(@@maPartie.grilleEnCours.tabCases[i][j].estIle?)
+                            @@maGrille[i][j].name = "grid-cell-ile-appartient-ile"
+                        else
+                            @@maGrille[i][j].name = "grid-cell-appartient-ile"
+                        end
+
+
+                        if !found && @@maPartie.grilleEnCours.tabCases[i][j].estIle?
+                            puts i,j,"\n"
+                            #trouver direction popover
+                            if( i-1 < 0 || !res[1][i-1][j])
+                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
+                            elsif(i+1 >= @@maPartie.grilleEnCours.tabCases.size || !res[1][i+1][j])
+                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :bottom)
+                            elsif(j-1 < 0 || !res[1][i][j-1])
+                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :left)
+                            elsif(j+1 >= @@maPartie.grilleEnCours.tabCases.size || !res[1][i][j+1])
+                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :right)
+                            else
+                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
+                            end
+
+                            
+                            @popover.modal = false
+                            @popover.visible = true
+                            found = true
+                        end
+                    end
+                end
+            end     
+        end
+    end
+
+    def enleverNbCase()
+        if(@popover != nil)
+            @popover.visible = false
+        end
+
+        for i in 0...@@maPartie.grilleEnCours.tabCases.size
+            for j in 0...@@maPartie.grilleEnCours.tabCases.size
+                @@maGrille[i][j].changerStatut(@@maPartie.grilleEnCours.tabCases[i][j].couleur)
+            end
+        end
+    end
+
+    def afficherPortee(x, y)#TODO
+        self
+    end
+
+
+    def create_popover(parent, child, pos)
+        popover = Gtk::Popover.new(parent)
+        popover.position = pos
+        popover.add(child)
+        child.margin = 6
+        child.show
+        popover
+     end
 
     # Methode qui permet de cree
     # une cellule destiner a la grille
@@ -262,19 +331,51 @@ class FenetrePartie < Fenetre
         btn.signal_connect "clicked" do |handler|
             if @@maPartie.chrono.pause == false # PEUT INTERRAGIR UNIQUEMENT SI LA PARTIE N EST PAS EN PAUSE
                 maCellule = @@maPartie.grilleEnCours.tabCases[handler.y][handler.x]
+
+
                 prochaineCouleur = maCellule.couleur + 1
                 if prochaineCouleur == 0
-                    prochaineCouleur = Couleur::BLANC
+                    prochaineCouleur = Couleur::GRIS
                 end
-                if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
-                    cacherNbErreur
-                    handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur )
-                    enableBtn(@btnUndo)
-                    enableBtn(@btnUndoUndo)
-                    disableBtn(@btnRedo)
+
+                if(prochaineCouleur < Couleur::ILE_1 )
+                    if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
+                        cacherNbErreur
+                        handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur )
+                        enableBtn(@btnUndo)
+                        enableBtn(@btnUndoUndo)
+                        disableBtn(@btnRedo)
+                    end
+
+                    
+                    if  @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
+                        afficherNbCase(handler.y, handler.x)
+                    elsif !@@maPartie.grilleEnCours.tabCases[handler.y][handler.x].estIle?
+                        enleverNbCase()
+                    end
+                else
+                    afficherPortee(handler.y, handler.x)
                 end
+
+                
             end
         end
+
+
+
+       
+        btn.signal_connect "enter" do |handler| 
+            if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
+                afficherNbCase(handler.y, handler.x)
+            end
+        end
+
+        btn.signal_connect "leave" do |handler| 
+             if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
+                enleverNbCase()
+            end
+        end
+        
         return btn
     end
 
@@ -424,7 +525,11 @@ class FenetrePartie < Fenetre
     private
     def donnerErreur
         uneCase = @@maPartie.donnerErreur
-        @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red"
+        if uneCase.couleur == Couleur::NOIR 
+            @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red-block"
+        else
+            @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red"
+        end
     end
     ##############################################################################
     ####################### FUNCTION #############################################
@@ -521,4 +626,105 @@ class FenetrePartie < Fenetre
 
 end
 
-###############################################################
+
+=begin
+class PopoverDemo
+  def initialize(main_window)
+    @window = Gtk::Window.new(:toplevel)
+    @window.screen = main_window.screen
+    box = Gtk::Box.new(:vertical, 24)
+    box.margin = 24
+    @window.add(box)
+
+    widget = add_toggle_button_with_popover
+    box.add(widget)
+
+    widget = add_custom_entry_with_complex_popover
+    box.add(widget)
+
+    widget = add_calendar_with_popover
+    box.add(widget)
+  end
+
+  def run
+    if !@window.visible?
+      @window.show_all
+    else
+      @window.destroy
+    end
+    @window
+  end
+
+  
+
+  def create_complex_popover(parent, pos)
+    if Gtk::Version.or_later?(3, 20)
+      builder = Gtk::Builder.new(:resource => "/popover/popover.ui")
+    else
+      builder = Gtk::Builder.new(:resource => "/popover/popover-3.18.ui")
+    end
+    window = builder["window"]
+    content = window.child
+    content.parent.remove(content)
+    window.destroy
+    popover = create_popover(parent, content, pos)
+    popover
+  end
+
+  def add_toggle_button_with_popover
+    widget = Gtk::ToggleButton.new(:label => "Button")
+    label = Gtk::Label.new("This popover does not grab input")
+    toggle_popover = create_popover(widget, label, :top)
+    toggle_popover.modal = false
+    widget.signal_connect "toggled" do |button|
+      toggle_popover.visible = button.active?
+    end
+    widget
+  end
+
+  def add_custom_entry_with_complex_popover
+    widget = CustomEntry.new
+    entry_popover = create_complex_popover(widget, :top)
+    widget.set_icon_from_icon_name(:primary, "edit-find")
+    widget.set_icon_from_icon_name(:secondary, "edit-clear")
+    widget.signal_connect "icon-press" do |entry, icon_pos, _event|
+      rect = entry.get_icon_area(icon_pos)
+      entry_popover.pointing_to = rect
+      entry_popover.show
+      entry.popover_icon_pos = icon_pos
+    end
+
+    widget.signal_connect "size-allocate" do |entry, _allocation|
+      if entry_popover.visible?
+        popover_pos = entry.popover_icon_pos
+        rect = entry.get_icon_area(popover_pos)
+        entry_popover.pointing_to = rect
+      end
+    end
+    widget
+  end
+
+  def add_calendar_with_popover
+    widget = Gtk::Calendar.new
+    widget.signal_connect "day-selected" do |calendar|
+      event = Gtk.current_event
+      if event.type == :button_press
+        x, y = event.window.coords_to_parent(event.x, event.y)
+        allocation = calendar.allocation
+        rect = Gdk::Rectangle.new(x - allocation.x, y - allocation.y, 1, 1)
+        cal_popover = create_popover(calendar, CustomEntry.new, :bottom)
+        cal_popover.pointing_to = rect
+        cal_popover.show
+      end
+    end
+    widget
+  end
+end
+
+class CustomEntry < Gtk::Entry
+  attr_accessor :popover_icon_pos
+  def initialize
+    super
+  end
+end
+=end

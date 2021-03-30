@@ -34,19 +34,94 @@ separator {
     color: rgb(49, 49, 49);
 }
 
-#grid-cell , #grid-cell-block, #grid-cell-round , #grid-cell-red{
+
+/* cells */
+
+
+#grid-cell , #grid-cell-block, #grid-cell-round , #grid-cell-red, #grid-cell-red-block,#grid-cell-appartient-ile, #grid-cell-ile-appartient-ile{
     background-image: none;
     border-width: 1px;
-    border-color: rgb(219, 124, 61);
+    border-color: rgb(22, 10, 1);
     border-radius: 0px;
     color: rgb(173, 171, 171);
     background-color:rgb(238, 238, 238);
 }
 
-#grid-cell-red {
-    border-color: black;
-    border-width: 2px;
+#grid-cell-appartient-ile{
+
+    background-color:rgb(204, 212, 224);
+    font-size: 22px;
 }
+
+#grid-cell-ile-appartient-ile{
+
+    background-color:rgb(204, 212, 224);
+    font-size: 35px;
+}
+
+#grid-cell-red {
+    border-color: red;
+    border-width: 2px;
+    font-size: 22px;
+}
+
+#grid-cell-red-block {
+    border-color: red;
+    background: rgb(0, 0, 0);
+    border-width: 2px;
+    font-size: 22px;
+}
+
+/* WHITE CONDITIONAL BORDER */
+
+
+#grid-cell-red-left, #grid-cell-red-left-top, #grid-cell-red-left-bot, #grid-cell-red-left-bot-top, #grid-cell-red-top-left-right, #grid-cell-red-bot-left-right{
+    border-left-color: red;
+    border-left-width: 2px;
+}
+
+#grid-cell-red-right, #grid-cell-red-right-top, #grid-cell-red-right-bot, #grid-cell-red-right-bot-top, #grid-cell-red-top-left-right, #grid-cell-red-bot-left-right{
+    border-right-color: red;
+    border-right-width: 2px;
+}
+
+#grid-cell-red-bot, #grid-cell-red-left-bot, #grid-cell-red-right-bot, #grid-cell-red-bot-left-right, #grid-cell-red-left-bot-top, #grid-cell-red-right-bot-top{
+    border-bottom-color: red;
+    border-bottom-width: 2px;
+}
+
+#grid-cell-red-top, #grid-cell-red-left-top, #grid-cell-red-right-top, #grid-cell-red-top-left-right, #grid-cell-red-left-bot-top, #grid-cell-red-right-bot-top{
+    border-top-color: red;
+    border-top-width: 2px;
+}
+
+/* BLACK CONDITIONAL BORDER */
+
+#grid-cell-red-left, #grid-cell-red-left-top, #grid-cell-red-left-bot, #grid-cell-red-left-bot-top, #grid-cell-red-top-left-right, #grid-cell-red-bot-left-right{
+    border-left-color: red;
+    border-left-width: 2px;
+    background: rgb(0, 0, 0);
+}
+
+#grid-cell-red-right, #grid-cell-red-right-top, #grid-cell-red-right-bot, #grid-cell-red-right-bot-top, #grid-cell-red-top-left-right, #grid-cell-red-bot-left-right{
+    border-right-color: red;
+    border-right-width: 2px;
+    background: rgb(0, 0, 0);
+}
+
+#grid-cell-red-bot, #grid-cell-red-left-bot, #grid-cell-red-right-bot, #grid-cell-red-bot-left-right, #grid-cell-red-left-bot-top, #grid-cell-red-right-bot-top{
+    border-bottom-color: red;
+    border-bottom-width: 2px;
+    background: rgb(0, 0, 0);
+}
+
+#grid-cell-red-top, #grid-cell-red-left-top, #grid-cell-red-right-top, #grid-cell-red-top-left-right, #grid-cell-red-left-bot-top, #grid-cell-red-right-bot-top{
+    border-top-color: red;
+    border-top-width: 2px;
+    background: rgb(0, 0, 0);
+}
+
+/* */
 
 #grid-cell * , #grid-cell-round *{
     color: rgb(0, 0, 0);

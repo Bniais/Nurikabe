@@ -42,19 +42,6 @@ class Grille
 			end                                                                        
     end
 
-    # Methode qui permet de savoir si la grille est terminee ou non
-    def grilleTerminee?()
-			# return un booleen
-			if grille[numero].nbDifference() != 0
-				print "il reste encore #{grille[numero].nbDifference()}"
-				return false
-			else
-				print "Bravo ! Tu as réussi"
-				return true
-			end
-            
-    end
-
     # Methode qui permet d'afficher la grille
     def afficher()
 			for i in 0..tabCases.size-1
@@ -97,22 +84,34 @@ class Grille
 
     #renvoie le nombre d'erreur dans la grille 
     def nbDifference(grilleCmp)
-			#return int
-			puts "grille cmp : "
-			grilleCmp.afficher
-			puts"\n\n"
-			erreur = 0
-			for i in 0..tabCases.size - 1
-				for j in 0..tabCases.size - 1
+		#return int
+		erreur = 0
+		for i in 0..tabCases.size - 1
+			for j in 0..tabCases.size - 1
+				
+				if tabCases[i][j].couleur != Couleur::GRIS && tabCases[i][j].couleur != grilleCmp.tabCases[i][j].couleur 
 					
-					if tabCases[i][j].couleur != Couleur::GRIS && tabCases[i][j].couleur != grilleCmp.tabCases[i][j].couleur 
-						puts "diff #{tabCases[i][j].couleur} #{grilleCmp.tabCases[i][j].couleur} at #{i} #{j}"    
-						erreur += 1                             
-					end                                                                          
-				end
+					erreur += 1                             
+				end                                                                          
 			end
+		end
 
-			return erreur             
+		return erreur             
+
+    end
+
+	def nbDifferenceBrut(grilleCmp)
+		#return int
+		erreur = 0
+		for i in 0..tabCases.size - 1
+			for j in 0..tabCases.size - 1
+				if tabCases[i][j].couleur != grilleCmp.tabCases[i][j].couleur 
+					erreur += 1                             
+				end                                                                          
+			end
+		end
+
+		return erreur             
 
     end
 

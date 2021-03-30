@@ -32,6 +32,10 @@ class Partie
     @grilleEnCours.raz() #recommence à 0, ne pas faire en cas de sauvegarde trouvée
   end
 
+  def getMode()
+    @mode
+  end
+
   # Methode qui creer une grille
   def Partie.creer(grille, parametres, sauvegardes)
     new(grille, parametres, sauvegardes)

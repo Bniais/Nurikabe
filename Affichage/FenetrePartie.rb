@@ -1,5 +1,6 @@
 require "./Fenetre.rb"
 require "./../Partie/Partie.rb"
+require "./../Parametres/Langue.rb"
 
 # TAMPORAIRE EN ATTENDANT LA CLASS CELL
 ## TAMPORAIRE EN ATTENDANT LA CLASS CELL
@@ -57,14 +58,16 @@ class FenetrePartie < Fenetre
     end
 
     def self.afficheToi( lastView )
+
+        
         if @@maPartie == nil
             @@maPartie = Partie.creer(Grille.creer(4, 
             [
-              [Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::GRIS, 4, 0)],
-              [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1)],
-              [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::GRIS, 4, 2)],
-              [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3)],
-              [Case.creer(Couleur::GRIS, 0, 4), Case.creer(Couleur::GRIS, 1, 4), Case.creer(Couleur::GRIS, 2, 4), Case.creer(Couleur::GRIS, 3, 4), Case.creer(Couleur::GRIS, 4, 4)]
+              [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 4, 0)],
+              [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::BLANC, 4, 1)],
+              [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::BLANC, 4, 2)],
+              [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::NOIR, 3, 3), Case.creer(Couleur::BLANC, 4, 3)],
+              [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::BLANC, 2, 4), Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4)]
             ]), nil, nil)
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
         end
@@ -128,7 +131,7 @@ class FenetrePartie < Fenetre
 
 
         # HELP
-        @btnHelpHelp = Gtk::Button.new("Montrer Erreur")
+        @btnHelpHelp = Gtk::Button.new(:label =>"Montrer Erreur")
         @btnHelpHelp.name = "btnQuitter"
         setmargin(@btnHelpHelp,20,0,0,0)
         @btnHelpHelp.halign = :start

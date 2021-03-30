@@ -1,6 +1,7 @@
 require 'gtk3'
 require './../Parametres/Parametre.rb'
 require './../Parametres/Langue.rb'
+require './../Sauvegarde/Sauvegardes.rb'
 
 # Classe abstraite qui gere l'interface
 # DESIGN PATTERN SINGLETON
@@ -9,6 +10,7 @@ class Fenetre
     @@window = nil 
     @@cssProviderDarkMode = Gtk::CssProvider.new; @@cssProviderDarkMode.load(path: "style_dark.css")
     @@lg = nil
+    @@sauvegarde = nil
 
     ## METHODE D'INITIALISATION
     private
@@ -23,6 +25,9 @@ class Fenetre
         @@header.title = "Nurikabe"     ;       @@header.subtitle = "-"
         @@window.titlebar = @@header #ADD HEADER
 
+        Sauvegardes.creer("../Sauvegarde/save.dump")
+        @@sauvegarde = Sauvegardes.getInstance()
+
         Langue.creer("../Parametres/fr.txt")
         @@lg = Langue.getInstance()
 
@@ -30,7 +35,8 @@ class Fenetre
         provider.load(path: "style.css")
         Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
         Parametre.initialiseToi
-        Fenetre.set_modeSombre(Parametre.getInstance.modeSombre?)
+
+        Fenetre.set_modeSombre( @@sauvegarde.getSauvegardeParametre.modeSombre? )
     end
 
     ## INITALISE UNE SEUL FOIS UNE FENETRE

@@ -6,25 +6,27 @@ require '../Parametres/Parametre.rb'
 
 class Sauvegardes
 
-    ROOT_FILE = "save.dump"
-
     @@instanceSauvegarde = nil
     
 
     @sauvegardePartie = nil
     @sauvegardeParametre = nil
 
-    def initialize
-        if File.exist?(ROOT_FILE) == true 
-            @@instanceSauvegarde = Marshal.load( File.binread( ROOT_FILE ) )
+    def initialize(chemin)
+        if File.exist?(chemin) == true 
+            @@instanceSauvegarde = Marshal.load( File.binread( chemin ) )
         else
             @@instanceSauvegarde = self
         end
+
+        @@instanceSauvegarde.getSauvegardeParametre
+        @@instanceSauvegarde.getSauvegardePartie
+        @@instanceSauvegarde
     end
 
-    def self.creer
+    def self.creer(chemin)
         if @@instanceSauvegarde == nil
-            new()
+            new(chemin)
         else 
             puts "Save already exist"
         end
@@ -35,9 +37,12 @@ class Sauvegardes
     end
 
 
-
-    def sauvegarder 
-        File.open(ROOT_FILE, "wb") { |f| f.write(Marshal.dump(@@instanceSauvegarde) ) }
+    def sauvegarder(chemin)
+        if chemin == nil
+            chemin = "../Sauvegarde/save.dump"
+        end
+        puts "JE SAUVEGARDE"
+        File.open(chemin, "wb") { |f| f.write(Marshal.dump(@@instanceSauvegarde) ) }
     end
 
     def getSauvegardePartie()
@@ -48,6 +53,7 @@ class Sauvegardes
             return @sauvegardePartie
         end
     end
+
 
     def getSauvegardeParametre()
         if @sauvegardeParametre == nil
@@ -81,30 +87,6 @@ class SauvegardesParties < Sauvegardes
         return @mesParties.size
     end
 end
-
-
-
-Sauvegardes.creer()
-
-maPartie = Partie.creer(Grille.creer(4, 
-[
-  [Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::GRIS, 4, 0)],
-  [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1)],
-  [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::GRIS, 4, 2)],
-  [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3)],
-  [Case.creer(Couleur::GRIS, 0, 4), Case.creer(Couleur::GRIS, 1, 4), Case.creer(Couleur::GRIS, 2, 4), Case.creer(Couleur::GRIS, 3, 4), Case.creer(Couleur::GRIS, 4, 4)]
-]), nil, nil)
-
-Sauvegardes.getInstance().getSauvegardePartie().ajouterSauvegardePartie(  maPartie    )
-
-
-maPartie.grilleEnCours.tabCases[0][0].couleur = 18
-
-puts Sauvegardes.getInstance().getSauvegardePartie().nbPartieSauvegarder
-
-puts Sauvegardes.getInstance().getSauvegardeParametre.modeSombre?
-
-Sauvegardes.getInstance.sauvegarder()
 
 
 

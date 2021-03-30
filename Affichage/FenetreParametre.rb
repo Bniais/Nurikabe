@@ -9,7 +9,7 @@ class FenetreParametre < Fenetre
     end
 
     def self.afficheToi( lastView )
-        @@instanceParametre = Parametre.getInstance()
+        @@instanceParametre = @@sauvegarde.getSauvegardeParametre
         Fenetre.set_subtitle(@@lg.gt("PARAMETRES"))
         Fenetre.add( FenetreParametre.new().creationInterface( lastView ) )
         Fenetre.show_all

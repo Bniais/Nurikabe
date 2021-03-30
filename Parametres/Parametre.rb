@@ -52,9 +52,8 @@ class Parametre
     end
     # Methode qui permet de set le parametre case grise
     def set_casesGrises(statut)
-        puts statut
         @casesGrises = statut
-        Sauvegardes.getInstance.sauvegarder()
+        Sauvegardes.getInstance.sauvegarder(nil)
     end
 
     # Methode qui permet de savoir si l'aide visuelle 'compteur ilots' est activee
@@ -64,7 +63,7 @@ class Parametre
     # Methode qui permet de set le parametre compteur ilots
     def set_compteurIlots(statut)
         @compteurIlot = statut
-        Sauvegardes.getInstance.sauvegarder()
+        Sauvegardes.getInstance.sauvegarder(nil)
     end
 
     # Methode qui permet de savoir si l'aide visuelle 'afficher portee' est activee
@@ -74,7 +73,7 @@ class Parametre
     # Methode qui permet de set le parametre affichage portee
     def set_affichagePortee(statut)
         @affichagePortee = statut
-        Sauvegardes.getInstance.sauvegarder()
+        Sauvegardes.getInstance.sauvegarder(nil)
     end
 
     # Methode qui permet de savoir si l'aide visuelle 'afficher les murs 2x2' est activee
@@ -83,9 +82,8 @@ class Parametre
     end
     # Methode qui permet de set le parametre murs 2x2
     def set_mur2x2(statut)
-        puts "je suis la"
         @murs2x2 = statut
-        Sauvegardes.getInstance.sauvegarder()
+        Sauvegardes.getInstance.sauvegarder(nil)
     end
 
     # Methode qui permet de savoir si
@@ -96,7 +94,7 @@ class Parametre
     def set_modeSombre(statut)
         @modeSombre = statut
         Fenetre.set_modeSombre(@modeSombre)
-        Sauvegardes.getInstance.sauvegarder()
+        Sauvegardes.getInstance.sauvegarder(nil)
     end
 
     # Methode qui permet de connaitre le comportement de la souris

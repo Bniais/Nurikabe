@@ -1,5 +1,6 @@
 require 'gtk3'
 require './../Parametres/Parametre.rb'
+require './../Parametres/Langue.rb'
 
 # Classe abstraite qui gere l'interface
 # DESIGN PATTERN SINGLETON
@@ -7,6 +8,7 @@ class Fenetre
 
     @@window = nil 
     @@cssProviderDarkMode = Gtk::CssProvider.new; @@cssProviderDarkMode.load(path: "style_dark.css")
+    @@lg = nil
 
     ## METHODE D'INITIALISATION
     private
@@ -20,6 +22,9 @@ class Fenetre
         @@header.show_close_button = true;      @@header.name = "headerbar" #FOR CSS
         @@header.title = "Nurikabe"     ;       @@header.subtitle = "-"
         @@window.titlebar = @@header #ADD HEADER
+
+        Langue.creer("../Parametres/fr.txt")
+        @@lg = Langue.getInstance()
 
         provider = Gtk::CssProvider.new
         provider.load(path: "style.css")

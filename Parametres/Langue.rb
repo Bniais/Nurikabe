@@ -1,7 +1,7 @@
 # Classe qui gere les langues
 
 LIBRE = 1
-CONTRE-LA-MONTRE = 2
+CONTRELAMONTRE = 2
 SURVIE = 3
 TUTORIEL = 4
 CLASSEMENT = 5
@@ -37,19 +37,62 @@ class Langue
     attr_reader :dico
     private_class_method :new
 
+    @@monInstance = nil
+
     # Methode qui permet de creer une grille
     def Langue.creer(chemin)
-        new(chemin)
+        if (@@monInstance == nil)
+          @@monInstance = new(chemin)
+        else 
+          puts "instance already exist"
+          @@monInstance
+        end
+    end
+
+    def self.getInstance()
+      return @@monInstance
     end
 
     # Methode privee pour l'initialisation
     def initialize(chemin)
-        @repertoireLangue = chemin
-        @dico = File.readlines(@repertoireLangue)
+        @dico = Hash.new
+        @dico["LIBRE"] = "Libre"
+        @dico["CONTRELAMONTRE"] = "Contre-La-Montre"
+        @dico["SURVIE"] = "Survie"
+        @dico["TUTORIEL"] = "Tutoriel"
+        @dico["CLASSEMENT"] = "Classement"
+        @dico["PARAMETRES"] = "Parametres"
+        @dico["A_PROPOS"] = "A Propos"
+        @dico["QUITTER"] = "Quitter"
+        @dico["FACILE"] = "Facile"
+        @dico["MOYEN"] = "Moyen"
+        @dico["DIFFICILE"] = "Difficle"
+        @dico["MEILLEUR_SCORE"] = "Meilleur Score"
+        @dico["ACTUALISER"] = "Actueliser"
+        @dico["RETOUR"] = "Retour"
+        @dico["JEU"] = "Jeu"
+        @dico["UTILISATEUR"] = "Utilisateur"
+        @dico["INTERFACE"] = "Interface"
+        @dico["AUDIO"] = "Audio"
+        @dico["CASES_GRISES"] = "Cases Grises"
+        @dico["COMPTEUR_D_ILOT"] = "Compteur d'Ilot"
+        @dico["MURS_2X2"] = "Murs 2x2"
+        @dico["MODE_SOMBRE"] = "Mode sombre"
+        @dico["CHOISIR_UNE_LANGUE"] = "Choisir une langue"
+        @dico["IMPORTER_UNE_LANGUE"] = "Importer une langue"
+        @dico["GRILLE"] = "Grille"
+        @dico["PARTIE"] = "Partie"
     end
 
-    def get_text(indice)
-      return @dico[indice]
+    def tmpSaver (chemin)
+      File.open(chemin, "w") { |f| f.write Marshal.dump(@dico) }
+    end
+
+    def gt(text)
+      if ( @dico[text] == nil )
+        return "UNDEF " + text.to_s
+      end
+      return @dico[text]
     end
 
     def to_s()
@@ -57,4 +100,5 @@ class Langue
     end
 end
 
-langue = Langue.creer("fr.txt")
+#Langue.creer("../Parametres/fr.txt")
+#Langue.getInstance.tmpSaver("../Parametres/FR_fr.dump")

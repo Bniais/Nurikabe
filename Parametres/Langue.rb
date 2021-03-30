@@ -55,6 +55,8 @@ class Langue
 
     # Methode privee pour l'initialisation
     def initialize(chemin)
+        @dico = Marshal.load( File.binread(chemin) )
+=begin
         @dico = Hash.new
         @dico["LIBRE"] = "Libre"
         @dico["CONTRELAMONTRE"] = "Contre-La-Montre"
@@ -82,10 +84,27 @@ class Langue
         @dico["IMPORTER_UNE_LANGUE"] = "Importer une langue"
         @dico["GRILLE"] = "Grille"
         @dico["PARTIE"] = "Partie"
+        @dico["APROPOSCONTENT"] = "
+        Le Nurikabe (ぬりかべ) est un puzzle japonais dans le style du sudoku. Ce jeu, quelquefois appelé « ilot dans le courant », est un puzzle à résolution binaire.
+
+        On peut décider, pour chaque cellule, si elle est blanche ou noir en fonction de règles bien précises. Le puzzle se résout sur une grille rectangulaire de cellules, dont certaines contiennent des nombres. Deux cellules sont connectées si elles sont adjacentes verticalement ou horizontalement, mais pas en diagonale. Les cellules blanches constituent les îlots alors que les cellules noires connectées constituent le fleuve. Le joueur marque d'un point les cellules sans numéro dont il est sûr qu'elles appartiennent à un îlot. 
+        
+                             -----------------------------------------
+
+        Le mot Nurikabe signifie « Peindre le mur » en japonais. Cela vient en réalité d’un un démon (yokai) de la folklore japonaise. 
+        
+        Sa 1ère apparition dans une peinture remonterait à ce tableau de Tourin Kanou en 1802. Selon la légende, ce Yokai apparaît la nuit, bloquant le passage aux personnes qui souhaitent travers. Impossible de le contourner ni par la gauche, ni par la droite, ni de l’escalader. Le secret pour le faire disparaît est de frapper deux fois le sol à l’aide d’un bâton. 
+        
+        Il existe deux représentations de celui ci. La représentation sous forme d’un chien à trois yeux et ayant les oreilles tombantes est la plus ancienne. La deuxième représenta est celle d’un mur avec des jambes (et quelques fois un visage).
+                
+      "
+=end
+
     end
 
     def tmpSaver (chemin)
-      File.open(chemin, "w") { |f| f.write Marshal.dump(@dico) }
+      File.open(chemin, "wb") { |f| f.write(Marshal.dump(@dico) ) }
+      @dico =  Marshal.load( File.binread(chemin) )
     end
 
     def gt(text)
@@ -100,5 +119,5 @@ class Langue
     end
 end
 
-#Langue.creer("../Parametres/fr.txt")
+Langue.creer("../Parametres/FR_fr.dump")
 #Langue.getInstance.tmpSaver("../Parametres/FR_fr.dump")

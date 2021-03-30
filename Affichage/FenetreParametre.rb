@@ -10,7 +10,7 @@ class FenetreParametre < Fenetre
 
     def self.afficheToi( lastView )
         @@instanceParametre = Parametre.getInstance()
-        Fenetre.set_subtitle("Parametre")
+        Fenetre.set_subtitle(@@lg.gt("PARAMETRES"))
         Fenetre.add( FenetreParametre.new().creationInterface( lastView ) )
         Fenetre.show_all
         return self
@@ -23,7 +23,7 @@ class FenetreParametre < Fenetre
         # BACK BUTTON
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
-        btnBack = Gtk::Button.new(:label => "BACK")
+        btnBack = Gtk::Button.new(:label => @@lg.gt("RETOUR"))
         btnBack.name = "btnBack"
         btnBack.signal_connect("clicked") { Fenetre.remove(box) ; lastView.afficheToi( nil ) ; }
         lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
@@ -58,28 +58,28 @@ class FenetreParametre < Fenetre
 
         box.pack_start(stack, :expand => true, :fill => true, :padding => 0)
 
-        pages = ["Jeu","Utilisateur","Interface","Audio"]
+        pages = [@@lg.gt("JEU"),@@lg.gt("UTILISATEUR"),@@lg.gt("INTERFACE"),@@lg.gt("AUDIO")]
 
         # Jeu
-        title = "Jeu"
+        title = @@lg.gt("JEU")
         vueJeu = creationVueJeu
         stack.add_named(vueJeu, title) # ADD NAMED CHILDREN
         stack.child_set_property(vueJeu, "title", title) # SET A TITLE TO A CHILDREN
 
         # Utilisateur
-        title = "Utilisateur"
+        title = @@lg.gt("UTILISATEUR")
         vueUtilisateur = creationVueUtilisateur
         stack.add_named(vueUtilisateur, title)
         stack.child_set_property(vueUtilisateur, "title", title)   
        
         # Interface
-        title = "Interface"
+        title = @@lg.gt("INTERFACE")
         vueInterface = creationVueInterface
         stack.add_named(vueInterface, title)
         stack.child_set_property(vueInterface, "title", title)   
 
         # AUDIO
-        title = "Audio"
+        title = @@lg.gt("AUDIO")
         vueAudio = creationVueAudio
         stack.add_named(vueAudio, title)
         stack.child_set_property(vueAudio, "title", title)
@@ -91,7 +91,7 @@ class FenetreParametre < Fenetre
     def creationVueJeu
         box = Gtk::Box.new(:vertical)
         title = Gtk::Label.new()
-        title.set_markup("<span size='25000'>Jeu</span>")
+        title.set_markup("<span size='25000'>" + @@lg.gt("JEU") + "</span>")
         setmargin(title,15,10,0,0)
 
         box.add(title) #ADD
@@ -101,28 +101,28 @@ class FenetreParametre < Fenetre
         switch.halign = :start
         switch.set_active( @@instanceParametre.casesGrises? )
         switch.signal_connect('notify::active') { |s| @@instanceParametre.set_casesGrises(s.active?) }
-        box.add( creationBoxVerticalPourVue("Cases grises :" , switch) ) #ADD
+        box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , switch) ) #ADD
         
         # AIDE COMPTEUR D'ILOT
         switch = Gtk::Switch.new()
         switch.halign = :start
         switch.set_active( @@instanceParametre.compteurIlots? )
         switch.signal_connect('notify::active') { |s|  @@instanceParametre.set_compteurIlots(s.active?) }
-        box.add( creationBoxVerticalPourVue("Compteur d'ilot :" , switch) ) #ADD
+        box.add( creationBoxVerticalPourVue(@@lg.gt("COMPTEURILOTS") + " :" , switch) ) #ADD
 
         # AIDE AFFICHAGE PORTEE
         switch = Gtk::Switch.new()
         switch.halign = :start
         switch.set_active( @@instanceParametre.affichagePortee? )
         switch.signal_connect('notify::active') { |s| @@instanceParametre.set_affichagePortee(s.active?) }
-        box.add( creationBoxVerticalPourVue("Affichage portee :" , switch) ) #ADD
+        box.add( creationBoxVerticalPourVue(@@lg.gt("AFFICHERPORTER") + " :" , switch) ) #ADD
 
         # AIDE MURS 2x2
         switch = Gtk::Switch.new()
         switch.halign = :start
         switch.set_active( @@instanceParametre.mur2x2? )
         switch.signal_connect('notify::active') { |s| @@instanceParametre.set_mur2x2(s.active?) }
-        box.add( creationBoxVerticalPourVue("Murs 2x2 :" , switch) ) #ADD
+        box.add( creationBoxVerticalPourVue(@@lg.gt("MURS2x2") + " :" , switch) ) #ADD
         return box
     end
     ### SIGNAL CONNECTS DE JEU
@@ -152,7 +152,7 @@ class FenetreParametre < Fenetre
     def creationVueUtilisateur
         box = Gtk::Box.new(:vertical)
         title = Gtk::Label.new()
-        title.set_markup("<span size='25000'>Utilisateur</span>")
+        title.set_markup("<span size='25000'>"+ @@lg.gt("UTILISATEUR") +"</span>")
         setmargin(title,15,10,0,0)
         box.add(title)
         return box
@@ -164,7 +164,7 @@ class FenetreParametre < Fenetre
     def creationVueInterface
         box = Gtk::Box.new(:vertical)
         title = Gtk::Label.new()
-        title.set_markup("<span size='25000'>Interface</span>")
+        title.set_markup("<span size='25000'>"+@@lg.gt("INTERFACE")+"</span>")
         setmargin(title,15,10,0,0)
 
         box.add(title) #ADD
@@ -174,20 +174,20 @@ class FenetreParametre < Fenetre
         switch.halign = :start
         switch.set_active( @@instanceParametre.modeSombre? )
         switch.signal_connect('notify::active') { |s| @@instanceParametre.set_modeSombre(s.active?) }
-        box.add( creationBoxVerticalPourVue("Mode sombre :" , switch) ) #ADD
+        box.add( creationBoxVerticalPourVue(@@lg.gt("MODESOMBRE") + " :" , switch) ) #ADD
 
         # CHOOSE LANGUE
         combo = Gtk::ComboBoxText.new()
         combo.halign = :fill
         combo.append("FR_fr","Francais")
         combo.set_active(0)
-        box.add( creationBoxVerticalPourVue("Choisir une langue :" , combo) ) #ADD
+        box.add( creationBoxVerticalPourVue(@@lg.gt("CHOISIRLANGUE") + " :" , combo) ) #ADD
         
         # IMPORT LANGUE
-        picker = Gtk::FileChooserButton.new("Pick a file", :open)
+        picker = Gtk::FileChooserButton.new(@@lg.gt("CHOISIRFICHIER"), :open)
         picker.halign = :fill
         picker.local_only = true
-        box.add( creationBoxVerticalPourVue("Importer une langue :" , picker) ) #ADD
+        box.add( creationBoxVerticalPourVue(@@lg.gt("IMPORTERLANGUE") + " :" , picker) ) #ADD
 
         return box
     end
@@ -205,7 +205,7 @@ class FenetreParametre < Fenetre
     def creationVueAudio
         box = Gtk::Box.new(:vertical)
         title = Gtk::Label.new()
-        title.set_markup("<span size='25000'>Audio</span>")
+        title.set_markup("<span size='25000'>" + @@lg.gt("AUDIO") + "</span>")
         setmargin(title,15,10,0,0)
         box.add(title)
         return box

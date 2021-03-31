@@ -340,7 +340,46 @@ class FenetrePartie < Fenetre
     end
 
     def afficherPortee(x, y)#TODO
-        self
+        @porteeAffichee = true
+        enleverNbCase
+        result = @@maPartie.porteeIle(x, y)
+
+        for i in 0...@@maPartie.grilleEnCours.tabCases.size
+            for j in 0...@@maPartie.grilleEnCours.tabCases.size
+                if(result[i][j])
+                    if(@@maGrille[i][j].name.include?("block"))
+                        if(@@maGrille[i][j].name.include?("red"))
+                            @@maGrille[i][j].name = "grid-cell-portee-ile-black-red"
+                        else
+                            @@maGrille[i][j].name = "grid-cell-portee-ile-black"
+                        end
+                    elsif @@maPartie.grilleEnCours.tabCases[i][j].estIle? 
+                        
+                        
+                            @@maGrille[i][j].name = "grid-cell-portee-ile-ile"
+                        
+                    else
+                        if(@@maGrille[i][j].name.include?("red"))
+                            @@maGrille[i][j].name = "grid-cell-portee-ile-red"
+                        else
+                            @@maGrille[i][j].name = "grid-cell-portee-ile"
+                        end
+
+                      
+                    end
+                end
+            end
+        end
+
+        
+    end
+
+    def enleverPortee(x, y)
+        @porteeAffichee = false
+        enleverNbCase
+        if(x!=nil)
+            afficherNbCase(x,y)
+        end
     end
 
 
@@ -373,6 +412,7 @@ class FenetrePartie < Fenetre
                 end
 
                 if(prochaineCouleur < Couleur::ILE_1 )
+                    enleverPortee(nil, nil)
                     if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
                         cacherNbErreur
                         handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur , true)
@@ -394,12 +434,15 @@ class FenetrePartie < Fenetre
                         show_standard_message_dialog(@@lg.gt("MESSAGE_DE_VICTOIRE"))
                         quitter
                     end
-
+                    
                 else
-                    afficherPortee(handler.y, handler.x)
+                    if(!@porteeAffichee)
+                        afficherPortee(handler.y, handler.x)
+                    else
+                        enleverPortee(handler.y, handler.x)
+                    end
                 end
-
-
+                
             end
         end
 
@@ -407,7 +450,7 @@ class FenetrePartie < Fenetre
 
        
         btn.signal_connect "enter" do |handler| 
-            if @@maPartie.chrono.pause == false
+            if @@maPartie.chrono.pause == false && !@porteeAffichee
                 if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
                     afficherNbCase(handler.y, handler.x)
                 end
@@ -415,10 +458,11 @@ class FenetrePartie < Fenetre
         end
 
         btn.signal_connect "leave" do |handler| 
-            if @@maPartie.chrono.pause == false
+            if @@maPartie.chrono.pause == false && !@porteeAffichee
                 if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
                     enleverNbCase()
                 end
+
             end
         end
         
@@ -431,9 +475,7 @@ class FenetrePartie < Fenetre
     # EVENT NOUVELLE PARTIE
     private
     def nouvellePartie
-        cacherNbErreur
-        puts "click NewFile"
-        @monCompteurErreur.set_markup("<span size='25000' ></span>")
+
     end
 
     # EVENT OUVRIR REGLAGE
@@ -449,6 +491,7 @@ class FenetrePartie < Fenetre
     # EVENT UNDO
     private
     def retourArriere
+        enleverPortee(nil, nil)
         cacherNbErreur
         enableBtn(@btnRedo)
         statut = @@maPartie.retourArriere
@@ -462,6 +505,7 @@ class FenetrePartie < Fenetre
     # EVENT REDO
     private
     def retourAvant
+        enleverPortee(nil, nil)
         cacherNbErreur
         enableBtn(@btnUndo)
         enableBtn(@btnUndoUndo)
@@ -476,6 +520,7 @@ class FenetrePartie < Fenetre
     # EVENT UNDO UNDO
     private
     def retourPositionBonne
+        enleverPortee(nil, nil)
         cacherNbErreur
         @@maPartie.revenirPositionBonne
         for i in 0...@@maGrille.size
@@ -491,6 +536,8 @@ class FenetrePartie < Fenetre
     def play
         cacherNbErreur
         @@maPartie.reprendrePartie; enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
+        enleverNbCase
+        enleverPortee(nil, nil)
     end
 
     # EVENT PAUSE
@@ -504,13 +551,15 @@ class FenetrePartie < Fenetre
         disableBtn(@btnUndoUndo);  disableBtn(@btnClear);
         disableBtn(@btnVerif);     disableBtn(@btnUndo);
         disableBtn(@btnRedo);
-        enleverNbCase();
+        enleverNbCase()
+        enleverPortee(nil, nil)
         @frameGrille.name = "fenetreGrilleHide"
     end
 
     # EVENT DEMANDER UNE AIDE
     private
     def aide
+        enleverPortee(nil, nil)
         indice = @@maPartie.donneIndice
         if ( indice != nil)
              puts [Indice::MESSAGES[indice[0]],indice[1]] #fait une erreur si pas d'indice trouvé
@@ -522,6 +571,7 @@ class FenetrePartie < Fenetre
     # EVENT REMISE A ZERO
     private
     def raz
+        enleverPortee(nil, nil)
         cacherNbErreur
         @@maPartie.raz
         for i in 0...@@maGrille.size
@@ -537,6 +587,7 @@ class FenetrePartie < Fenetre
     # EVENT VERIFIER LA GRILLE
     private
     def verifier
+        enleverPortee(nil, nil)
         compteurErreur = @@maPartie.verifierErreur
 
         @monCompteurErreur.name = ""
@@ -567,6 +618,7 @@ class FenetrePartie < Fenetre
     # EVENEMENT POUR DONNER LES ERREURS
     private
     def donnerErreur
+        enleverPortee(nil, nil)
         uneCase = @@maPartie.donnerErreur
         if uneCase.couleur == Couleur::NOIR 
             @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red-block"
@@ -610,6 +662,7 @@ class FenetrePartie < Fenetre
     ## CACHER LE NOMBRE D'ERREUR
     private
     def cacherNbErreur
+        enleverPortee(nil, nil)
         @monCompteurErreur.name = "hide"
         @btnHelpHelp.name = "hide"
         @btnHelpHelp.set_sensitive(false)

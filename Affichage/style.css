@@ -38,7 +38,9 @@ separator {
 /* cells */
 
 
-#grid-cell , #grid-cell-block, #grid-cell-round , #grid-cell-red, #grid-cell-red-block,#grid-cell-appartient-ile, #grid-cell-ile-appartient-ile{
+#grid-cell , #grid-cell-block, #grid-cell-round , #grid-cell-red, #grid-cell-red-block,
+#grid-cell-appartient-ile, #grid-cell-ile-appartient-ile, 
+#grid-cell-portee-ile, #grid-cell-portee-ile-red, #grid-cell-portee-ile-ile, #grid-cell-portee-ile-black, #grid-cell-portee-ile-black-red{
     background-image: none;
     border-width: 1px;
     border-color: rgb(22, 10, 1);
@@ -59,6 +61,34 @@ separator {
     font-size: 35px;
 }
 
+#grid-cell-portee-ile{
+    background:rgb(211, 110, 110);
+    font-size: 22px;
+}
+
+#grid-cell-portee-ile-red{
+    background:rgb(211, 110, 110);
+    font-size: 22px;
+    border-color: red;
+    border-width: 2px;
+}
+
+#grid-cell-portee-ile-ile{
+    background:rgb(211, 110, 110);
+    font-size: 35px;
+}
+
+
+#grid-cell-portee-ile-black{
+    background:rgb(47, 0, 0);
+}
+
+#grid-cell-portee-ile-black-red{
+    background:rgb(47, 0, 0);
+    border-color: red;
+    border-width: 2px;
+}
+
 #grid-cell-red {
     border-color: red;
     border-width: 2px;
@@ -77,77 +107,6 @@ separator {
     background:rgb(204, 212, 224);
     border-width: 2px;
     font-size: 22px;
-}
-
-/* WHITE CONDITIONAL BORDER */
-
-
-#grid-cell-red-left, #grid-cell-red-left-top, #grid-cell-red-left-bot, #grid-cell-red-left-bot-top, #grid-cell-red-top-left-right, #grid-cell-red-bot-left-right{
-    border-left-color: red;
-    border-left-width: 2px;
-}
-
-#grid-cell-red-right, #grid-cell-red-right-top, #grid-cell-red-right-bot, #grid-cell-red-right-bot-top, #grid-cell-red-top-left-right, #grid-cell-red-bot-left-right{
-    border-right-color: red;
-    border-right-width: 2px;
-}
-
-#grid-cell-red-bot, #grid-cell-red-left-bot, #grid-cell-red-right-bot, #grid-cell-red-bot-left-right, #grid-cell-red-left-bot-top, #grid-cell-red-right-bot-top{
-    border-bottom-color: red;
-    border-bottom-width: 2px;
-}
-
-#grid-cell-red-top, #grid-cell-red-left-top, #grid-cell-red-right-top, #grid-cell-red-top-left-right, #grid-cell-red-left-bot-top, #grid-cell-red-right-bot-top{
-    border-top-color: red;
-    border-top-width: 2px;
-}
-
-/* BLACK CONDITIONAL BORDER */
-
-#grid-cell-red-black-left, #grid-cell-red-black-left-top, #grid-cell-red-black-left-bot, #grid-cell-red-black-left-bot-top, #grid-cell-red-black-top-left-right, #grid-cell-black-red-bot-left-right{
-    border-left-color: red;
-    border-left-width: 2px;
-    background: rgb(0, 0, 0);
-}
-
-#grid-cell-red-right, #grid-cell-red-black-right-top, #grid-cell-red-black-right-bot, #grid-cell-red-black-right-bot-top, #grid-cell-red-black-top-left-right, #grid-cell-red-black-bot-left-right{
-    border-right-color: red;
-    border-right-width: 2px;
-    background: rgb(0, 0, 0);
-}
-
-#grid-cell-red-bot, #grid-cell-red-black-left-bot, #grid-cell-red-black-right-bot, #grid-cell-red-black-bot-left-right, #grid-cell-red-black-left-bot-top, #grid-cell-red-black-right-bot-top{
-    border-bottom-color: red;
-    border-bottom-width: 2px;
-    background: rgb(0, 0, 0);
-}
-
-#grid-cell-red-top, #grid-cell-red-black-left-top, #grid-cell-red-black-right-top, #grid-cell-red-black-top-left-right, #grid-cell-red-black-left-bot-top, #grid-cell-red-black-right-bot-top{
-    border-top-color: red;
-    border-top-width: 2px;
-    background: rgb(0, 0, 0);
-}
-
-/* appartient ile */
-
-#grid-cell-red-appartient-left, #grid-cell-red-appartient-left-top, #grid-cell-red-appartient-left-bot, #grid-cell-red-appartient-left-bot-top, #grid-cell-red-appartient-top-left-right, #grid-cell-red-appartient-bot-left-right{
-    border-left-color: red;
-    border-left-width: 2px;
-}
-
-#grid-cell-red-appartient-right, #grid-cell-red-appartient-right-top, #grid-cell-red-appartient-right-bot, #grid-cell-red-appartient-right-bot-top, #grid-cell-red-appartient-top-left-right, #grid-cell-red-appartient-bot-left-right{
-    border-right-color: red;
-    border-right-width: 2px;
-}
-
-#grid-cell-red-appartient-bot, #grid-cell-red-appartient-left-bot, #grid-cell-red-appartient-right-bot, #grid-cell-red-appartient-bot-left-right, #grid-cell-red-appartient-left-bot-top, #grid-cell-red-appartient-right-bot-top{
-    border-bottom-color: red;
-    border-bottom-width: 2px;
-}
-
-#grid-cell-red-top, #grid-cell-red-left-top, #grid-cell-red-right-top, #grid-cell-red-top-left-right, #grid-cell-red-left-bot-top, #grid-cell-red-right-bot-top{
-    border-top-color: red;
-    border-top-width: 2px;
 }
 
 /* end */

@@ -131,6 +131,47 @@ class Partie
     return [nbCaseIle(case_, vu), vu]
   end
 
+  def porteeIle(i, j)
+    vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)}
+    depth = 0
+    lastChanges = Array.new(0)
+    nextChanges = Array.new(0)
+    lastChanges.push(@grilleEnCours.tabCases[i][j])
+    while(!lastChanges.empty? && depth < @grilleEnCours.tabCases[i][j].couleur)
+
+      lastChanges.each{|c| 
+        
+        x = c.positionY
+        y = c.positionX
+
+        vu[x][y] = true
+
+        if( x+1 < @grilleEnCours.tabCases.size && !vu[x+1][y])            
+          nextChanges.push(@grilleEnCours.tabCases[x+1][y] )
+        end
+        
+        if( y+1 < @grilleEnCours.tabCases.size && !vu[x][y+1])
+          nextChanges.push(@grilleEnCours.tabCases[x][y+1])
+        end
+
+        if( x-1 >=0 && !vu[x-1][y] )
+          nextChanges.push(@grilleEnCours.tabCases[x-1][y])
+        end
+
+        if( y-1 >=0 && !vu[x][y-1])
+          nextChanges.push(@grilleEnCours.tabCases[x][y-1])
+        end
+
+      }
+
+      lastChanges = Array.new(nextChanges)
+      nextChanges = Array.new(0)
+      depth+=1
+    end
+
+    return vu
+  end
+
   #affiche les mur de 2 bloc par 2 bloc(en carré)
   def afficherMur2x2()#TODO
     #Dit à l'interface d'afficher

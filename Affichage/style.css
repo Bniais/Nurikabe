@@ -195,3 +195,12 @@ messagedialog {
 #text {
     letter-spacing: 1px;
 }
+
+#resumeGame{
+    background: rgb(73, 145, 73);
+}
+
+#resumeGame * {
+    color: white;
+    font-weight: 500;
+}

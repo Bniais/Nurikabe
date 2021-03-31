@@ -56,15 +56,10 @@ class FenetrePartie < Fenetre
         self
     end
 
+    # Lancer une nouvelle partie avec un mode specifique ? A FAIRE
     def self.afficheToi( lastView )
-
-
         if @@maPartie == nil
-
-            if Sauvegardes.getInstance.getSauvegardePartie.nbPartieSauvegarder > 0
-                @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie(0)
-            else
-                @@maPartie = Partie.creer(Grille.creer(10,
+            @@maPartie = Partie.creer(Grille.creer(10,
                 [
                     [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 4, 0)],
                     [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::BLANC, 4, 1)],
@@ -73,13 +68,26 @@ class FenetrePartie < Fenetre
                     [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::BLANC, 2, 4), Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4)]
                 ]), nil, nil)
                 Sauvegardes.getInstance.getSauvegardePartie.ajouterSauvegardePartie(@@maPartie)
-            end
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
         end
 
         if !@@vraiPause
             @@maPartie.reprendrePartie
         end
+
+        Fenetre.set_subtitle( @@maPartie.class.to_s )
+        maFenetrePartie = FenetrePartie.new()
+        Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
+        Fenetre.show_all
+        maFenetrePartie.threadChronometre
+        return self
+    end
+
+    ## Charger une partie specifique presente dans la sauvegarde
+    def self.afficheToiChargerPartie( lastView , loadAtIndice )
+        puts loadAtIndice
+        @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie( loadAtIndice )
+        @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
 
         Fenetre.set_subtitle( @@maPartie.class.to_s )
         maFenetrePartie = FenetrePartie.new()

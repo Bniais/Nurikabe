@@ -27,26 +27,48 @@ class FenetreMenu < Fenetre
         box.add( setmargin(titre, 0, 0, 70, 70) )
         
 
-        # creation de la grille avec les boutons de modes
-        tabLabels = [ @@lg.gt("LIBRE") , @@lg.gt("CONTRELAMONTRE"), @@lg.gt("SURVIE"), @@lg.gt("TUTORIEL")]
-        listeBtn = Array.new()
-    
-        # creation des boutons de mode de jeu
-        for x in 0..3
-          listeBtn << Gtk::Button.new()
-          setBold(listeBtn.at(x), tabLabels.at(x))
-          box.add( setmargin(listeBtn.at(x), 0, 15, 70, 70) )
+        btnLibre = Gtk::Button.new()
+        setBold(btnLibre, @@lg.gt("LIBRE") )
+        if( Sauvegardes.getInstance.getSauvegardePartie.nbPartieSauvegarderLibre > 0 )
+            box.add( creationHboxResumeGame( btnLibre , Mode::LIBRE , box ) )
+          else
+            box.add( setmargin( btnLibre , 0, 15, 70, 70) )
         end
-        # gestion des évènements des boutons
-        listeBtn[0].signal_connect('clicked') { Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
 
-        listeBtn[1].signal_connect('clicked') { |btn|
-            creationHBoxDifficulte(box,2,btn,3,listeBtn[2])
+        btnContreLaMontre = Gtk::Button.new()
+        setBold(btnContreLaMontre, @@lg.gt("CONTRELAMONTRE") )
+        if( Sauvegardes.getInstance.getSauvegardePartie.nbPartieSauvegarderContreLaMontre > 0 )
+            box.add( creationHboxResumeGame( btnContreLaMontre , Mode::CONTRE_LA_MONTRE , box ) )
+          else
+            box.add( setmargin( btnContreLaMontre , 0, 15, 70, 70) )
+        end
+
+        btnSurvie = Gtk::Button.new()
+        setBold(btnSurvie, @@lg.gt("SURVIE") )
+        if( Sauvegardes.getInstance.getSauvegardePartie.nbPartieSauvegarderSurvie > 0 )
+            box.add( creationHboxResumeGame( btnSurvie , Mode::SURVIE , box ) )
+          else
+            box.add( setmargin( btnSurvie , 0, 15, 70, 70) )
+        end
+
+        btnTutoriel = Gtk::Button.new()
+        setBold(btnTutoriel, @@lg.gt("SURVIE") )
+        if( Sauvegardes.getInstance.getSauvegardePartie.nbPartieSauvegarderTutoriel > 0 )
+            box.add( creationHboxResumeGame( btnTutoriel , Mode::TUTORIEL , box ) )
+          else
+            box.add( setmargin( btnTutoriel , 0, 15, 70, 70) )
+        end
+
+        # gestion des évènements des boutons
+        btnLibre.signal_connect('clicked') { Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
+
+        btnContreLaMontre.signal_connect('clicked') { |btn|
+            creationHBoxDifficulte(box,2,btn,3,btnSurvie)
         }
-        listeBtn[2].signal_connect('clicked') { |btn|
-            creationHBoxDifficulte(box,3,btn,2,listeBtn[1])    
+        btnSurvie.signal_connect('clicked') { |btn|
+            creationHBoxDifficulte(box,3,btn,2,btnContreLaMontre)    
         }
-        listeBtn[3].signal_connect('clicked') { Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
+        btnTutoriel.signal_connect('clicked') { Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
     
         # AJOUT SEPARATEUR
         separateur = Gtk::Separator.new(:horizontal)  
@@ -88,6 +110,29 @@ class FenetreMenu < Fenetre
         @bbox = box
         return box
       end
+
+    def creationHboxResumeGame( btn , mode , mainBox )
+        box = Gtk::Box.new(:horizontal)
+        btn.set_width_request(360)
+        btn.set_margin_right(10)
+        box.add(btn)
+        btnResume = Gtk::Button.new(:label => @@lg.gt("REPRENDRE"));
+        btnResume.set_width_request(180)
+        btnResume.name = "resumeGame"
+
+        if mode == Mode::LIBRE
+            btnResume.signal_connect("clicked") { Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie( FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre[0] ) }
+        elsif mode == Mode::SURVIE
+            btnResume.signal_connect("clicked") { Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie(FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderSurvie ) }
+        elsif mode == Mode::CONTRE_LA_MONTRE
+            btnResume.signal_connect("clicked") { Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie(FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderContreLaMontre ) }
+        elsif mode == Mode::TUTORIEL
+            btnResume.signal_connect("clicked") { Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie(FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderTutoriel ) }
+        end
+
+        box.add(btnResume)
+        return setmargin(box, 0, 15, 70, 70);
+    end
 
     # Methode qui permet de gerer les marges d'un objet
     def setmargin(obj, top, bottom, left, right)

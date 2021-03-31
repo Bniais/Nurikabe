@@ -7,12 +7,11 @@ require 'digest'
 class Partie
   #TODO definir constantes
 
-  attr_reader :grilleBase, :grilleEnCours, :mode, :tabCoup, :chrono
+  attr_reader :grilleBase, :grilleEnCours, :tabCoup, :chrono
 
   private_class_method :new
 
   def initialize(grille, parametres, sauvegardes) #Créer une nouvelle partie
-
     @grilleBase = grille
     @parametres = parametres
     @sauvegardes = sauvegardes #TODO Charger la partie si une sauvegarde correspond à la partie
@@ -21,11 +20,7 @@ class Partie
 
     @nbAideUtilise = 0
     @indiceCoup = 0
-    if(mode == Mode::SURVIE)
-      @chrono = ChronoDecompte.creer()
-    else
-      @chrono = Chrono.creer()
-    end
+    @chrono = Chrono.creer()
     @chrono.demarrer()
 
     @grilleEnCours = Marshal.load( Marshal.dump(grille) ) #verif que ça marche
@@ -33,7 +28,7 @@ class Partie
   end
 
   def getMode()
-    @mode
+    return Mode::LIBRE
   end
 
   # Methode qui creer une grille
@@ -53,7 +48,7 @@ class Partie
       
       @indiceCoup -= 1 #On passe au coup précédent    
     end
-    return peutRetourArriere? #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
+    return [peutRetourArriere?, coupPrecedent.case] #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
   end
 
 
@@ -72,7 +67,7 @@ class Partie
       @indiceCoup += 1 #On passe au coup suivant
     end
 
-    return peutRetourAvant? #Pour dire aux fonctions appelantes si on peut encore aller en avant
+    return [peutRetourAvant?, coupSuivant.case] #Pour dire aux fonctions appelantes si on peut encore aller en avant
   end
 
   # Methode qui met en pause la partie
@@ -153,7 +148,7 @@ class Partie
 
   #revient a la dernière bonne position de jeu
   def revenirPositionBonne() #TOTEST
-    while verifierErreur() != 0 && retourArriere() == true
+    while verifierErreur() != 0 && retourArriere()[0] == true
       #Retour en arrière tant que c'est encore possible et que la grille est fausse
     end
     @tabCoup = Array.new(0)
@@ -788,7 +783,6 @@ class Partie
       for j in 0..@grilleEnCours.tabCases.size-1
         
         if @grilleEnCours.tabCases[j][i].couleur == Couleur::GRIS
-          print "___", i, " ", j, "\n"
           #Parcours en profondeur en cherchant une ile, si pas trouver, on a indice
           found = false
           leeTab = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,-1)}
@@ -822,7 +816,6 @@ class Partie
               end
 
               casesEnvironnantes.each{ |cc|
-                print  depth,":",cc.positionX, " ", cc.positionY, " ", cc.couleur, "\n"
                 if(leeTab[cc.positionX][cc.positionY] == -1)
                   
                   if(cc.estIle?)
@@ -842,7 +835,6 @@ class Partie
             lastChanges = Array.new(nextChanges)
             nextChanges = Array.new(0)
             depth+=1
-            puts ""
           end
           if(!found)
             return [Indice::INDICE_ILE_INATTEIGNABLE, @grilleEnCours.tabCases[j][i]]

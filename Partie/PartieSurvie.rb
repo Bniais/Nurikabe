@@ -1,7 +1,7 @@
 class PartieSurvie < PartieMalus
 
     #ceer une partie en mode survie
-    def PartieTuto.creer()
+    def PartieSurvie.creer()
       #
     end
 

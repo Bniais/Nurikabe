@@ -16,18 +16,38 @@ class Cell < Gtk::Button
         @y = y
     end
 
-    def changerStatut(color)
+    def changerStatut(color, forceEnleverRouge)
         if color >= Couleur::ILE_1
-            self.name = "grid-cell"
+            if(!forceEnleverRouge && self.name.include?("red"))
+                self.name = "grid-cell-red"
+            else
+                self.name = "grid-cell"
+            end
+            
             self.set_label(color.to_s)
         elsif color == Couleur::NOIR
+            if(!forceEnleverRouge && self.name.include?("red"))
+                 self.name = "grid-cell-red-block"
+            else
+                 self.name = "grid-cell-block"
+            end
+
             self.set_label("")
-            self.name = "grid-cell-block"
+           
         elsif color == Couleur::GRIS
             self.set_label("")
-            self.name = "grid-cell"
+            if(!forceEnleverRouge && self.name.include?("red"))
+                self.name = "grid-cell-red"
+            else
+                self.name = "grid-cell"
+            end
         elsif color == Couleur::BLANC
-            self.name = "grid-cell-round"
+            if(!forceEnleverRouge && self.name.include?("red"))
+                self.name = "grid-cell-red"
+            else
+                 self.name = "grid-cell-round"
+            end
+           
             self.set_label("●")
         end
     end
@@ -93,9 +113,9 @@ class FenetrePartie < Fenetre
         maFenetrePartie = FenetrePartie.new()
         Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
-
+        
         maFenetrePartie.threadChronometre
-
+        maFenetrePartie.play
         return self
     end
 
@@ -264,7 +284,6 @@ class FenetrePartie < Fenetre
 
     def afficherNbCase(x, y)
         res = @@maPartie.afficherNbBloc(@@maPartie.grilleEnCours.tabCases[x][y])
-        puts "yay : ", res[0]
         if(res[0] > 1 || @@maPartie.grilleEnCours.tabCases[x][y].estIle?)
             #trouver île
             found = false
@@ -275,12 +294,15 @@ class FenetrePartie < Fenetre
                         if(@@maPartie.grilleEnCours.tabCases[i][j].estIle?)
                             @@maGrille[i][j].name = "grid-cell-ile-appartient-ile"
                         else
-                            @@maGrille[i][j].name = "grid-cell-appartient-ile"
+                            if( @@maGrille[i][j].name.include?("red"))
+                                @@maGrille[i][j].name = "grid-cell-red-appartient"
+                            else
+                                @@maGrille[i][j].name = "grid-cell-appartient-ile"
+                            end
                         end
 
 
                         if !found && @@maPartie.grilleEnCours.tabCases[i][j].estIle?
-                            puts i,j,"\n"
                             #trouver direction popover
                             if( i-1 < 0 || !res[1][i-1][j])
                                 @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
@@ -312,7 +334,7 @@ class FenetrePartie < Fenetre
 
         for i in 0...@@maPartie.grilleEnCours.tabCases.size
             for j in 0...@@maPartie.grilleEnCours.tabCases.size
-                @@maGrille[i][j].changerStatut(@@maPartie.grilleEnCours.tabCases[i][j].couleur)
+                @@maGrille[i][j].changerStatut(@@maPartie.grilleEnCours.tabCases[i][j].couleur, false)
             end
         end
     end
@@ -337,7 +359,7 @@ class FenetrePartie < Fenetre
     def creeCelluleGrille(line,colonne,color)
 
         btn = Cell.new()
-        btn.changerStatut( @@maPartie.grilleEnCours.tabCases[colonne][line].couleur )
+        btn.changerStatut( @@maPartie.grilleEnCours.tabCases[colonne][line].couleur, true)
         btn.set_x(line);    btn.set_y(colonne); btn.set_height_request(5);  btn.set_width_request(5)
 
         btn.signal_connect "clicked" do |handler|
@@ -353,7 +375,7 @@ class FenetrePartie < Fenetre
                 if(prochaineCouleur < Couleur::ILE_1 )
                     if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
                         cacherNbErreur
-                        handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur )
+                        handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur , true)
                         enableBtn(@btnUndo)
                         enableBtn(@btnUndoUndo)
                         disableBtn(@btnRedo)
@@ -385,14 +407,18 @@ class FenetrePartie < Fenetre
 
        
         btn.signal_connect "enter" do |handler| 
-            if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
-                afficherNbCase(handler.y, handler.x)
+            if @@maPartie.chrono.pause == false
+                if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
+                    afficherNbCase(handler.y, handler.x)
+                end
             end
         end
 
         btn.signal_connect "leave" do |handler| 
-             if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
-                enleverNbCase()
+            if @@maPartie.chrono.pause == false
+                if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
+                    enleverNbCase()
+                end
             end
         end
         
@@ -426,12 +452,8 @@ class FenetrePartie < Fenetre
         cacherNbErreur
         enableBtn(@btnRedo)
         statut = @@maPartie.retourArriere
-        for i in 0...@@maGrille.size
-            for j in 0...@@maGrille[i].size
-                @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
-            end
-        end
-        if statut == false
+        @@maGrille[statut[1].positionY][statut[1].positionX].changerStatut( @@maPartie.grilleEnCours.tabCases[statut[1].positionY][statut[1].positionX].couleur, true )
+        if statut[0] == false
              disableBtn(@btnUndo);
              disableBtn(@btnUndoUndo);
         end
@@ -445,12 +467,10 @@ class FenetrePartie < Fenetre
         enableBtn(@btnUndoUndo)
         statut = @@maPartie.retourAvant
         puts statut
-        for i in 0...@@maGrille.size
-            for j in 0...@@maGrille[i].size
-               @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
-            end
-        end
-        statut == false ? disableBtn(@btnRedo) : 1 ;
+
+        @@maGrille[statut[1].positionY][statut[1].positionX].changerStatut( @@maPartie.grilleEnCours.tabCases[statut[1].positionY][statut[1].positionX].couleur, true )
+
+        statut[0] == false ? disableBtn(@btnRedo) : 1 ;
     end
 
     # EVENT UNDO UNDO
@@ -460,14 +480,14 @@ class FenetrePartie < Fenetre
         @@maPartie.revenirPositionBonne
         for i in 0...@@maGrille.size
             for j in 0...@@maGrille[i].size
-                @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur )
+                @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur, true )
             end
         end
         disableBtn(@btnUndo); disableBtn(@btnRedo); disableBtn(@btnUndoUndo)
     end
 
     # EVENT PLAY
-    private
+    public
     def play
         cacherNbErreur
         @@maPartie.reprendrePartie; enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
@@ -484,6 +504,7 @@ class FenetrePartie < Fenetre
         disableBtn(@btnUndoUndo);  disableBtn(@btnClear);
         disableBtn(@btnVerif);     disableBtn(@btnUndo);
         disableBtn(@btnRedo);
+        enleverNbCase();
         @frameGrille.name = "fenetreGrilleHide"
     end
 
@@ -535,6 +556,7 @@ class FenetrePartie < Fenetre
     # EVENT QUITTER LA PARTIE
     private
     def quitter
+        pause
         Sauvegardes.getInstance.sauvegarder(nil)
         cacherNbErreur
         @@maPartie = nil;

@@ -1,6 +1,6 @@
 
  window {
-    background-color: rgb(248, 248, 248);
+    background: rgb(248, 248, 248);
 }
 
 * {
@@ -9,7 +9,7 @@
 }
 
 separator {
-    background-color: gray;
+    background: gray;
     opacity: 0.3;
 }
 
@@ -44,18 +44,18 @@ separator {
     border-color: rgb(22, 10, 1);
     border-radius: 0px;
     color: rgb(173, 171, 171);
-    background-color:rgb(238, 238, 238);
+    background:rgb(238, 238, 238);
 }
 
 #grid-cell-appartient-ile{
 
-    background-color:rgb(204, 212, 224);
+    background:rgb(204, 212, 224);
     font-size: 22px;
 }
 
 #grid-cell-ile-appartient-ile{
 
-    background-color:rgb(204, 212, 224);
+    background:rgb(204, 212, 224);
     font-size: 35px;
 }
 
@@ -68,6 +68,13 @@ separator {
 #grid-cell-red-block {
     border-color: red;
     background: rgb(0, 0, 0);
+    border-width: 2px;
+    font-size: 22px;
+}
+
+#grid-cell-red-appartient {
+    border-color: red;
+    background:rgb(204, 212, 224);
     border-width: 2px;
     font-size: 22px;
 }
@@ -97,31 +104,53 @@ separator {
 
 /* BLACK CONDITIONAL BORDER */
 
-#grid-cell-red-left, #grid-cell-red-left-top, #grid-cell-red-left-bot, #grid-cell-red-left-bot-top, #grid-cell-red-top-left-right, #grid-cell-red-bot-left-right{
+#grid-cell-red-black-left, #grid-cell-red-black-left-top, #grid-cell-red-black-left-bot, #grid-cell-red-black-left-bot-top, #grid-cell-red-black-top-left-right, #grid-cell-black-red-bot-left-right{
     border-left-color: red;
     border-left-width: 2px;
     background: rgb(0, 0, 0);
 }
 
-#grid-cell-red-right, #grid-cell-red-right-top, #grid-cell-red-right-bot, #grid-cell-red-right-bot-top, #grid-cell-red-top-left-right, #grid-cell-red-bot-left-right{
+#grid-cell-red-right, #grid-cell-red-black-right-top, #grid-cell-red-black-right-bot, #grid-cell-red-black-right-bot-top, #grid-cell-red-black-top-left-right, #grid-cell-red-black-bot-left-right{
     border-right-color: red;
     border-right-width: 2px;
     background: rgb(0, 0, 0);
 }
 
-#grid-cell-red-bot, #grid-cell-red-left-bot, #grid-cell-red-right-bot, #grid-cell-red-bot-left-right, #grid-cell-red-left-bot-top, #grid-cell-red-right-bot-top{
+#grid-cell-red-bot, #grid-cell-red-black-left-bot, #grid-cell-red-black-right-bot, #grid-cell-red-black-bot-left-right, #grid-cell-red-black-left-bot-top, #grid-cell-red-black-right-bot-top{
     border-bottom-color: red;
     border-bottom-width: 2px;
     background: rgb(0, 0, 0);
 }
 
-#grid-cell-red-top, #grid-cell-red-left-top, #grid-cell-red-right-top, #grid-cell-red-top-left-right, #grid-cell-red-left-bot-top, #grid-cell-red-right-bot-top{
+#grid-cell-red-top, #grid-cell-red-black-left-top, #grid-cell-red-black-right-top, #grid-cell-red-black-top-left-right, #grid-cell-red-black-left-bot-top, #grid-cell-red-black-right-bot-top{
     border-top-color: red;
     border-top-width: 2px;
     background: rgb(0, 0, 0);
 }
 
-/* */
+/* appartient ile */
+
+#grid-cell-red-appartient-left, #grid-cell-red-appartient-left-top, #grid-cell-red-appartient-left-bot, #grid-cell-red-appartient-left-bot-top, #grid-cell-red-appartient-top-left-right, #grid-cell-red-appartient-bot-left-right{
+    border-left-color: red;
+    border-left-width: 2px;
+}
+
+#grid-cell-red-appartient-right, #grid-cell-red-appartient-right-top, #grid-cell-red-appartient-right-bot, #grid-cell-red-appartient-right-bot-top, #grid-cell-red-appartient-top-left-right, #grid-cell-red-appartient-bot-left-right{
+    border-right-color: red;
+    border-right-width: 2px;
+}
+
+#grid-cell-red-appartient-bot, #grid-cell-red-appartient-left-bot, #grid-cell-red-appartient-right-bot, #grid-cell-red-appartient-bot-left-right, #grid-cell-red-appartient-left-bot-top, #grid-cell-red-appartient-right-bot-top{
+    border-bottom-color: red;
+    border-bottom-width: 2px;
+}
+
+#grid-cell-red-top, #grid-cell-red-left-top, #grid-cell-red-right-top, #grid-cell-red-top-left-right, #grid-cell-red-left-bot-top, #grid-cell-red-right-bot-top{
+    border-top-color: red;
+    border-top-width: 2px;
+}
+
+/* end */
 
 #grid-cell * , #grid-cell-round *{
     color: rgb(0, 0, 0);
@@ -133,7 +162,7 @@ separator {
 }
 
 #grid-cell-block {
-    background-color:  rgb(0, 0, 0);
+    background:  rgb(0, 0, 0);
 }
 
 #grid-cell-block *{

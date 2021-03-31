@@ -559,7 +559,7 @@ class FenetrePartie < Fenetre
     # EVENT DEMANDER UNE AIDE
     private
     def aide
-        enleverPortee(nil, nil)
+        #enleverPortee(nil, nil)
         indice = @@maPartie.donneIndice
         if ( indice != nil)
              puts [Indice::MESSAGES[indice[0]],indice[1]] #fait une erreur si pas d'indice trouvé
@@ -587,7 +587,7 @@ class FenetrePartie < Fenetre
     # EVENT VERIFIER LA GRILLE
     private
     def verifier
-        enleverPortee(nil, nil)
+        #enleverPortee(nil, nil)
         compteurErreur = @@maPartie.verifierErreur
 
         @monCompteurErreur.name = ""

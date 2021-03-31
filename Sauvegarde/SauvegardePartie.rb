@@ -10,7 +10,6 @@ class SauvegardesParties
     end
 
     def getPartie( indice )
-        puts "indice = " + indice.to_s
         return @mesParties[indice]
     end
 

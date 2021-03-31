@@ -121,7 +121,22 @@ class FenetreMenu < Fenetre
         btnResume.name = "resumeGame"
 
         if mode == Mode::LIBRE
-            btnResume.signal_connect("clicked") { Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie( FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre[0] ) }
+            btnResume.signal_connect("clicked") { 
+                puts Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size.to_s + "size"
+                if Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size > 1 
+                    box.remove(btnResume)
+                    comboBox = Gtk::ComboBoxText.new
+                    comboBox.set_width_request(180)
+                    for i in 0...Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size
+                        comboBox.append( "visible" , i.to_s )
+                    end
+                    comboBox.signal_connect("changed") { |cb| Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie( FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre[cb.active] )    } 
+                    box.add( comboBox )                                                             
+                    Fenetre.show_all()
+                else 
+                    Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie( FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre[0] ) 
+                end
+            }
         elsif mode == Mode::SURVIE
             btnResume.signal_connect("clicked") { Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie(FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderSurvie ) }
         elsif mode == Mode::CONTRE_LA_MONTRE

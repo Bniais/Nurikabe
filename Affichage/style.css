@@ -167,3 +167,7 @@ messagedialog {
     padding: 0px 0px;
     font-size: 1.2em;
 }
+
+#fenetreGrille * > label {
+    color: black
+}

@@ -1,58 +1,107 @@
 # Classe qui gere la sauvegarde de partie
-require './Sauvegardes.rb'
 
-class SauvegardePartie < Sauvegardes
-    attr_reader :partie
 
-    def initialize(unePartie)
+class SauvegardesParties
 
-        @partie = unePartie
+    @mesParties = nil
 
+    def initialize()
+        @mesParties = Array.new
     end
 
-    def SauvegardePartie.creer(unePartie)
-        new(unePartie)
+    def getPartie( indice )
+        puts "indice = " + indice.to_s
+        return @mesParties[indice]
+    end
+
+    def ajouterSauvegardePartie( unePartie )
+        @mesParties.push(unePartie)
+    end
+
+    def supprimerSauvegardePartie( unePartie )
+        @mesParties.delete(unePartie)
+    end
+
+    def nbPartieSauvegarder()
+        return @mesParties.size
+    end
+
+    def nbPartieSauvegarderLibre()
+        compteur = 0;
+        for i in 0...nbPartieSauvegarder
+            if @mesParties[i].getMode == Mode::LIBRE
+                compteur += 1;
+            end
+        end
+        compteur
+    end
+
+    def getIndicePartieSauvegarderLibre()
+        indice = Array.new
+        for i in 0...nbPartieSauvegarder
+            if @mesParties[i].getMode == Mode::LIBRE
+                indice.push(i)
+            end
+        end
+        return indice;
+    end
+
+    def nbPartieSauvegarderSurvie()
+        compteur = 0;
+        for i in 0...nbPartieSauvegarder
+            if @mesParties[i].getMode == Mode::SURVIE
+                compteur += 1;
+            end
+        end
+        compteur
+    end
+
+    def getIndicePartieSauvegarderSurvie()
+        for i in 0...nbPartieSauvegarder
+            if @mesParties[i].getMode == Mode::SURVIE
+                return i;
+            end
+        end
+        return -1;
+    end
+
+    def nbPartieSauvegarderContreLaMontre()
+        compteur = 0;
+        for i in 0...nbPartieSauvegarder
+            if @mesParties[i].getMode == Mode::CONTRE_LA_MONTRE
+                compteur += 1;
+            end
+        end
+        compteur
+    end
+
+    def getIndicePartieSauvegarderContreLaMontre()
+        for i in 0...nbPartieSauvegarder
+            if @mesParties[i].getMode == Mode::CONTRE_LA_MONTRE
+                return i;
+            end
+        end
+        return -1;
+    end
+
+    def nbPartieSauvegarderTutoriel()
+        compteur = 0;
+        for i in 0...nbPartieSauvegarder
+            if @mesParties[i].getMode == Mode::TUTORIEL
+                compteur += 1;
+            end
+        end
+        compteur
     end 
 
-    def getPartie()
-        @partie
+    def getIndicePartieSauvegarderTutoriel()
+        for i in 0...nbPartieSauvegarder
+            if @mesParties[i].getMode == Mode::TUTORIEL
+                return i;
+            end
+        end
+        return -1;
     end
 
 end
 
-=begin
-
-c = Case.creer(Couleur::ILE_1,0,0)
-c1 = Case.creer(Couleur::ILE_1,0,1)
-c2 = Case.creer(Couleur::ILE_1,1,0)
-c3 = Case.creer(Couleur::ILE_1,1,1)
-
-c4 = Case.creer(nil,0,0)
-c5 = Case.creer(nil,0,1)
-c6 = Case.creer(nil,1,0)
-c7 = Case.creer(nil,1,1)
-
-tab = [[c,c1],[c2,c3]]
-
-tab1 = [[c4,c5], [c6,c7]]
-
-
-
-g = Grille.creer(1,tab)
-#
-g1 = Grille.creer(1,tab1)
-
-
-p = Partie.creer(g,nil,nil)
-p1 = Partie.creer(g1,nil,nil)
-
-s = SauvegardePartie.creer(p)
-s1 = SauvegardePartie.creer(p1)
-
-s.sauvegarder(p)
-
-s1.charger(p1)
-
-g1.afficher
-
-=end

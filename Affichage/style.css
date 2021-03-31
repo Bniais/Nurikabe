@@ -171,3 +171,18 @@ messagedialog {
 #fenetreGrille * > label {
     color: black
 }
+
+#bg-FenetreSelection {
+    background: rgb(214, 214, 214);
+}
+
+#bg-FenetreSelection:hover {
+    background: rgb(230, 230, 230);
+    box-shadow: 0px 0px 5px 0.8px rgb(200, 200, 200);
+    border-color:  rgba(22, 22, 22, 0.0);
+}
+
+#bg-FenetreSelection-title {
+    background: linear-gradient(90deg, rgb(255, 255, 255) , rgba(255, 255, 255, 0));;
+    padding-right: 30px;
+}

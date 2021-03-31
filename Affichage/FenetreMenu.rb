@@ -3,6 +3,7 @@ require './FenetreParametre.rb'
 require './FenetreAPropos.rb'
 require './FenetreClassement.rb'
 require './FenetrePartie.rb'
+require './FenetreSelection.rb'
 
 class FenetreMenu < Fenetre
 
@@ -29,38 +30,27 @@ class FenetreMenu < Fenetre
 
         btnLibre = Gtk::Button.new()
         setBold(btnLibre, @@lg.gt("LIBRE") )
-        if( Sauvegardes.getInstance.getSauvegardePartie.nbPartieSauvegarderLibre > 0 )
-            box.add( creationHboxResumeGame( btnLibre , Mode::LIBRE , box ) )
-          else
-            box.add( setmargin( btnLibre , 0, 15, 70, 70) )
-        end
+        box.add( setmargin( btnLibre , 0, 15, 70, 70) )
 
         btnContreLaMontre = Gtk::Button.new()
         setBold(btnContreLaMontre, @@lg.gt("CONTRELAMONTRE") )
-        if( Sauvegardes.getInstance.getSauvegardePartie.nbPartieSauvegarderContreLaMontre > 0 )
-            box.add( creationHboxResumeGame( btnContreLaMontre , Mode::CONTRE_LA_MONTRE , box ) )
-          else
-            box.add( setmargin( btnContreLaMontre , 0, 15, 70, 70) )
-        end
+        box.add( setmargin( btnContreLaMontre , 0, 15, 70, 70) )
+  
 
         btnSurvie = Gtk::Button.new()
         setBold(btnSurvie, @@lg.gt("SURVIE") )
-        if( Sauvegardes.getInstance.getSauvegardePartie.nbPartieSauvegarderSurvie > 0 )
-            box.add( creationHboxResumeGame( btnSurvie , Mode::SURVIE , box ) )
-          else
-            box.add( setmargin( btnSurvie , 0, 15, 70, 70) )
-        end
+        box.add( setmargin( btnSurvie , 0, 15, 70, 70) )
+
 
         btnTutoriel = Gtk::Button.new()
-        setBold(btnTutoriel, @@lg.gt("SURVIE") )
-        if( Sauvegardes.getInstance.getSauvegardePartie.nbPartieSauvegarderTutoriel > 0 )
-            box.add( creationHboxResumeGame( btnTutoriel , Mode::TUTORIEL , box ) )
-          else
-            box.add( setmargin( btnTutoriel , 0, 15, 70, 70) )
-        end
+        setBold(btnTutoriel, @@lg.gt("TUTORIEL") )
+        box.add( setmargin( btnTutoriel , 0, 15, 70, 70) )
+    
 
         # gestion des évènements des boutons
-        btnLibre.signal_connect('clicked') { Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
+        btnLibre.signal_connect('clicked') {    
+            Fenetre.remove(box); FenetreSelection.afficheToi( FenetreMenu ) 
+        }
 
         btnContreLaMontre.signal_connect('clicked') { |btn|
             creationHBoxDifficulte(box,2,btn,3,btnSurvie)

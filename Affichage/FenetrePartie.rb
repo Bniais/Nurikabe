@@ -280,102 +280,111 @@ class FenetrePartie < Fenetre
     end
 
     def afficherNbCase(x, y)
-        res = @@maPartie.afficherNbBloc(@@maPartie.grilleEnCours.tabCases[x][y])
-        if(res[0] > 1 || @@maPartie.grilleEnCours.tabCases[x][y].estIle?)
-            #trouver île
-            found = false
-            for i in 0...@@maPartie.grilleEnCours.tabCases.size
-                for j in 0...@@maPartie.grilleEnCours.tabCases.size
-                    if res[1][i][j]
+        if(Sauvegardes.getInstance.getSauvegardeParametre.compteurIlot)
+            res = @@maPartie.afficherNbBloc(@@maPartie.grilleEnCours.tabCases[x][y])
+            if(res[0] > 1 || @@maPartie.grilleEnCours.tabCases[x][y].estIle?)
+                #trouver île
+                found = false
+                for i in 0...@@maPartie.grilleEnCours.tabCases.size
+                    for j in 0...@@maPartie.grilleEnCours.tabCases.size
+                        if res[1][i][j]
 
-                        if(@@maPartie.grilleEnCours.tabCases[i][j].estIle?)
-                            @@maGrille[i][j].name = "grid-cell-ile-appartient-ile"
-                        else
-                            if( @@maGrille[i][j].name.include?("red"))
-                                @@maGrille[i][j].name = "grid-cell-red-appartient"
+                            if(@@maPartie.grilleEnCours.tabCases[i][j].estIle?)
+                                @@maGrille[i][j].name = "grid-cell-ile-appartient-ile"
                             else
-                                @@maGrille[i][j].name = "grid-cell-appartient-ile"
-                            end
-                        end
-
-
-                        if !found && @@maPartie.grilleEnCours.tabCases[i][j].estIle?
-                            #trouver direction popover
-                            if( i-1 < 0 || !res[1][i-1][j])
-                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
-                            elsif(i+1 >= @@maPartie.grilleEnCours.tabCases.size || !res[1][i+1][j])
-                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :bottom)
-                            elsif(j-1 < 0 || !res[1][i][j-1])
-                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :left)
-                            elsif(j+1 >= @@maPartie.grilleEnCours.tabCases.size || !res[1][i][j+1])
-                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :right)
-                            else
-                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
+                                if( @@maGrille[i][j].name.include?("red"))
+                                    @@maGrille[i][j].name = "grid-cell-red-appartient"
+                                else
+                                    @@maGrille[i][j].name = "grid-cell-appartient-ile"
+                                end
                             end
 
-                            
-                            @popover.modal = false
-                            @popover.visible = true
-                            found = true
+
+                            if !found && @@maPartie.grilleEnCours.tabCases[i][j].estIle?
+                                #trouver direction popover
+                                if( i-1 < 0 || !res[1][i-1][j])
+                                    @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
+                                elsif(i+1 >= @@maPartie.grilleEnCours.tabCases.size || !res[1][i+1][j])
+                                    @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :bottom)
+                                elsif(j-1 < 0 || !res[1][i][j-1])
+                                    @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :left)
+                                elsif(j+1 >= @@maPartie.grilleEnCours.tabCases.size || !res[1][i][j+1])
+                                    @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :right)
+                                else
+                                    @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
+                                end
+
+                                
+                                @popover.modal = false
+                                @popover.visible = true
+                                found = true
+                            end
                         end
                     end
-                end
-            end     
+                end     
+            end
         end
     end
 
     def enleverNbCase()
-        if(@popover != nil)
-            @popover.visible = false
-        end
-
-        for i in 0...@@maPartie.grilleEnCours.tabCases.size
-            for j in 0...@@maPartie.grilleEnCours.tabCases.size
-                @@maGrille[i][j].changerStatut(@@maPartie.grilleEnCours.tabCases[i][j].couleur, false)
+        #if(Sauvegardes.getInstance.getSauvegardeParametre.compteurIlot)
+            if(@popover != nil)
+                @popover.visible = false
             end
-        end
+
+            for i in 0...@@maPartie.grilleEnCours.tabCases.size
+                for j in 0...@@maPartie.grilleEnCours.tabCases.size
+                    @@maGrille[i][j].changerStatut(@@maPartie.grilleEnCours.tabCases[i][j].couleur, false)
+                end
+            end
+        #end
     end
 
     def afficherPortee(x, y)#TODO
-        @porteeAffichee = true
-        enleverNbCase
-        result = @@maPartie.porteeIle(x, y)
+        if(Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee)
+             puts "mettre"
+            @porteeAffichee = true
+            enleverNbCase
+            result = @@maPartie.porteeIle(x, y)
 
-        for i in 0...@@maPartie.grilleEnCours.tabCases.size
-            for j in 0...@@maPartie.grilleEnCours.tabCases.size
-                if(result[i][j])
-                    if(@@maGrille[i][j].name.include?("block"))
-                        if(@@maGrille[i][j].name.include?("red"))
-                            @@maGrille[i][j].name = "grid-cell-portee-ile-black-red"
+            for i in 0...@@maPartie.grilleEnCours.tabCases.size
+                for j in 0...@@maPartie.grilleEnCours.tabCases.size
+                    if(result[i][j])
+                        if(@@maGrille[i][j].name.include?("block"))
+                            if(@@maGrille[i][j].name.include?("red"))
+                                @@maGrille[i][j].name = "grid-cell-portee-ile-black-red"
+                            else
+                                @@maGrille[i][j].name = "grid-cell-portee-ile-black"
+                            end
+                        elsif @@maPartie.grilleEnCours.tabCases[i][j].estIle? 
+                            
+                            
+                                @@maGrille[i][j].name = "grid-cell-portee-ile-ile"
+                            
                         else
-                            @@maGrille[i][j].name = "grid-cell-portee-ile-black"
-                        end
-                    elsif @@maPartie.grilleEnCours.tabCases[i][j].estIle? 
-                        
-                        
-                            @@maGrille[i][j].name = "grid-cell-portee-ile-ile"
-                        
-                    else
-                        if(@@maGrille[i][j].name.include?("red"))
-                            @@maGrille[i][j].name = "grid-cell-portee-ile-red"
-                        else
-                            @@maGrille[i][j].name = "grid-cell-portee-ile"
-                        end
+                            if(@@maGrille[i][j].name.include?("red"))
+                                @@maGrille[i][j].name = "grid-cell-portee-ile-red"
+                            else
+                                @@maGrille[i][j].name = "grid-cell-portee-ile"
+                            end
 
-                      
+                        
+                        end
                     end
                 end
             end
         end
-
         
     end
 
     def enleverPortee(x, y)
-        @porteeAffichee = false
-        enleverNbCase
-        if(x!=nil)
-            afficherNbCase(x,y)
+        if(Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee)
+            puts "enlever"
+            @porteeAffichee = false
+            enleverNbCase
+            if(x!=nil)
+                afficherNbCase(x,y)
+            end
         end
     end
 

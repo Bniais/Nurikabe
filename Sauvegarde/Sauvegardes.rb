@@ -2,6 +2,7 @@
 require '../Partie/Partie.rb'
 require '../Partie/PartieSurvie.rb'
 require '../Partie/PartieContreLaMontre.rb'
+require '../Partie/PartieTuto.rb'
 require '../Parametres/Parametre.rb'
 require_relative 'SauvegardePartie.rb'
 

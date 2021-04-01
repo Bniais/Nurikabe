@@ -76,8 +76,12 @@ class FenetrePartie < Fenetre
         self
     end
 
+    def self.afficheToi(lastView)
+        self.afficheToiSelec(lastView, nil)
+    end
+
     # Lancer une nouvelle partie avec un mode specifique ? A FAIRE
-    def self.afficheToi( lastView, unePartie )
+    def self.afficheToiSelec( lastView, unePartie )
         if @@maPartie == nil
             @@maPartie = unePartie
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
@@ -385,6 +389,51 @@ class FenetrePartie < Fenetre
         popover
      end
 
+=begin
+    def afficherMur2x2()
+        res = @@maPartie.afficherMur2x2
+        for i in 0...@@maPartie.grilleEnCours.tabCases.size
+            for j in 0...@@maPartie.grilleEnCours.tabCases.size
+                if(res[i][j] > 0)
+                    #changer style 
+                    
+                    if(j-1 < 0 || !res[i][j-1]) #pas noir en haut
+                        if(i-1 < 0  || res[i-1][j] != res[i][j]) #pas noir à gauche
+                            #top-left : rien en haut et à gauche
+                            @@maGrille[i][j].name = "top-left"
+                        elsif(i+1 >= @@maPartie.grilleEnCours.tabCases.size || res[i+1][j] != res[i][j])#pas noir à droite
+                            #top-right : rien en haut et à droite
+                             @@maGrille[i][j].name = "top-right"
+                        else
+                            #top : rien en haut et des choses sur le côté
+                             @@maGrille[i][j].name = "top"
+                        end
+
+                    elsif(j-1 < 0 || !res[i][j-1]) #pas noir en bas
+                        if(i-1 < 0 || !res[i-1][j]) #pas noir à gauche
+                            #bot-left : rien en haut et à gauche
+                            @@maGrille[i][j].name = "bot-left"
+                        elsif(i+1 >= @@maPartie.grilleEnCours.tabCases.size || res[i+1][j] != res[i][j])#pas noir à droite
+                            #bot-right : rien en haut et à droite
+                             @@maGrille[i][j].name = "bot-right"
+                        else
+                            #bot : rien en haut et des choses sur le côté
+                             @@maGrille[i][j].name = "bot"
+                        end
+                    elsif(i-1 < 0 || !res[i-1][j]) #pas noir à gauche
+                        #left : noir en bas et haut mais pas gauche
+                        @@maGrille[i][j].name = "left"
+                    elsif(i+1 >= @@maPartie.grilleEnCours.tabCases.size || res[i+1][j] != res[i][j]) #pas noir à droite
+                        #right : noir en bas et haut mais pas droite
+                        @@maGrille[i][j].name = "right"
+                    end
+                    
+                end
+            end
+        end
+    end
+=end
+
     # Methode qui permet de cree
     # une cellule destiner a la grille
     private
@@ -412,7 +461,10 @@ class FenetrePartie < Fenetre
                         enableBtn(@btnUndo)
                         enableBtn(@btnUndoUndo)
                         disableBtn(@btnRedo)
+                        
                     end
+
+                    #afficherMur2x2
 
                     
                     if  @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
@@ -427,6 +479,8 @@ class FenetrePartie < Fenetre
                         show_standard_message_dialog(@@lg.gt("MESSAGE_DE_VICTOIRE"))
                         quitter
                     end
+
+                    
                     
                 else
                     if(!@porteeAffichee)

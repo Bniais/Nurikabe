@@ -105,7 +105,7 @@ class FenetreSelection < Fenetre
             if indice != -1
                 FenetrePartie.afficheToiChargerPartie( FenetreSelection ,  indice   )
             else
-                FenetrePartie.afficheToi( FenetreSelection , Partie.creer(  SauvegardeGrille.getInstance.getGrilleAt(numero), nil, nil )  )
+                FenetrePartie.afficheToiSelec( FenetreSelection , Partie.creer(  SauvegardeGrille.getInstance.getGrilleAt(numero), nil, nil )  )
             end
         }
 

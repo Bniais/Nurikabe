@@ -89,6 +89,30 @@ separator {
     font-size: 35px;
 }
 
+/* 2x2 */
+/*#bot, #bot-left, #bot-right, #top, #top-left, #top-right, #left, #right{
+    background: rgb(0, 0, 0);
+}
+#bot, #bot-left, #bot-right{
+    border-bottom-color: red;
+    border-bottom-width: 3px;
+}
+
+#top, #top-left, #top-right{
+    border-top-color: red;
+    border-top-width: 3px;
+}
+
+#left, #top-left, #bot-left{
+    border-left-color: red;
+    border-left-width: 3px;
+}
+
+#right, #top-right, #bot-right{
+    border-right-color: red;
+    border-right-width: 3px;
+}*/
+
 /* _____ Fin Fenetre Partie _____ */
 
 

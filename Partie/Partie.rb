@@ -119,11 +119,6 @@ class Partie
     @chrono.ajouterMalus(n)
   end
 
-  #affiche la portee des cases
-  def afficherPortee(case_)#TODO
-    #Dit à l'interface d'afficher
-  end
-
   #affiche le nombre de blocs
   def afficherNbBloc(case_)#TOTEST
     #Dit à l'interface d'afficher
@@ -173,9 +168,25 @@ class Partie
   end
 
   #affiche les mur de 2 bloc par 2 bloc(en carré)
+=begin
   def afficherMur2x2()#TODO
-    #Dit à l'interface d'afficher
+    nbBlocs = 1
+    vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,0)}
+    for i in 0..@grilleEnCours.tabCases.size-2
+      for j in 0..@grilleEnCours.tabCases.size-2
+        if(bloc2x2(i, j))
+          vu[i][j] = nbBlocs
+          vu[i+1][j] = nbBlocs
+          vu[i][j+1] = nbBlocs
+          vu[i+1][j+1] = nbBlocs
+          nbBlocs+=1
+        end
+      end
+    end
+
+    return vu;
   end
+=end
 
   #Verifie l'erreur
   def verifierErreur()#TOTEST
@@ -778,7 +789,7 @@ class Partie
   end
 
   def indiceContinuiteMur() #WONTDO
-    #chercher tous les chemins possibles liant une case blanche non-reliée aux iles accessibles, et si une case en commun parmis tous ces chemins, on peut la colorier
+    #chercher tous les chemins possibles liant une case noire non-reliée à un autre mur, et si une case en commun parmis tous ces chemins, on peut la colorier
     return nil
   end
 
@@ -804,6 +815,21 @@ class Partie
       return nil
     end
   end
+
+=begin
+  def bloc2x2(i,j)
+    #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 4 noirs
+    for x in i..i+1
+      for y in j..j+1
+        if @grilleEnCours.tabCases[x][y].couleur != Couleur::NOIR
+          return false
+        end
+      end
+    end
+
+    return true
+  end
+=end
 
   def indiceEviter2x2()
     for i in 0..@grilleEnCours.tabCases.size-2 # -2 car inutil de regarder la dernière ligne et collone car pas de voisins droits et bas
@@ -896,7 +922,7 @@ p = Partie.creer(Grille.creer(4,
       [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::BLANC, 2, 4), Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4)]
     ]), nil, nil)
 
-p = Partie.creer(Grille.creer(4, 
+Partie.creer(Grille.creer(4, 
 [
   [Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::GRIS, 4, 0)],
   [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1)],

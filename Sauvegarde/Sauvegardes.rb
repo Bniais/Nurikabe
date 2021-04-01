@@ -1,5 +1,7 @@
 # Classe qui contient l'ensemble des sauvegardes
 require '../Partie/Partie.rb'
+require '../Partie/PartieSurvie.rb'
+require '../Partie/PartieContreLaMontre.rb'
 require '../Parametres/Parametre.rb'
 require_relative 'SauvegardePartie.rb'
 

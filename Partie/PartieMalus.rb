@@ -1,7 +1,11 @@
+require_relative "ChronoDecompte.rb"
+
 class PartieMalus < Partie
 
-    def PartieContreLaMontre.creer()
-        new();
+    private_class_method :new
+
+    def initalize()
+        super(grille, parametres, sauvegardes)
     end
 
     def verifierErreur()

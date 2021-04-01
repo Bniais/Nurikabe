@@ -4,6 +4,7 @@ require './FenetreAPropos.rb'
 require './FenetreClassement.rb'
 require './FenetrePartie.rb'
 require './FenetreSelection.rb'
+require "./../Partie/PartieSurvie.rb"
 
 class FenetreMenu < Fenetre
 
@@ -17,6 +18,19 @@ class FenetreMenu < Fenetre
         Fenetre.add( FenetreMenu.new().creationInterface() )
         Fenetre.show_all
         return self
+    end
+
+    def show_standard_message_dialog(unMessage)
+        @dialog = Gtk::MessageDialog.new(:parent => @@window,
+                                        :flags => [:modal, :destroy_with_parent],
+                                        :type => :info,
+                                        :buttons => :none,
+                                        :message => unMessage)
+        @dialog.add_button( @@lg.gt("OUI") , 0)
+        @dialog.add_button( @@lg.gt("NON") , 1)
+        response = @dialog.run
+        @dialog.destroy
+        return response
     end
 
     def creationInterface()
@@ -53,10 +67,31 @@ class FenetreMenu < Fenetre
         }
 
         btnContreLaMontre.signal_connect('clicked') { |btn|
-            creationHBoxDifficulte(box,2,btn,3,btnSurvie)
+           
+
+            indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderContreLaMontre
+            if(indice != -1)
+                if (show_standard_message_dialog(@@lg.gt("REPRENDRE_SAUVEGARDE")) == 0)
+                    Fenetre.remove(box); 
+                    FenetrePartie.afficheToiChargerPartie(FenetreMenu ,  indice) 
+                else
+                    Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(Sauvegardes.getInstance.getSauvegardePartie.getPartie(indice))
+                end  
+            end
+            creationHBoxCLM(box,2,btn,3,btnSurvie)
         }
         btnSurvie.signal_connect('clicked') { |btn|
-            creationHBoxDifficulte(box,3,btn,2,btnContreLaMontre)    
+            #popup si sauvegarde
+            indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderSurvie
+            if(indice != -1)
+                if (show_standard_message_dialog(@@lg.gt("REPRENDRE_SAUVEGARDE")) == 0)
+                    Fenetre.remove(box); 
+                    FenetrePartie.afficheToiChargerPartie(FenetreMenu ,  indice) 
+                else
+                    Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(Sauvegardes.getInstance.getSauvegardePartie.getPartie(indice))
+                end  
+            end
+            creationHBoxSurvie(box,3,btn,2,btnContreLaMontre)    
         }
         btnTutoriel.signal_connect('clicked') { Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
     
@@ -157,7 +192,7 @@ class FenetreMenu < Fenetre
     end
 
 
-    def creationHBoxDifficulte( box, position , remove , positionOtherDifficulty , btnOtherMode )
+    def creationHBoxSurvie( box, position , remove , positionOtherDifficulty , btnOtherMode )
 
         if box.children[positionOtherDifficulty] != btnOtherMode
             box.remove( box.children[positionOtherDifficulty] )
@@ -173,9 +208,76 @@ class FenetreMenu < Fenetre
         hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
         hBox.add ( Gtk::Button.new() )
 
-        hBox.children[0].signal_connect("clicked"){ Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
-        hBox.children[1].signal_connect("clicked"){ Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
-        hBox.children[2].signal_connect("clicked"){ Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
+        hBox.children[0].signal_connect("clicked"){
+            Fenetre.remove(box); 
+
+            nbGrille = SauvegardeGrille.getInstance.getNombreGrille
+            indiceRand = rand(1..(nbGrille/3))
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
+        }
+        hBox.children[1].signal_connect("clicked"){
+            Fenetre.remove(box); 
+
+            nbGrille = SauvegardeGrille.getInstance.getNombreGrille
+            indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
+        }
+        
+        hBox.children[2].signal_connect("clicked"){
+            Fenetre.remove(box); 
+
+            nbGrille = SauvegardeGrille.getInstance.getNombreGrille
+            indiceRand = rand((1+2*nbGrille/3)..nbGrille)
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))        
+        }
+
+        setBold( hBox.children[0] , @@lg.gt("LIBRE") )
+        setBold( hBox.children[1] , @@lg.gt("MOYEN") )
+        setBold( hBox.children[2] , @@lg.gt("DIFFICILE") )
+
+        box.add( setmargin(hBox,0,15,70,70) ) #ADD
+        box.reorder_child( hBox , position  ) #REORDER
+        Fenetre.show_all
+    end
+
+    def creationHBoxCLM( box, position , remove , positionOtherDifficulty , btnOtherMode )
+
+        if box.children[positionOtherDifficulty] != btnOtherMode
+            box.remove( box.children[positionOtherDifficulty] )
+            box.add(btnOtherMode)
+            box.reorder_child(btnOtherMode, positionOtherDifficulty)
+        end
+
+        box.remove(remove) #DELETE
+
+        hBox = Gtk::Box.new(:horizontal)
+        hBox.set_height_request(70); hBox.set_homogeneous(true)
+        hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
+        hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
+        hBox.add ( Gtk::Button.new() )
+
+        hBox.children[0].signal_connect("clicked"){
+            Fenetre.remove(box); 
+
+            nbGrille = SauvegardeGrille.getInstance.getNombreGrille
+            indiceRand = rand(1..(nbGrille/3))
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
+        }
+        hBox.children[1].signal_connect("clicked"){
+            Fenetre.remove(box); 
+
+            nbGrille = SauvegardeGrille.getInstance.getNombreGrille
+            indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
+        }
+        
+        hBox.children[2].signal_connect("clicked"){
+            Fenetre.remove(box); 
+            
+            nbGrille = SauvegardeGrille.getInstance.getNombreGrille
+            indiceRand = rand((1+2*nbGrille/3)..nbGrille)
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))        
+        }
 
         setBold( hBox.children[0] , @@lg.gt("LIBRE") )
         setBold( hBox.children[1] , @@lg.gt("MOYEN") )

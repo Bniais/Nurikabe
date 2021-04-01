@@ -9,7 +9,6 @@ class Sauvegardes
 
     @@instanceSauvegarde = nil
     
-
     @sauvegardePartie = nil
     @sauvegardeParametre = nil
 

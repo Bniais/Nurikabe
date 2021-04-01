@@ -35,14 +35,29 @@ class SauvegardesParties
         compteur
     end
 
-    def getIndicePartieSauvegarderLibre()
-        indice = Array.new
+    # Methode qui permet de renvoyer un tableau 
+    # qui indique si une grille est en cours ou pas
+    def getListPartieLibreEnCours()
+        monTab = Array.new( SauvegardeGrille.getInstance.getNombreGrille + 1 ) {false}
         for i in 0...nbPartieSauvegarder
             if @mesParties[i].getMode == Mode::LIBRE
-                indice.push(i)
+                monTab[@mesParties[i].grilleBase.numero ] = true
             end
         end
-        return indice;
+        return monTab
+    end
+
+    # Methode qui permet de retrouver si une sauvegarde
+    # existe pour un numero de grille particulier
+    # pour le mode libre
+    def getIndicePartieLibreSauvegarder( numGrille )
+        indice = -1;
+        for i in 0...nbPartieSauvegarder
+            if @mesParties[i].grilleBase.numero == numGrille && @mesParties[i].getMode == Mode::LIBRE
+                indice = i
+            end
+        end
+        return indice
     end
 
     def nbPartieSauvegarderSurvie()

@@ -9,16 +9,6 @@ class FenetreSelection < Fenetre
     end
 
     def self.afficheToi( lastView )
-        @@uneGrilleTMP = Grille.creer(10,
-                [
-                    [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 4, 0)],
-                    [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::BLANC, 4, 1)],
-                    [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::BLANC, 4, 2)],
-                    [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::NOIR, 3, 3), Case.creer(Couleur::BLANC, 4, 3)],
-                    [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::BLANC, 2, 4), Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4)]
-                ])
-         
-
         Fenetre.set_subtitle(@@lg.gt("SELECTION_MODE_LIBRE"))
         Fenetre.add( FenetreSelection.new().creationInterface( lastView ) )
         Fenetre.show_all
@@ -52,8 +42,17 @@ class FenetreSelection < Fenetre
 
         vBox = Gtk::Box.new(:vertical , 20)
 
-        vBox.add( generateHbox( generateFrame(@@uneGrilleTMP , box) ,generateFrame(@@uneGrilleTMP , box )) )
-        vBox.add( generateHbox( generateFrame(@@uneGrilleTMP , box) ,nil) )
+        tabPartieEnCours = Sauvegardes.getInstance.getSauvegardePartie.getListPartieLibreEnCours
+        i = 1
+        while ( i <= SauvegardeGrille.getInstance.getNombreGrille)
+            if i == SauvegardeGrille.getInstance.getNombreGrille
+                vBox.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
+            else 
+                vBox.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
+                i+=1
+            end
+            i+=1
+        end
 
         setmargin(vBox,15,15,0,0  )
         scroll.add_with_viewport( vBox )
@@ -77,14 +76,18 @@ class FenetreSelection < Fenetre
     end
 
 
-    def generateFrame( uneGrille , mainBox )
+    def generateFrame( uneGrille , mainBox , numero , enCours )
         btnFrame = Gtk::Button.new()
         btnFrame.name = "bg-FenetreSelection"
         
         box = Gtk::Box.new(:vertical)
         
         title = Gtk::Label.new()
-        title.set_markup("<span size='25000' >#" + uneGrille.numero.to_s + "</span>")
+        if enCours
+            title.set_markup("<span size='25000' >#" + uneGrille.numero.to_s + " EN COURS</span>")
+        else
+            title.set_markup("<span size='25000' >#" + uneGrille.numero.to_s + "</span>")
+        end
         title.name = "bg-FenetreSelection-title"
         title.halign = :start
         setmargin(title,5,5,0,0)
@@ -95,7 +98,16 @@ class FenetreSelection < Fenetre
   
         btnFrame.add( box )#ADD
 
-        btnFrame.signal_connect("clicked") { Fenetre.remove(mainBox); FenetrePartie.afficheToi( FenetreSelection ) }
+        btnFrame.signal_connect("clicked") { 
+            Fenetre.remove(mainBox); 
+            indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieLibreSauvegarder(numero)
+            puts indice
+            if indice != -1
+                FenetrePartie.afficheToiChargerPartie( FenetreSelection ,  indice   )
+            else
+                FenetrePartie.afficheToi( FenetreSelection , Partie.creer(  SauvegardeGrille.getInstance.getGrilleAt(numero), nil, nil )  )
+            end
+        }
 
         return btnFrame
     end

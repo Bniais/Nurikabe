@@ -31,7 +31,7 @@ separator {
     border-color: black;
     border-radius: 0px;
     color: rgb(0, 0, 0);
-    background-color:rgb(173, 171, 171);
+    background:rgb(173, 171, 171);
 }
 
 
@@ -42,7 +42,7 @@ separator {
 /** black */
 
 #grid-cell-block,#grid-cell-red-block{
-     background-color:  rgb(49, 49, 49);
+     background:  rgb(49, 49, 49);
 }
 
 /** red */
@@ -55,18 +55,18 @@ separator {
 /** nbBlocIle */
 #grid-cell-appartient-ile, #grid-cell-ile-appartient-ile, #grid-cell-red-appartient{
 
-    background:rgb(204, 212, 224);
+    background:rgb(152, 168, 186);
     font-size: 22px;
 }
 
 /** Portee Ile */
 #grid-cell-portee-ile, #grid-cell-portee-ile-red, #grid-cell-portee-ile-ile{
-    background:rgb(228, 209, 184);
+    background:rgb(189, 168, 141);
 
 }
 
 #grid-cell-portee-ile-black, #grid-cell-portee-ile-black-red{
-    background:rgb(23, 20, 12);
+    background:  rgb(54, 47, 36);
 }
 
 /* Iles */
@@ -95,10 +95,22 @@ button:hover {
 
 
 #btnBack {
-    background-color: rgb(233, 221, 239);
+    background: rgb(233, 221, 239);
 }
 
 #text, #text *{
-    background-color: rgb(49, 49, 49);
+    background: rgb(49, 49, 49);
     color: rgb(173, 171, 171);
+}
+
+
+popover * {
+    color :black;
+
+    
+}
+
+popover {
+    background:rgb(208, 208, 208);
+    border:solid 1px black;
 }

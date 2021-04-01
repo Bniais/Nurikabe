@@ -13,7 +13,7 @@ class Couleur
     ILE_9 = 9
 
 
-    def EstIle?(couleur)
+    def self.EstIle?(couleur)
         return couleur >= ILE_1
     end
 end

@@ -474,10 +474,15 @@ class FenetrePartie < Fenetre
                     end
 
                     if @@maPartie.partieTerminee? == true 
-                        pause
-                        Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
-                        show_standard_message_dialog(@@lg.gt("MESSAGE_DE_VICTOIRE"))
-                        quitter
+                        grilleSuivante =  @@maPartie.grilleSuivante
+                        if(grilleSuivante == nil)
+                            pause
+                            Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
+                            show_standard_message_dialog(@@lg.gt("MESSAGE_DE_VICTOIRE"))
+                            quitter
+                        else
+                            puts "#TODO : CHARGER PROCHAINE GRILLE"
+                        end
                     end
 
                     
@@ -635,7 +640,7 @@ class FenetrePartie < Fenetre
     private
     def verifier
         #enleverPortee(nil, nil)
-        compteurErreur = @@maPartie.verifierErreur
+        compteurErreur = @@maPartie.verifierErreur(true)
 
         @monCompteurErreur.name = ""
 
@@ -684,13 +689,13 @@ class FenetrePartie < Fenetre
             @indiceRespiration = 0
             while @@maPartie != nil
                 @indiceRespiration += 1
-                if @indiceRespiration%4 == 0
+                if @indiceRespiration%20 == 0
                     @monTimer.name = "timer"
-                elsif @indiceRespiration%4 == 2
+                elsif @indiceRespiration%20 == 10
                     @monTimer.name = "timer_respire"
                 end
                 @monTimer.set_markup("<span size='25000' >" + @@maPartie.chrono.getTemps + "</span>")
-                sleep(0.5)
+                sleep(0.1)
             end
         end
     end

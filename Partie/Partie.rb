@@ -80,6 +80,11 @@ class Partie
     @chrono.demarrer()
   end
 
+  #Tire lla prochaine grille
+  def grilleSuivante()
+    return nil #pas de prochaine
+  end
+
   # Methode qui ajoute un coup
   def ajouterCoup(coup)#TOTEST
     if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1) 
@@ -189,7 +194,7 @@ class Partie
 =end
 
   #Verifie l'erreur
-  def verifierErreur()#TOTEST
+  def verifierErreur(fromUser)#TOTEST
     return @grilleEnCours.nbDifference(@grilleBase)
   end
 
@@ -200,7 +205,7 @@ class Partie
 
   #revient a la dernière bonne position de jeu
   def revenirPositionBonne() #TOTEST
-    while verifierErreur() != 0 && retourArriere()[0] == true
+    while verifierErreur(false) != 0 && retourArriere()[0] == true
       #Retour en arrière tant que c'est encore possible et que la grille est fausse
     end
     @tabCoup = Array.new(0)

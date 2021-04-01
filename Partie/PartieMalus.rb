@@ -1,4 +1,5 @@
 require_relative "ChronoDecompte.rb"
+require_relative "Malus.rb"
 
 class PartieMalus < Partie
 
@@ -8,26 +9,29 @@ class PartieMalus < Partie
         super(grille, parametres, sauvegardes)
     end
 
-    def verifierErreur()
-        super()
-        ajouterMalus(MALUS_VERIFICATION)
+    def verifierErreur(fromUser)
+        if(fromUser)
+            ajouterMalus(Malus::MALUS_VERIFICATION)
+        end
+        super(fromUser)   
     end
 
     #donne la position de l'erreur au joueur
     def donnerErreur()
-        super()
-        ajouterMalus(MALUS_DONNER_ERREUR)
+        ajouterMalus(Malus::MALUS_DONNER_ERREUR)
+        super()    
     end
 
     #revient a la dernière bonne position de jeu
     def revenirPositionBonne()
+        puts "Called : #{Malus::MALUS_POS_BONNE}"
+        ajouterMalus(Malus::MALUS_POS_BONNE)
         super()
-        ajouterMalus(MALUS_POS_BONNE)
     end
 
     #donne un indice sur le meilleur coup a jouer
     def donneIndice()
+        ajouterMalus(Malus::MALUS_INDICE)
         super()
-        ajouterMalus(MALUS_INDICE)
     end
 end

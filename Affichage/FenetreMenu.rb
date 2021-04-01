@@ -5,6 +5,9 @@ require './FenetreClassement.rb'
 require './FenetrePartie.rb'
 require './FenetreSelection.rb'
 require "./../Partie/PartieSurvie.rb"
+require "./../Partie/PartieTuto.rb"
+require "./../Partie/PartieContreLaMontre.rb"
+
 
 class FenetreMenu < Fenetre
 
@@ -93,7 +96,10 @@ class FenetreMenu < Fenetre
             end
             creationHBoxSurvie(box,3,btn,2,btnContreLaMontre)    
         }
-        btnTutoriel.signal_connect('clicked') { Fenetre.remove(box); FenetrePartie.afficheToi( FenetreMenu ) }
+        btnTutoriel.signal_connect('clicked') { 
+            Fenetre.remove(box); 
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieTuto.creer(SauvegardeGrille.getInstance.getGrilleAt(rand(1..SauvegardeGrille.getInstance.getNombreGrille)), nil, nil) ) 
+        }
     
         # AJOUT SEPARATEUR
         separateur = Gtk::Separator.new(:horizontal)  
@@ -212,14 +218,14 @@ class FenetreMenu < Fenetre
             Fenetre.remove(box); 
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
-            indiceRand = rand(1..(nbGrille/3))
+            indiceRand = rand(1..(nbGrille/3)) #TOTEST si 1/3
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
         }
         hBox.children[1].signal_connect("clicked"){
             Fenetre.remove(box); 
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
-            indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))
+            indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))#TOTEST si 1/3
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
         }
         
@@ -227,7 +233,7 @@ class FenetreMenu < Fenetre
             Fenetre.remove(box); 
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
-            indiceRand = rand((1+2*nbGrille/3)..nbGrille)
+            indiceRand = rand((1+2*nbGrille/3)..nbGrille)#TOTEST si 1/3
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))        
         }
 

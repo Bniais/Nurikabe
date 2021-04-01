@@ -3,17 +3,21 @@ class PartieTuto < Partie
   attr_accessor :grille, :progression, :senarios
 
   #ceer une partie en mode survie
-  def PartieTuto.creer()
-    new()
+  def PartieTuto.creer(grille, parametres, sauvegardes)
+    new(grille, parametres, sauvegardes)
+  end
+
+  def initalize()
+    super(grille, parametres, sauvegardes)
   end
 
   #Tire lla prochaine grille
   def grilleSuivante()
-    #return grille
+    return @grilleBase
+    #redef
   end
 
-  #retourn en avant
-  def retourAvant()
-    #return void
+  def getMode()
+    return Mode::TUTORIEL
   end
 end

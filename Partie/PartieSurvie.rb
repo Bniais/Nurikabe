@@ -13,8 +13,9 @@ class PartieSurvie < PartieMalus
     end
 
     #Tire lla prochaine grille
-    def prochaineGrille()
-      #return grille
+    def grilleSuivante()
+      return grilleBase
+      #redef
     end
 
     def getMode

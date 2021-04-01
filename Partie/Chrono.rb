@@ -46,7 +46,7 @@ class Chrono
     end
 
     #Ajoute un malus au chrono
-    def addMalus(m)
+    def ajouterMalus(m)
       @malus += m
     end
 

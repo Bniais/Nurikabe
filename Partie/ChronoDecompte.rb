@@ -13,9 +13,15 @@ class ChronoDecompte < Chrono
     def top()
       if(!@pause)
         ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-        @time -= (ending - @starting) * (@mode == Mode::SURVIE ? -1 : 1)
+        @time -= (ending - @starting)
         @starting = ending
       end
       return estNul?()
+    end
+
+    def ajouterMalus(n)
+      puts @time
+      @time -= n
+      puts @time
     end
 end

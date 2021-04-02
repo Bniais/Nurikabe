@@ -28,8 +28,8 @@ class Parametre
 
     def initialize()
         @casesGrises = false
-        @compteurIlot = false
-        @affichagePortee = false
+        @compteurIlot = true
+        @affichagePortee = true
         @murs2x2 = false
         @modeSombre = false
     end
@@ -47,13 +47,11 @@ class Parametre
     end
 
     def resetAll()
-
-        @casesGrises = false
-        @compteurIlot = false
-        @affichagePortee = false
-        @murs2x2 = false
-        @modeSombre = false
-        Fenetre.set_modeSombre(@modeSombre)
+        set_casesGrises(false)
+        set_compteurIlots(true)
+        set_affichagePortee(true)
+        set_mur2x2(false)
+        set_modeSombre(false)
     end
 
     # Methode qui permet de savoir si l'option des cases grises est activee ou pas

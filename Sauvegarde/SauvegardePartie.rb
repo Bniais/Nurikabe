@@ -9,8 +9,11 @@ class SauvegardesParties
         @mesParties = Array.new
     end
 
-    def resetAll()
+    def resetAll(unePartie)
         @mesParties = Array.new
+        if(unePartie != nil)
+            @mesParties.push(unePartie)
+        end
     end
 
     def getPartie( indice )

@@ -65,7 +65,6 @@ end
 
 
 
-
 # Classe qui gere la fenetre 'A propos'
 class FenetrePartie < Fenetre
 
@@ -116,6 +115,10 @@ class FenetrePartie < Fenetre
         return self
     end
 
+
+    def self.getPartie
+        return @@maPartie
+    end
 
     ################################################################
     ################## CREATION DE L INTERFACE #####################

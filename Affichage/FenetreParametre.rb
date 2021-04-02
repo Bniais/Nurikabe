@@ -9,9 +9,11 @@ class FenetreParametre < Fenetre
     end
 
     def self.afficheToi( lastView )
+        
         Fenetre.set_subtitle(@@lg.gt("PARAMETRES"))
         Fenetre.add( FenetreParametre.new().creationInterface( lastView ) )
         Fenetre.show_all
+        @@unePartie = nil
         return self
     end
 
@@ -96,32 +98,32 @@ class FenetreParametre < Fenetre
         box.add(title) #ADD
 
         # AIDE CASES GRISES
-        switch = Gtk::Switch.new()
-        switch.halign = :start
-        switch.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
-        switch.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?) }
-        box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , switch) ) #ADD
+        @switchCaseGrises = Gtk::Switch.new()
+        @switchCaseGrises.halign = :start
+        @switchCaseGrises.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
+        @switchCaseGrises.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?) }
+        box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , @switchCaseGrises) ) #ADD
         
         # AIDE COMPTEUR D'ILOT
-        switch = Gtk::Switch.new()
-        switch.halign = :start
-        switch.set_active( Sauvegardes.getInstance.getSauvegardeParametre.compteurIlots? )
-        switch.signal_connect('notify::active') { |s|  Sauvegardes.getInstance.getSauvegardeParametre.set_compteurIlots(s.active?) }
-        box.add( creationBoxVerticalPourVue(@@lg.gt("COMPTEURILOTS") + " :" , switch) ) #ADD
+        @switchCompteurIlot = Gtk::Switch.new()
+        @switchCompteurIlot.halign = :start
+        @switchCompteurIlot.set_active( Sauvegardes.getInstance.getSauvegardeParametre.compteurIlots? )
+        @switchCompteurIlot.signal_connect('notify::active') { |s|  Sauvegardes.getInstance.getSauvegardeParametre.set_compteurIlots(s.active?) }
+        box.add( creationBoxVerticalPourVue(@@lg.gt("COMPTEURILOTS") + " :" , @switchCompteurIlot) ) #ADD
 
         # AIDE AFFICHAGE PORTEE
-        switch = Gtk::Switch.new()
-        switch.halign = :start
-        switch.set_active( Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee? )
-        switch.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_affichagePortee(s.active?) }
-        box.add( creationBoxVerticalPourVue(@@lg.gt("AFFICHERPORTER") + " :" , switch) ) #ADD
+        @switchAffichagePortee = Gtk::Switch.new()
+        @switchAffichagePortee.halign = :start
+        @switchAffichagePortee.set_active( Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee? )
+        @switchAffichagePortee.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_affichagePortee(s.active?) }
+        box.add( creationBoxVerticalPourVue(@@lg.gt("AFFICHERPORTER") + " :" , @switchAffichagePortee) ) #ADD
 
         # AIDE MURS 2x2
-        switch = Gtk::Switch.new()
-        switch.halign = :start
-        switch.set_active( Sauvegardes.getInstance.getSauvegardeParametre.mur2x2? )
-        switch.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_mur2x2(s.active?) }
-        box.add( creationBoxVerticalPourVue(@@lg.gt("MURS2x2") + " :" , switch) ) #ADD
+        @switch2x2 = Gtk::Switch.new()
+        @switch2x2.halign = :start
+        @switch2x2.set_active( Sauvegardes.getInstance.getSauvegardeParametre.mur2x2? )
+        @switch2x2.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_mur2x2(s.active?) }
+        box.add( creationBoxVerticalPourVue(@@lg.gt("MURS2x2") + " :" , @switch2x2) ) #ADD
         return box
     end
     ### SIGNAL CONNECTS DE JEU
@@ -158,7 +160,7 @@ class FenetreParametre < Fenetre
         btnDeleteSave = Gtk::Button.new(@@lg.gt("SUPPRIMER_SAUVEGARDE_PARTIE_EN_COURS"))
         btnDeleteSave.name = "btnQuitter"
         btnDeleteSave.signal_connect("clicked") {
-            Sauvegardes.getInstance.getSauvegardePartie.resetAll
+            Sauvegardes.getInstance.getSauvegardePartie.resetAll(FenetrePartie.getPartie)
             Sauvegardes.getInstance.sauvegarder(nil)
         }
         
@@ -169,6 +171,11 @@ class FenetreParametre < Fenetre
         btnResetParams.signal_connect("clicked") {
             Sauvegardes.getInstance.getSauvegardeParametre.resetAll
             Sauvegardes.getInstance.sauvegarder(nil)
+            @switchDarkMode.set_active(false)
+            @switch2x2.set_active(false)
+            @switchCompteurIlot.set_active(true)
+            @switchCaseGrises.set_active(false)
+            @switchAffichagePortee.set_active(true)
         }
         box.add(setmargin(btnResetParams,5,5,70,70))
 
@@ -187,11 +194,11 @@ class FenetreParametre < Fenetre
         box.add(title) #ADD
 
         # DARK MORD
-        switch = Gtk::Switch.new()
-        switch.halign = :start
-        switch.set_active( Sauvegardes.getInstance.getSauvegardeParametre.modeSombre? )
-        switch.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_modeSombre(s.active?) }
-        box.add( creationBoxVerticalPourVue(@@lg.gt("MODESOMBRE") + " :" , switch) ) #ADD
+        @switchDarkMode = Gtk::Switch.new()
+        @switchDarkMode.halign = :start
+        @switchDarkMode.set_active( Sauvegardes.getInstance.getSauvegardeParametre.modeSombre? )
+        @switchDarkMode.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_modeSombre(s.active?) }
+        box.add( creationBoxVerticalPourVue(@@lg.gt("MODESOMBRE") + " :" , @switchDarkMode) ) #ADD
 
         # CHOOSE LANGUE
         combo = Gtk::ComboBoxText.new()

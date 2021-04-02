@@ -8,7 +8,7 @@ require './../Sauvegarde/SauvegardeGrille.rb'
 # DESIGN PATTERN SINGLETON
 class Fenetre
 
-    @@window = nil 
+    @@window = nil
     @@cssProviderDarkMode = Gtk::CssProvider.new
     @@cssProviderDarkMode.load(path: "style_dark.css")
 
@@ -25,7 +25,7 @@ class Fenetre
     def initialize()
         @@window = Gtk::Window.new()
         @@window.set_default_size(745,850);     @@window.set_width_request(745);    @@window.set_height_request(850);   @@window.set_resizable(false) #WINDOW PARAMS
-        @@window.signal_connect("destroy") { Fenetre.exit } ## EXIT SIGNAL     
+        @@window.signal_connect("destroy") { Fenetre.exit } ## EXIT SIGNAL
         @@window.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
 
         @@header = Gtk::HeaderBar.new
@@ -49,14 +49,14 @@ class Fenetre
  ##   [Case.creer(Couleur::BLANC, 0, 6) ,Case.creer(Couleur::ILE_4, 1, 6),Case.creer(Couleur::NOIR, 2, 6),Case.creer(Couleur::ILE_5, 3, 6), Case.creer(Couleur::BLANC, 4, 6),Case.creer(Couleur::ILE_5, 5, 6), Case.creer(Couleur::BLANC, 6, 6),Case.creer(Couleur::ILE_5, 7, 6), Case.creer(Couleur::BLANC, 8, 6),Case.creer(Couleur::ILE_5, 9, 6)],
  ##   [Case.creer(Couleur::BLANC, 0, 7) ,Case.creer(Couleur::ILE_4, 1, 7),Case.creer(Couleur::NOIR, 2, 7),Case.creer(Couleur::ILE_5, 3, 7), Case.creer(Couleur::BLANC, 4, 7),Case.creer(Couleur::ILE_5, 5, 7), Case.creer(Couleur::BLANC, 6, 7),Case.creer(Couleur::ILE_5, 7, 7), Case.creer(Couleur::BLANC, 8, 7),Case.creer(Couleur::ILE_5, 9, 7)],
  ##   [Case.creer(Couleur::BLANC, 0, 8) ,Case.creer(Couleur::ILE_4, 1, 8),Case.creer(Couleur::NOIR, 2, 8),Case.creer(Couleur::ILE_5, 3, 8), Case.creer(Couleur::BLANC, 4, 8),Case.creer(Couleur::ILE_5, 5, 8), Case.creer(Couleur::BLANC, 6, 8),Case.creer(Couleur::ILE_5, 7, 8), Case.creer(Couleur::BLANC, 8, 8),Case.creer(Couleur::ILE_5, 9, 8)],
- ##   [Case.creer(Couleur::BLANC, 0, 9) ,Case.creer(Couleur::ILE_4, 1, 9),Case.creer(Couleur::NOIR, 2, 9),Case.creer(Couleur::ILE_5, 3, 9), Case.creer(Couleur::BLANC, 4, 9),Case.creer(Couleur::ILE_5, 5, 9), Case.creer(Couleur::BLANC, 6, 9),Case.creer(Couleur::ILE_5, 7, 9), Case.creer(Couleur::BLANC, 8, 9),Case.creer(Couleur::ILE_5, 9, 9)]                
+ ##   [Case.creer(Couleur::BLANC, 0, 9) ,Case.creer(Couleur::ILE_4, 1, 9),Case.creer(Couleur::NOIR, 2, 9),Case.creer(Couleur::ILE_5, 3, 9), Case.creer(Couleur::BLANC, 4, 9),Case.creer(Couleur::ILE_5, 5, 9), Case.creer(Couleur::BLANC, 6, 9),Case.creer(Couleur::ILE_5, 7, 9), Case.creer(Couleur::BLANC, 8, 9),Case.creer(Couleur::ILE_5, 9, 9)]
 ##]) )
 
  ##       puts SauvegardeGrille.getInstance.getNombreGrille
  ##       SauvegardeGrille.getInstance.sauvegarder( "../Sauvegarde/grilles1.dump" )
 
-   
-        
+
+
 
         Langue.creer("../Parametres/fr.txt")
         @@lg = Langue.getInstance()
@@ -72,7 +72,7 @@ class Fenetre
     ## INITALISE UNE SEUL FOIS UNE FENETRE
     def self.initialiseToi()
         puts @@window
-        if @@window == nil 
+        if @@window == nil
             new()
         else
             puts "Window allready initalize"
@@ -82,11 +82,11 @@ class Fenetre
 
     ## SHOW ALL SUR WINDOW
     def self.show_all()
-        if @@window == nil 
+        if @@window == nil
             puts "Fenetre non initaliser"
         else
             @@window.show_all
-        end 
+        end
     end
 
     ## CHANGER LE SOUS TITRE DE LA FENETRE
@@ -104,7 +104,7 @@ class Fenetre
         @@window.remove(obj)
     end
 
-    
+
     ## DELETE ALL CHILD EXCEPT HEADERBAR
     def self.deleteChildren()
         i = 0
@@ -118,7 +118,7 @@ class Fenetre
 
     def self.set_modeSombre(statut)
         provider = Gtk::CssProvider.new
-        if statut 
+        if statut
 
             Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderDarkMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
 
@@ -127,9 +127,9 @@ class Fenetre
                 Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayDarkMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
             end
         else
-            
+
             Gtk::StyleContext.remove_provider_for_screen(Gdk::Screen.default,@@cssProviderDarkMode)
-        
+
             if(Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
                 Gtk::StyleContext.remove_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayDarkMode)
                 Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
@@ -138,7 +138,7 @@ class Fenetre
     end
 
     def self.set_modeGris(statut)
-        if statut 
+        if statut
             if(Sauvegardes.getInstance.getSauvegardeParametre.modeSombre?)
                 Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayDarkMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
             else
@@ -153,7 +153,7 @@ class Fenetre
 
     ## SE QUITTER
     def self.exit()
-        # FAIRE DES TRUCS 
+        # FAIRE DES TRUCS
         Sauvegardes.getInstance.sauvegarder(nil)
         Gtk.main_quit
     end

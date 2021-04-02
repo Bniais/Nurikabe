@@ -24,7 +24,6 @@ class PartieMalus < Partie
 
     #revient a la dernière bonne position de jeu
     def revenirPositionBonne()
-        puts "Called : #{Malus::MALUS_POS_BONNE}"
         ajouterMalus(Malus::MALUS_POS_BONNE)
         super()
     end

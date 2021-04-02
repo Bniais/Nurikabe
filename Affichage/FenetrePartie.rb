@@ -122,6 +122,7 @@ class FenetrePartie < Fenetre
     ################################################################
 
     def creationInterface( lastView )
+        @indiceMalusPopover = -1
         puts @@maPartie
         box = Gtk::Box.new(:vertical)
 
@@ -185,10 +186,10 @@ class FenetrePartie < Fenetre
         box = Gtk::Box.new(:horizontal, 0)
         box.set_height_request(50)
         # creation des boutons de mode de jeu
-        btnNewGame = creeBouttonToolbar("add");            btnSetting = creeBouttonToolbar("document-properties")
+        btnSetting = creeBouttonToolbar("document-properties")
         @btnUndo = creeBouttonToolbar("undo");             @btnRedo = creeBouttonToolbar("redo")
         @btnUndoUndo = creeBouttonToolbar("start");@btnPlay = creeBouttonToolbar("player_play");
-        @btnPause = creeBouttonToolbar("player_pause");    @btnHelp = creeBouttonToolbar("hint");
+        @btnPause = creeBouttonToolbar("player_pause");    @btnHelp = creeBouttonToolbar("hint"); @btnHelpLocation = creeBouttonToolbar("hint");
         @btnClear = creeBouttonToolbar("gtk-clear");       @btnVerif = creeBouttonToolbar("gtk-apply")
         btnQuit = creeBouttonToolbar("gtk-quit")
         # Disable btn att bottom of game
@@ -196,14 +197,14 @@ class FenetrePartie < Fenetre
         # SET BTN ENABLE/DISABLE
         disableBtn(@btnRedo); disableBtn(@btnUndo); disableBtn(@btnUndoUndo)
         if @@maPartie.chrono.pause
-            @@maPartie.mettrePause; disableBtn(@btnPause); disableBtn(@btnHelp); disableBtn(@btnUndoUndo); disableBtn(@btnClear); disableBtn(@btnVerif);
+            @@maPartie.mettrePause; disableBtn(@btnPause); disableBtn(@btnHelp); disableBtn(@btnHelpLocation); disableBtn(@btnUndoUndo); disableBtn(@btnClear); disableBtn(@btnVerif);
         else
             disableBtn(@btnPlay)
+            disableBtn(@btnHelpLocation); disableBtn(@btnUndoUndo)
             activerBtnApresPause
         end
 
         #Gestion des evenemeents
-        btnNewGame.signal_connect("clicked")    { nouvellePartie } # NOUVELLE PARTIE
         btnSetting.signal_connect("clicked")    { ouvrirReglage  } # LANCER LES REGLAGLES
         @btnUndo.signal_connect("clicked")      { retourArriere } # RETOURNER EN ARRIERE
         @btnRedo.signal_connect("clicked")      { retourAvant } # RETOURNER EN AVANT
@@ -211,20 +212,20 @@ class FenetrePartie < Fenetre
         @btnPlay.signal_connect("clicked")      { play  } # METTRE LE JEU EN PLAY
         @btnPause.signal_connect("clicked")     { pause } # METTRE LE JEU EN PAUSE
         @btnHelp.signal_connect("clicked")      { aide } # DEMANDER DE L AIDER
+        @btnHelpLocation.signal_connect("clicked") { aideLocation }
         @btnClear.signal_connect("clicked")     { raz } # REMISE A ZERO DE LA GRILLE
         @btnVerif.signal_connect("clicked")     { verifier } # VERFIER LA GRILLE
         btnQuit.signal_connect("clicked")       { quitter } # QUITTER LA PARTIE
 
 
         # attachement des boutons de mode de jeu
-        box.add(btnNewGame);
-        box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(btnSetting);    box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(@btnUndo);       box.add(@btnRedo)
         box.add(@btnUndoUndo);
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(@btnPlay);       box.add(@btnPause)
-        box.add(@btnHelp);
+        box.add(creerSeparatorToolbar)  # SEPARATOR
+        box.add(@btnHelp); box.add(@btnHelpLocation);
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(@btnClear);      box.add(@btnVerif)
         box.add(creerSeparatorToolbar)  # SEPARATOR
@@ -342,7 +343,6 @@ class FenetrePartie < Fenetre
 
     def afficherPortee(x, y)#TODO
         if(Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee)
-             puts "mettre"
             @porteeAffichee = true
             enleverNbCase
             result = @@maPartie.porteeIle(x, y)
@@ -378,8 +378,7 @@ class FenetrePartie < Fenetre
     end
 
     def enleverPortee(x, y)
-        if(Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee)
-            puts "enlever"
+        if(@porteeAffichee && Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee)
             @porteeAffichee = false
             enleverNbCase
             if(x!=nil)
@@ -470,6 +469,7 @@ class FenetrePartie < Fenetre
                         enableBtn(@btnUndo)
                         enableBtn(@btnUndoUndo)
                         disableBtn(@btnRedo)
+                        disableBtn(@btnHelpLocation)
                         
                     end
 
@@ -533,11 +533,6 @@ class FenetrePartie < Fenetre
     ###################################################################
     ####################### BTN EVENTS ################################
     ###################################################################
-    # EVENT NOUVELLE PARTIE
-    private
-    def nouvellePartie
-
-    end
 
     # EVENT OUVRIR REGLAGE
     private
@@ -561,6 +556,7 @@ class FenetrePartie < Fenetre
              disableBtn(@btnUndo);
              disableBtn(@btnUndoUndo);
         end
+        disableBtn(@btnHelpLocation)
     end
 
     # EVENT REDO
@@ -570,8 +566,8 @@ class FenetrePartie < Fenetre
         cacherNbErreur
         enableBtn(@btnUndo)
         enableBtn(@btnUndoUndo)
+        disableBtn(@btnHelpLocation)
         statut = @@maPartie.retourAvant
-        puts statut
 
         @@maGrille[statut[1].positionY][statut[1].positionX].changerStatut( @@maPartie.grilleEnCours.tabCases[statut[1].positionY][statut[1].positionX].couleur, true )
 
@@ -589,7 +585,10 @@ class FenetrePartie < Fenetre
                 @@maGrille[i][j].changerStatut( @@maPartie.grilleEnCours.tabCases[i][j].couleur, true )
             end
         end
-        disableBtn(@btnUndo); disableBtn(@btnRedo); disableBtn(@btnUndoUndo)
+        disableBtn(@btnUndo); disableBtn(@btnRedo); disableBtn(@btnUndoUndo); disableBtn(@btnHelpLocation)
+
+        create_popover_malus(Malus::MALUS_POS_BONNE)
+
     end
 
     # EVENT PLAY
@@ -608,7 +607,7 @@ class FenetrePartie < Fenetre
         @@maPartie.mettrePause;
         @@vraiPause = true;
         enableBtn(@btnPlay);
-        disableBtn(@btnPause);     disableBtn(@btnHelp);
+        disableBtn(@btnPause);     disableBtn(@btnHelp); disableBtn(@btnHelpLocation)
         disableBtn(@btnUndoUndo);  disableBtn(@btnClear);
         disableBtn(@btnVerif);     disableBtn(@btnUndo);
         disableBtn(@btnRedo);
@@ -623,10 +622,24 @@ class FenetrePartie < Fenetre
         #enleverPortee(nil, nil)
         indice = @@maPartie.donneIndice
         if ( indice != nil)
-             puts [Indice::MESSAGES[indice[0]],indice[1]] #fait une erreur si pas d'indice trouvé
-             show_standard_message_dialog(Indice::MESSAGES[indice[0]])
+            puts [Indice::MESSAGES[indice[0]],indice[1]] #fait une erreur si pas d'indice trouvé
+            show_standard_message_dialog(Indice::MESSAGES[indice[0]])
+            enableBtn(@btnHelpLocation)
+            create_popover_malus(Malus::MALUS_INDICE)
         end
 
+        
+    end
+
+    private
+    def aideLocation
+        indice = @@maPartie.donneIndice
+        if ( indice != nil)
+            puts [Indice::MESSAGES[indice[0]],] #fait une erreur si pas d'indice trouvé
+            @@maGrille[indice[1].positionY][indice[1].positionX].name = "grid-cell-red"
+            disableBtn(@btnHelpLocation)
+            create_popover_malus(Malus::MALUS_INDICE2)
+        end
     end
 
     # EVENT REMISE A ZERO
@@ -643,6 +656,7 @@ class FenetrePartie < Fenetre
         disableBtn(@btnUndo)
         disableBtn(@btnRedo)
         disableBtn(@btnUndoUndo)
+        disableBtn(@btnHelpLocation)
     end
 
     # EVENT VERIFIER LA GRILLE
@@ -662,6 +676,23 @@ class FenetrePartie < Fenetre
             @monCompteurErreur.set_markup("<span size='25000' >" + compteurErreur.to_s + " erreur</span>")
         elsif compteurErreur > 1
             @monCompteurErreur.set_markup("<span size='25000' >" + compteurErreur.to_s + " erreurs</span>")
+        end
+
+        create_popover_malus(Malus::MALUS_VERIFICATION)
+    end
+
+    private
+    def create_popover_malus(malus)
+        if(@@maPartie.getMode == Mode::SURVIE || @@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
+            if( @popoverMalus != nil)
+                @popoverMalus.name = "not-visible"
+            end
+            @popoverMalus = create_popover(@monTimer, Gtk::Label.new((@@maPartie.getMode == Mode::CONTRE_LA_MONTRE ? " + " : " - ") + malus.to_s + "s "), :top)
+            
+            @popoverMalus.visible = true
+                        
+            @popoverMalus.modal = false
+            @indiceMalusPopover = 0
         end
     end
 
@@ -686,6 +717,8 @@ class FenetrePartie < Fenetre
         else
             @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red"
         end
+
+        create_popover_malus(Malus::MALUS_DONNER_ERREUR)
     end
     ##############################################################################
     ####################### FUNCTION #############################################
@@ -704,6 +737,16 @@ class FenetrePartie < Fenetre
                     @monTimer.name = "timer_respire"
                 end
                 @monTimer.set_markup("<span size='25000' >" + @@maPartie.chrono.getTemps + "</span>")
+               
+                if (@indiceMalusPopover >= 0)
+                    if(@indiceMalusPopover == 8)
+                        @popoverMalus.name = "not-visible"
+                        @indiceMalusPopover = -1
+                    else
+                        @indiceMalusPopover += 1
+                    end
+                end        
+               
                 sleep(0.1)
             end
         end
@@ -777,111 +820,8 @@ class FenetrePartie < Fenetre
     private
     def creerSeparatorToolbar()
         monSeparateur = Gtk::Separator.new(:horizontal)
-        monSeparateur.set_margin_left(5);monSeparateur.set_margin_right(5);monSeparateur.set_margin_top(10);monSeparateur.set_margin_bottom(10)
+        monSeparateur.set_margin_left(11);monSeparateur.set_margin_right(11);monSeparateur.set_margin_top(10);monSeparateur.set_margin_bottom(10)
         return monSeparateur
     end
 
 end
-
-
-=begin
-class PopoverDemo
-  def initialize(main_window)
-    @window = Gtk::Window.new(:toplevel)
-    @window.screen = main_window.screen
-    box = Gtk::Box.new(:vertical, 24)
-    box.margin = 24
-    @window.add(box)
-
-    widget = add_toggle_button_with_popover
-    box.add(widget)
-
-    widget = add_custom_entry_with_complex_popover
-    box.add(widget)
-
-    widget = add_calendar_with_popover
-    box.add(widget)
-  end
-
-  def run
-    if !@window.visible?
-      @window.show_all
-    else
-      @window.destroy
-    end
-    @window
-  end
-
-  
-
-  def create_complex_popover(parent, pos)
-    if Gtk::Version.or_later?(3, 20)
-      builder = Gtk::Builder.new(:resource => "/popover/popover.ui")
-    else
-      builder = Gtk::Builder.new(:resource => "/popover/popover-3.18.ui")
-    end
-    window = builder["window"]
-    content = window.child
-    content.parent.remove(content)
-    window.destroy
-    popover = create_popover(parent, content, pos)
-    popover
-  end
-
-  def add_toggle_button_with_popover
-    widget = Gtk::ToggleButton.new(:label => "Button")
-    label = Gtk::Label.new("This popover does not grab input")
-    toggle_popover = create_popover(widget, label, :top)
-    toggle_popover.modal = false
-    widget.signal_connect "toggled" do |button|
-      toggle_popover.visible = button.active?
-    end
-    widget
-  end
-
-  def add_custom_entry_with_complex_popover
-    widget = CustomEntry.new
-    entry_popover = create_complex_popover(widget, :top)
-    widget.set_icon_from_icon_name(:primary, "edit-find")
-    widget.set_icon_from_icon_name(:secondary, "edit-clear")
-    widget.signal_connect "icon-press" do |entry, icon_pos, _event|
-      rect = entry.get_icon_area(icon_pos)
-      entry_popover.pointing_to = rect
-      entry_popover.show
-      entry.popover_icon_pos = icon_pos
-    end
-
-    widget.signal_connect "size-allocate" do |entry, _allocation|
-      if entry_popover.visible?
-        popover_pos = entry.popover_icon_pos
-        rect = entry.get_icon_area(popover_pos)
-        entry_popover.pointing_to = rect
-      end
-    end
-    widget
-  end
-
-  def add_calendar_with_popover
-    widget = Gtk::Calendar.new
-    widget.signal_connect "day-selected" do |calendar|
-      event = Gtk.current_event
-      if event.type == :button_press
-        x, y = event.window.coords_to_parent(event.x, event.y)
-        allocation = calendar.allocation
-        rect = Gdk::Rectangle.new(x - allocation.x, y - allocation.y, 1, 1)
-        cal_popover = create_popover(calendar, CustomEntry.new, :bottom)
-        cal_popover.pointing_to = rect
-        cal_popover.show
-      end
-    end
-    widget
-  end
-end
-
-class CustomEntry < Gtk::Entry
-  attr_accessor :popover_icon_pos
-  def initialize
-    super
-  end
-end
-=end

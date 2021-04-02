@@ -9,7 +9,6 @@ class Chrono
     end
 
     def initialize()
-      @malus = 0
       @pause = false
       @time = 0
       @starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
@@ -47,7 +46,7 @@ class Chrono
 
     #Ajoute un malus au chrono
     def ajouterMalus(m)
-      @malus += m
+      @time += m
     end
 
     def getTemps()

@@ -218,3 +218,6 @@ popover *{
     font-size: 1.4em;
 }
 
+#not-visible{
+    opacity: 0;
+}

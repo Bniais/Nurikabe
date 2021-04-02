@@ -20,8 +20,6 @@ class ChronoDecompte < Chrono
     end
 
     def ajouterMalus(n)
-      puts @time
       @time -= n
-      puts @time
     end
 end

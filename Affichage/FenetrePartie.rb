@@ -103,7 +103,6 @@ class FenetrePartie < Fenetre
 
     ## Charger une partie specifique presente dans la sauvegarde
     def self.afficheToiChargerPartie( lastView , loadAtIndice )
-        puts loadAtIndice
         @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie( loadAtIndice )
         @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
 
@@ -124,7 +123,6 @@ class FenetrePartie < Fenetre
 
     def creationInterface( lastView )
         @indiceMalusPopover = -1
-        puts @@maPartie
         box = Gtk::Box.new(:vertical)
 
         #TOOLBAR
@@ -641,7 +639,6 @@ class FenetrePartie < Fenetre
         #enleverPortee(nil, nil)
         indice = @@maPartie.donneIndice
         if ( indice != nil)
-            puts [Indice::MESSAGES[indice[0]],indice[1]] #fait une erreur si pas d'indice trouvé
             show_standard_message_dialog(Indice::MESSAGES[indice[0]])
             enableBtn(@btnHelpLocation)
             create_popover_malus(Malus::MALUS_INDICE)
@@ -654,7 +651,6 @@ class FenetrePartie < Fenetre
     def aideLocation
         indice = @@maPartie.donneIndice
         if ( indice != nil)
-            puts [Indice::MESSAGES[indice[0]],indice[1]] #fait une erreur si pas d'indice trouvé
             @@maGrille[indice[1].positionY][indice[1].positionX].name = "grid-cell-red"       
             create_popover_malus(Malus::MALUS_INDICE2)
         end

@@ -86,7 +86,7 @@ class FenetreSelection < Fenetre
         return box
     end
 
-    
+
     def ajouterGrille(box , btn1, btn2, btn3 )
         vBoxGrille = Gtk::Box.new(:vertical , 20)
 
@@ -227,7 +227,7 @@ class FenetreSelection < Fenetre
         elsif color >= 10
             color = "+"
         end 
-        btn = Gtk::Button.new(:label => color.to_s)
+        btn = Gtk::Label.new(color.to_s)
         btn.name = "little"
         return btn
     end

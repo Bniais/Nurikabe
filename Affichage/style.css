@@ -190,6 +190,9 @@ messagedialog {
     font-size: 1.2em;
 }
 
+#little {
+    border: solid 1px black;
+}
 #fenetreGrille * > label {
     color: black
 }

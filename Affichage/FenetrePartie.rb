@@ -553,6 +553,7 @@ class FenetrePartie < Fenetre
     # EVENT OUVRIR REGLAGE
     private
     def ouvrirReglage
+        @@vraiPause = false
         cacherNbErreur
         @monCompteurErreur.set_markup("<span size='25000' ></span>")
         Fenetre.deleteChildren;
@@ -610,7 +611,6 @@ class FenetrePartie < Fenetre
     # EVENT PLAY
     public
     def play
-        @@vraiPause = false
         cacherNbErreur
         @@maPartie.reprendrePartie; enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
         enleverNbCase

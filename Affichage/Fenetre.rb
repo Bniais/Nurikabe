@@ -9,7 +9,15 @@ require './../Sauvegarde/SauvegardeGrille.rb'
 class Fenetre
 
     @@window = nil 
-    @@cssProviderDarkMode = Gtk::CssProvider.new; @@cssProviderDarkMode.load(path: "style_dark.css")
+    @@cssProviderDarkMode = Gtk::CssProvider.new
+    @@cssProviderDarkMode.load(path: "style_dark.css")
+
+    @@cssProviderGrayMode = Gtk::CssProvider.new
+    @@cssProviderGrayMode.load(path: "style_gray.css")
+
+    @@cssProviderGrayDarkMode = Gtk::CssProvider.new
+    @@cssProviderGrayDarkMode.load(path: "style_gray_dark.css")
+
     @@lg = nil
 
     ## METHODE D'INITIALISATION
@@ -111,11 +119,37 @@ class Fenetre
     def self.set_modeSombre(statut)
         provider = Gtk::CssProvider.new
         if statut 
+
             Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderDarkMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
+
+            if(Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
+                Gtk::StyleContext.remove_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayMode)
+                Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayDarkMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
+            end
         else
+            
             Gtk::StyleContext.remove_provider_for_screen(Gdk::Screen.default,@@cssProviderDarkMode)
+        
+            if(Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
+                Gtk::StyleContext.remove_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayDarkMode)
+                Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
+            end
         end
     end
+
+    def self.set_modeGris(statut)
+        if statut 
+            if(Sauvegardes.getInstance.getSauvegardeParametre.modeSombre?)
+                Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayDarkMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
+            else
+                Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayMode, Gtk::StyleProvider::PRIORITY_APPLICATION)
+            end
+        else
+            Gtk::StyleContext.remove_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayMode)
+            Gtk::StyleContext.remove_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayDarkMode)
+        end
+    end
+
 
     ## SE QUITTER
     def self.exit()

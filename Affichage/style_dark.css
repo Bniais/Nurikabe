@@ -23,9 +23,9 @@ separator {
 
 /* _____ Fenetre Partie _____ */
 
-#grid-cell , #grid-cell-block, #grid-cell-round , #grid-cell-red, #grid-cell-red-block,
-#grid-cell-appartient-ile, #grid-cell-ile-appartient-ile, 
-#grid-cell-portee-ile, #grid-cell-portee-ile-red, #grid-cell-portee-ile-ile, #grid-cell-portee-ile-black, #grid-cell-portee-ile-black-red{
+#grid-cell,#grid-cell-ile, #grid-cell-block, #grid-cell-round , #grid-cell-red, #grid-cell-red-block,
+#grid-cell-appartient-ile, #grid-cell-ile-appartient-ile,  
+#grid-cell-portee-ile-round,#grid-cell-portee-ile-round-red,#grid-cell-portee-ile, #grid-cell-portee-ile-red, #grid-cell-portee-ile-ile, #grid-cell-portee-ile-black, #grid-cell-portee-ile-black-red{
     background-image: none;
     border-width: 1px;
     border-color: black;
@@ -46,7 +46,7 @@ separator {
 }
 
 /** red */
-#grid-cell-red, #grid-cell-portee-ile-red, #grid-cell-portee-ile-black-red, #grid-cell-red-block, #grid-cell-red-appartient{
+#grid-cell-red, #grid-cell-portee-ile-round-red, #grid-cell-ile-red, #grid-cell-round-red, #grid-cell-portee-ile-red, #grid-cell-portee-ile-black-red, #grid-cell-red-block, #grid-cell-red-appartient{
     border-color: red;
     border-width: 3px;
 }
@@ -60,7 +60,7 @@ separator {
 }
 
 /** Portee Ile */
-#grid-cell-portee-ile, #grid-cell-portee-ile-red, #grid-cell-portee-ile-ile{
+#grid-cell-portee-ile,#grid-cell-portee-ile-round,#grid-cell-portee-ile-round-red, #grid-cell-portee-ile-red, #grid-cell-portee-ile-ile{
     background:rgb(189, 168, 141);
 
 }
@@ -70,7 +70,7 @@ separator {
 }
 
 /* Iles */
-#grid-cell-portee-ile-ile, #grid-cell-ile-appartient-ile, #grid-cell{
+#grid-cell-portee-ile-ile, #grid-cell-ile-appartient-ile, #grid-cell-ile, #grid-cell-ile-red{
     font-size: 35px;
 }
 

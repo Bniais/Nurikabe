@@ -53,6 +53,7 @@ class Parametre
     # Methode qui permet de set le parametre case grise
     def set_casesGrises(statut)
         @casesGrises = statut
+        Fenetre.set_modeGris(@casesGrises)
         Sauvegardes.getInstance.sauvegarder(nil)
     end
 

@@ -19,9 +19,9 @@ class Cell < Gtk::Button
     def changerStatut(color, forceEnleverRouge)
         if color >= Couleur::ILE_1
             if(!forceEnleverRouge && self.name.include?("red"))
-                self.name = "grid-cell-red"
+                self.name = "grid-cell-ile-red"
             else
-                self.name = "grid-cell"
+                self.name = "grid-cell-ile"
             end
             
             self.set_label(color.to_s)
@@ -43,12 +43,13 @@ class Cell < Gtk::Button
             end
         elsif color == Couleur::BLANC
             if(!forceEnleverRouge && self.name.include?("red"))
-                self.name = "grid-cell-red"
+                self.name = "grid-cell-round-red"
             else
                  self.name = "grid-cell-round"
             end
-           
-            self.set_label("●")
+            if(!Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
+                self.set_label("●")
+            end
         end
     end
 
@@ -361,6 +362,12 @@ class FenetrePartie < Fenetre
                             
                                 @@maGrille[i][j].name = "grid-cell-portee-ile-ile"
                             
+                        elsif @@maPartie.grilleEnCours.tabCases[i][j].couleur == Couleur::BLANC
+                            if(@@maGrille[i][j].name.include?("red"))
+                                @@maGrille[i][j].name = "grid-cell-portee-ile-round-red"
+                            else
+                                @@maGrille[i][j].name = "grid-cell-portee-ile-round"
+                            end
                         else
                             if(@@maGrille[i][j].name.include?("red"))
                                 @@maGrille[i][j].name = "grid-cell-portee-ile-red"
@@ -396,6 +403,17 @@ class FenetrePartie < Fenetre
         child.show
         popover
      end
+
+
+    def set_modeGris(estGris)
+        for i in 0...@@maGrille.size
+            for j in 0...@@maGrille[i].size
+                if(@@maPartie.grilleEnCours.tabCases[i][j].couleur == Couleur::BLANC)
+                    @@maGrille[i][j].label = estGris ? "" : "●"
+                end
+            end
+        end
+    end
 
 =begin
     def afficherMur2x2()
@@ -598,6 +616,7 @@ class FenetrePartie < Fenetre
         @@maPartie.reprendrePartie; enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
         enleverNbCase
         enleverPortee(nil, nil)
+        set_modeGris(Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
     end
 
     # EVENT PAUSE
@@ -635,11 +654,11 @@ class FenetrePartie < Fenetre
     def aideLocation
         indice = @@maPartie.donneIndice
         if ( indice != nil)
-            puts [Indice::MESSAGES[indice[0]],] #fait une erreur si pas d'indice trouvé
-            @@maGrille[indice[1].positionY][indice[1].positionX].name = "grid-cell-red"
-            disableBtn(@btnHelpLocation)
+            puts [Indice::MESSAGES[indice[0]],indice[1]] #fait une erreur si pas d'indice trouvé
+            @@maGrille[indice[1].positionY][indice[1].positionX].name = "grid-cell-red"       
             create_popover_malus(Malus::MALUS_INDICE2)
         end
+         disableBtn(@btnHelpLocation)
     end
 
     # EVENT REMISE A ZERO

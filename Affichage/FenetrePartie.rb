@@ -610,6 +610,7 @@ class FenetrePartie < Fenetre
     # EVENT PLAY
     public
     def play
+        @@vraiPause = false
         cacherNbErreur
         @@maPartie.reprendrePartie; enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
         enleverNbCase
@@ -665,7 +666,7 @@ class FenetrePartie < Fenetre
         @@maPartie.raz
         for i in 0...@@maGrille.size
             for j in 0...@@maGrille[i].size
-                @@maGrille[i][j].resetCell
+                @@maGrille[i][j].changerStatut(@@maPartie.grilleEnCours.tabCases[i][j].couleur, true)
             end
         end
         disableBtn(@btnUndo)

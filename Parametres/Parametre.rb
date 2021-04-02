@@ -46,6 +46,16 @@ class Parametre
         return @@instanceParametre
     end
 
+    def resetAll()
+
+        @casesGrises = false
+        @compteurIlot = false
+        @affichagePortee = false
+        @murs2x2 = false
+        @modeSombre = false
+        Fenetre.set_modeSombre(@modeSombre)
+    end
+
     # Methode qui permet de savoir si l'option des cases grises est activee ou pas
     def casesGrises?()
         return @casesGrises

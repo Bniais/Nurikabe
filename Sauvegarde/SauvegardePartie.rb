@@ -9,6 +9,10 @@ class SauvegardesParties
         @mesParties = Array.new
     end
 
+    def resetAll()
+        @mesParties = Array.new
+    end
+
     def getPartie( indice )
         return @mesParties[indice]
     end

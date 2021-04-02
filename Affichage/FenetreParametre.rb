@@ -153,7 +153,25 @@ class FenetreParametre < Fenetre
         title = Gtk::Label.new()
         title.set_markup("<span size='25000'>"+ @@lg.gt("UTILISATEUR") +"</span>")
         setmargin(title,15,10,0,0)
-        box.add(title)
+        box.add(title) # ADD
+
+        btnDeleteSave = Gtk::Button.new(@@lg.gt("SUPPRIMER_SAUVEGARDE_PARTIE_EN_COURS"))
+        btnDeleteSave.name = "btnQuitter"
+        btnDeleteSave.signal_connect("clicked") {
+            Sauvegardes.getInstance.getSauvegardePartie.resetAll
+            Sauvegardes.getInstance.sauvegarder(nil)
+        }
+        
+        box.add( setmargin(btnDeleteSave,5,5,70,70) ) #ADD  
+
+        btnResetParams = Gtk::Button.new(@@lg.gt("RESET_PARAMETRE"))
+        btnResetParams.name = "btnQuitter"
+        btnResetParams.signal_connect("clicked") {
+            Sauvegardes.getInstance.getSauvegardeParametre.resetAll
+            Sauvegardes.getInstance.sauvegarder(nil)
+        }
+        box.add(setmargin(btnResetParams,5,5,70,70))
+
         return box
     end
     ### SIGNAL CONNECTS DE UTILISATEUR
@@ -232,7 +250,7 @@ class FenetreParametre < Fenetre
         obj.set_margin_bottom(bottom)
         obj.set_margin_left(left)
         obj.set_margin_right(right)
-        return nil
+        return obj
     end
 
 end

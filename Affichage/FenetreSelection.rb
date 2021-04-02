@@ -93,9 +93,10 @@ class FenetreSelection < Fenetre
         tabPartieEnCours = Sauvegardes.getInstance.getSauvegardePartie.getListPartieLibreEnCours
 
         if btn1
+            vBoxGrille.add( titleLabel( @@lg.gt("FACILE") )  )
             i = 1
             while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 )
-                if i == SauvegardeGrille.getInstance.getNombreGrille
+                if i == SauvegardeGrille.getInstance.getNombreGrille / 3
                     vBoxGrille.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
                 else 
                     vBoxGrille.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
@@ -105,10 +106,13 @@ class FenetreSelection < Fenetre
             end
         end 
 
+
         if btn2
-            i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 + 1
+            vBoxGrille.add( Gtk::Separator.new(:horizontal) )
+            vBoxGrille.add( titleLabel( @@lg.gt("MOYEN") )  )
+            i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 
             while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 * 2 )
-                if i == SauvegardeGrille.getInstance.getNombreGrille
+                if i == SauvegardeGrille.getInstance.getNombreGrille / 3 * 2
                     vBoxGrille.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
                 else 
                     vBoxGrille.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
@@ -119,9 +123,11 @@ class FenetreSelection < Fenetre
         end
 
         if btn3
+            vBoxGrille.add( Gtk::Separator.new(:horizontal) )
+            vBoxGrille.add( titleLabel( @@lg.gt("DIFFICILE") )  )
             i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 * 2 
             while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 * 3 )
-                if i == SauvegardeGrille.getInstance.getNombreGrille
+                if i == SauvegardeGrille.getInstance.getNombreGrille / 3 * 3
                     vBoxGrille.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
                 else 
                     vBoxGrille.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
@@ -133,6 +139,12 @@ class FenetreSelection < Fenetre
         setmargin(vBoxGrille,15,15,0,0  )
 
         return vBoxGrille
+    end
+
+    def titleLabel(unLabel)
+        label = Gtk::Label.new()
+        label.set_markup("<span size='25000' >" + unLabel.to_s + "</span>")
+        return label
     end
 
     private 
@@ -197,6 +209,7 @@ class FenetreSelection < Fenetre
     def creeGrille( uneGrille )
         # Frame exterieur pour que les rebord et la meme epaisseur
         maFrame = Gtk::Frame.new()
+        maFrame.name = "fenetreGrille"
         # grid pour placer la grille de jeu dedans
         maGrille = Gtk::Grid.new()
         maGrille.set_height_request(300);   maGrille.set_width_request(300)

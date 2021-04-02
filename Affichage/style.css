@@ -192,6 +192,7 @@ messagedialog {
 
 #little {
     border: solid 1px black;
+    background: white;
 }
 #fenetreGrille * > label {
     color: black
@@ -200,7 +201,7 @@ messagedialog {
 
 
 #bg-FenetreSelection {
-    background: rgb(214, 214, 214);
+    background: rgb(238, 238, 238);
 }
 
 #bg-FenetreSelection:hover {

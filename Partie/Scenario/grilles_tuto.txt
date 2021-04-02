@@ -16,10 +16,10 @@ grille8 = Grille.creer(8,[
 
             [Case.creer(Couleur::BLANC, 0, 5), Case.creer(Couleur::BLANC, 1, 5), Case.creer(Couleur::BLANC, 2, 5),
                 Case.creer(Couleur::ILE_3, 3, 5), Case.creer(Couleur::BLANC, 4, 5),Case.creer(Couleur::BLANC, 5, 5)],
-        ], nil, nil)
+        ])
 
 
-grille9 = Grille.creer(11,[
+grille11 = Grille.creer(11,[
             [Case.creer(Couleur::ILE_3, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::GRIS, 2, 0),
                 Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::NOIR, 5, 0)],
 
@@ -37,7 +37,4 @@ grille9 = Grille.creer(11,[
 
             [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::ILE_2, 2, 5),
                 Case.creer(Couleur::NOIR, 3, 5), Case.creer(Couleur::BLANC, 4, 5),Case.creer(Couleur::BLANC, 5, 5)],
-        ], nil, nil)
-
-
-grille11 =
+        ])

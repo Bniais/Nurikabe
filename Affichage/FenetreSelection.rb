@@ -37,29 +37,102 @@ class FenetreSelection < Fenetre
         # VUE PRINCIPAL
         # EDIT HERE
         # ADD CONTENT HERE IN BOX
+
+        # Box vertical pour stocker les deux box interne 
+        vBox = Gtk::Box.new(:vertical)
+
+        # Box qui comprends 3 radios selector
+        hBoxSelector = Gtk::Box.new(:horizontal)
+        hBoxSelector.set_homogeneous(true)
+
+        checkButtonEasy = Gtk::CheckButton.new(@@lg.gt("FACILE"))
+        checkButtonEasy.halign = :end
+        checkButtonEasy.active = true
+        hBoxSelector.add( checkButtonEasy )
+        checkButtonMedium = Gtk::CheckButton.new(@@lg.gt("MOYEN"))
+        checkButtonMedium.halign = :center
+        checkButtonMedium.active = true
+        hBoxSelector.add( checkButtonMedium )
+        checkButtonHard = Gtk::CheckButton.new(@@lg.gt("DIFFICILE"))
+        checkButtonHard.halign = :start
+        checkButtonHard.active = true
+        hBoxSelector.add( checkButtonHard )
+        setmargin(checkButtonEasy, 10,10,0,0)
+
+
+        vBox.add( hBoxSelector )
+
+
+        # ScrollView qui comprends les grilles
         scroll = Gtk::ScrolledWindow.new();
         scroll.set_size_request(200, 700)
 
-        vBox = Gtk::Box.new(:vertical , 20)
+        boxGrille = ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?)
+        scroll.add_with_viewport( boxGrille  )
+
+        checkButtonEasy.signal_connect("clicked") {   
+            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all 
+        }
+        checkButtonMedium.signal_connect("clicked") { 
+            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all 
+         }
+        checkButtonHard.signal_connect("clicked") { 
+            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all 
+        }
+
+        vBox.add( scroll )
+
+        box.add(vBox)#ADD
+        return box
+    end
+
+    
+    def ajouterGrille(box , btn1, btn2, btn3 )
+        vBoxGrille = Gtk::Box.new(:vertical , 20)
 
         tabPartieEnCours = Sauvegardes.getInstance.getSauvegardePartie.getListPartieLibreEnCours
-        i = 1
-        while ( i <= SauvegardeGrille.getInstance.getNombreGrille)
-            if i == SauvegardeGrille.getInstance.getNombreGrille
-                vBox.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
-            else 
-                vBox.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
+
+        if btn1
+            i = 1
+            while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 )
+                if i == SauvegardeGrille.getInstance.getNombreGrille
+                    vBoxGrille.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
+                else 
+                    vBoxGrille.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
+                    i+=1
+                end
                 i+=1
             end
-            i+=1
+        end 
+
+        if btn2
+            i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 + 1
+            while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 * 2 )
+                if i == SauvegardeGrille.getInstance.getNombreGrille
+                    vBoxGrille.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
+                else 
+                    vBoxGrille.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
+                    i+=1
+                end
+                i+=1
+            end
         end
 
-        setmargin(vBox,15,15,0,0  )
-        scroll.add_with_viewport( vBox )
+        if btn3
+            i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 * 2 
+            while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 * 3 )
+                if i == SauvegardeGrille.getInstance.getNombreGrille
+                    vBoxGrille.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
+                else 
+                    vBoxGrille.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
+                    i+=1
+                end
+                i+=1
+            end
+        end
+        setmargin(vBoxGrille,15,15,0,0  )
 
-
-        box.add(scroll)#ADD
-        return box
+        return vBoxGrille
     end
 
     private 

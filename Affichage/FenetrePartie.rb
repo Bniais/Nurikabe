@@ -530,7 +530,7 @@ class FenetrePartie < Fenetre
             pause
             if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
                 Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsContreLaMontre(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
-            elsif
+            elsif(@@maPartie.getMode == Mode::SURVIE)
                 #Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
             end
 

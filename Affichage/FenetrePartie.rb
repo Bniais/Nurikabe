@@ -516,6 +516,11 @@ class FenetrePartie < Fenetre
                         if(grilleSuivante == nil)
                             finirPartie
                         else
+                            if(@nbGrille == nil)
+                                @nbGrille = 1
+                            else
+                                @nbGrille += 1
+                            end
                             puts "#TODO : CHARGER PROCHAINE GRILLE"
                         end
                     end
@@ -538,7 +543,7 @@ class FenetrePartie < Fenetre
             if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
                 Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsContreLaMontre(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
             elsif(@@maPartie.getMode == Mode::SURVIE)
-                #Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
+                Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @nbGrille)
             end
 
             Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)

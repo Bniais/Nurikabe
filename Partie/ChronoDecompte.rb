@@ -1,5 +1,5 @@
 class ChronoDecompte < Chrono
-    CHRONO_BASE_DECOMPTE = 60*10 #10mins
+    CHRONO_BASE_DECOMPTE = 60*5 #5mins
 
     def ChronoDecompte.creer()
       new()

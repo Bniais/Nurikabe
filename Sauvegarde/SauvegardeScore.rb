@@ -1,16 +1,36 @@
-# Classe qui gere la sauvegarde du score
-class SauvegardeScore
-    attr_reader :score
+require_relative "SauvegardeGrille.rb"
 
-    # Methode qui permet de sauvegarder un score
-    def sauvegarder(monscore)
-        @score = monscore
-        chemin = "SauvegardeScore/score.txt"
-        File.open(chemin, "wb") { |f| f.write(Marshal.dump(@score) ) }
+class SauvegardesScore
+
+    attr_reader :scoresContreLaMontre, :scoresSurvie
+
+    @scoresContreLaMontre = nil
+    @scoresSurvie = nil
+
+    def initialize()
+        @scoresContreLaMontre = Array.new(SauvegardeGrille.getInstance.getNombreGrille+1){-1}
+        @scoresSurvie = Array.new(3){-1}
+        afficher
     end
 
-    # Methode qui permet de charger un score donne
-    def charger(chemin)
-        #
+    def resetAll
+        @scoresContreLaMontre = Array.new(SauvegardeGrille.getInstance.getNombreGrille+1){-1}
+        @scoresSurvie = Array.new(3){-1}
+    end
+
+
+    def afficher
+        for g in 1..SauvegardeGrille.getInstance.getNombreGrille
+            puts "score pour grille  #{g} : #{@scoresContreLaMontre[g]}"
+        end
+
+        puts "\n\n score pour survie : #{@scoresSurvie[0]} , #{@scoresSurvie[1]} , #{@scoresSurvie[2]}"
+    end
+
+    def ajouterTempsContreLaMontre(num, tps)
+        if(@scoresContreLaMontre[num] > tps)
+            @scoresContreLaMontre[num] = tps
+            #attribuer récompenses
+        end
     end
 end

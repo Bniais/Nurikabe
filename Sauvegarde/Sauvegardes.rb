@@ -5,6 +5,7 @@ require '../Partie/PartieContreLaMontre.rb'
 require '../Partie/PartieTuto.rb'
 require '../Parametres/Parametre.rb'
 require_relative 'SauvegardePartie.rb'
+require_relative 'SauvegardeScore.rb'
 
 #require './SauvegardePartie.rb'
 
@@ -14,6 +15,7 @@ class Sauvegardes
     
     @sauvegardePartie = nil
     @sauvegardeParametre = nil
+    @sauvegardeScore = nil
 
     def initialize(chemin)
         if File.exist?(chemin) == true 
@@ -24,6 +26,8 @@ class Sauvegardes
 
         @@instanceSauvegarde.getSauvegardeParametre
         @@instanceSauvegarde.getSauvegardePartie
+        @@instanceSauvegarde.getSauvegardeScore
+        
         @@instanceSauvegarde
     end
 
@@ -63,6 +67,18 @@ class Sauvegardes
             @sauvegardeParametre = Parametre.initialiseToi()
         else 
             @sauvegardeParametre
+        end
+    end
+
+    def getSauvegardeScore()
+        if @sauvegardeScore == nil
+            puts "aie"
+            @sauvegardeScore = SauvegardesScore.new()
+        else 
+            puts "ouille"
+            @sauvegardeScore.afficher
+            @sauvegardeScore
+            
         end
     end
 

@@ -97,6 +97,8 @@ class FenetrePartie < Fenetre
         Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
         maFenetrePartie.threadChronometre
+
+
         return self
     end
 
@@ -109,6 +111,7 @@ class FenetrePartie < Fenetre
         maFenetrePartie = FenetrePartie.new()
         Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
+
         
         maFenetrePartie.threadChronometre
         maFenetrePartie.play
@@ -504,10 +507,7 @@ class FenetrePartie < Fenetre
                     if @@maPartie.partieTerminee? == true 
                         grilleSuivante =  @@maPartie.grilleSuivante
                         if(grilleSuivante == nil)
-                            pause
-                            Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
-                            show_standard_message_dialog(@@lg.gt("MESSAGE_DE_VICTOIRE"))
-                            quitter
+                            finirPartie
                         else
                             puts "#TODO : CHARGER PROCHAINE GRILLE"
                         end
@@ -526,7 +526,20 @@ class FenetrePartie < Fenetre
             end
         end
 
+        def finirPartie
+            pause
+            if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
+                Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsContreLaMontre(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
+            elsif
+                #Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
+            end
 
+            Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
+
+            show_standard_message_dialog(@@lg.gt("MESSAGE_DE_VICTOIRE"))
+
+            quitter
+        end
 
        
         btn.signal_connect "enter" do |handler| 
@@ -765,7 +778,12 @@ class FenetrePartie < Fenetre
                         @indiceMalusPopover += 1
                     end
                 end        
-               
+
+                if(@@maPartie.getMode == Mode::SURVIE && @@maPartie.chrono.estNul?)
+                    puts "Finir la partie avec méthode finir partie"
+                    finirPartie
+                end
+
                 sleep(0.1)
             end
         end
@@ -778,7 +796,9 @@ class FenetrePartie < Fenetre
                                         :buttons => :none,
                                         :message => unMessage)
         @dialog.add_button( "OK" , 0)
+
         @dialog.run
+        
         @dialog.destroy
     end
 

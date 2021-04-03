@@ -33,10 +33,11 @@ class Fenetre
         @@header.title = "Nurikabe"     ;       @@header.subtitle = "-"
         @@window.titlebar = @@header #ADD HEADER
 
+        SauvegardeGrille.creer("../Sauvegarde/grilles1.dump")
         Sauvegardes.creer("../Sauvegarde/save.dump")
 
 
-        SauvegardeGrille.creer("../Sauvegarde/grilles1.dump")
+        
         #TMP TO ADD GRILLES
  ##       SauvegardeGrille.getInstance.ajouterGrille( Grille.creer( SauvegardeGrille.getInstance.getNombreGrille + 1 ,
  ##       [

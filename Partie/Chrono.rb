@@ -2,7 +2,7 @@ class Chrono
 
     private_class_method :new
 
-    attr_reader :pause
+    attr_reader :pause, :time
 
     def Chrono.creer()
       new()
@@ -19,6 +19,10 @@ class Chrono
         ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
         @time += (ending - @starting) * (@mode == Mode::SURVIE ? -1 : 1)
         @starting = ending
+
+        if(@time < 0)
+          @time = 0
+        end
       end
 
       return estNul?()

@@ -28,24 +28,8 @@ class SauvegardesScore
     end
 
     def ajouterTempsContreLaMontre(num, tps)
-        if(@scoresContreLaMontre[num] == -1 || @scoresContreLaMontre[num] > tps)
+        if(@scoresContreLaMontre[num] > tps)
             @scoresContreLaMontre[num] = tps
-            #attribuer récompenses
-        end
-    end
-
-    def ajouterTempsSurvie(num, tps)
-        nbGrille = SauvegardeGrille.getInstance.getNombreGrille
-        if num <= nbGrille/3
-            diff = 0
-        elsif num <= 2*nbGrille/3
-            diff = 1
-        else
-            diff = 2
-        end
-
-        if(@scoresSurvie[diff] == -1 || @scoresSurvie[diff] > tps)
-            @scoresSurvie[diff] = tps
             #attribuer récompenses
         end
     end

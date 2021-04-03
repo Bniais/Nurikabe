@@ -76,6 +76,13 @@ class FenetrePartie < Fenetre
         self
     end
 
+    def self.metSousTitre
+        Fenetre.set_subtitle( @@maPartie.getMode == Mode::LIBRE ? @@lg.gt("PARTIE_LIBRE") :
+                              @@maPartie.getMode == Mode::CONTRE_LA_MONTRE ? @@lg.gt("PARTIE_CLM") :
+                              @@maPartie.getMode == Mode::SURVIE ? @@lg.gt("PARTIE_SURVIE") :
+                              @@maPartie.getMode == Mode::TUTORIEL ? @@lg.gt("PARTIE_TUTORIEL") : @@lg.gt("UNKNOWN"))
+    end
+
     def self.afficheToi(lastView)
         self.afficheToiSelec(lastView, nil)
     end
@@ -92,7 +99,7 @@ class FenetrePartie < Fenetre
             @@maPartie.reprendrePartie
         end
 
-        Fenetre.set_subtitle( @@maPartie.class.to_s )
+        self.metSousTitre
         maFenetrePartie = FenetrePartie.new()
         Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
@@ -107,7 +114,7 @@ class FenetrePartie < Fenetre
         @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie( loadAtIndice )
         @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
 
-        Fenetre.set_subtitle( @@maPartie.class.to_s )
+        self.metSousTitre
         maFenetrePartie = FenetrePartie.new()
         Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
@@ -136,7 +143,7 @@ class FenetrePartie < Fenetre
 
         ## Nom de la grille
         nomGrille = Gtk::Label.new()
-        nomGrille.set_markup("<span size='25000' > Grille #" + @@maPartie.grilleBase.numero.to_s + "</span>")
+        nomGrille.set_markup("<span size='25000' > " + @@lg.gt("GRILLE") + " #" + @@maPartie.grilleBase.numero.to_s + "</span>")
         nomGrille.set_margin_top(20)
         nomGrille.set_margin_bottom(10)
         box.add(nomGrille)#ADD
@@ -786,7 +793,7 @@ class FenetrePartie < Fenetre
 
                 if(@@maPartie.getMode == Mode::SURVIE && @@maPartie.chrono.estNul?)
                     puts "Finir la partie avec méthode finir partie"
-                    finirPartie
+                    #finirPartie
                 end
 
                 sleep(0.1)
@@ -800,7 +807,7 @@ class FenetrePartie < Fenetre
                                         :type => :info,
                                         :buttons => :none,
                                         :message => unMessage)
-        @dialog.add_button( "OK" , 0)
+        @dialog.add_button( @@lg.gt("OK") , 0)
 
         @dialog.run
         

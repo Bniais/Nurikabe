@@ -237,7 +237,7 @@ class FenetreMenu < Fenetre
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))        
         }
 
-        setBold( hBox.children[0] , @@lg.gt("LIBRE") )
+        setBold( hBox.children[0] , @@lg.gt("FACILE") )
         setBold( hBox.children[1] , @@lg.gt("MOYEN") )
         setBold( hBox.children[2] , @@lg.gt("DIFFICILE") )
 

@@ -22,60 +22,60 @@ class ScenarioTuto < Scenario
     def initialiserGrilles()
         # Grille Tuto 1
         @@grille1 = Grille.creer(1,[
-            [Case.creer(Couleur::GRIS, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::ILE_6, 2, 0),
-                Case.creer(Couleur::GRIS, 3, 0), Case.creer(Couleur::GRIS, 4, 0),Case.creer(Couleur::GRIS, 5, 0)],
+            [Case.creer(Couleur::BLANC, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::ILE_6, 2, 0),
+                Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::BLANC, 4, 0),Case.creer(Couleur::BLANC, 5, 0)],
 
-            [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::ILE_2, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
-                Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1),Case.creer(Couleur::NOIR, 5, 1)],
+            [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::ILE_2, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
+                Case.creer(Couleur::BLANC, 3, 1), Case.creer(Couleur::BLANC, 4, 1),Case.creer(Couleur::NOIR, 5, 1)],
 
-            [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::GRIS, 2, 2),
+            [Case.creer(Couleur::BLANC, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::BLANC, 2, 2),
                 Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
-            [Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3),
-                Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3),Case.creer(Couleur::GRIS, 5, 3)],
+            [Case.creer(Couleur::BLANC, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::BLANC, 2, 3),
+                Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::BLANC, 4, 3),Case.creer(Couleur::BLANC, 5, 3)],
 
-            [Case.creer(Couleur::GRIS, 0, 4), Case.creer(Couleur::ILE_1, 1, 4), Case.creer(Couleur::GRIS, 2, 4),
-                Case.creer(Couleur::ILE_2, 3, 4), Case.creer(Couleur::GRIS, 4, 4),Case.creer(Couleur::GRIS, 5, 4)],
+            [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::ILE_1, 1, 4), Case.creer(Couleur::BLANC, 2, 4),
+                Case.creer(Couleur::ILE_2, 3, 4), Case.creer(Couleur::BLANC, 4, 4),Case.creer(Couleur::BLANC, 5, 4)],
 
-            [Case.creer(Couleur::GRIS, 0, 5), Case.creer(Couleur::GRIS, 1, 5), Case.creer(Couleur::GRIS, 2, 5),
-                Case.creer(Couleur::GRIS, 3, 5), Case.creer(Couleur::ILE_4, 4, 5),Case.creer(Couleur::GRIS, 5, 5)],
+            [Case.creer(Couleur::BLANC, 0, 5), Case.creer(Couleur::BLANC, 1, 5), Case.creer(Couleur::BLANC, 2, 5),
+                Case.creer(Couleur::BLANC, 3, 5), Case.creer(Couleur::ILE_4, 4, 5),Case.creer(Couleur::BLANC, 5, 5)],
         ])
 
 
         # Grille Tuto 2
         @@grille2 = Grille.creer(2,[
-            [Case.creer(Couleur::GRIS, 0, 0), Case.creer(Couleur::GRIS, 1, 0), Case.creer(Couleur::GRIS, 2, 0),
-                Case.creer(Couleur::GRIS, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::ILE_4, 5, 0)],
+            [Case.creer(Couleur::BLANC, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
+                Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::ILE_4, 5, 0)],
 
             [Case.creer(Couleur::ILE_6, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
-                Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::GRIS, 5, 1)],
+                Case.creer(Couleur::BLANC, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::BLANC, 5, 1)],
 
-            [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::ILE_5, 1, 2), Case.creer(Couleur::GRIS, 2, 2),
-                Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::GRIS, 5, 2)],
+            [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::ILE_5, 1, 2), Case.creer(Couleur::BLANC, 2, 2),
+                Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::BLANC, 5, 2)],
 
-            [Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3),
-                Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::GRIS, 5, 3)],
+            [Case.creer(Couleur::BLANC, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::BLANC, 2, 3),
+                Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::BLANC, 5, 3)],
 
-            [Case.creer(Couleur::GRIS, 0, 4), Case.creer(Couleur::GRIS, 1, 4), Case.creer(Couleur::GRIS, 2, 4),
-                Case.creer(Couleur::GRIS, 3, 4), Case.creer(Couleur::GRIS, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
+            [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::BLANC, 2, 4),
+                Case.creer(Couleur::BLANC, 3, 4), Case.creer(Couleur::BLANC, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
 
-            [Case.creer(Couleur::GRIS, 0, 5), Case.creer(Couleur::GRIS, 1, 5), Case.creer(Couleur::GRIS, 2, 5),
-                Case.creer(Couleur::GRIS, 3, 5), Case.creer(Couleur::ILE_3, 4, 5),Case.creer(Couleur::GRIS, 5, 5)]
+            [Case.creer(Couleur::BLANC, 0, 5), Case.creer(Couleur::BLANC, 1, 5), Case.creer(Couleur::BLANC, 2, 5),
+                Case.creer(Couleur::BLANC, 3, 5), Case.creer(Couleur::ILE_3, 4, 5),Case.creer(Couleur::BLANC, 5, 5)]
         ])
 
         # Grille Tuto 3
         @@grille3 = Grille.creer(3,[
-            [Case.creer(Couleur::GRIS, 0, 0), Case.creer(Couleur::GRIS, 1, 0), Case.creer(Couleur::GRIS, 2, 0),
-                Case.creer(Couleur::GRIS, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::ILE_4, 5, 0)],
+            [Case.creer(Couleur::BLANC, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
+                Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::ILE_4, 5, 0)],
 
             [Case.creer(Couleur::ILE_6, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
-                Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::GRIS, 5, 1)],
+                Case.creer(Couleur::BLANC, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::BLANC, 5, 1)],
 
             [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::ILE_5, 2, 2),
-                Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::GRIS, 5, 2)],
+                Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::BLANC, 5, 2)],
 
             [Case.creer(Couleur::BLANC, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::BLANC, 2, 3),
-                Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::GRIS, 5, 3)],
+                Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::BLANC, 5, 3)],
 
             [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::BLANC, 2, 4),
                 Case.creer(Couleur::BLANC, 3, 4), Case.creer(Couleur::BLANC, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
@@ -108,23 +108,23 @@ class ScenarioTuto < Scenario
 
         # Grille Tuto 5
         @@grille5 = Grille.creer(5,[
-            [Case.creer(Couleur::ILE_3, 0, 0), Case.creer(Couleur::GRIS, 1, 0), Case.creer(Couleur::GRIS, 2, 0),
+            [Case.creer(Couleur::ILE_3, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
                 Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::NOIR, 5, 0)],
 
-            [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
+            [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
                 Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::ILE_1, 4, 1),Case.creer(Couleur::NOIR, 5, 1)],
 
-            [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::GRIS, 2, 2),
-                Case.creer(Couleur::ILE_3, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::GRIS, 5, 2)],
+            [Case.creer(Couleur::BLANC, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::BLANC, 2, 2),
+                Case.creer(Couleur::ILE_3, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::BLANC, 5, 2)],
 
-            [Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3),
-                Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3),Case.creer(Couleur::GRIS, 5, 3)],
+            [Case.creer(Couleur::BLANC, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::BLANC, 2, 3),
+                Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::BLANC, 4, 3),Case.creer(Couleur::BLANC, 5, 3)],
 
-            [Case.creer(Couleur::ILE_4, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::GRIS, 2, 4),
-                Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::GRIS, 4, 4),Case.creer(Couleur::GRIS, 5, 4)],
+            [Case.creer(Couleur::ILE_4, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::BLANC, 2, 4),
+                Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::BLANC, 4, 4),Case.creer(Couleur::BLANC, 5, 4)],
 
             [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::ILE_2, 2, 5),
-                Case.creer(Couleur::NOIR, 3, 5), Case.creer(Couleur::ILE_1, 4, 5),Case.creer(Couleur::GRIS, 5, 5)]
+                Case.creer(Couleur::NOIR, 3, 5), Case.creer(Couleur::ILE_1, 4, 5),Case.creer(Couleur::BLANC, 5, 5)]
         ])
 
         @@tabGrilles = Array.new()
@@ -140,64 +140,64 @@ class ScenarioTuto < Scenario
          # Grille Tuto 1
         @@grille1Corr = = Grille.creer(1,[
             [Case.creer(Couleur::NOIR, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::ILE_6, 2, 0),
-                Case.creer(Couleur::GRIS, 3, 0), Case.creer(Couleur::GRIS, 4, 0),Case.creer(Couleur::GRIS, 5, 0)],
+                Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::BLANC, 4, 0),Case.creer(Couleur::BLANC, 5, 0)],
 
             [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::ILE_2, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
-                Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1),Case.creer(Couleur::GRIS, 5, 1)],
+                Case.creer(Couleur::BLANC, 3, 1), Case.creer(Couleur::BLANC, 4, 1),Case.creer(Couleur::BLANC, 5, 1)],
 
-            [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
+            [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
                 Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
             [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3),
-                Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::GRIS, 5, 3)],
+                Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::BLANC, 5, 3)],
 
             [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::ILE_1, 1, 4), Case.creer(Couleur::NOIR, 2, 4),
                 Case.creer(Couleur::ILE_2, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::ILE_2, 5, 4)],
 
             [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::NOIR, 2, 5),
-                Case.creer(Couleur::NOIR, 3, 5), Case.creer(Couleur::ILE_4, 4, 5),Case.creer(Couleur::GRIS, 5, 5)],
+                Case.creer(Couleur::NOIR, 3, 5), Case.creer(Couleur::ILE_4, 4, 5),Case.creer(Couleur::BLANC, 5, 5)],
         ])
         
         # Grille Tuto 2
         @@grille2Corr = Grille.creer(2,[
-            [Case.creer(Couleur::GRIS, 0, 0), Case.creer(Couleur::GRIS, 1, 0), Case.creer(Couleur::GRIS, 2, 0),
-                Case.creer(Couleur::GRIS, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::ILE_4, 5, 0)],
+            [Case.creer(Couleur::BLANC, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
+                Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::ILE_4, 5, 0)],
 
             [Case.creer(Couleur::ILE_6, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
-                Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::GRIS, 5, 1)],
+                Case.creer(Couleur::BLANC, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::BLANC, 5, 1)],
 
-            [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::ILE_5, 1, 2), Case.creer(Couleur::GRIS, 2, 2),
-                Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::GRIS, 5, 2)],
+            [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::ILE_5, 1, 2), Case.creer(Couleur::BLANC, 2, 2),
+                Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::BLANC, 5, 2)],
 
-            [Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3),
-                Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::GRIS, 5, 3)],
+            [Case.creer(Couleur::BLANC, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::BLANC, 2, 3),
+                Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::BLANC, 5, 3)],
 
-            [Case.creer(Couleur::GRIS, 0, 4), Case.creer(Couleur::GRIS, 1, 4), Case.creer(Couleur::GRIS, 2, 4),
-                Case.creer(Couleur::GRIS, 3, 4), Case.creer(Couleur::GRIS, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
+            [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::BLANC, 2, 4),
+                Case.creer(Couleur::BLANC, 3, 4), Case.creer(Couleur::BLANC, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
 
-            [Case.creer(Couleur::GRIS, 0, 5), Case.creer(Couleur::GRIS, 1, 5), Case.creer(Couleur::GRIS, 2, 5),
-                Case.creer(Couleur::GRIS, 3, 5), Case.creer(Couleur::ILE_3, 4, 5),Case.creer(Couleur::GRIS, 5, 5)]
+            [Case.creer(Couleur::BLANC, 0, 5), Case.creer(Couleur::BLANC, 1, 5), Case.creer(Couleur::BLANC, 2, 5),
+                Case.creer(Couleur::BLANC, 3, 5), Case.creer(Couleur::ILE_3, 4, 5),Case.creer(Couleur::BLANC, 5, 5)]
         ])
 
         # Grille Tuto 3
         @@grille3Corr = Grille.creer(3,[
-            [Case.creer(Couleur::GRIS, 0, 0), Case.creer(Couleur::GRIS, 1, 0), Case.creer(Couleur::GRIS, 2, 0),
-                Case.creer(Couleur::GRIS, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::ILE_4, 5, 0)],
+            [Case.creer(Couleur::BLANC, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
+                Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::ILE_4, 5, 0)],
 
             [Case.creer(Couleur::ILE_6, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
-                Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::GRIS, 5, 1)],
+                Case.creer(Couleur::BLANC, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::BLANC, 5, 1)],
 
             [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_5, 2, 2),
-                Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::GRIS, 5, 2)],
+                Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::BLANC, 5, 2)],
 
-            [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::GRIS, 2, 3),
-                Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::GRIS, 5, 3)],
+            [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::BLANC, 2, 3),
+                Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::BLANC, 5, 3)],
 
-            [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::GRIS, 1, 4), Case.creer(Couleur::NOIR, 2, 4),
+            [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::NOIR, 2, 4),
                 Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
 
             [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::NOIR, 2, 5),
-                Case.creer(Couleur::GRIS, 3, 5), Case.creer(Couleur::ILE_3, 4, 5),Case.creer(Couleur::GRIS, 5, 5)],
+                Case.creer(Couleur::BLANC, 3, 5), Case.creer(Couleur::ILE_3, 4, 5),Case.creer(Couleur::BLANC, 5, 5)],
         ])
 
 
@@ -207,37 +207,37 @@ class ScenarioTuto < Scenario
                 Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::NOIR, 5, 0)],
 
             [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
-                Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::GRIS, 4, 1),Case.creer(Couleur::ILE_2, 5, 1)],
+                Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::BLANC, 4, 1),Case.creer(Couleur::ILE_2, 5, 1)],
 
-            [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
+            [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
                 Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
-            [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::NOIR, 2, 3),
-                Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::ILE_2, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
+            [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::NOIR, 2, 3),
+                Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::ILE_2, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
 
             [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::ILE_3, 1, 4), Case.creer(Couleur::NOIR, 2, 4),
                 Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::ILE_2, 5, 4)],
 
             [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::ILE_2, 2, 5),
-                Case.creer(Couleur::GRIS, 3, 5), Case.creer(Couleur::NOIR, 4, 5),Case.creer(Couleur::GRIS, 5, 5)],
+                Case.creer(Couleur::BLANC, 3, 5), Case.creer(Couleur::NOIR, 4, 5),Case.creer(Couleur::BLANC, 5, 5)],
         ])
 
 
         # Grille Tuto 5
         @@grille5Corr = Grille.creer(5,[
-            [Case.creer(Couleur::ILE_3, 0, 0), Case.creer(Couleur::GRIS, 1, 0), Case.creer(Couleur::GRIS, 2, 0),
+            [Case.creer(Couleur::ILE_3, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
                 Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::NOIR, 5, 0)],
 
             [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
                 Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::ILE_1, 4, 1),Case.creer(Couleur::NOIR, 5, 1)],
 
-            [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
+            [Case.creer(Couleur::BLANC, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
                 Case.creer(Couleur::ILE_3, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
-            [Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::NOIR 3), Case.creer(Couleur::NOIR, 2, 3),
-                Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3),Case.creer(Couleur::GRIS, 5, 3)],
+            [Case.creer(Couleur::BLANC, 0, 3), Case.creer(Couleur::NOIR 3), Case.creer(Couleur::NOIR, 2, 3),
+                Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::BLANC, 4, 3),Case.creer(Couleur::BLANC, 5, 3)],
 
-            [Case.creer(Couleur::ILE_4, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::GRIS, 2, 4),
+            [Case.creer(Couleur::ILE_4, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::BLANC, 2, 4),
                 Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
 
             [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::ILE_2, 2, 5),

@@ -4,7 +4,7 @@ require './Fenetre.rb'
 # Classe qui gere la fenetre 'A propos'
 class FenetreAPropos < Fenetre
 
-    def initialize() 
+    def initialize()
         self
     end
 
@@ -29,29 +29,34 @@ class FenetreAPropos < Fenetre
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
         box.add(btnBoxH) #ADD
-        
+
         # SEPARATOR
         box.add( Gtk::Separator.new(:vertical) ) #ADD
 
         # VUE PRINCIPAL
         # EDIT HERE
         # ADD CONTENT HERE IN BOX
+=begin
         textBuff = Gtk::TextBuffer.new()
         textBuff.text = @@lg.gt("APROPOSCONTENT")
         textView = Gtk::TextView.new(textBuff)
         textView.name = "text"
         textView.set_editable(false)
+        textView.overwrite = false
         textView.set_wrap_mode(Gtk::WrapMode::WORD)
         textView.justification = Gtk::Justification::CENTER
-        # textView.set_width_request(700)
-        #setmargin(textView,80,15,70,70)
+         textView.set_width_request(700)
+         textView.toggle_overwrite
 
-        scroll = Gtk::ScrolledWindow.new();
-        scroll.set_size_request(200, 700)
-        # setmargin(scroll,80,15,70,70)
-        scroll.add_with_viewport(textView);
+=end
 
-        box.add(scroll)
+        texte = Gtk::Label.new( @@lg.gt("APROPOSCONTENT") )
+        texte.justify = Gtk::Justification::CENTER
+        setmargin(texte, 0, 0, 10, 10)
+
+
+
+        box.add(texte)
 
         return box
     end
@@ -65,4 +70,3 @@ class FenetreAPropos < Fenetre
         return nil
     end
 end
-

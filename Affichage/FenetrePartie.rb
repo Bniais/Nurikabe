@@ -24,7 +24,7 @@ class Cell < Gtk::Button
             else
                 self.name = "grid-cell-ile"
             end
-            
+
             self.set_label(color.to_s)
         elsif color == Couleur::NOIR
             if(!forceEnleverRouge && self.name.include?("red"))
@@ -34,7 +34,7 @@ class Cell < Gtk::Button
             end
 
             self.set_label("")
-           
+
         elsif color == Couleur::GRIS
             self.set_label("")
             if(!forceEnleverRouge && self.name.include?("red"))
@@ -107,9 +107,9 @@ class FenetrePartie < Fenetre
         @maFenetrePartie = FenetrePartie.new()
         Fenetre.add( @maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
-        
-        
-        
+
+
+
 
         @maFenetrePartie.threadChronometre
 
@@ -126,7 +126,7 @@ class FenetrePartie < Fenetre
         Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
 
-        
+
         maFenetrePartie.threadChronometre
         maFenetrePartie.play
         return self
@@ -294,7 +294,7 @@ class FenetrePartie < Fenetre
         # hide if is in pause
         @@maPartie.chrono.pause ? maFrame.name = "fenetreGrilleHide" : self
         maFrame.add(maGrille)
-        
+
 
         return maFrame
     end
@@ -334,14 +334,14 @@ class FenetrePartie < Fenetre
                                     @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
                                 end
 
-                                
+
                                 @popover.modal = false
                                 @popover.visible = true
                                 found = true
                             end
                         end
                     end
-                end     
+                end
             end
         end
     end
@@ -375,11 +375,11 @@ class FenetrePartie < Fenetre
                             else
                                 @@maGrille[i][j].name = "grid-cell-portee-ile-black"
                             end
-                        elsif @@maPartie.grilleEnCours.tabCases[i][j].estIle? 
-                            
-                            
+                        elsif @@maPartie.grilleEnCours.tabCases[i][j].estIle?
+
+
                                 @@maGrille[i][j].name = "grid-cell-portee-ile-ile"
-                            
+
                         elsif @@maPartie.grilleEnCours.tabCases[i][j].couleur == Couleur::BLANC
                             if(@@maGrille[i][j].name.include?("red"))
                                 @@maGrille[i][j].name = "grid-cell-portee-ile-round-red"
@@ -393,13 +393,13 @@ class FenetrePartie < Fenetre
                                 @@maGrille[i][j].name = "grid-cell-portee-ile"
                             end
 
-                        
+
                         end
                     end
                 end
             end
         end
-        
+
     end
 
     def enleverPortee(x, y)
@@ -439,8 +439,8 @@ class FenetrePartie < Fenetre
         for i in 0...@@maPartie.grilleEnCours.tabCases.size
             for j in 0...@@maPartie.grilleEnCours.tabCases.size
                 if(res[i][j] > 0)
-                    #changer style 
-                    
+                    #changer style
+
                     if(j-1 < 0 || !res[i][j-1]) #pas noir en haut
                         if(i-1 < 0  || res[i-1][j] != res[i][j]) #pas noir à gauche
                             #top-left : rien en haut et à gauche
@@ -471,7 +471,7 @@ class FenetrePartie < Fenetre
                         #right : noir en bas et haut mais pas droite
                         @@maGrille[i][j].name = "right"
                     end
-                    
+
                 end
             end
         end
@@ -506,19 +506,19 @@ class FenetrePartie < Fenetre
                         enableBtn(@btnUndoUndo)
                         disableBtn(@btnRedo)
                         disableBtn(@btnHelpLocation)
-                        
+
                     end
 
                     #afficherMur2x2
 
-                    
+
                     if  @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
                         afficherNbCase(handler.y, handler.x)
                     elsif !@@maPartie.grilleEnCours.tabCases[handler.y][handler.x].estIle?
                         enleverNbCase()
                     end
 
-                    if @@maPartie.partieTerminee? == true 
+                    if @@maPartie.partieTerminee? == true
                         grilleSuivante =  @@maPartie.grilleSuivante
                         if(grilleSuivante == nil)
                             finirPartie
@@ -532,8 +532,8 @@ class FenetrePartie < Fenetre
                         end
                     end
 
-                    
-                    
+
+
                 else
                     if(!@porteeAffichee)
                         afficherPortee(handler.y, handler.x)
@@ -541,12 +541,15 @@ class FenetrePartie < Fenetre
                         enleverPortee(handler.y, handler.x)
                     end
                 end
-                
+
             end
         end
 
         def finirPartie
             if(@@maPartie != nil)
+                if(@popover != nil)
+                    @popover.visible = false
+                end
                 pause
                 if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
                     Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsContreLaMontre(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
@@ -566,7 +569,7 @@ class FenetrePartie < Fenetre
                     msg = @@lg.gt("MESSAGE_VICTOIRE_SURVIE_DEBUT") + @nbGrille.to_s + (@nbGrille < 2 ? @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN") : @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN_PLURIEL"))
                 when Mode::CONTRE_LA_MONTRE
                     nbRecompense = @@maPartie.getNbRecompense
-                    msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT") 
+                    msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT")
                     for i in 0..2
                         if(i<nbRecompense)
                             msg += "★"
@@ -581,13 +584,13 @@ class FenetrePartie < Fenetre
                 end
 
                 show_standard_message_dialog(msg)
-                
+
                 quitter
             end
         end
 
-       
-        btn.signal_connect "enter" do |handler| 
+
+        btn.signal_connect "enter" do |handler|
             if @@maPartie.chrono.pause == false && !@porteeAffichee
                 if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
                     afficherNbCase(handler.y, handler.x)
@@ -595,7 +598,7 @@ class FenetrePartie < Fenetre
             end
         end
 
-        btn.signal_connect "leave" do |handler| 
+        btn.signal_connect "leave" do |handler|
             if @@maPartie.chrono.pause == false && !@porteeAffichee
                 if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
                     enleverNbCase()
@@ -603,7 +606,7 @@ class FenetrePartie < Fenetre
 
             end
         end
-        
+
         return btn
     end
 
@@ -674,7 +677,7 @@ class FenetrePartie < Fenetre
     public
     def play
         @@maPartie.reprendrePartie;
-        
+
         cacherNbErreur
          enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
         enleverNbCase
@@ -685,7 +688,7 @@ class FenetrePartie < Fenetre
 
     def setTimout()
         if(@@maPartie.getMode == Mode::SURVIE)
-            
+
             removeTimout
             time = @@maPartie.chrono.time
             if(time<=0)
@@ -731,14 +734,14 @@ class FenetrePartie < Fenetre
             setTimout
         end
 
-        
+
     end
 
     private
     def aideLocation
         indice = @@maPartie.donneIndice
         if ( indice != nil)
-            @@maGrille[indice[1].positionY][indice[1].positionX].name = "grid-cell-red"       
+            @@maGrille[indice[1].positionY][indice[1].positionX].name = "grid-cell-red"
             create_popover_malus(Malus::MALUS_INDICE2)
             setTimout
         end
@@ -792,9 +795,9 @@ class FenetrePartie < Fenetre
                 @popoverMalus.name = "not-visible"
             end
             @popoverMalus = create_popover(@monTimer, Gtk::Label.new((@@maPartie.getMode == Mode::CONTRE_LA_MONTRE ? " + " : " - ") + malus.to_s + "s "), :top)
-            
+
             @popoverMalus.visible = true
-                        
+
             @popoverMalus.modal = false
             @indiceMalusPopover = 0
         end
@@ -816,7 +819,7 @@ class FenetrePartie < Fenetre
     def donnerErreur
         enleverPortee(nil, nil)
         uneCase = @@maPartie.donnerErreur
-        if uneCase.couleur == Couleur::NOIR 
+        if uneCase.couleur == Couleur::NOIR
             @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red-block"
         else
             @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red"
@@ -842,7 +845,7 @@ class FenetrePartie < Fenetre
                     @monTimer.name = "timer_respire"
                 end
                 @monTimer.set_markup("<span size='25000' >" + @@maPartie.chrono.getTemps + "</span>")
-               
+
                 if (@indiceMalusPopover >= 0)
                     if(@indiceMalusPopover == 8)
                         @popoverMalus.name = "not-visible"
@@ -850,7 +853,7 @@ class FenetrePartie < Fenetre
                     else
                         @indiceMalusPopover += 1
                     end
-                end        
+                end
 
                 sleep(0.1)
             end
@@ -866,7 +869,7 @@ class FenetrePartie < Fenetre
         @dialog.add_button( @@lg.gt("OK") , 0)
 
         @dialog.run
-        
+
         @dialog.destroy
     end
 

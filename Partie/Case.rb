@@ -4,12 +4,14 @@ class Case
 
   attr_accessor :couleur, :positionX, :positionY
 
+  #Crée une case avec une couleur et sa position sur la grille
   def Case.creer(uneCouleur, posX, posY)
       #
       new(uneCouleur,posX,posY)
 
   end
 
+  #Constructeur de la case
   def initialize(uneCouleur,posX,posY)
 
       @couleur = uneCouleur

@@ -11,6 +11,7 @@ class Partie
 
   private_class_method :new
 
+  #Constructeur de Grille
   def initialize(grille, parametres, sauvegardes) #Créer une nouvelle partie
     @grilleBase = grille
     @parametres = parametres
@@ -27,11 +28,12 @@ class Partie
     @grilleEnCours.raz() #recommence à 0, ne pas faire en cas de sauvegarde trouvée
   end
 
+  #Retourne le mode de la partie
   def getMode()
     return Mode::LIBRE
   end
 
-  # Methode qui creer une grille
+  # Methode qui creer une grille et prends en compte les sauvegardes 
   def Partie.creer(grille, parametres, sauvegardes)
     new(grille, parametres, sauvegardes)
   end
@@ -51,7 +53,8 @@ class Partie
     return [peutRetourArriere?, coupPrecedent.case] #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
   end
 
-
+  #Permet de savoir si le joueur peut effectuer un retour avant
+  #Renvoie un booléen
   def peutRetourAvant?()
     return @indiceCoup < tabCoup.size
   end
@@ -306,7 +309,8 @@ class Partie
 
 
   end
-
+  ##
+  # A COMPLETER
   def indiceIle1()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -351,6 +355,8 @@ class Partie
     return nil #On n'a pas trouvé
   end
 
+  ##
+    # A COMPLETER
   def indiceIleAdjacenteDiagonal() #TOTEST
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -395,6 +401,8 @@ class Partie
     return nil
   end
 
+  ##
+    # A COMPLETER
   def indiceIleComplete()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -428,14 +436,17 @@ class Partie
     return nil
   end
 
+  #Compte le nombre de cases blanches appartenant à l'île
   def nbCaseIle(case_, vu) #vu doit être 
-    #Compte le nombre de cases blanches appartenant à l'île
+    
     i = case_.positionX
     j = case_.positionY
   
     return parcoursIle(vu, j, i)
   end
 
+  ##
+  # A COMPLETER
   def parcoursIle(vu, i, j)
     
     if( i < 0 || j < 0 || i >= @grilleEnCours.tabCases.size || j >= @grilleEnCours.tabCases.size || vu[i][j] )
@@ -450,6 +461,7 @@ class Partie
     end
   end
 
+  #Retourn l'indice d'une case isolée
   def indiceCaseIsolee()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -511,8 +523,8 @@ class Partie
     return nil
   end
 
+  #On compte le nombre de cases adjacentes gris adjacentes à un bloc noir, si une seule et il existe des cases noires non-reliée, indice
   def indiceExpensionMur()
-    #On compte le nombre de cases adjacentes gris adjacentes à un bloc noir, si une seule et il existe des cases noires non-reliée, indice
     vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -601,8 +613,8 @@ class Partie
     return nil
   end
 
+  #On compte le nombre de cases grises adjacentes à un bloc d'ile, si une seule, indice
   def indiceExpensionIle()
-    #On compte le nombre de cases grises adjacentes à un bloc d'ile, si une seule, indice
     vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -792,18 +804,18 @@ class Partie
     return nil
   end
 
+  #chercher tous les chemins possibles liant une case blanche non-reliée aux iles accessibles, et si une case en commun parmis tous ces chemins, on peut la colorier
   def indiceContinuiteIle()#WONTDO
-    #chercher tous les chemins possibles liant une case blanche non-reliée aux iles accessibles, et si une case en commun parmis tous ces chemins, on peut la colorier
     return nil
   end
 
+  #chercher tous les chemins possibles liant une case noire non-reliée à un autre mur, et si une case en commun parmis tous ces chemins, on peut la colorier
   def indiceContinuiteMur() #WONTDO
-    #chercher tous les chemins possibles liant une case noire non-reliée à un autre mur, et si une case en commun parmis tous ces chemins, on peut la colorier
     return nil
   end
 
-  def verifPresque2x2(i,j)
-    #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 3 noirs et 1 gris
+  #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 3 noirs et 1 gris
+  def verifPresque2x2(i,j)    
     nbNoir = 0
     caseGrise = nil
     for x in i..i+1
@@ -840,6 +852,8 @@ class Partie
   end
 =end
 
+  ##
+  # A COMPLETER  
   def indiceEviter2x2()
     for i in 0..@grilleEnCours.tabCases.size-2 # -2 car inutil de regarder la dernière ligne et collone car pas de voisins droits et bas
       for j in 0..@grilleEnCours.tabCases.size-2
@@ -853,6 +867,8 @@ class Partie
     return nil
   end
 
+  ##
+  # A COMPLETER  
   def indiceInatteignable() #TOFIX
     #Parcours en largeur pour trouver le chemin le plus court de chaque case vers chaque île, ou sinon simplifier en ignorant les murs et îles mais donne moins d'indice (ou faire les deux pour mêler performance et accuracy)
     for i in 0..@grilleEnCours.tabCases.size-1

@@ -28,6 +28,7 @@ class Grille
 		end                                                                        
     end
 
+    #Retourne le nombre de récompenses du joueur
 	def getNbRecompense(tps)
     puts "new call"
     for i in 0..2

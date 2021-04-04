@@ -6,6 +6,7 @@ class PartieSurvie < PartieMalus
       new(grille, parametres, sauvegardes)
     end
 
+    #Constructeur de PartieSurvie
     def initialize(grille, parametres, sauvegardes) #Créer une nouvelle partie
       super(grille, parametres, sauvegardes)
       @chrono = ChronoDecompte.creer()
@@ -18,6 +19,7 @@ class PartieSurvie < PartieMalus
       #redef
     end
 
+    #Retourne le mode Survie
     def getMode
       return Mode::SURVIE
     end

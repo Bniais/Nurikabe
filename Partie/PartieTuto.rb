@@ -7,6 +7,7 @@ class PartieTuto < Partie
     new(grille, parametres, sauvegardes)
   end
 
+  #Contructeur de PartieTuto
   def initalize()
     super(grille, parametres, sauvegardes)
   end
@@ -17,6 +18,7 @@ class PartieTuto < Partie
     #redef
   end
 
+  #Retourne le mode Tutoriel
   def getMode()
     return Mode::TUTORIEL
   end

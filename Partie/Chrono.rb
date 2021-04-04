@@ -45,22 +45,31 @@ class Chrono
       @starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       top()
     end
+
     ##
     #met en pause le chrono
     def mettreEnPause()
       top()
       @pause = true
     end
+
     ##
     #Ajoute un malus au chrono
     def ajouterMalus(m)
       @time += m
     end
+
     ##
     #Retourne le temps sous forme de String
     def getTemps()
       top()
       return format("%02d", (@time.floor/60).to_s) + ":" + format("%02d", (@time.floor%60).to_s)
+    end
+
+    ##
+    #Retourne un temps passé en paramètre sous forme de String
+    def self.getTpsFormat(floatTps)
+      return format("%02d", (floatTps.floor/60).to_s) + ":" + format("%02d", (floatTps.floor%60).to_s)
     end
 
 end

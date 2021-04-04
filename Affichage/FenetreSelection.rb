@@ -51,11 +51,11 @@ class FenetreSelection < Fenetre
         hBoxSelector.add( checkButtonEasy )
         checkButtonMedium = Gtk::CheckButton.new(@@lg.gt("MOYEN"))
         checkButtonMedium.halign = :center
-        checkButtonMedium.active = true
+        checkButtonMedium.active = false
         hBoxSelector.add( checkButtonMedium )
         checkButtonHard = Gtk::CheckButton.new(@@lg.gt("DIFFICILE"))
         checkButtonHard.halign = :start
-        checkButtonHard.active = true
+        checkButtonHard.active = false
         hBoxSelector.add( checkButtonHard )
         setmargin(checkButtonEasy, 10,10,0,0)
 
@@ -104,11 +104,13 @@ class FenetreSelection < Fenetre
                 end
                 i+=1
             end
+            if(btn2 || btn3)
+                vBoxGrille.add( Gtk::Separator.new(:horizontal) )
+            end
         end 
 
 
         if btn2
-            vBoxGrille.add( Gtk::Separator.new(:horizontal) )
             vBoxGrille.add( titleLabel( @@lg.gt("MOYEN") )  )
             i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 
             while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 * 2 )
@@ -120,14 +122,17 @@ class FenetreSelection < Fenetre
                 end
                 i+=1
             end
+            if(btn3)
+                vBoxGrille.add( Gtk::Separator.new(:horizontal) )
+            end
         end
 
         if btn3
-            vBoxGrille.add( Gtk::Separator.new(:horizontal) )
+            
             vBoxGrille.add( titleLabel( @@lg.gt("DIFFICILE") )  )
             i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 * 2 
-            while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 * 3 )
-                if i == SauvegardeGrille.getInstance.getNombreGrille / 3 * 3
+            while ( i <= SauvegardeGrille.getInstance.getNombreGrille )
+                if i == SauvegardeGrille.getInstance.getNombreGrille
                     vBoxGrille.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
                 else 
                     vBoxGrille.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )

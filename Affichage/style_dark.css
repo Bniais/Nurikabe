@@ -114,3 +114,7 @@ popover {
     background:rgb(208, 208, 208);
     border:solid 1px black;
 }
+
+checkbutton *{
+    transition-duration: 0s;
+}

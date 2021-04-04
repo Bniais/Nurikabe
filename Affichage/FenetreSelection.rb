@@ -172,16 +172,36 @@ class FenetreSelection < Fenetre
         
         box = Gtk::Box.new(:vertical)
         
+
+        hBoxTitre = Gtk::Box.new(:horizontal) 
+        hBoxTitre.set_homogeneous(true)
+       
         title = Gtk::Label.new()
         if enCours
-            title.set_markup("<span size='25000' >#" + uneGrille.numero.to_s + " EN COURS</span>")
+            title.set_markup("<span size='25000' >#" + uneGrille.numero.to_s + "</span>")
         else
             title.set_markup("<span size='25000' >#" + uneGrille.numero.to_s + "</span>")
         end
         title.name = "bg-FenetreSelection-title"
         title.halign = :start
         setmargin(title,5,5,0,0)
-        box.add(title)
+
+
+        hBoxTitre.add(title)
+
+        if(enCours)
+            pixbuf = GdkPixbuf::Pixbuf.new(:file => "enCours.png")
+            pixbuf = pixbuf.scale_simple(37, 37, :bilinear)
+
+            img = Gtk::Image.new(:pixbuf => pixbuf)
+            img.set_margin_right(13)
+
+            img.halign = :end
+            hBoxTitre.add(img)
+        end
+    
+
+        box.add(hBoxTitre)
 
        
         box.add(  setmargin( creeGrille( uneGrille) , 0 , 5 , 0 , 0 ) )

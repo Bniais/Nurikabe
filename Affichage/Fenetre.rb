@@ -4,8 +4,10 @@ require './../Parametres/Langue.rb'
 require './../Sauvegarde/Sauvegardes.rb'
 require './../Sauvegarde/SauvegardeGrille.rb'
 
+##
 # Classe abstraite qui gere l'interface
 # DESIGN PATTERN SINGLETON
+
 class Fenetre
 
     @@window = nil
@@ -20,7 +22,8 @@ class Fenetre
 
     @@lg = nil
 
-    ## METHODE D'INITIALISATION
+    ##
+    # Méthode d'initialisation
     private
     def initialize()
         @@window = Gtk::Window.new()
@@ -37,7 +40,7 @@ class Fenetre
         Sauvegardes.creer("../Sauvegarde/save.dump")
 
 
-=begin  
+=begin
         #TMP TO ADD GRILLES
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer( SauvegardeGrille.getInstance.getNombreGrille + 1 ,
         [
@@ -70,7 +73,8 @@ class Fenetre
         Fenetre.set_modeSombre( Sauvegardes.getInstance.getSauvegardeParametre.modeSombre? )
     end
 
-    ## INITALISE UNE SEUL FOIS UNE FENETRE
+    ##
+    # Méthode qui permet d'initialiser une seule fois une fenetre
     def self.initialiseToi()
         puts @@window
         if @@window == nil
@@ -81,7 +85,8 @@ class Fenetre
     end
 
 
-    ## SHOW ALL SUR WINDOW
+    ##
+    # méthode qui permet d'afficher la fenetre
     def self.show_all()
         if @@window == nil
             puts "Fenetre non initaliser"
@@ -90,23 +95,27 @@ class Fenetre
         end
     end
 
-    ## CHANGER LE SOUS TITRE DE LA FENETRE
+    ##
+    # Méthode qui permet de changer les sous-titre de la fenetre
     def self.set_subtitle(subtitle)
         @@window.titlebar.subtitle  = subtitle
     end
 
-    ## AJOUTER UN ELEMENT A LE FENETRE
+    ##
+    # Méthode qui permet d'ajouter un element à la fenetre
     def self.add(obj)
         @@window.add(obj)
     end
 
-    ## SUPPRIMER UN ELEMENT A LE FENETRE
+    ##
+    # Méthode qui permet de supprimer un element de la fenetre
     def self.remove(obj)
         @@window.remove(obj)
     end
 
 
-    ## DELETE ALL CHILD EXCEPT HEADERBAR
+    ##
+    # Méthode qui permet de supprimer toutes les classes filles sauf la headerbar
     def self.deleteChildren()
         i = 0
         while @@window.children.length > 1
@@ -117,6 +126,8 @@ class Fenetre
         end
     end
 
+    ##
+    # Méthode qui dispatch le mode sombre
     def self.set_modeSombre(statut)
         provider = Gtk::CssProvider.new
         if statut
@@ -138,6 +149,8 @@ class Fenetre
         end
     end
 
+    ##
+    #
     def self.set_modeGris(statut)
         if statut
             if(Sauvegardes.getInstance.getSauvegardeParametre.modeSombre?)
@@ -152,7 +165,8 @@ class Fenetre
     end
 
 
-    ## SE QUITTER
+    ##
+    # Méthode pour quitter
     def self.exit()
         # FAIRE DES TRUCS
         Sauvegardes.getInstance.sauvegarder(nil)

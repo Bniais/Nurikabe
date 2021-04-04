@@ -72,13 +72,9 @@ class Sauvegardes
 
     def getSauvegardeScore()
         if @sauvegardeScore == nil
-            puts "aie"
             @sauvegardeScore = SauvegardesScore.new()
         else 
-            puts "ouille"
-            @sauvegardeScore.afficher
-            @sauvegardeScore
-            
+            @sauvegardeScore      
         end
     end
 

@@ -66,7 +66,7 @@ class Langue
         @dico["TUTORIEL"] = "Tutoriel"
         @dico["CLASSEMENT"] = "Classement"
         @dico["PARAMETRES"] = "Parametres"
-        @dico["A_PROPOS"] = "A Propos"
+        @dico["A_PROPOS"] = "À Propos"
         @dico["QUITTER"] = "Quitter"
         @dico["FACILE"] = "Facile"
         @dico["MOYEN"] = "Moyen"

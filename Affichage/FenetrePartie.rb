@@ -97,14 +97,20 @@ class FenetrePartie < Fenetre
 
         if !@@vraiPause
             @@maPartie.reprendrePartie
+            if(@maFenetrePartie != nil)
+                @maFenetrePartie.play
+            end
         end
 
         self.metSousTitre
-        maFenetrePartie = FenetrePartie.new()
-        Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
+        @maFenetrePartie = FenetrePartie.new()
+        Fenetre.add( @maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
-        maFenetrePartie.threadChronometre
+        
+        
+        
 
+        @maFenetrePartie.threadChronometre
 
         return self
     end
@@ -539,18 +545,20 @@ class FenetrePartie < Fenetre
         end
 
         def finirPartie
-            pause
-            if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
-                Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsContreLaMontre(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
-            elsif(@@maPartie.getMode == Mode::SURVIE)
-                Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @nbGrille)
+            if(@@maPartie != nil)
+                pause
+                if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
+                    Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsContreLaMontre(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
+                elsif(@@maPartie.getMode == Mode::SURVIE)
+                    Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @nbGrille == nil ? 0 : @nbGrille)
+                end
+
+                Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
+
+                show_standard_message_dialog(@@lg.gt("MESSAGE_DE_VICTOIRE"))
+                
+                quitter
             end
-
-            Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
-
-            show_standard_message_dialog(@@lg.gt("MESSAGE_DE_VICTOIRE"))
-
-            quitter
         end
 
        
@@ -581,7 +589,8 @@ class FenetrePartie < Fenetre
     # EVENT OUVRIR REGLAGE
     private
     def ouvrirReglage
-        @@vraiPause = false
+        removeTimout
+        @@vraiPause = false #décommenter pour reprendre en sortie de réglage même si pause avant
         cacherNbErreur
         @monCompteurErreur.set_markup("<span size='25000' ></span>")
         Fenetre.deleteChildren;
@@ -633,22 +642,45 @@ class FenetrePartie < Fenetre
         disableBtn(@btnUndo); disableBtn(@btnRedo); disableBtn(@btnUndoUndo); disableBtn(@btnHelpLocation)
 
         create_popover_malus(Malus::MALUS_POS_BONNE)
-
+        setTimout
     end
 
     # EVENT PLAY
     public
     def play
+        @@maPartie.reprendrePartie;
+        
         cacherNbErreur
-        @@maPartie.reprendrePartie; enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
+         enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
         enleverNbCase
         enleverPortee(nil, nil)
         set_modeGris(Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
+        setTimout
     end
 
+    def setTimout()
+        if(@@maPartie.getMode == Mode::SURVIE)
+            
+            removeTimout
+            time = @@maPartie.chrono.time
+            if(time<=0)
+                finirPartie
+            else
+                @monTimout = GLib::Timeout.add(time*1000) {finirPartie}
+            end
+        end
+    end
+
+    def removeTimout
+        if(@monTimout != nil)
+            GLib::Source.remove(@monTimout)
+            @monTimout = nil
+        end
+    end
     # EVENT PAUSE
     private
     def pause
+        removeTimout
         cacherNbErreur
         @@maPartie.mettrePause;
         @@vraiPause = true;
@@ -671,6 +703,7 @@ class FenetrePartie < Fenetre
             show_standard_message_dialog(Indice::MESSAGES[indice[0]])
             enableBtn(@btnHelpLocation)
             create_popover_malus(Malus::MALUS_INDICE)
+            setTimout
         end
 
         
@@ -682,6 +715,7 @@ class FenetrePartie < Fenetre
         if ( indice != nil)
             @@maGrille[indice[1].positionY][indice[1].positionX].name = "grid-cell-red"       
             create_popover_malus(Malus::MALUS_INDICE2)
+            setTimout
         end
          disableBtn(@btnHelpLocation)
     end
@@ -723,6 +757,7 @@ class FenetrePartie < Fenetre
         end
 
         create_popover_malus(Malus::MALUS_VERIFICATION)
+        setTimout
     end
 
     private
@@ -763,6 +798,7 @@ class FenetrePartie < Fenetre
         end
 
         create_popover_malus(Malus::MALUS_DONNER_ERREUR)
+        setTimout
     end
     ##############################################################################
     ####################### FUNCTION #############################################
@@ -790,11 +826,6 @@ class FenetrePartie < Fenetre
                         @indiceMalusPopover += 1
                     end
                 end        
-
-                if(@@maPartie.getMode == Mode::SURVIE && @@maPartie.chrono.estNul?)
-                    puts "Finir la partie avec méthode finir partie"
-                    #finirPartie
-                end
 
                 sleep(0.1)
             end

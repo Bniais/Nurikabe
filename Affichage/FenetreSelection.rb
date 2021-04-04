@@ -4,7 +4,7 @@ require './Fenetre.rb'
 # Classe qui gere la fenetre 'A propos'
 class FenetreSelection < Fenetre
 
-    def initialize() 
+    def initialize()
         self
     end
 
@@ -30,7 +30,7 @@ class FenetreSelection < Fenetre
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
         box.add(btnBoxH) #ADD
-        
+
         # SEPARATOR
         box.add( Gtk::Separator.new(:vertical) ) #ADD
 
@@ -38,7 +38,7 @@ class FenetreSelection < Fenetre
         # EDIT HERE
         # ADD CONTENT HERE IN BOX
 
-        # Box vertical pour stocker les deux box interne 
+        # Box vertical pour stocker les deux box interne
         vBox = Gtk::Box.new(:vertical)
 
         # Box qui comprends 3 radios selector
@@ -65,19 +65,19 @@ class FenetreSelection < Fenetre
 
         # ScrollView qui comprends les grilles
         scroll = Gtk::ScrolledWindow.new();
-        scroll.set_size_request(200, 700)
+        scroll.set_size_request(200, 660)
 
         boxGrille = ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?)
         scroll.add_with_viewport( boxGrille  )
 
-        checkButtonEasy.signal_connect("clicked") {   
-            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all 
+        checkButtonEasy.signal_connect("clicked") {
+            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all
         }
-        checkButtonMedium.signal_connect("clicked") { 
-            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all 
+        checkButtonMedium.signal_connect("clicked") {
+            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all
          }
-        checkButtonHard.signal_connect("clicked") { 
-            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all 
+        checkButtonHard.signal_connect("clicked") {
+            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all
         }
 
         vBox.add( scroll )
@@ -98,7 +98,7 @@ class FenetreSelection < Fenetre
             while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 )
                 if i == SauvegardeGrille.getInstance.getNombreGrille / 3
                     vBoxGrille.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
-                else 
+                else
                     vBoxGrille.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
                     i+=1
                 end
@@ -107,16 +107,16 @@ class FenetreSelection < Fenetre
             if(btn2 || btn3)
                 vBoxGrille.add( Gtk::Separator.new(:horizontal) )
             end
-        end 
+        end
 
 
         if btn2
             vBoxGrille.add( titleLabel( @@lg.gt("MOYEN") )  )
-            i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 
+            i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3
             while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 * 2 )
                 if i == SauvegardeGrille.getInstance.getNombreGrille / 3 * 2
                     vBoxGrille.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
-                else 
+                else
                     vBoxGrille.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
                     i+=1
                 end
@@ -128,13 +128,13 @@ class FenetreSelection < Fenetre
         end
 
         if btn3
-            
+
             vBoxGrille.add( titleLabel( @@lg.gt("DIFFICILE") )  )
-            i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 * 2 
+            i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 * 2
             while ( i <= SauvegardeGrille.getInstance.getNombreGrille )
                 if i == SauvegardeGrille.getInstance.getNombreGrille
                     vBoxGrille.add( generateHbox( generateFrame( SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i] ) , nil ) )
-                else 
+                else
                     vBoxGrille.add( generateHbox( generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i) , box , i , tabPartieEnCours[i]) ,generateFrame(SauvegardeGrille.getInstance.getGrilleAt(i + 1) , box , i+1 ,tabPartieEnCours[i+1] )) )
                     i+=1
                 end
@@ -152,7 +152,7 @@ class FenetreSelection < Fenetre
         return label
     end
 
-    private 
+    private
     def generateHbox( grille1, grille2)
         hBox = Gtk::Box.new(:horizontal,15)
         hBox.set_height_request(200)
@@ -169,13 +169,13 @@ class FenetreSelection < Fenetre
     def generateFrame( uneGrille , mainBox , numero , enCours )
         btnFrame = Gtk::Button.new()
         btnFrame.name = "bg-FenetreSelection"
-        
-        box = Gtk::Box.new(:vertical)
-        
 
-        hBoxTitre = Gtk::Box.new(:horizontal) 
+        box = Gtk::Box.new(:vertical)
+
+
+        hBoxTitre = Gtk::Box.new(:horizontal)
         hBoxTitre.set_homogeneous(true)
-       
+
         title = Gtk::Label.new()
         if enCours
             title.set_markup("<span size='25000' >#" + uneGrille.numero.to_s + "</span>")
@@ -199,17 +199,17 @@ class FenetreSelection < Fenetre
             img.halign = :end
             hBoxTitre.add(img)
         end
-    
+
 
         box.add(hBoxTitre)
 
-       
+
         box.add(  setmargin( creeGrille( uneGrille) , 0 , 5 , 0 , 0 ) )
-  
+
         btnFrame.add( box )#ADD
 
-        btnFrame.signal_connect("clicked") { 
-            Fenetre.remove(mainBox); 
+        btnFrame.signal_connect("clicked") {
+            Fenetre.remove(mainBox);
             indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieLibreSauvegarder(numero)
             puts indice
             if indice != -1
@@ -248,11 +248,11 @@ class FenetreSelection < Fenetre
                 maGrille.attach( cell , ligne,colonne,1,1)
             end
         end
-    
+
   #      # ajout de la grille a la frame
         maFrame.add(maGrille)
-           
-    
+
+
         return maFrame
     end
 
@@ -260,11 +260,11 @@ class FenetreSelection < Fenetre
     # une cellule destiner a la grille
     private
     def creeCelluleGrille(color)
-        if color <= 0 
+        if color <= 0
             color = ""
         elsif color >= 10
             color = "+"
-        end 
+        end
         btn = Gtk::Label.new(color.to_s)
         btn.name = "little"
         return btn
@@ -280,4 +280,3 @@ class FenetreSelection < Fenetre
     end
 
 end
-

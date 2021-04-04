@@ -2,14 +2,14 @@ require './Fenetre.rb'
 
 class FenetreParametre < Fenetre
 
-   
-    
-    def initialize()    
+
+
+    def initialize()
         self
     end
 
     def self.afficheToi( lastView )
-        
+
         Fenetre.set_subtitle(@@lg.gt("PARAMETRES"))
         Fenetre.add( FenetreParametre.new().creationInterface( lastView ) )
         Fenetre.show_all
@@ -17,7 +17,7 @@ class FenetreParametre < Fenetre
         return self
     end
 
-    
+
     def creationInterface( lastView)
         box = Gtk::Box.new(:vertical)
 
@@ -31,12 +31,12 @@ class FenetreParametre < Fenetre
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
         box.add(btnBoxH) #ADD
-        
+
         # SEPARATOR
         box.add( Gtk::Separator.new(:vertical) ) #ADD
 
         # VUE PRINCIPAL
-        box.add( creationStack ) #ADD    
+        box.add( creationStack ) #ADD
 
         return box
     end
@@ -71,13 +71,13 @@ class FenetreParametre < Fenetre
         title = @@lg.gt("UTILISATEUR")
         vueUtilisateur = creationVueUtilisateur
         stack.add_named(vueUtilisateur, title)
-        stack.child_set_property(vueUtilisateur, "title", title)   
-       
+        stack.child_set_property(vueUtilisateur, "title", title)
+
         # Interface
         title = @@lg.gt("INTERFACE")
         vueInterface = creationVueInterface
         stack.add_named(vueInterface, title)
-        stack.child_set_property(vueInterface, "title", title)   
+        stack.child_set_property(vueInterface, "title", title)
 
         # AUDIO
         title = @@lg.gt("AUDIO")
@@ -87,7 +87,7 @@ class FenetreParametre < Fenetre
         return box
     end
 
-    ###### JEU 
+    ###### JEU
     private
     def creationVueJeu
         box = Gtk::Box.new(:vertical)
@@ -103,7 +103,7 @@ class FenetreParametre < Fenetre
         @switchCaseGrises.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
         @switchCaseGrises.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?) }
         box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , @switchCaseGrises) ) #ADD
-        
+
         # AIDE COMPTEUR D'ILOT
         @switchCompteurIlot = Gtk::Switch.new()
         @switchCompteurIlot.halign = :start
@@ -131,24 +131,24 @@ class FenetreParametre < Fenetre
     private
     def switchAideCasesGrises(s)
         puts s
-    end 
+    end
     # AIDE COMPTEUR ILOT
     private
     def switchAideCompteurIlot(s)
         puts s
-    end 
+    end
     # AIDE AFFICHAGE PORTEE
     private
     def switchAideAffichagePortee(s)
         puts s
-    end 
+    end
     # AIDE MURS 2x2
     private
     def switchAideMurs2x2(s)
         puts s
-    end 
+    end
 
-    ###### UTILISATEUR 
+    ###### UTILISATEUR
     private
     def creationVueUtilisateur
         box = Gtk::Box.new(:vertical)
@@ -163,8 +163,8 @@ class FenetreParametre < Fenetre
             Sauvegardes.getInstance.getSauvegardePartie.resetAll(FenetrePartie.getPartie)
             Sauvegardes.getInstance.sauvegarder(nil)
         }
-        
-        box.add( setmargin(btnDeleteSave,5,5,70,70) ) #ADD  
+
+        box.add( setmargin(btnDeleteSave,5,5,65,65) ) #ADD
 
         btnResetParams = Gtk::Button.new(@@lg.gt("RESET_PARAMETRE"))
         btnResetParams.name = "btnQuitter"
@@ -177,13 +177,13 @@ class FenetreParametre < Fenetre
             @switchCaseGrises.set_active(false)
             @switchAffichagePortee.set_active(true)
         }
-        box.add(setmargin(btnResetParams,5,5,70,70))
+        box.add(setmargin(btnResetParams,5,5,65,65))
 
         return box
     end
     ### SIGNAL CONNECTS DE UTILISATEUR
 
-    ###### INTERFACE 
+    ###### INTERFACE
     private
     def creationVueInterface
         box = Gtk::Box.new(:vertical)
@@ -206,7 +206,7 @@ class FenetreParametre < Fenetre
         combo.append("FR_fr","Francais")
         combo.set_active(0)
         box.add( creationBoxVerticalPourVue(@@lg.gt("CHOISIRLANGUE") + " :" , combo) ) #ADD
-        
+
         # IMPORT LANGUE
         picker = Gtk::FileChooserButton.new(@@lg.gt("CHOISIRFICHIER"), :open)
         picker.halign = :fill
@@ -215,7 +215,7 @@ class FenetreParametre < Fenetre
 
         return box
     end
-    
+
     ### SIGNAL CONNECTS DE INTERFACE
     # MODE SOMBRE
     private
@@ -223,7 +223,7 @@ class FenetreParametre < Fenetre
         Fenetre.set_modeSombre(s.active?)
     end
 
-    ###### AUDIO 
+    ###### AUDIO
     private
     def creationVueAudio
         box = Gtk::Box.new(:vertical)

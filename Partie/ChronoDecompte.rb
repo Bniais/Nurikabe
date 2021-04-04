@@ -28,4 +28,9 @@ class ChronoDecompte < Chrono
         @time = 0
       end
     end
+
+    def getTemps()
+      top()
+      return format("%02d", (@time.ceil/60).to_s) + ":" + format("%02d", (@time.ceil%60).to_s)
+    end
 end

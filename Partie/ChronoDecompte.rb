@@ -23,7 +23,7 @@ class ChronoDecompte < Chrono
       end
       return estNul?()
     end
-
+    ##
     #Ajoute un malus au chrono
     def ajouterMalus(n)
       @time -= n
@@ -31,7 +31,7 @@ class ChronoDecompte < Chrono
         @time = 0
       end
     end
-
+    ##
     #Retourne le temps sous forme de String
     def getTemps()
       top()

@@ -5,17 +5,17 @@ require_relative 'Case.rb'
 class Grille
 
     attr_reader :numero, :tabCases, :paliers
-
+    ##
     # Methode qui permet de creer une grille
     def Grille.creer(numero, tabCases, paliers)
 		new(numero, tabCases, paliers)
     end
-
+    ##
     # Methode privee pour l'initialisation
     def initialize(numero, tabCases, paliers)
 		@numero, @tabCases, @paliers = numero, tabCases, paliers
     end
-
+    ##
     # Methode qui remet a zero la grille
     def raz()
 		
@@ -27,7 +27,7 @@ class Grille
 			end
 		end                                                                        
     end
-
+    ##
     #Retourne le nombre de récompenses du joueur
 	def getNbRecompense(tps)
     puts "new call"
@@ -39,7 +39,7 @@ class Grille
     end
     return 0
   end
-
+  	##
     # Methode qui permet d'afficher la grille
     def afficher()
 		for i in 0..tabCases.size-1
@@ -51,12 +51,12 @@ class Grille
     end
 
    
-
+    ##
     # Methode qui envoie la grille suivante
     def grilleSuivante()
 		return nil
     end
-
+    ##
     #renvoie le nombre d'erreur dans la grille 
     def nbDifference(grilleCmp)
 		#return int
@@ -89,7 +89,7 @@ class Grille
 		return erreur             
 
     end
-
+    ##
     #renvoie la premiere erreur trouver dans la grille
     def firstDifference(grilleCmp)
 		#return case

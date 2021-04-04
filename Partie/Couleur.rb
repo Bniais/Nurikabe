@@ -11,7 +11,7 @@ class Couleur
     ILE_7 = 7
     ILE_8 = 8
     ILE_9 = 9
-
+    ##
     #Permet de savoir si une case est une ile
     #Renvoi un booléen 
     def self.EstIle?(couleur)

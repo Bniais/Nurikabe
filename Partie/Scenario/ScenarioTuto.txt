@@ -1,35 +1,35 @@
 1. INDICE_ILE_1 :
-    Lorsqu'une île a un indice de 1 (sa taille = 1), cela signifie que ses cases voisines doivent être noires.
+****    Lorsqu'une île a un indice de 1 (sa taille = 1), cela signifie que ses cases voisines doivent être noires.
 
 2. INDICE_ILE_ADJACENTE :
-    Deux îles ne peuvent pas être connectées : elles sont forcément séparées par une case noire.
+****    Deux îles ne peuvent pas être connectées : elles sont forcément séparées par une case noire.
 
 3. INDICE_EVITER_2x2 :
-    Attention, une des règles du Nurikabe interdit les carrés de 2x2 cases. L'une des ces cases est forcément blanche.
+****    Attention, une des règles du Nurikabe interdit les murs de 2x2 cases. L'une des ces cases est forcément blanche.
 
 4. INDICE_ILE_ADJACENTE_DIAG :
-    Lorsque 2 indices sont adjacents en diagonale, chacune des 2 cases touchant les 2 indices doivent être noires.
+****    Lorsque 2 indices sont adjacents en diagonale chacune des 2 cases touchant les 2 indices doivent être noires.
 
 5. INDICE_EXPENSION_MUR :
-    Tous les murs doivent former un chemin continu. Ce qui signifie que tous les murs doivent être connectés entre eux. Ici, le mur adjacent à l'ile d'incide 7 à un seul carré, la seule façon de le relier aux autres murs est de l'agrandir avec trois carrés à sa droite.
+****    Tous les murs doivent former un chemin continu. Ce qui signifie que tous les murs doivent être connectés entre eux. Ici, le mur adjacent à l'ile d'incide 6 à un seul carré, la seule façon de le relier aux autres murs est de l'agrandir avec trois carrés à sa gauche.
 
 6. INDICE_EXPENSION_2D :
-    Dans certains cas, une ile d'indice 2 ou le dernier carré d'une ile plus grande ne peut être agrandi que dans deux directions perpendiculaires. Dans ce cas, quelle que soit la direction dans laquelle l'expansion de l'île aura lieu, le carré diagonal doit faire partie d'un mur et est donc grisé.
+****    Dans certains cas, une ile d'indice 2 ou le dernier carré d'une ile plus grande ne peut être agrandi que dans deux directions perpendiculaires. Dans ce cas, quelle que soit la direction dans laquelle l'expansion de l'île aura lieu, le carré diagonal doit faire partie d'un mur et est donc grisé.
 
 7. INDICE_EXPENSION_ILE :
-    Une île peut être agrandie directement à partir d'un indice. L'île du 3 ne peut être agrandie que vers le haut et l'île du 7 ne peut être agrandie que vers la gauche. Nous allons marquer ces carrés avec des points pour montrer qu'ils font partie des îles respectives et ne peuvent pas faire partie d'un mur.
+****    Une île peut être agrandie directement à partir d'un indice. L'île 3 ne peut être agrandie que vers le haut et l'île 2 ne peut être agrandie que vers la droite. Nous allons marquer ces carrés avec des points pour montrer qu'ils font partie des îles respectives et ne peuvent pas faire partie d'un mur.
 
 8. INDICE_ILE_INATTEIGNABLE :
-    Cette case n'est pas atteignable car elle se situe trop loin des îles. Elle fait donc partie d'un mur et elle est de couleur noire.
+****    Cette case n'est pas atteignable car elle se situe trop loin des îles. Elle fait donc partie d'un mur et elle est de couleur noire.
 
 9. INDICE_CONTINUITE_ILE :
-    Le point indique qu'il s'agit d'une case qui appartient à une île car il faut éviter d'avoir un mur 2x2.
+****    Le point indique qu'il s'agit d'une case qui appartient à une île car il faut éviter d'avoir un mur 2x2.
 
 10. INDICE_CASE_ISOLEE :
-    Attention, l'indice de l'île n'est pas respecté. Cette île n'a aucun chemin possible, cette case doit être blanche.
-
+****    Les cases entourés de murs horizontaux et verticaux ne peuvent pas appartenir à une île et doivent donc être colorés en noir pour faire partie d'un mur. 
+    
 11. INDICE_ILE_COMPLETE :
-    Si ton île est déjà complète, la case grise adjacente doit être noire.
+****    Si ton île est déjà complète, la case grise adjacente doit être noire.
 
 ############################# AIDES VISUELLES #############################
 

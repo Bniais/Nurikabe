@@ -12,5 +12,9 @@ class PartieContreLaMontre < PartieMalus
 
   def getMode
       return Mode::CONTRE_LA_MONTRE
-    end
+  end
+
+  def getNbRecompense
+    @grilleBase.getNbRecompense(@chrono.time)
+  end
 end

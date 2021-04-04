@@ -85,6 +85,10 @@ class Partie
     return nil #pas de prochaine
   end
 
+  def getNbRecompense
+    return 0
+  end
+
   # Methode qui ajoute un coup
   def ajouterCoup(coup)#TOTEST
     if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1) 

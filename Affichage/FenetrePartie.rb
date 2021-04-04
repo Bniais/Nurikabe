@@ -1,3 +1,4 @@
+
 require "./Fenetre.rb"
 require "./../Partie/Partie.rb"
 
@@ -550,12 +551,36 @@ class FenetrePartie < Fenetre
                 if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
                     Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsContreLaMontre(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
                 elsif(@@maPartie.getMode == Mode::SURVIE)
-                    Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @nbGrille == nil ? 0 : @nbGrille)
+                    if(@nbGrille == nil)
+                        @nbGrille = 0
+                    end
+                    Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @nbGrille )
                 end
 
                 Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
 
-                show_standard_message_dialog(@@lg.gt("MESSAGE_DE_VICTOIRE"))
+                case @@maPartie.getMode
+                when Mode::LIBRE
+                    msg = @@lg.gt("MESSAGE_DE_VICTOIRE")
+                when Mode::SURVIE
+                    msg = @@lg.gt("MESSAGE_VICTOIRE_SURVIE_DEBUT") + @nbGrille.to_s + (@nbGrille < 2 ? @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN") : @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN_PLURIEL"))
+                when Mode::CONTRE_LA_MONTRE
+                    nbRecompense = @@maPartie.getNbRecompense
+                    msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT") 
+                    for i in 0..2
+                        if(i<nbRecompense)
+                            msg += "★"
+                        else
+                            msg += "☆"
+                        end
+                    end
+                when Mode::TUTORIEL
+                    msg = @@lg.gt("MESSAGE_FIN_TUTORIEL")
+                else
+                    msg = @@lg.gt("UNKNOWN")
+                end
+
+                show_standard_message_dialog(msg)
                 
                 quitter
             end

@@ -18,6 +18,7 @@ class Grille
 
     # Methode qui remet a zero la grille
     def raz()
+		
 		for i in 0..tabCases.size-1
 			for j in 0..tabCases.size-1
 				if tabCases[i][j].couleur == Couleur::BLANC || tabCases[i][j].couleur == Couleur::NOIR   # -1 = couleur blanche
@@ -26,6 +27,17 @@ class Grille
 			end
 		end                                                                        
     end
+
+	def getNbRecompense(tps)
+    puts "new call"
+    for i in 0..2
+      puts "i : #{i}"
+      if(paliers[2-i] >= tps)
+        return (2-i)+1
+      end
+    end
+    return 0
+  end
 
     # Methode qui permet d'afficher la grille
     def afficher()

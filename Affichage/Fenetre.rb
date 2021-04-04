@@ -37,26 +37,26 @@ class Fenetre
         Sauvegardes.creer("../Sauvegarde/save.dump")
 
 
-        
+=begin  
         #TMP TO ADD GRILLES
- ##       SauvegardeGrille.getInstance.ajouterGrille( Grille.creer( SauvegardeGrille.getInstance.getNombreGrille + 1 ,
- ##       [
- ##   [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 4, 0),Case.creer(Couleur::ILE_5, 5, 0), Case.creer(Couleur::BLANC, 6, 0),Case.creer(Couleur::ILE_5, 7, 0), Case.creer(Couleur::BLANC, 8, 0),Case.creer(Couleur::ILE_5, 9, 0)],
- ##   [Case.creer(Couleur::BLANC, 0, 1) ,Case.creer(Couleur::ILE_4, 1, 1),Case.creer(Couleur::NOIR, 2, 1),Case.creer(Couleur::ILE_5, 3, 1), Case.creer(Couleur::BLANC, 4, 1),Case.creer(Couleur::ILE_5, 5, 1), Case.creer(Couleur::BLANC, 6, 1),Case.creer(Couleur::ILE_5, 7, 1), Case.creer(Couleur::BLANC, 8, 1),Case.creer(Couleur::ILE_5, 9, 1)],
- ##   [Case.creer(Couleur::BLANC, 0, 2) ,Case.creer(Couleur::ILE_4, 1, 2),Case.creer(Couleur::NOIR, 2, 2),Case.creer(Couleur::ILE_5, 3, 2), Case.creer(Couleur::BLANC, 4, 2),Case.creer(Couleur::ILE_5, 5, 2), Case.creer(Couleur::BLANC, 6, 2),Case.creer(Couleur::ILE_5, 7, 2), Case.creer(Couleur::BLANC, 8, 2),Case.creer(Couleur::ILE_5, 9, 2)],
- ##   [Case.creer(Couleur::BLANC, 0, 3) ,Case.creer(Couleur::ILE_4, 1, 3),Case.creer(Couleur::NOIR, 2, 3),Case.creer(Couleur::ILE_5, 3, 3), Case.creer(Couleur::BLANC, 4, 3),Case.creer(Couleur::ILE_5, 5, 3), Case.creer(Couleur::BLANC, 6, 3),Case.creer(Couleur::ILE_5, 7, 3), Case.creer(Couleur::BLANC, 8, 3),Case.creer(Couleur::ILE_5, 9, 3)],
- ##   [Case.creer(Couleur::BLANC, 0, 4) ,Case.creer(Couleur::ILE_4, 1, 4),Case.creer(Couleur::NOIR, 2, 4),Case.creer(Couleur::ILE_5, 3, 4), Case.creer(Couleur::BLANC, 4, 4),Case.creer(Couleur::ILE_5, 5, 4), Case.creer(Couleur::BLANC, 6, 4),Case.creer(Couleur::ILE_5, 7, 4), Case.creer(Couleur::BLANC, 8, 4),Case.creer(Couleur::ILE_5, 9, 4)],
- ##   [Case.creer(Couleur::BLANC, 0, 5) ,Case.creer(Couleur::ILE_4, 1, 5),Case.creer(Couleur::NOIR, 2, 5),Case.creer(Couleur::ILE_5, 3, 5), Case.creer(Couleur::BLANC, 4, 5),Case.creer(Couleur::ILE_5, 5, 5), Case.creer(Couleur::BLANC, 6, 5),Case.creer(Couleur::ILE_5, 7, 5), Case.creer(Couleur::BLANC, 8, 5),Case.creer(Couleur::ILE_5, 9, 5)],
- ##   [Case.creer(Couleur::BLANC, 0, 6) ,Case.creer(Couleur::ILE_4, 1, 6),Case.creer(Couleur::NOIR, 2, 6),Case.creer(Couleur::ILE_5, 3, 6), Case.creer(Couleur::BLANC, 4, 6),Case.creer(Couleur::ILE_5, 5, 6), Case.creer(Couleur::BLANC, 6, 6),Case.creer(Couleur::ILE_5, 7, 6), Case.creer(Couleur::BLANC, 8, 6),Case.creer(Couleur::ILE_5, 9, 6)],
- ##   [Case.creer(Couleur::BLANC, 0, 7) ,Case.creer(Couleur::ILE_4, 1, 7),Case.creer(Couleur::NOIR, 2, 7),Case.creer(Couleur::ILE_5, 3, 7), Case.creer(Couleur::BLANC, 4, 7),Case.creer(Couleur::ILE_5, 5, 7), Case.creer(Couleur::BLANC, 6, 7),Case.creer(Couleur::ILE_5, 7, 7), Case.creer(Couleur::BLANC, 8, 7),Case.creer(Couleur::ILE_5, 9, 7)],
- ##   [Case.creer(Couleur::BLANC, 0, 8) ,Case.creer(Couleur::ILE_4, 1, 8),Case.creer(Couleur::NOIR, 2, 8),Case.creer(Couleur::ILE_5, 3, 8), Case.creer(Couleur::BLANC, 4, 8),Case.creer(Couleur::ILE_5, 5, 8), Case.creer(Couleur::BLANC, 6, 8),Case.creer(Couleur::ILE_5, 7, 8), Case.creer(Couleur::BLANC, 8, 8),Case.creer(Couleur::ILE_5, 9, 8)],
- ##   [Case.creer(Couleur::BLANC, 0, 9) ,Case.creer(Couleur::ILE_4, 1, 9),Case.creer(Couleur::NOIR, 2, 9),Case.creer(Couleur::ILE_5, 3, 9), Case.creer(Couleur::BLANC, 4, 9),Case.creer(Couleur::ILE_5, 5, 9), Case.creer(Couleur::BLANC, 6, 9),Case.creer(Couleur::ILE_5, 7, 9), Case.creer(Couleur::BLANC, 8, 9),Case.creer(Couleur::ILE_5, 9, 9)]
-##]) )
+        SauvegardeGrille.getInstance.ajouterGrille( Grille.creer( SauvegardeGrille.getInstance.getNombreGrille + 1 ,
+        [
+    [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 4, 0),Case.creer(Couleur::ILE_5, 5, 0), Case.creer(Couleur::BLANC, 6, 0),Case.creer(Couleur::ILE_5, 7, 0), Case.creer(Couleur::BLANC, 8, 0),Case.creer(Couleur::ILE_5, 9, 0)],
+    [Case.creer(Couleur::BLANC, 0, 1) ,Case.creer(Couleur::ILE_4, 1, 1),Case.creer(Couleur::NOIR, 2, 1),Case.creer(Couleur::ILE_5, 3, 1), Case.creer(Couleur::BLANC, 4, 1),Case.creer(Couleur::ILE_5, 5, 1), Case.creer(Couleur::BLANC, 6, 1),Case.creer(Couleur::ILE_5, 7, 1), Case.creer(Couleur::BLANC, 8, 1),Case.creer(Couleur::ILE_5, 9, 1)],
+    [Case.creer(Couleur::BLANC, 0, 2) ,Case.creer(Couleur::ILE_4, 1, 2),Case.creer(Couleur::NOIR, 2, 2),Case.creer(Couleur::ILE_5, 3, 2), Case.creer(Couleur::BLANC, 4, 2),Case.creer(Couleur::ILE_5, 5, 2), Case.creer(Couleur::BLANC, 6, 2),Case.creer(Couleur::ILE_5, 7, 2), Case.creer(Couleur::BLANC, 8, 2),Case.creer(Couleur::ILE_5, 9, 2)],
+    [Case.creer(Couleur::BLANC, 0, 3) ,Case.creer(Couleur::ILE_4, 1, 3),Case.creer(Couleur::NOIR, 2, 3),Case.creer(Couleur::ILE_5, 3, 3), Case.creer(Couleur::BLANC, 4, 3),Case.creer(Couleur::ILE_5, 5, 3), Case.creer(Couleur::BLANC, 6, 3),Case.creer(Couleur::ILE_5, 7, 3), Case.creer(Couleur::BLANC, 8, 3),Case.creer(Couleur::ILE_5, 9, 3)],
+    [Case.creer(Couleur::BLANC, 0, 4) ,Case.creer(Couleur::ILE_4, 1, 4),Case.creer(Couleur::NOIR, 2, 4),Case.creer(Couleur::ILE_5, 3, 4), Case.creer(Couleur::BLANC, 4, 4),Case.creer(Couleur::ILE_5, 5, 4), Case.creer(Couleur::BLANC, 6, 4),Case.creer(Couleur::ILE_5, 7, 4), Case.creer(Couleur::BLANC, 8, 4),Case.creer(Couleur::ILE_5, 9, 4)],
+    [Case.creer(Couleur::BLANC, 0, 5) ,Case.creer(Couleur::ILE_4, 1, 5),Case.creer(Couleur::NOIR, 2, 5),Case.creer(Couleur::ILE_5, 3, 5), Case.creer(Couleur::BLANC, 4, 5),Case.creer(Couleur::ILE_5, 5, 5), Case.creer(Couleur::BLANC, 6, 5),Case.creer(Couleur::ILE_5, 7, 5), Case.creer(Couleur::BLANC, 8, 5),Case.creer(Couleur::ILE_5, 9, 5)],
+    [Case.creer(Couleur::BLANC, 0, 6) ,Case.creer(Couleur::ILE_4, 1, 6),Case.creer(Couleur::NOIR, 2, 6),Case.creer(Couleur::ILE_5, 3, 6), Case.creer(Couleur::BLANC, 4, 6),Case.creer(Couleur::ILE_5, 5, 6), Case.creer(Couleur::BLANC, 6, 6),Case.creer(Couleur::ILE_5, 7, 6), Case.creer(Couleur::BLANC, 8, 6),Case.creer(Couleur::ILE_5, 9, 6)],
+    [Case.creer(Couleur::BLANC, 0, 7) ,Case.creer(Couleur::ILE_4, 1, 7),Case.creer(Couleur::NOIR, 2, 7),Case.creer(Couleur::ILE_5, 3, 7), Case.creer(Couleur::BLANC, 4, 7),Case.creer(Couleur::ILE_5, 5, 7), Case.creer(Couleur::BLANC, 6, 7),Case.creer(Couleur::ILE_5, 7, 7), Case.creer(Couleur::BLANC, 8, 7),Case.creer(Couleur::ILE_5, 9, 7)],
+    [Case.creer(Couleur::BLANC, 0, 8) ,Case.creer(Couleur::ILE_4, 1, 8),Case.creer(Couleur::NOIR, 2, 8),Case.creer(Couleur::ILE_5, 3, 8), Case.creer(Couleur::BLANC, 4, 8),Case.creer(Couleur::ILE_5, 5, 8), Case.creer(Couleur::BLANC, 6, 8),Case.creer(Couleur::ILE_5, 7, 8), Case.creer(Couleur::BLANC, 8, 8),Case.creer(Couleur::ILE_5, 9, 8)],
+    [Case.creer(Couleur::BLANC, 0, 9) ,Case.creer(Couleur::ILE_4, 1, 9),Case.creer(Couleur::NOIR, 2, 9),Case.creer(Couleur::ILE_5, 3, 9), Case.creer(Couleur::BLANC, 4, 9),Case.creer(Couleur::ILE_5, 5, 9), Case.creer(Couleur::BLANC, 6, 9),Case.creer(Couleur::ILE_5, 7, 9), Case.creer(Couleur::BLANC, 8, 9),Case.creer(Couleur::ILE_5, 9, 9)]
+], [30,20,10]) )
 
  ##       puts SauvegardeGrille.getInstance.getNombreGrille
- ##       SauvegardeGrille.getInstance.sauvegarder( "../Sauvegarde/grilles1.dump" )
-
-
+        SauvegardeGrille.getInstance.sauvegarder( "../Sauvegarde/grilles1.dump" )
+        Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
+=end
 
 
         Langue.creer("../Parametres/fr.txt")

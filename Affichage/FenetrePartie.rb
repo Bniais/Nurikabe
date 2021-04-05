@@ -72,7 +72,6 @@ class FenetrePartie < Fenetre
     @@maPartie = nil
     @@maGrille = nil
     @@vraiPause = false
-
     def initialize()
         self
     end
@@ -90,17 +89,10 @@ class FenetrePartie < Fenetre
 
     # Lancer une nouvelle partie avec un mode specifique ? A FAIRE
     def self.afficheToiSelec( lastView, unePartie )
-        if @@maPartie == nil
+        if(unePartie != nil)
             @@maPartie = unePartie
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
             Sauvegardes.getInstance.getSauvegardePartie.ajouterSauvegardePartie(@@maPartie)
-        end
-
-        if !@@vraiPause
-            @@maPartie.reprendrePartie
-            if(@maFenetrePartie != nil)
-                @maFenetrePartie.play
-            end
         end
 
         self.metSousTitre
@@ -108,7 +100,8 @@ class FenetrePartie < Fenetre
         Fenetre.add( @maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
 
-
+        @@maPartie.reprendrePartie
+        @maFenetrePartie.play
 
 
         @maFenetrePartie.threadChronometre
@@ -143,21 +136,21 @@ class FenetrePartie < Fenetre
 
     def creationInterface( lastView )
         @indiceMalusPopover = -1
-        box = Gtk::Box.new(:vertical)
+        @box = Gtk::Box.new(:vertical)
 
         #TOOLBAR
-        box.add(creeToolbar)#ADD
+        @box.add(creeToolbar)#ADD
 
         ## Nom de la grille
         nomGrille = Gtk::Label.new()
         nomGrille.set_markup("<span size='25000' > " + @@lg.gt("GRILLE") + " #" + @@maPartie.grilleBase.numero.to_s + "</span>")
         nomGrille.set_margin_top(20)
         nomGrille.set_margin_bottom(10)
-        box.add(nomGrille)#ADD
+        @box.add(nomGrille)#ADD
 
         #GRILLE
         @frameGrille = creeGrille
-        box.add(@frameGrille)#ADD
+        @box.add(@frameGrille)#ADD
 
         #BOTTOM BOX
         bottomBox = Gtk::Box.new(:horizontal)
@@ -190,9 +183,14 @@ class FenetrePartie < Fenetre
 
         cacherNbErreur
 
-        box.add( bottomBox )#ADD
+        @box.add( bottomBox )#ADD
 
-        return box
+        return @box
+    end
+
+    def afficherNextGrille
+        Fenetre.remove(@box)
+        FenetrePartie.afficheToiSelec( FenetreMenu, @@maPartie )
     end
 
     # Methode qui permet de cree
@@ -360,7 +358,7 @@ class FenetrePartie < Fenetre
         #end
     end
 
-    def afficherPortee(x, y)#TODO
+    def afficherPortee(x, y)
         if(Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee)
             @porteeAffichee = true
             enleverNbCase
@@ -523,12 +521,7 @@ class FenetrePartie < Fenetre
                         if(grilleSuivante == nil)
                             finirPartie
                         else
-                            if(@nbGrille == nil)
-                                @nbGrille = 1
-                            else
-                                @nbGrille += 1
-                            end
-                            puts "#TODO : CHARGER PROCHAINE GRILLE"
+                            afficherNextGrille
                         end
                     end
 
@@ -554,10 +547,7 @@ class FenetrePartie < Fenetre
                 if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
                     Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsContreLaMontre(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
                 elsif(@@maPartie.getMode == Mode::SURVIE)
-                    if(@nbGrille == nil)
-                        @nbGrille = 0
-                    end
-                    Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @nbGrille )
+                    Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @@maPartie.getNbGrilleFinis )
                 end
 
                 Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
@@ -566,7 +556,7 @@ class FenetrePartie < Fenetre
                 when Mode::LIBRE
                     msg = @@lg.gt("MESSAGE_DE_VICTOIRE")
                 when Mode::SURVIE
-                    msg = @@lg.gt("MESSAGE_VICTOIRE_SURVIE_DEBUT") + @nbGrille.to_s + (@nbGrille < 2 ? @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN") : @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN_PLURIEL"))
+                    msg = @@lg.gt("MESSAGE_VICTOIRE_SURVIE_DEBUT") + @@maPartie.getNbGrilleFinis.to_s + (@@maPartie.getNbGrilleFinis < 2 ? @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN") : @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN_PLURIEL"))
                 when Mode::CONTRE_LA_MONTRE
                     nbRecompense = @@maPartie.getNbRecompense
                     msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT")

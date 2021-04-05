@@ -4,6 +4,9 @@ require_relative 'Mode.rb'
 require_relative 'Coup.rb'
 require_relative 'Indice/Indice.rb'
 require 'digest'
+
+
+
 class Partie
   #TODO definir constantes
 
@@ -15,9 +18,7 @@ class Partie
   #Constructeur de Grille
   def initialize(grille, parametres, sauvegardes) #Créer une nouvelle partie
     @grilleBase = grille
-    @parametres = parametres
-    @sauvegardes = sauvegardes #TODO Charger la partie si une sauvegarde correspond à la partie
-
+   
     @tabCoup = Array.new(0);
 
     @nbAideUtilise = 0
@@ -33,6 +34,12 @@ class Partie
   #Retourne le mode de la partie
   def getMode()
     return Mode::LIBRE
+  end
+
+  ##
+  #Retourne le nombre de grille réalisées
+  def getNbGrilleFinis
+      return 0
   end
 
   ##

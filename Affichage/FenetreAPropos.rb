@@ -2,6 +2,8 @@ require './Fenetre.rb'
 
 ##
 # Classe qui gere la fenetre 'A propos'
+#
+# Herite de la classe abstraite Fenetre
 class FenetreAPropos < Fenetre
 
     ##

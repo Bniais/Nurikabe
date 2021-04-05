@@ -2,6 +2,8 @@ require './Fenetre.rb'
 
 ##
 # Classe qui gere l'affichage de la fenetre 'Classement'
+#
+# Herite de la classe abstraite Fenetre
 class FenetreClassement < Fenetre
 
     ##

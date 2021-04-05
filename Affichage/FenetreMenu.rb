@@ -8,14 +8,20 @@ require "./../Partie/PartieSurvie.rb"
 require "./../Partie/PartieTuto.rb"
 require "./../Partie/PartieContreLaMontre.rb"
 
-
+##
+# Classe qui gere l'affichage de la fenetre du menu
+#
+# Herite de la classe abstraite Fenetre
 class FenetreMenu < Fenetre
 
-
+    ##
+    # Methode privee pour l'initialisation
     def initialize()
         self
     end
 
+    ##
+    # Methode qui permet d'afficher la fenetre du menu
     def self.afficheToi( _ ) # IGNORE LAST VIEW
         Fenetre.set_subtitle("Menu")
         Fenetre.add( FenetreMenu.new().creationInterface() )
@@ -23,6 +29,8 @@ class FenetreMenu < Fenetre
         return self
     end
 
+    ##
+    # Methode qui permet d'afficher une boite de dialogue
     def show_standard_message_dialog(unMessage)
         @dialog = Gtk::MessageDialog.new(:parent => @@window,
                                         :flags => [:modal, :destroy_with_parent],
@@ -36,15 +44,17 @@ class FenetreMenu < Fenetre
         return response
     end
 
+    ##
+    # Methode qui gere et cree l'affichage du menu
     def creationInterface()
         box = Gtk::Box.new(:vertical, 10)
-    
+
         # creation du label pour le titre + ajout à la box
         titre = Gtk::Label.new()
         titre.set_markup("<span weight = 'ultrabold' size = '90000' >Nurikabe</span>")
         box.add( setmargin(titre, 0, 0, 70, 70) )
-        
 
+        # creation des boutons
         btnLibre = Gtk::Button.new()
         setBold(btnLibre, @@lg.gt("LIBRE") )
         box.add( setmargin( btnLibre , 0, 15, 70, 70) )
@@ -52,7 +62,7 @@ class FenetreMenu < Fenetre
         btnContreLaMontre = Gtk::Button.new()
         setBold(btnContreLaMontre, @@lg.gt("CONTRELAMONTRE") )
         box.add( setmargin( btnContreLaMontre , 0, 15, 70, 70) )
-  
+
 
         btnSurvie = Gtk::Button.new()
         setBold(btnSurvie, @@lg.gt("SURVIE") )
@@ -62,24 +72,24 @@ class FenetreMenu < Fenetre
         btnTutoriel = Gtk::Button.new()
         setBold(btnTutoriel, @@lg.gt("TUTORIEL") )
         box.add( setmargin( btnTutoriel , 0, 15, 70, 70) )
-    
+
 
         # gestion des évènements des boutons
-        btnLibre.signal_connect('clicked') {    
-            Fenetre.remove(box); FenetreSelection.afficheToi( FenetreMenu ) 
+        btnLibre.signal_connect('clicked') {
+            Fenetre.remove(box); FenetreSelection.afficheToi( FenetreMenu )
         }
 
         btnContreLaMontre.signal_connect('clicked') { |btn|
-           
 
+            # affichage d'un pop up si une sauvegarde existe
             indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderContreLaMontre
             if(indice != -1)
                 if (show_standard_message_dialog(@@lg.gt("REPRENDRE_SAUVEGARDE")) == 0)
-                    Fenetre.remove(box); 
-                    FenetrePartie.afficheToiChargerPartie(FenetreMenu ,  indice) 
+                    Fenetre.remove(box);
+                    FenetrePartie.afficheToiChargerPartie(FenetreMenu ,  indice)
                 else
                     Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(Sauvegardes.getInstance.getSauvegardePartie.getPartie(indice))
-                end  
+                end
             end
             creationHBoxCLM(box,2,btn,3,btnSurvie)
         }
@@ -88,21 +98,21 @@ class FenetreMenu < Fenetre
             indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderSurvie
             if(indice != -1)
                 if (show_standard_message_dialog(@@lg.gt("REPRENDRE_SAUVEGARDE")) == 0)
-                    Fenetre.remove(box); 
-                    FenetrePartie.afficheToiChargerPartie(FenetreMenu ,  indice) 
+                    Fenetre.remove(box);
+                    FenetrePartie.afficheToiChargerPartie(FenetreMenu ,  indice)
                 else
                     Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(Sauvegardes.getInstance.getSauvegardePartie.getPartie(indice))
-                end  
+                end
             end
-            creationHBoxSurvie(box,3,btn,2,btnContreLaMontre)    
+            creationHBoxSurvie(box,3,btn,2,btnContreLaMontre)
         }
-        btnTutoriel.signal_connect('clicked') { 
-            Fenetre.remove(box); 
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieTuto.creer(SauvegardeGrille.getInstance.getGrilleAt(rand(1..SauvegardeGrille.getInstance.getNombreGrille)), nil, nil) ) 
+        btnTutoriel.signal_connect('clicked') {
+            Fenetre.remove(box);
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieTuto.creer(SauvegardeGrille.getInstance.getGrilleAt(rand(1..SauvegardeGrille.getInstance.getNombreGrille)), nil, nil) )
         }
-    
+
         # AJOUT SEPARATEUR
-        separateur = Gtk::Separator.new(:horizontal)  
+        separateur = Gtk::Separator.new(:horizontal)
         box.add( setmargin(separateur, 0, 0, 80, 80) ) #ADD
 
         # ajout des boutons du bas
@@ -112,7 +122,7 @@ class FenetreMenu < Fenetre
         box.add( setmargin(btnClassement, 15, 15, 70, 70) ) #ADD
 
         # AJOUT SEPARATEUR
-        separateur = Gtk::Separator.new(:horizontal)  
+        separateur = Gtk::Separator.new(:horizontal)
         box.add( setmargin(separateur, 0, 0, 80, 80) ) #ADD
 
         # TRIPLE BOUTON EN BAS
@@ -142,6 +152,8 @@ class FenetreMenu < Fenetre
         return box
       end
 
+    ##
+    # Methode qui permet de creer une boite de dialogue pour reprendre une partie en cours
     def creationHboxResumeGame( btn , mode , mainBox )
         box = Gtk::Box.new(:horizontal)
         btn.set_width_request(360)
@@ -152,20 +164,20 @@ class FenetreMenu < Fenetre
         btnResume.name = "resumeGame"
 
         if mode == Mode::LIBRE
-            btnResume.signal_connect("clicked") { 
+            btnResume.signal_connect("clicked") {
                 puts Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size.to_s + "size"
-                if Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size > 1 
+                if Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size > 1
                     box.remove(btnResume)
                     comboBox = Gtk::ComboBoxText.new
                     comboBox.set_width_request(180)
                     for i in 0...Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size
                         comboBox.append( "visible" , i.to_s )
                     end
-                    comboBox.signal_connect("changed") { |cb| Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie( FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre[cb.active] )    } 
-                    box.add( comboBox )                                                             
+                    comboBox.signal_connect("changed") { |cb| Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie( FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre[cb.active] )    }
+                    box.add( comboBox )
                     Fenetre.show_all()
-                else 
-                    Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie( FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre[0] ) 
+                else
+                    Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie( FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre[0] )
                 end
             }
         elsif mode == Mode::SURVIE
@@ -180,6 +192,7 @@ class FenetreMenu < Fenetre
         return setmargin(box, 0, 15, 70, 70);
     end
 
+    ##
     # Methode qui permet de gerer les marges d'un objet
     def setmargin(obj, top, bottom, left, right)
         obj.set_margin_top(top)
@@ -189,7 +202,8 @@ class FenetreMenu < Fenetre
         return obj
     end
 
-      # Methode qui permet de mettre en gras un label
+    ##
+    # Methode qui permet de mettre en gras un label
     def setBold(btn, nom)
         label = Gtk::Label.new
         label.set_markup("<span weight = 'ultrabold'>#{nom}</span>")
@@ -197,7 +211,11 @@ class FenetreMenu < Fenetre
         btn.set_height_request(70)
     end
 
-
+    ##
+    # Methode qui permet de modifier l'affichage des bouton lorsque
+    # l'utilisateur clique sur le bouton 'survie'.
+    #
+    # Le bouton se divise en 3 boutons ('facile', 'moyen' et 'difficile')
     def creationHBoxSurvie( box, position , remove , positionOtherDifficulty , btnOtherMode )
 
         if box.children[positionOtherDifficulty] != btnOtherMode
@@ -214,27 +232,28 @@ class FenetreMenu < Fenetre
         hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
         hBox.add ( Gtk::Button.new() )
 
+        # gestion des evenements des boutons de choix de niveau
         hBox.children[0].signal_connect("clicked"){
-            Fenetre.remove(box); 
+            Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand(1..(nbGrille/3)) #TOTEST si 1/3
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
         }
         hBox.children[1].signal_connect("clicked"){
-            Fenetre.remove(box); 
+            Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))#TOTEST si 1/3
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
         }
-        
+
         hBox.children[2].signal_connect("clicked"){
-            Fenetre.remove(box); 
+            Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand((1+2*nbGrille/3)..nbGrille)#TOTEST si 1/3
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))        
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
         }
 
         setBold( hBox.children[0] , @@lg.gt("FACILE") )
@@ -246,6 +265,11 @@ class FenetreMenu < Fenetre
         Fenetre.show_all
     end
 
+    ##
+    # Methode qui permet de modifier l'affichage des bouton lorsque
+    # l'utilisateur clique sur le bouton 'contre-la-montre'.
+    #
+    # Le bouton se divise en 3 boutons ('facile', 'moyen' et 'difficile')
     def creationHBoxCLM( box, position , remove , positionOtherDifficulty , btnOtherMode )
 
         if box.children[positionOtherDifficulty] != btnOtherMode
@@ -262,27 +286,28 @@ class FenetreMenu < Fenetre
         hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
         hBox.add ( Gtk::Button.new() )
 
+        # gestion des evenements des boutons de choix de niveau
         hBox.children[0].signal_connect("clicked"){
-            Fenetre.remove(box); 
+            Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand(1..(nbGrille/3))
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
         }
         hBox.children[1].signal_connect("clicked"){
-            Fenetre.remove(box); 
+            Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
         }
-        
+
         hBox.children[2].signal_connect("clicked"){
-            Fenetre.remove(box); 
-            
+            Fenetre.remove(box);
+
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand((1+2*nbGrille/3)..nbGrille)
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))        
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
         }
 
         setBold( hBox.children[0] , @@lg.gt("FACILE") )

@@ -62,8 +62,8 @@ class Fenetre
 =end
 
 
-        Langue.creer("../Parametres/fr.txt")
-        @@lg = Langue.getInstance()
+        #Langue.creer("../Parametres/fr.txt")
+        @@lg = Sauvegardes.getInstance.getSauvegardeLangue
 
         provider = Gtk::CssProvider.new
         provider.load(path: "style.css")

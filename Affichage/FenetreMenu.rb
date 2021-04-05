@@ -23,7 +23,7 @@ class FenetreMenu < Fenetre
     ##
     # Methode qui permet d'afficher la fenetre du menu
     def self.afficheToi( _ ) # IGNORE LAST VIEW
-        Fenetre.set_subtitle("Menu")
+        Fenetre.set_subtitle(@@lg.gt("MENU"))
         Fenetre.add( FenetreMenu.new().creationInterface() )
         Fenetre.show_all
         return self

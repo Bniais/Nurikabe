@@ -16,6 +16,7 @@ class Sauvegardes
     @sauvegardePartie = nil
     @sauvegardeParametre = nil
     @sauvegardeScore = nil
+    @sauvegardeLangue = nil
 
     def initialize(chemin)
         if File.exist?(chemin) == true 
@@ -27,6 +28,8 @@ class Sauvegardes
         @@instanceSauvegarde.getSauvegardeParametre
         @@instanceSauvegarde.getSauvegardePartie
         @@instanceSauvegarde.getSauvegardeScore
+        @@instanceSauvegarde.getSauvegardeLangue
+        
         
         @@instanceSauvegarde
     end
@@ -75,6 +78,14 @@ class Sauvegardes
             @sauvegardeScore = SauvegardesScore.new()
         else 
             @sauvegardeScore      
+        end
+    end
+
+    def getSauvegardeLangue
+        if @sauvegardeLangue == nil
+            @sauvegardeLangue = Langue.creer()
+        else
+            @sauvegardeLangue    
         end
     end
 

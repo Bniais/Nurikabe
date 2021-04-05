@@ -15,36 +15,39 @@ class FenetreParametre < Fenetre
     ##
     # Methode qui permet d'afficher la fenetre des parametres
     def self.afficheToi( lastView )
-        Fenetre.set_subtitle(@@lg.gt("PARAMETRES"))
-        Fenetre.add( FenetreParametre.new().creationInterface( lastView ) )
+        
+        Fenetre.add( FenetreParametre.new().creationInterface( lastView, false) )
         Fenetre.show_all
         @@unePartie = nil
         return self
+        
     end
 
     ##
     # Methode qui gere l'affichage des parametres
-    def creationInterface( lastView)
-        box = Gtk::Box.new(:vertical)
+    def creationInterface(lastView, fromLangue)
+        Fenetre.set_subtitle(@@lg.gt("PARAMETRES"))
+        @lastView = lastView
+        @box = Gtk::Box.new(:vertical)
 
         # BACK BUTTON
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => @@lg.gt("RETOUR"))
         btnBack.name = "btnBack"
-        btnBack.signal_connect("clicked") { Fenetre.remove(box) ; lastView.afficheToi( nil ) ; }
-        lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
+        btnBack.signal_connect("clicked") { Fenetre.remove(@box) ; @lastView.afficheToi( nil ) ; }
+        btnBack.set_sensitive(true)
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
-        box.add(btnBoxH) #ADD
+        @box.add(btnBoxH) #ADD
 
         # SEPARATOR
-        box.add( Gtk::Separator.new(:vertical) ) #ADD
+        @box.add( Gtk::Separator.new(:vertical) ) #ADD
 
         # VUE PRINCIPAL
-        box.add( creationStack ) #ADD
-
-        return box
+        @box.add( creationStack(fromLangue) ) #ADD
+        puts "fini"
+        return @box
     end
 
     ##
@@ -55,16 +58,18 @@ class FenetreParametre < Fenetre
     # * Interface,
     # * Audio.
     private
-    def creationStack
+    def creationStack(fromLangue)
         box = Gtk::Box.new(:horizontal)
         sidebar = Gtk::StackSidebar.new
         sidebar.set_width_request(160)
         sidebar.set_height_request(705)
+
         sidebar.name = "sidebar"
         box.pack_start(sidebar, :expand => false, :fill => false, :padding => 0)
 
         stack = Gtk::Stack.new
         stack.transition_type = :slide_up_down
+
         sidebar.stack = stack
 
         widget = Gtk::Separator.new(:vertical)
@@ -97,6 +102,13 @@ class FenetreParametre < Fenetre
         vueAudio = creationVueAudio
         stack.add_named(vueAudio, title)
         stack.child_set_property(vueAudio, "title", title)
+       
+        if fromLangue
+            puts "from"
+             vueInterface.show
+            stack.visible_child = vueInterface
+        end
+
         return box
     end
 
@@ -227,12 +239,23 @@ class FenetreParametre < Fenetre
         # CHOOSE LANGUE
         combo = Gtk::ComboBoxText.new()
         combo.halign = :fill
-        combo.append("FR_fr", @@lg.gt("FRANCAIS"))
-        combo.set_active(0)
+        for i in 0...Sauvegardes.getInstance.getSauvegardeLangue.langues.size
+            combo.append("FR_fr", Sauvegardes.getInstance.getSauvegardeLangue.langues[i])
+        end
+        combo.set_active(Sauvegardes.getInstance.getSauvegardeLangue.langueActuelle)
         box.add( creationBoxVerticalPourVue(@@lg.gt("CHOISIRLANGUE") + " :" , combo) ) #ADD
 
+        combo.signal_connect("changed"){
+            Sauvegardes.getInstance.getSauvegardeLangue.utiliserLangue(combo.active)
+            Fenetre.remove(@box)
+            Fenetre.add( creationInterface( @lastView, true) )
+            Fenetre.show_all
+        }
+
         # IMPORT LANGUE
-        picker = Gtk::FileChooserButton.new(@@lg.gt("CHOISIRFICHIER"), :open)
+        picker = Gtk::FileChooserButton.new(@@lg.gt("CHOISIRFICHIER"),:open)
+        picker.signal_connect("file-set"){Sauvegardes.getInstance.getSauvegardeLangue.importer(picker.filename)}
+
         picker.halign = :fill
         picker.local_only = true
         box.add( creationBoxVerticalPourVue(@@lg.gt("IMPORTERLANGUE") + " :" , picker) ) #ADD

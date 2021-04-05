@@ -20,7 +20,7 @@ class PartieSurvie < PartieMalus
       if(grille.numero <= nbGrille / 3) #facile
         for i in 1..(nbGrille / 3)
           if( i != grille.numero)
-            @@grilles.append(i)
+            @grilles.append(i)
           end
         end
       elsif(grille.numero <= 2 * nbGrille / 3) #facile

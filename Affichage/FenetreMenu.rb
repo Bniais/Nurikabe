@@ -135,7 +135,7 @@ class FenetreMenu < Fenetre
         btnParam.signal_connect('clicked') { Fenetre.remove(box); FenetreParametre.afficheToi( FenetreMenu ) }
         hBox.add(btnParam)#ADD
 
-        btnAPropos = Gtk::Button.new(label: @@lg.gt("APROPOS"))
+        btnAPropos = Gtk::Button.new(label: @@lg.gt("A_PROPOS"))
         setmargin(btnAPropos,0,0,0,5 )
         btnAPropos.signal_connect('clicked') { Fenetre.remove(box); FenetreAPropos.afficheToi( FenetreMenu ) }
         hBox.add(btnAPropos)#ADD

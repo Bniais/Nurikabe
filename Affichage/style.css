@@ -237,10 +237,19 @@ popover *{
     font-size: 1.7em;
 }
 
-#stars{
+#stars, #stars-detail{
     color:rgb(221, 187, 34);
 }
 
+
 checkbutton *{
     transition-duration: 0s;
+}
+
+#recordSurvie{
+    font-size: 1.4em;
+}
+
+#detailScore,#stars-detail{
+     font-size: 2.1em;
 }

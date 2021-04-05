@@ -1,4 +1,5 @@
 require './Fenetre.rb'
+require './FenetreDetailScore.rb'
 
 ##
 # Classe qui gere l'affichage de la fenetre 'Classement'
@@ -16,7 +17,16 @@ class FenetreClassement < Fenetre
     # Methode qui permet a la fenetre du classement de s'afficher
     def self.afficheToi( lastView )
         Fenetre.set_subtitle(@@lg.gt("CLASSEMENT"))
-        Fenetre.add( FenetreClassement.new().creationInterface( lastView ) )
+        Fenetre.add( FenetreClassement.new().creationInterface( lastView, true, true, true ) )
+        Fenetre.show_all
+        return self
+    end
+
+    ##
+    # Methode qui permet a la fenetre du classement de s'afficher
+    def self.afficheToiBtns( lastView, btn1, btn2, btn3 )
+        Fenetre.set_subtitle(@@lg.gt("CLASSEMENT"))
+        Fenetre.add( FenetreClassement.new().creationInterface( lastView, btn1, btn2, btn3 ) )
         Fenetre.show_all
         return self
     end
@@ -25,7 +35,7 @@ class FenetreClassement < Fenetre
     # Methode qui permet de creer l'interface :
     # * gestion de l'affichage des boutons, combobox
     # * gestion de l'affichage des grilles
-    def creationInterface( lastView )
+    def creationInterface( lastView, btn1, btn2, btn3 )
 
         box = Gtk::Box.new(:vertical)
 
@@ -78,23 +88,23 @@ class FenetreClassement < Fenetre
         hBoxSelector.add( s )
 
         # gestion du bouton 'facile'
-        checkButtonEasy = Gtk::CheckButton.new(@@lg.gt("FACILE"))
-        checkButtonEasy.active = true
-        checkButtonEasy.name = "selecClassement"
-        hBoxSelector.add( checkButtonEasy )
+        @checkButtonEasy = Gtk::CheckButton.new(@@lg.gt("FACILE"))
+        @checkButtonEasy.active = btn1
+        @checkButtonEasy.name = "selecClassement"
+        hBoxSelector.add( @checkButtonEasy )
 
         # gestion du bouton 'moyen'
-        checkButtonMedium = Gtk::CheckButton.new(@@lg.gt("MOYEN"))
-        checkButtonMedium.active = false
-        checkButtonMedium.name = "selecClassement"
-        hBoxSelector.add( checkButtonMedium )
+        @checkButtonMedium = Gtk::CheckButton.new(@@lg.gt("MOYEN"))
+        @checkButtonMedium.active = btn2
+        @checkButtonMedium.name = "selecClassement"
+        hBoxSelector.add( @checkButtonMedium )
 
         # gestion du bouton 'difficile'
-        checkButtonHard = Gtk::CheckButton.new(@@lg.gt("DIFFICILE"))
-        checkButtonHard.active = false
-        checkButtonHard.name = "selecClassement"
-        hBoxSelector.add( checkButtonHard )
-        setmargin(checkButtonEasy, 10,10,0,0)
+        @checkButtonHard = Gtk::CheckButton.new(@@lg.gt("DIFFICILE"))
+        @checkButtonHard.active = btn3
+        @checkButtonHard.name = "selecClassement"
+        hBoxSelector.add( @checkButtonHard )
+        setmargin(@checkButtonEasy, 10,10,0,0)
 
 
         vBox.add( hBoxSelector )
@@ -103,20 +113,20 @@ class FenetreClassement < Fenetre
         comboBox.signal_connect("changed"){
             if comboBox.active_text == @@lg.gt("CONTRELAMONTRE")
                 hBoxSelector.add( s )
-                hBoxSelector.add( checkButtonEasy )
-                hBoxSelector.add( checkButtonMedium )
-                hBoxSelector.add( checkButtonHard )
+                hBoxSelector.add( @checkButtonEasy )
+                hBoxSelector.add( @checkButtonMedium )
+                hBoxSelector.add( @checkButtonHard )
 
 
                 #creation interface clm
                 scroll.remove( scroll.children[0] )
-                scroll.add_with_viewport(ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?))
+                scroll.add_with_viewport(ajouterGrille(box , @checkButtonEasy.active? , @checkButtonMedium.active? , @checkButtonHard.active?))
                 Fenetre.show_all
             else
                 hBoxSelector.remove( s )
-                hBoxSelector.remove( checkButtonEasy )
-                hBoxSelector.remove( checkButtonMedium )
-                hBoxSelector.remove( checkButtonHard )
+                hBoxSelector.remove( @checkButtonEasy )
+                hBoxSelector.remove( @checkButtonMedium )
+                hBoxSelector.remove( @checkButtonHard )
 
                 #creation interface survie
                 scroll.remove( scroll.children[0] )
@@ -128,18 +138,18 @@ class FenetreClassement < Fenetre
 
         scroll.set_size_request(200, 658)
 
-        boxGrille = ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?)
+        boxGrille = ajouterGrille(box , @checkButtonEasy.active? , @checkButtonMedium.active? , @checkButtonHard.active?)
         scroll.add_with_viewport( boxGrille  )
 
         # gestion des evenements des boutons de check (choix des niveaux a afficher)
-        checkButtonEasy.signal_connect("clicked") {
-            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all
+        @checkButtonEasy.signal_connect("clicked") {
+            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , @checkButtonEasy.active? , @checkButtonMedium.active? , @checkButtonHard.active?) ); Fenetre.show_all
         }
-        checkButtonMedium.signal_connect("clicked") {
-            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all
+        @checkButtonMedium.signal_connect("clicked") {
+            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , @checkButtonEasy.active? , @checkButtonMedium.active? , @checkButtonHard.active?) ); Fenetre.show_all
          }
-        checkButtonHard.signal_connect("clicked") {
-            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all
+        @checkButtonHard.signal_connect("clicked") {
+            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , @checkButtonEasy.active? , @checkButtonMedium.active? , @checkButtonHard.active?) ); Fenetre.show_all
         }
         vBox.add( Gtk::Separator.new(:horizontal) )
         vBox.add( scroll )
@@ -159,7 +169,9 @@ class FenetreClassement < Fenetre
         vBoxSurvie.add(titleLabel( @@lg.gt("FACILE") ))
 
         score = Sauvegardes.getInstance.getSauvegardeScore.scoresSurvie[0]
-        vBoxSurvie.add( Gtk::Label.new( score == -1 ? @@lg.gt("AUCUN_RECORD") : (score.to_s + @@lg.gt("GRILLES_MINUSCULE") ) ) )
+        lbFacile = Gtk::Label.new(score == -1 ? @@lg.gt("AUCUN_RECORD") : (score.to_s + " " + (score >= 2 ? @@lg.gt("GRILLES").downcase : @@lg.gt("GRILLE").downcase ) ))
+        lbFacile.name = "recordSurvie"
+        vBoxSurvie.add( lbFacile )
         hBoxSurvie.add( vBoxSurvie )
 
         # gestion de l'affichage des grilles de niveau 'moyen'
@@ -167,7 +179,9 @@ class FenetreClassement < Fenetre
         vBoxSurvie.add(titleLabel( @@lg.gt("MOYEN") ))
 
         score = Sauvegardes.getInstance.getSauvegardeScore.scoresSurvie[1]
-        vBoxSurvie.add(Gtk::Label.new(score == -1 ? @@lg.gt("AUCUN_RECORD") : (score.to_s + @@lg.gt("GRILLES_MINUSCULE") )))
+        lbMoyen = Gtk::Label.new(score == -1 ? @@lg.gt("AUCUN_RECORD") : (score.to_s + " " + (score >= 2 ? @@lg.gt("GRILLES").downcase : @@lg.gt("GRILLE").downcase ) ))
+        lbMoyen.name = "recordSurvie"
+        vBoxSurvie.add(lbMoyen)
         hBoxSurvie.add( vBoxSurvie )
 
          # gestion de l'affichage des grilles de niveau 'difficile'
@@ -175,7 +189,9 @@ class FenetreClassement < Fenetre
         vBoxSurvie.add(titleLabel( @@lg.gt("DIFFICILE") ))
 
         score = Sauvegardes.getInstance.getSauvegardeScore.scoresSurvie[2]
-        vBoxSurvie.add(Gtk::Label.new(score == -1 ? @@lg.gt("AUCUN_RECORD") : (score.to_s + @@lg.gt("GRILLES_MINUSCULE") )))
+        lbDifficile = Gtk::Label.new(score == -1 ? @@lg.gt("AUCUN_RECORD") : (score.to_s + " " + (score >= 2 ? @@lg.gt("GRILLES").downcase : @@lg.gt("GRILLE").downcase ) ))
+        lbDifficile.name = "recordSurvie"
+        vBoxSurvie.add(lbDifficile)
         hBoxSurvie.add( vBoxSurvie  )
 
         setmargin(hBoxSurvie,15,15,0,0  )
@@ -294,10 +310,10 @@ class FenetreClassement < Fenetre
         for i in 0..2
             if(i<Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[uneGrille.numero][1])
                     starTxt += "★"
-                else
-                    starTxt += "☆"
-                end
+            else
+                starTxt += "☆"
             end
+        end
         stars.set_markup("<span size='25000' >" + starTxt + "</span>")
 
         stars.name = "stars"
@@ -318,14 +334,10 @@ class FenetreClassement < Fenetre
             Fenetre.remove(mainBox);
             indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieLibreSauvegarder(numero)
             puts indice
-            if indice != -1
-                FenetrePartie.afficheToiChargerPartie( FenetreClassement ,  indice   )
-            else
-                FenetrePartie.afficheToiSelec( FenetreClassement , Partie.creer(  SauvegardeGrille.getInstance.getGrilleAt(numero), nil, nil )  )
-            end
+            FenetreDetailScore.afficheToiSelec( FenetreClassement , numero, @checkButtonEasy.active?, @checkButtonMedium.active?, @checkButtonHard.active?)
         }
         tps = Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[uneGrille.numero][0]
-        textTps = Gtk::Label.new(tps == -1 ? @@lg.gt("A") : Chrono.getTpsFormat(tps))
+        textTps = Gtk::Label.new(tps == -1 ? @@lg.gt("AUCUN_RECORD") : Chrono.getTpsFormat(tps))
         textTps.name = "timer-clasement"
         textTps.halign = :center
         setmargin(textTps,5,5,0,0)

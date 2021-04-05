@@ -51,11 +51,11 @@ class FenetreSelection < Fenetre
         hBoxSelector.add( checkButtonEasy )
         checkButtonMedium = Gtk::CheckButton.new(@@lg.gt("MOYEN"))
         checkButtonMedium.halign = :center
-        checkButtonMedium.active = false
+        checkButtonMedium.active = true
         hBoxSelector.add( checkButtonMedium )
         checkButtonHard = Gtk::CheckButton.new(@@lg.gt("DIFFICILE"))
         checkButtonHard.halign = :start
-        checkButtonHard.active = false
+        checkButtonHard.active = true
         hBoxSelector.add( checkButtonHard )
         setmargin(checkButtonEasy, 10,10,0,0)
 
@@ -256,7 +256,7 @@ class FenetreSelection < Fenetre
         return maFrame
     end
 
-        # Methode qui permet de cree
+    # Methode qui permet de cree
     # une cellule destiner a la grille
     private
     def creeCelluleGrille(color)

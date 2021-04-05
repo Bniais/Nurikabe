@@ -912,7 +912,7 @@ class FenetrePartie < Fenetre
         obj.set_margin_bottom(bottom)
         obj.set_margin_left(left)
         obj.set_margin_right(right)
-        return nil
+        return obj
     end
 
     #Methode qui permet de cree un separateur

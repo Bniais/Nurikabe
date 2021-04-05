@@ -72,4 +72,12 @@ class Chrono
       return format("%02d", (floatTps.floor/60).to_s) + ":" + format("%02d", (floatTps.floor%60).to_s)
     end
 
+    ##
+    #Retourne un temps passé en paramètre sous forme de String
+    def self.getTpsFormatPrecis(floatTps)
+      return format("%02d", (floatTps.floor/60).to_s) + 
+      ":" + format("%02d", (floatTps.floor%60).to_s) + 
+      "." + format("%03d", ((floatTps-floatTps.floor)*1000).round.to_s)
+    end
+
 end

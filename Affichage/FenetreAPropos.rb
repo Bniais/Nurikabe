@@ -15,7 +15,7 @@ class FenetreAPropos < Fenetre
     ##
     # Methode qui permet a la fenetre de s'afficher
     def self.afficheToi( lastView )
-        Fenetre.set_subtitle( @@lg.gt("APROPOS") )
+        Fenetre.set_subtitle( @@lg.gt("A_PROPOS") )
         Fenetre.add( FenetreAPropos.new().creationInterface( lastView ) )
         Fenetre.show_all
         return self

@@ -180,7 +180,7 @@ class FenetreParametre < Fenetre
         setmargin(title,15,10,0,0)
         box.add(title) # ADD
 
-        btnDeleteSave = Gtk::Button.new(@@lg.gt("SUPPRIMER_SAUVEGARDE_PARTIE_EN_COURS"))
+        btnDeleteSave = Gtk::Button.new(:label => @@lg.gt("SUPPRIMER_SAUVEGARDE_PARTIE_EN_COURS"))
         btnDeleteSave.name = "btnQuitter"
         btnDeleteSave.signal_connect("clicked") {
             Sauvegardes.getInstance.getSauvegardePartie.resetAll(FenetrePartie.getPartie)
@@ -189,7 +189,7 @@ class FenetreParametre < Fenetre
 
         box.add( setmargin(btnDeleteSave,5,5,65,65) ) #ADD
 
-        btnResetParams = Gtk::Button.new(@@lg.gt("RESET_PARAMETRE"))
+        btnResetParams = Gtk::Button.new(:label => @@lg.gt("RESET_PARAMETRE"))
         btnResetParams.name = "btnQuitter"
         btnResetParams.signal_connect("clicked") {
             Sauvegardes.getInstance.getSauvegardeParametre.resetAll
@@ -227,7 +227,7 @@ class FenetreParametre < Fenetre
         # CHOOSE LANGUE
         combo = Gtk::ComboBoxText.new()
         combo.halign = :fill
-        combo.append("FR_fr","Francais")
+        combo.append("FR_fr", @@lg.gt("FRANCAIS"))
         combo.set_active(0)
         box.add( creationBoxVerticalPourVue(@@lg.gt("CHOISIRLANGUE") + " :" , combo) ) #ADD
 

@@ -206,7 +206,7 @@ class FenetrePartie < Fenetre
         btnSetting = creeBouttonToolbar("document-properties")
         @btnUndo = creeBouttonToolbar("undo");             @btnRedo = creeBouttonToolbar("redo")
         @btnUndoUndo = creeBouttonToolbar("start");@btnPlay = creeBouttonToolbar("player_play");
-        @btnPause = creeBouttonToolbar("player_pause");    @btnHelp = creeBouttonToolbar("hint"); @btnHelpLocation = creeBouttonToolbar("hint");
+        @btnPause = creeBouttonToolbar("player_pause");    @btnHelp = creeBouttonToolbar("help"); @btnHelpLocation = creeBouttonToolbar("hint");
         @btnClear = creeBouttonToolbar("gtk-clear");       @btnVerif = creeBouttonToolbar("gtk-apply")
         btnQuit = creeBouttonToolbar("gtk-quit")
         # Disable btn att bottom of game

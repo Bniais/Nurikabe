@@ -160,10 +160,10 @@ STER Maxime
       @dico["UTILISATEUR"] = "Usuario"
       @dico["INTERFACE"] = "Interfaz"
       @dico["AUDIO"] = "Audio"
-      @dico["GRILLE"] = "Parrilla"
+      @dico["GRILLE"] = "Rejilla"
       @dico["PARTIE"] = "Juego"
       @dico["AUCUN_RECORD"] = "Sin registro"
-      @dico["GRILLES"] = "Grids"
+      @dico["GRILLES"] = "Rejillas"
       @dico["MON_SCORE"] = "Mi tiempo"
       @dico["CASESGRISES"] = "Celdas grises"
       @dico["COMPTEURILOTS"] = "Contador de islas"
@@ -312,7 +312,7 @@ STER Maxime
       "
       tmpSaver("../Parametres/FR_fr.dump")
 
-      @langues = ["Français", "Anglais", "Español"]
+      @langues = ["Français", "English", "Español"]
       @fichiersLangues = ["../Parametres/FR_fr.dump", "../Parametres/EN_en.dump" , "../Parametres/ES_es.dump"]
       @langueActuelle = 0
      

@@ -1,15 +1,20 @@
 require './Fenetre.rb'
 
+##
+# Classe qui gere l'affichage de la fenetre des parametres
+#
+# Herite de la classe abstraite Fenetre
 class FenetreParametre < Fenetre
 
-
-
+    ##
+    # Methode privee pour l'initialisation
     def initialize()
         self
     end
 
+    ##
+    # Methode qui permet d'afficher la fenetre des parametres
     def self.afficheToi( lastView )
-
         Fenetre.set_subtitle(@@lg.gt("PARAMETRES"))
         Fenetre.add( FenetreParametre.new().creationInterface( lastView ) )
         Fenetre.show_all
@@ -17,7 +22,8 @@ class FenetreParametre < Fenetre
         return self
     end
 
-
+    ##
+    # Methode qui gere l'affichage des parametres
     def creationInterface( lastView)
         box = Gtk::Box.new(:vertical)
 
@@ -41,6 +47,13 @@ class FenetreParametre < Fenetre
         return box
     end
 
+    ##
+    # Methode qui permet de creer une pile pour la gestion des differentes vues
+    # des parametres :
+    # * Jeu,
+    # * Utilisateur,
+    # * Interface,
+    # * Audio.
     private
     def creationStack
         box = Gtk::Box.new(:horizontal)
@@ -87,7 +100,8 @@ class FenetreParametre < Fenetre
         return box
     end
 
-    ###### JEU
+    ##
+    # Methode qui creer la vue 'jeu'
     private
     def creationVueJeu
         box = Gtk::Box.new(:vertical)
@@ -126,29 +140,38 @@ class FenetreParametre < Fenetre
         box.add( creationBoxVerticalPourVue(@@lg.gt("MURS2x2") + " :" , @switch2x2) ) #ADD
         return box
     end
-    ### SIGNAL CONNECTS DE JEU
-    # AIDE CASES GRISES
+
+    ##
+    # SIGNAL CONNECT DE JEU : AIDE CASES GRISES
     private
     def switchAideCasesGrises(s)
         puts s
     end
-    # AIDE COMPTEUR ILOT
+
+    ##
+    # SIGNAL CONNECT DE JEU : AIDE COMPTEUR ILOT
     private
     def switchAideCompteurIlot(s)
         puts s
     end
-    # AIDE AFFICHAGE PORTEE
+
+    ##
+    # SIGNAL CONNECT DE JEU : AIDE AFFICHAGE PORTEE
     private
     def switchAideAffichagePortee(s)
         puts s
     end
-    # AIDE MURS 2x2
+
+    ##
+    # SIGNAL CONNECT DE JEU : AIDE MURS 2x2
     private
     def switchAideMurs2x2(s)
         puts s
     end
 
-    ###### UTILISATEUR
+
+    ##
+    # Methode qui creer la vue 'utilisateur'
     private
     def creationVueUtilisateur
         box = Gtk::Box.new(:vertical)
@@ -181,9 +204,10 @@ class FenetreParametre < Fenetre
 
         return box
     end
-    ### SIGNAL CONNECTS DE UTILISATEUR
 
-    ###### INTERFACE
+
+    ##
+    # Methode qui creer la vue 'interface'
     private
     def creationVueInterface
         box = Gtk::Box.new(:vertical)
@@ -216,14 +240,15 @@ class FenetreParametre < Fenetre
         return box
     end
 
-    ### SIGNAL CONNECTS DE INTERFACE
-    # MODE SOMBRE
+    ##
+    # SIGNAL CONNECT DE INTERFACE : MODE SOMBRE
     private
     def switchModeSombre(s)
         Fenetre.set_modeSombre(s.active?)
     end
 
-    ###### AUDIO
+    ##
+    # Methode qui creer la vue 'audio'
     private
     def creationVueAudio
         box = Gtk::Box.new(:vertical)
@@ -233,11 +258,10 @@ class FenetreParametre < Fenetre
         box.add(title)
         return box
     end
-    ### SIGNAL CONNECTS DE AUDIO
 
 
 
-
+    ##
     # Permet de creer un element nom + objet
     private
     def creationBoxVerticalPourVue( title, obj )
@@ -251,6 +275,8 @@ class FenetreParametre < Fenetre
         return box
     end
 
+    ##
+    # Methode qui permet de gerer les marges d'un objet
     private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)

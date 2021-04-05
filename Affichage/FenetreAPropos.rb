@@ -1,13 +1,17 @@
 require './Fenetre.rb'
 
-
+##
 # Classe qui gere la fenetre 'A propos'
 class FenetreAPropos < Fenetre
 
+    ##
+    # Methode privee pour l'initialisation
     def initialize()
         self
     end
 
+    ##
+    # Methode qui permet a la fenetre de s'afficher
     def self.afficheToi( lastView )
         Fenetre.set_subtitle( @@lg.gt("APROPOS") )
         Fenetre.add( FenetreAPropos.new().creationInterface( lastView ) )
@@ -15,6 +19,8 @@ class FenetreAPropos < Fenetre
         return self
     end
 
+    ##
+    # Methode qui permet de creer l'interface
     def creationInterface( lastView )
 
         box = Gtk::Box.new(:vertical)
@@ -61,6 +67,8 @@ class FenetreAPropos < Fenetre
         return box
     end
 
+    ##
+    # Methode qui permet de gerer les marges d'un objet donne
     private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)

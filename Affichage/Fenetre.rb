@@ -150,7 +150,7 @@ class Fenetre
     end
 
     ##
-    #
+    # Methode pour le mode gris
     def self.set_modeGris(statut)
         if statut
             if(Sauvegardes.getInstance.getSauvegardeParametre.modeSombre?)

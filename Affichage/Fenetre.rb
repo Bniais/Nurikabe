@@ -40,7 +40,7 @@ class Fenetre
         Sauvegardes.creer("../Sauvegarde/save.dump")
 
 
-
+=begin
         #TMP TO ADD GRILLES
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer( SauvegardeGrille.getInstance.getNombreGrille + 1 ,
         [
@@ -63,9 +63,8 @@ class Fenetre
  ##       puts SauvegardeGrille.getInstance.getNombreGrille
         SauvegardeGrille.getInstance.sauvegarder( "../Sauvegarde/grilles1.dump" )
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
+=end
 
-
-        #Langue.creer("../Parametres/fr.txt")
         @@lg = Sauvegardes.getInstance.getSauvegardeLangue
 
         provider = Gtk::CssProvider.new

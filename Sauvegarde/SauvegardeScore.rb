@@ -23,6 +23,7 @@ class SauvegardesScore
 
     def ajouterGrille()
         @scoresContreLaMontre.append([-1,0])
+        Sauvegardes.getInstance.sauvegarder(nil)
     end
 
 

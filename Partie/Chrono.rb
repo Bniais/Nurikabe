@@ -75,9 +75,13 @@ class Chrono
     ##
     #Retourne un temps passé en paramètre sous forme de String
     def self.getTpsFormatPrecis(floatTps)
-      return format("%02d", (floatTps.floor/60).to_s) + 
-      ":" + format("%02d", (floatTps.floor%60).to_s) + 
-      "." + format("%03d", ((floatTps-floatTps.floor)*1000).round.to_s)
+      if(floatTps == -1)
+        return Sauvegardes.getInstance.getSauvegardeLangue.gt("AUCUN_TEMPS")
+      else
+        return format("%02d", (floatTps.floor/60).to_s) + 
+        ":" + format("%02d", (floatTps.floor%60).to_s) + 
+        "." + format("%03d", ((floatTps-floatTps.floor)*1000).round.to_s)
+      end
     end
 
 end

@@ -20,7 +20,7 @@ class Fenetre1v1 < Fenetre
     ##
     # Methode qui permet a la fenetre de s'afficher
     def self.afficheToi( lastView )
-        Fenetre.set_subtitle( @@lg.gt("1v1") )
+        Fenetre.set_subtitle( @@lg.gt("CONNECTION") )
         @@instance = Fenetre1v1.new()
         Fenetre.add( @@instance.creationInterface( lastView ) )
         Fenetre.show_all

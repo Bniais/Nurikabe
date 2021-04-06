@@ -14,7 +14,7 @@ class PartieTuto < Partie
   ##
   #Tire lla prochaine grille
   def grilleSuivante()
-    return @grilleBase
+    return nil
     #redef
   end
   ##

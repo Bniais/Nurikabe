@@ -4,6 +4,10 @@ require './Fenetre.rb'
 # Classe qui gere la fenetre 'A propos'
 class FenetreSelection < Fenetre
 
+    @@easyActivate = true
+    @@mediumActivate = true
+    @@hardActivate = true
+
     def initialize()
         self
     end
@@ -47,15 +51,15 @@ class FenetreSelection < Fenetre
 
         checkButtonEasy = Gtk::CheckButton.new(@@lg.gt("FACILE"))
         checkButtonEasy.halign = :end
-        checkButtonEasy.active = true
+        checkButtonEasy.active = @@easyActivate
         hBoxSelector.add( checkButtonEasy )
         checkButtonMedium = Gtk::CheckButton.new(@@lg.gt("MOYEN"))
         checkButtonMedium.halign = :center
-        checkButtonMedium.active = true
+        checkButtonMedium.active = @@mediumActivate
         hBoxSelector.add( checkButtonMedium )
         checkButtonHard = Gtk::CheckButton.new(@@lg.gt("DIFFICILE"))
         checkButtonHard.halign = :start
-        checkButtonHard.active = true
+        checkButtonHard.active = @@hardActivate
         hBoxSelector.add( checkButtonHard )
         setmargin(checkButtonEasy, 10,10,0,0)
 
@@ -67,17 +71,26 @@ class FenetreSelection < Fenetre
         scroll = Gtk::ScrolledWindow.new();
         scroll.set_size_request(200, 660)
 
-        boxGrille = ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?)
+        boxGrille = ajouterGrille(box)
         scroll.add_with_viewport( boxGrille  )
 
         checkButtonEasy.signal_connect("clicked") {
-            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all
+            @@easyActivate = !@@easyActivate
+            Fenetre.remove(box)
+            Fenetre.add(creationInterface( lastView))
+            Fenetre.show_all        
         }
         checkButtonMedium.signal_connect("clicked") {
-            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all
-         }
+            @@mediumActivate = !@@mediumActivate
+            Fenetre.remove(box)
+            Fenetre.add(creationInterface( lastView ))
+            Fenetre.show_all     
+        }
         checkButtonHard.signal_connect("clicked") {
-            scroll.remove( scroll.children[0] ); scroll.add_with_viewport( ajouterGrille(box , checkButtonEasy.active? , checkButtonMedium.active? , checkButtonHard.active?) ); Fenetre.show_all
+            @@hardActivate = !@@hardActivate
+            Fenetre.remove(box)
+            Fenetre.add(creationInterface( lastView))
+            Fenetre.show_all
         }
 
         vBox.add( scroll )
@@ -87,12 +100,12 @@ class FenetreSelection < Fenetre
     end
 
 
-    def ajouterGrille(box , btn1, btn2, btn3 )
+    def ajouterGrille(box )
         vBoxGrille = Gtk::Box.new(:vertical , 20)
 
         tabPartieEnCours = Sauvegardes.getInstance.getSauvegardePartie.getListPartieLibreEnCours
 
-        if btn1
+        if @@easyActivate
             vBoxGrille.add( titleLabel( @@lg.gt("FACILE") )  )
             i = 1
             while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 )
@@ -104,13 +117,13 @@ class FenetreSelection < Fenetre
                 end
                 i+=1
             end
-            if(btn2 || btn3)
+            if(@@mediumActivate || @@hardActivate)
                 vBoxGrille.add( Gtk::Separator.new(:horizontal) )
             end
         end
 
 
-        if btn2
+        if @@mediumActivate
             vBoxGrille.add( titleLabel( @@lg.gt("MOYEN") )  )
             i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3
             while ( i <= SauvegardeGrille.getInstance.getNombreGrille / 3 * 2 )
@@ -122,12 +135,12 @@ class FenetreSelection < Fenetre
                 end
                 i+=1
             end
-            if(btn3)
+            if(@@hardActivate)
                 vBoxGrille.add( Gtk::Separator.new(:horizontal) )
             end
         end
 
-        if btn3
+        if @@hardActivate
 
             vBoxGrille.add( titleLabel( @@lg.gt("DIFFICILE") )  )
             i = 1 + SauvegardeGrille.getInstance.getNombreGrille / 3 * 2

@@ -7,16 +7,16 @@ class FenetreDetailScore < Fenetre
         self
     end
 
-    def self.afficheToiSelec( lastView, numero, btn1, btn2, btn3 )
+    def self.afficheToiSelec( lastView, numero)
         Fenetre.set_subtitle( @@lg.gt("DETAIL_SCORE") )
-        Fenetre.add( FenetreDetailScore.new().creationInterface( lastView, numero, btn1, btn2, btn3 ) )
+        Fenetre.add( FenetreDetailScore.new().creationInterface( lastView, numero ) )
         Fenetre.show_all
         return self
     end
 
     ##
     # Methode qui permet de creer l'interface
-    def creationInterface( lastView, numero, btn1, btn2, btn3 )
+    def creationInterface( lastView, numero )
         grille = SauvegardeGrille.getInstance.getGrilleAt(numero)
         box = Gtk::Box.new(:vertical)
 
@@ -25,7 +25,7 @@ class FenetreDetailScore < Fenetre
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => @@lg.gt("RETOUR"))
         btnBack.name = "btnBack"
-        btnBack.signal_connect("clicked") { Fenetre.remove(box) ; FenetreClassement.afficheToiBtns( FenetreMenu, btn1, btn2, btn3  ) ; }
+        btnBack.signal_connect("clicked") { Fenetre.remove(box) ; FenetreClassement.afficheToi( FenetreMenu) ; }
         lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)

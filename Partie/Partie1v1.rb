@@ -29,7 +29,8 @@ class Partie1v1 < Partie
     if(term == 0)
         socket = Fenetre1v1.getSocket
         if(socket != nil)
-            socket.puts ("ez" + Chrono.getTpsFormatPrecis(@chrono.time))
+          mettrePause
+          socket.puts ("ez" + Chrono.getTpsFormatPrecis(@chrono.time))
         else
             puts "aie"
         end

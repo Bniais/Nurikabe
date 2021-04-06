@@ -223,7 +223,7 @@ class FenetrePartie < Fenetre
             end
             pause
             
-            show_standard_message_dialog(@@lg.gt("MSG_PERDRE") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time) + @@lg.gt("MSG_PERDRE_FIN" + @tpsEnemi))
+            show_standard_message_dialog(@@lg.gt("MSG_PERDRE") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time) + @@lg.gt("MSG_PERDRE_FIN" ) + @tpsEnemi)
 
             quitter
         end

@@ -73,6 +73,7 @@ class Langue
       @dico["DECO_MSG"] = "Your opponent has disconnected"
       @dico["UNKNOWN"] = "--Undefined text--"
       @dico["AUCUN_TEMPS"] = "No time"
+      @dico["LOCAL_HOST"] = "Localhost"
 
       @dico["MESSAGE_DE_VICTOIRE"] = "Congratulations! You've won!"
       @dico["LIBRE"] = "Free play"
@@ -179,7 +180,7 @@ STER Maxime
       @dico["DECO_MSG"] = "Tu oponente se ha desconectado"
       @dico["UNKNOWN"] = "--Texto no definido--"
       @dico["AUCUN_TEMPS"] = "Sin tiempo"
-
+      @dico["LOCAL_HOST"] = "Huésped local"
 
       @dico["MESSAGE_DE_VICTOIRE"] = "¡Felicidades! Has ganado!"
       @dico["LIBRE"] = "Juego libre"
@@ -286,6 +287,7 @@ STER Maxime
       @dico["DECO_MSG"] = "Votre adversaire s'est déconnecté"
       @dico["UNKNOWN"] = "--Texte non défini--"
       @dico["AUCUN_TEMPS"] = "Aucun temps"
+      @dico["LOCAL_HOST"] = "Hôte local"
 
       @dico["LIBRE"] = "Libre"
       @dico["CONTRELAMONTRE"] = "Contre-La-Montre"

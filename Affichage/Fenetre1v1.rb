@@ -1,6 +1,7 @@
 require '../Partie/Partie1v1.rb'
 require 'socket'
 require "resolv"
+require 'open-uri'
 
 ##
 # Classe qui gere la fenetre 'A propos'
@@ -98,7 +99,6 @@ class Fenetre1v1 < Fenetre
         portEntry = Gtk::Entry.new()
         portEntry.width_chars = 15
         portEntry.max_length = 15
-        portEntry.text = rand(1..65535).to_s
 
         portBox.add(portEntry)
 
@@ -125,54 +125,60 @@ class Fenetre1v1 < Fenetre
         buttonHost.signal_connect("clicked"){
             port = portEntry.text.to_i
             if(port > 0 && port < 65536)
-                buttonJoin.set_sensitive(false)
-                buttonHost.set_sensitive(false)
                 @@server = TCPServer.new (port)
-                puts @@server
-                if(@@attente != nil)
-                    @@attente.exit
-                    @@attente = nil
-                end
-                @@attente = Thread.new do
-                    @@socket = @@server.accept
-                    if(@@socket != nil)
-                        grilleId = rand(1..SauvegardeGrille.getInstance.getNombreGrille)
-                        @@socket.puts grilleId.to_s
-                        puts "je dis au client de charger grille #{grilleId}"
-                        puts grilleId.to_i
-                        Fenetre.remove(box)
-                        FenetrePartie.afficheToiSelec(Fenetre1v1, Partie1v1.creer(SauvegardeGrille.getInstance.getGrilleAt(grilleId.to_i)) )
-                        while line = @@socket.gets
-                            puts line
-                            if(line.include?("dc"))
-                                puts "deco"
-                                FenetrePartie.getInstance.deco()
-                            elsif line.include?("ez")
-                                puts "gagner"
-                                FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
-                            end
-                            @@socket.puts "im sad"
-                            @@socket.close
-                            break
-                        end
-                        
-                    else
-                        buttonJoin.set_sensitive(true)
-                        buttonHost.set_sensitive(true)
-                    end
-                    puts "EEEEEEND"
-                    if(@@socket != nil)
-                        @@socket.close
-                        @@socket = nil
+                if(@@server != nil)
+                    buttonHost.set_sensitive(false)
+                    buttonJoin.set_sensitive(false)
+                    ipEntry.editable = false
+                    portEntry.editable = false
+
+                    begin
+                        ipEntry.text = URI.open('http://whatismyip.akamai.com').read
+                    rescue
+                        ipEntry.text = @@lg.gt("LOCAL_HOST")
                     end
 
-                    if(@@server != nil)
-                        @@server.close
-                        @@server = nil
+                    if(@@attente != nil)
+                        @@attente.exit
+                        @@attente = nil
                     end
-                end
-               
-                
+
+                    @@attente = Thread.new do
+                        @@socket = @@server.accept
+                        if(@@socket != nil)
+                            grilleId = rand(1..SauvegardeGrille.getInstance.getNombreGrille)  
+                            @@socket.puts grilleId.to_s
+
+                            Fenetre.remove(box)
+                            FenetrePartie.afficheToiSelec(Fenetre1v1, Partie1v1.creer(SauvegardeGrille.getInstance.getGrilleAt(grilleId.to_i)) )
+                           
+                            while line = @@socket.gets
+                                if(line.include?("dc"))
+                                    FenetrePartie.getInstance.deco()
+                                elsif line.include?("ez")
+                                    FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
+                                end
+                                @@socket.puts "im sad"
+                                @@socket.close
+                                break
+                            end
+                            
+                        else
+                            buttonJoin.set_sensitive(true)
+                            buttonHost.set_sensitive(true)
+                        end
+
+                        if(@@socket != nil)
+                            @@socket.close
+                            @@socket = nil
+                        end
+
+                        if(@@server != nil)
+                            @@server.close
+                            @@server = nil
+                        end
+                    end
+                end   
             end
         }
 
@@ -181,6 +187,8 @@ class Fenetre1v1 < Fenetre
             if(port > 0 && port < 65536)
                 buttonHost.set_sensitive(false)
                 buttonJoin.set_sensitive(false)
+                ipEntry.editable = false
+                portEntry.editable = false
 
                 @@attente = Thread.new do
                     if(@@socket != nil)
@@ -191,12 +199,13 @@ class Fenetre1v1 < Fenetre
                     if !!(ipEntry.text =~ Resolv::IPv4::Regex)
                         @@socket = TCPSocket.new( ipEntry.text, portEntry.text.to_i)
                     else
+                        ipEntry.text = @@lg.gt("LOCAL_HOST")
                         @@socket = TCPSocket.new('localhost', portEntry.text.to_i)
                     end
+
                     if(@@socket != nil)
+
                         while line = @@socket.gets # Read lines from @socket
-                            puts "serveur me dit de load grille #{line}"
-                            puts line.to_i
                             Fenetre.remove(box)
                             FenetrePartie.afficheToiSelec(Fenetre1v1, Partie1v1.creer(SauvegardeGrille.getInstance.getGrilleAt(line.to_i)) )
                             break
@@ -205,31 +214,23 @@ class Fenetre1v1 < Fenetre
                         while line = @@socket.gets
                             puts line
                             if(line.include?("dc"))
-                                puts "deco"
                                 FenetrePartie.getInstance.deco()
                             elsif line.include?("ez")
-                                puts "gagner"
                                 FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
                             end
                             @@socket.puts "im sad"
                             @@socket.close
                             break
-                        end
-
-                        
-                        
+                        end   
                     else
                         buttonJoin.set_sensitive(true)
                         buttonHost.set_sensitive(true)
                     end
-                    puts "EEEEEEND"
                     if(@@socket != nil)
                         @@socket.close
                         @@socket = nil
                     end
                 end
-
-                
             end
         }
 
@@ -250,6 +251,8 @@ class Fenetre1v1 < Fenetre
 
             buttonJoin.set_sensitive(true)
             buttonHost.set_sensitive(true)
+            ipEntry.editable = true
+            portEntry.editable = true
         }
 
 

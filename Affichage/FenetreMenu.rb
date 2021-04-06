@@ -76,7 +76,7 @@ class FenetreMenu < Fenetre
 
         btnTutoriel = Gtk::Button.new()
         setBold(btnTutoriel, @@lg.gt("TUTORIEL") )
-        box.add( setmargin( btnTutoriel , 0, 15, 70, 70) )
+        box.add( setmargin( btnTutoriel , 0, 10, 70, 70) )
 
 
         # gestion des évènements des boutons
@@ -130,7 +130,7 @@ class FenetreMenu < Fenetre
         btnClassement = Gtk::Button.new(label: @@lg.gt("CLASSEMENT"))
         btnClassement.set_height_request(60)
         btnClassement.signal_connect('clicked') { Fenetre.remove(box); FenetreClassement.afficheToi( FenetreMenu ) }
-        box.add( setmargin(btnClassement, 15, 15, 70, 70) ) #ADD
+        box.add( setmargin(btnClassement, 10, 10, 70, 70) ) #ADD
 
         # AJOUT SEPARATEUR
         separateur = Gtk::Separator.new(:horizontal)
@@ -142,7 +142,7 @@ class FenetreMenu < Fenetre
 
         btnParam = Gtk::Button.new(label: @@lg.gt("PARAMETRES"))
         setmargin(btnParam,0,0,0,5 )
-        btnParam.set_height_request(60)
+        btnParam.set_height_request(50)
         btnParam.signal_connect('clicked') { Fenetre.remove(box); FenetreParametre.afficheToi( FenetreMenu ) }
         hBox.add(btnParam)#ADD
 
@@ -157,7 +157,7 @@ class FenetreMenu < Fenetre
         btnQuitter.signal_connect("clicked") { Fenetre.exit }
         hBox.add(btnQuitter)#ADD
 
-        box.add( setmargin(hBox, 15, 0, 70, 70) ) #ADD
+        box.add( setmargin(hBox, 10, 0, 70, 70) ) #ADD
 
         @bbox = box
         return box
@@ -219,7 +219,7 @@ class FenetreMenu < Fenetre
         label = Gtk::Label.new
         label.set_markup("<span weight = 'ultrabold'>#{nom}</span>")
         btn.add(label)
-        btn.set_height_request(70)
+        btn.set_height_request(60)
     end
 
     ##
@@ -238,7 +238,7 @@ class FenetreMenu < Fenetre
         box.remove(remove) #DELETE
 
         hBox = Gtk::Box.new(:horizontal)
-        hBox.set_height_request(70); hBox.set_homogeneous(true)
+        hBox.set_height_request(60); hBox.set_homogeneous(true)
         hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
         hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
         hBox.add ( Gtk::Button.new() )
@@ -292,7 +292,7 @@ class FenetreMenu < Fenetre
         box.remove(remove) #DELETE
 
         hBox = Gtk::Box.new(:horizontal)
-        hBox.set_height_request(70); hBox.set_homogeneous(true)
+        hBox.set_height_request(60); hBox.set_homogeneous(true)
         hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
         hBox.add ( setmargin( Gtk::Button.new(),0,0,0,5 ) )
         hBox.add ( Gtk::Button.new() )

@@ -2,13 +2,13 @@ class PartieContreLaMontre < PartieMalus
   private_class_method :new
   ##
   # Creer un partie contre la montre en prenant en compte les sauvegardes
-  def PartieContreLaMontre.creer(grille, parametres, sauvegardes)
-    new(grille, parametres, sauvegardes)
+  def PartieContreLaMontre.creer(grille)
+    new(grille)
   end
   ##
   # Constructeur de PartieContreLaMontre
-  def initialize(grille, parametres, sauvegardes) 
-      super(grille, parametres, sauvegardes)
+  def initialize(grille) 
+      super(grille)
   end
   ##
   # Renvoie le mode Contre la montre

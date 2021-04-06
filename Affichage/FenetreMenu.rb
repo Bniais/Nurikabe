@@ -3,6 +3,7 @@ require './FenetreParametre.rb'
 require './FenetreAPropos.rb'
 require './FenetreClassement.rb'
 require './FenetrePartie.rb'
+require './Fenetre1v1.rb'
 require './FenetreSelection.rb'
 require "./../Partie/PartieSurvie.rb"
 require "./../Partie/PartieTuto.rb"
@@ -68,6 +69,10 @@ class FenetreMenu < Fenetre
         setBold(btnSurvie, @@lg.gt("SURVIE") )
         box.add( setmargin( btnSurvie , 0, 15, 70, 70) )
 
+        btn1v1 = Gtk::Button.new()
+        setBold(btn1v1, @@lg.gt("1v1") )
+        box.add( setmargin( btn1v1 , 0, 15, 70, 70) )
+
 
         btnTutoriel = Gtk::Button.new()
         setBold(btnTutoriel, @@lg.gt("TUTORIEL") )
@@ -106,9 +111,15 @@ class FenetreMenu < Fenetre
             end
             creationHBoxSurvie(box,3,btn,2,btnContreLaMontre)
         }
+
+        btn1v1.signal_connect("clicked"){
+            Fenetre.remove(box);
+            Fenetre1v1.afficheToi(FenetreMenu)
+        }
+
         btnTutoriel.signal_connect('clicked') {
             Fenetre.remove(box);
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieTuto.creer(SauvegardeGrille.getInstance.getGrilleAt(rand(1..SauvegardeGrille.getInstance.getNombreGrille)), nil, nil) )
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieTuto.creer(SauvegardeGrille.getInstance.getGrilleAt(rand(1..SauvegardeGrille.getInstance.getNombreGrille))) )
         }
 
         # AJOUT SEPARATEUR
@@ -238,14 +249,14 @@ class FenetreMenu < Fenetre
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand(1..(nbGrille/3)) #TOTEST si 1/3
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
         hBox.children[1].signal_connect("clicked"){
             Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))#TOTEST si 1/3
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
 
         hBox.children[2].signal_connect("clicked"){
@@ -253,7 +264,7 @@ class FenetreMenu < Fenetre
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand((1+2*nbGrille/3)..nbGrille)#TOTEST si 1/3
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
 
         setBold( hBox.children[0] , @@lg.gt("FACILE") )
@@ -292,14 +303,14 @@ class FenetreMenu < Fenetre
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand(1..(nbGrille/3))
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
         hBox.children[1].signal_connect("clicked"){
             Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
 
         hBox.children[2].signal_connect("clicked"){
@@ -307,7 +318,7 @@ class FenetreMenu < Fenetre
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand((1+2*nbGrille/3)..nbGrille)
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand), nil, nil))
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
 
         setBold( hBox.children[0] , @@lg.gt("FACILE") )

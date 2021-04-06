@@ -6,7 +6,7 @@ class PartieMalus < Partie
     private_class_method :new
 
     def initalize()
-        super(grille, parametres, sauvegardes)
+        super(grille)
     end
 
     def verifierErreur(fromUser)

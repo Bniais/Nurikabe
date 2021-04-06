@@ -2,14 +2,14 @@ require_relative "PartieMalus.rb"
 class PartieSurvie < PartieMalus
     ##
     #ceer une partie en mode survie
-    def PartieSurvie.creer(grille, parametres, sauvegardes)
-      new(grille, parametres, sauvegardes)
+    def PartieSurvie.creer(grille)
+      new(grille)
     end
 
     ##
     #Constructeur de PartieSurvie
-    def initialize(grille, parametres, sauvegardes) #Créer une nouvelle partie
-      super(grille, parametres, sauvegardes)
+    def initialize(grille) #Créer une nouvelle partie
+      super(grille)
       @chrono = ChronoDecompte.creer()
       @chrono.demarrer()
       

@@ -3,13 +3,13 @@ class PartieTuto < Partie
   attr_accessor :grille, :progression, :senarios
   ##
   #ceer une partie en mode survie
-  def PartieTuto.creer(grille, parametres, sauvegardes)
-    new(grille, parametres, sauvegardes)
+  def PartieTuto.creer(grille)
+    new(grille)
   end
   ##
   #Contructeur de PartieTuto
   def initalize()
-    super(grille, parametres, sauvegardes)
+    super(grille)
   end
   ##
   #Tire lla prochaine grille

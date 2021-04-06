@@ -139,7 +139,7 @@ class FenetreClassement < Fenetre
         scroll.set_size_request(200, 658)
 
         boxGrille = ajouterGrille(box , @checkButtonEasy.active? , @checkButtonMedium.active? , @checkButtonHard.active?)
-        scroll.add_with_viewport( boxGrille  )
+        scroll.add_with_viewport( boxGrille )
 
         # gestion des evenements des boutons de check (choix des niveaux a afficher)
         @checkButtonEasy.signal_connect("clicked") {

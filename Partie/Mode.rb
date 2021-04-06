@@ -4,4 +4,5 @@ class Mode
 	SURVIE = 1
 	CONTRE_LA_MONTRE = 2
 	TUTORIEL = 3
+	VS = 4
 end

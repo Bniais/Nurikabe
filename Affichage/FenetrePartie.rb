@@ -72,6 +72,8 @@ class FenetrePartie < Fenetre
     @@maPartie = nil
     @@maGrille = nil
     @@vraiPause = false
+    @@perdu = false
+    @@deco = false
     def initialize()
         self
     end
@@ -89,39 +91,50 @@ class FenetrePartie < Fenetre
 
     # Lancer une nouvelle partie avec un mode specifique ? A FAIRE
     def self.afficheToiSelec( lastView, unePartie )
+        @@perdu = false
+        @@deco = false
         if(unePartie != nil)
             @@maPartie = unePartie
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
-            Sauvegardes.getInstance.getSauvegardePartie.ajouterSauvegardePartie(@@maPartie)
+            if(@@maPartie.getMode != Mode::VS)
+                Sauvegardes.getInstance.getSauvegardePartie.ajouterSauvegardePartie(@@maPartie)
+            end
         end
 
         self.metSousTitre
-        @maFenetrePartie = FenetrePartie.new()
-        Fenetre.add( @maFenetrePartie.creationInterface( lastView ) )
+        @@maFenetrePartie = FenetrePartie.new()
+       
+        Fenetre.add( @@maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
 
         @@maPartie.reprendrePartie
-        @maFenetrePartie.play
+        @@maFenetrePartie.play
 
 
-        @maFenetrePartie.threadChronometre
-
+        @@maFenetrePartie.threadChronometre
+        puts self
         return self
+    end
+
+    def self.getInstance
+        return @@maFenetrePartie
     end
 
     ## Charger une partie specifique presente dans la sauvegarde
     def self.afficheToiChargerPartie( lastView , loadAtIndice )
+        @@perdu = false
+        @@deco = false
         @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie( loadAtIndice )
         @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
 
         self.metSousTitre
-        maFenetrePartie = FenetrePartie.new()
-        Fenetre.add( maFenetrePartie.creationInterface( lastView ) )
+        @@maFenetrePartie = FenetrePartie.new()
+        Fenetre.add( @@maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
 
 
-        maFenetrePartie.threadChronometre
-        maFenetrePartie.play
+        @@maFenetrePartie.threadChronometre
+        @@maFenetrePartie.play
         return self
     end
 
@@ -193,6 +206,42 @@ class FenetrePartie < Fenetre
         FenetrePartie.afficheToiSelec( FenetreMenu, @@maPartie )
     end
 
+    def perdre(tpsEnemi)
+        @@perdu = true
+        @tpsEnemi = tpsEnemi
+    end
+
+    def deco
+        @@deco = true
+    end
+
+    def perdreMsg
+        if(@@maPartie != nil)
+            if(@popover != nil)
+                @popover.visible = false
+            end
+            pause
+            
+            show_standard_message_dialog(@@lg.gt("MSG_PERDRE") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time) + @@lg.gt("MSG_PERDRE_FIN" + @tpsEnemi))
+
+            quitter
+        end
+    end
+
+    def decoMsg
+        puts "deco msg"
+        if(@@maPartie != nil)
+            if(@popover != nil)
+                @popover.visible = false
+            end
+            pause
+            
+            show_standard_message_dialog(@@lg.gt("DECO_MSG"))
+
+            quitter
+        end
+    end
+
     # Methode qui permet de cree
     # la toolbar
     private
@@ -221,6 +270,11 @@ class FenetrePartie < Fenetre
             activerBtnApresPause
         end
 
+        enableBtnIfNot1v1(@btnPause)
+        enableBtnIfNot1v1(btnSetting)
+        enableBtnIfNot1v1(@btnHelp)
+
+
         #Gestion des evenemeents
         btnSetting.signal_connect("clicked")    { ouvrirReglage  } # LANCER LES REGLAGLES
         @btnUndo.signal_connect("clicked")      { retourArriere } # RETOURNER EN ARRIERE
@@ -232,7 +286,18 @@ class FenetrePartie < Fenetre
         @btnHelpLocation.signal_connect("clicked") { aideLocation }
         @btnClear.signal_connect("clicked")     { raz } # REMISE A ZERO DE LA GRILLE
         @btnVerif.signal_connect("clicked")     { verifier } # VERFIER LA GRILLE
-        btnQuit.signal_connect("clicked")       { quitter } # QUITTER LA PARTIE
+        btnQuit.signal_connect("clicked")       { 
+            if @@maPartie.getMode == Mode::VS
+                socket = Fenetre1v1.getSocket
+                if(socket != nil)
+                    socket.puts "dc"
+                else
+                    puts "aie"
+                end
+            end
+            quitter
+            
+          } # QUITTER LA PARTIE
 
 
         # attachement des boutons de mode de jeu
@@ -247,6 +312,7 @@ class FenetrePartie < Fenetre
         box.add(@btnClear);      box.add(@btnVerif)
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(btnQuit)
+        
 
         mainToolbar.add(box)
         mainToolbar.add( Gtk::Separator.new(:horizontal) )
@@ -498,10 +564,11 @@ class FenetrePartie < Fenetre
                 if(prochaineCouleur < Couleur::ILE_1 )
                     enleverPortee(nil, nil)
                     if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
+                        
                         cacherNbErreur
                         handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur , true)
                         enableBtn(@btnUndo)
-                        enableBtn(@btnUndoUndo)
+                        enableBtnIfNot1v1(@btnUndoUndo)
                         disableBtn(@btnRedo)
                         disableBtn(@btnHelpLocation)
 
@@ -516,7 +583,11 @@ class FenetrePartie < Fenetre
                         enleverNbCase()
                     end
 
-                    if @@maPartie.partieTerminee? == true
+                    if(@@perdu)
+                        perdreMsg()
+                    elsif(@@deco)
+                        decoMsg()
+                    elsif @@maPartie.partieTerminee? == true
                         grilleSuivante =  @@maPartie.grilleSuivante
                         if(grilleSuivante == nil)
                             finirPartie
@@ -554,12 +625,12 @@ class FenetrePartie < Fenetre
 
                 case @@maPartie.getMode
                 when Mode::LIBRE
-                    msg = @@lg.gt("MESSAGE_DE_VICTOIRE")
+                    msg = @@lg.gt("MESSAGE_DE_VICTOIRE") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time)
                 when Mode::SURVIE
                     msg = @@lg.gt("MESSAGE_VICTOIRE_SURVIE_DEBUT") + @@maPartie.getNbGrilleFinis.to_s + (@@maPartie.getNbGrilleFinis < 2 ? @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN") : @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN_PLURIEL"))
                 when Mode::CONTRE_LA_MONTRE
                     nbRecompense = @@maPartie.getNbRecompense
-                    msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT")
+                    msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time) + @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT")
                     for i in 0..2
                         if(i<nbRecompense)
                             msg += "★"
@@ -569,6 +640,9 @@ class FenetrePartie < Fenetre
                     end
                 when Mode::TUTORIEL
                     msg = @@lg.gt("MESSAGE_FIN_TUTORIEL")
+
+                when Mode::VS
+                    msg = @@lg.gt("MESSAGE_FIN_1V1") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time)
                 else
                     msg = @@lg.gt("UNKNOWN")
                 end
@@ -631,13 +705,24 @@ class FenetrePartie < Fenetre
         disableBtn(@btnHelpLocation)
     end
 
+    private 
+    def enableBtnIfNot1v1(btn)
+        if(@@maPartie.getMode != Mode::VS)
+            enableBtn(btn)
+        else
+            disableBtn(btn)
+        end
+    end
+    
+
     # EVENT REDO
     private
     def retourAvant
         enleverPortee(nil, nil)
         cacherNbErreur
         enableBtn(@btnUndo)
-        enableBtn(@btnUndoUndo)
+        
+        enableBtnIfNot1v1(@btnUndoUndo)
         disableBtn(@btnHelpLocation)
         statut = @@maPartie.retourAvant
 
@@ -669,7 +754,7 @@ class FenetrePartie < Fenetre
         @@maPartie.reprendrePartie;
 
         cacherNbErreur
-         enableBtn(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
+         enableBtnIfNot1v1(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
         enleverNbCase
         enleverPortee(nil, nil)
         set_modeGris(Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
@@ -702,7 +787,7 @@ class FenetrePartie < Fenetre
         cacherNbErreur
         @@maPartie.mettrePause;
         @@vraiPause = true;
-        enableBtn(@btnPlay);
+        enableBtnIfNot1v1(@btnPlay);
         disableBtn(@btnPause);     disableBtn(@btnHelp); disableBtn(@btnHelpLocation)
         disableBtn(@btnUndoUndo);  disableBtn(@btnClear);
         disableBtn(@btnVerif);     disableBtn(@btnUndo);
@@ -719,7 +804,7 @@ class FenetrePartie < Fenetre
         indice = @@maPartie.donneIndice
         if ( indice != nil)
             show_standard_message_dialog(Indice::MESSAGES[indice[0]])
-            enableBtn(@btnHelpLocation)
+            enableBtnIfNot1v1(@btnHelpLocation)
             create_popover_malus(Malus::MALUS_INDICE)
             setTimout
         end
@@ -798,7 +883,7 @@ class FenetrePartie < Fenetre
     def quitter
         pause
         Sauvegardes.getInstance.sauvegarder(nil)
-        cacherNbErreur
+        #cacherNbErreur
         @@maPartie = nil;
         Fenetre.deleteChildren;
         FenetreMenu.afficheToi( FenetrePartie )
@@ -879,15 +964,15 @@ class FenetrePartie < Fenetre
     def activerBtnApresPause()
         if @@maPartie.peutRetourArriere?
             enableBtn(@btnUndo)
-            enableBtn(@btnUndoUndo)
+            enableBtnIfNot1v1(@btnUndoUndo)
         end
         if @@maPartie.peutRetourAvant?
             enableBtn(@btnRedo)
         end
         enableBtn(@btnClear)
         disableBtn(@btnPlay)
-        enableBtn(@btnHelp)
-        enableBtn(@btnVerif);
+        enableBtnIfNot1v1(@btnHelp)
+        enableBtnIfNot1v1(@btnVerif);
     end
 
     # METHODE QUI PERMET DE

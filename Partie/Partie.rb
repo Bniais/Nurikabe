@@ -16,7 +16,7 @@ class Partie
 
   ##
   #Constructeur de Grille
-  def initialize(grille, parametres, sauvegardes) #Créer une nouvelle partie
+  def initialize(grille) #Créer une nouvelle partie
     @grilleBase = grille
    
     @tabCoup = Array.new(0);
@@ -44,8 +44,8 @@ class Partie
 
   ##
   # Methode qui creer une grille et prends en compte les sauvegardes 
-  def Partie.creer(grille, parametres, sauvegardes)
-    new(grille, parametres, sauvegardes)
+  def Partie.creer(grille)
+    new(grille)
   end
 
   def peutRetourArriere?()

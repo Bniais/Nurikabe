@@ -54,6 +54,26 @@ class Langue
 
      
       @dico = Hash.new
+      @dico["IP"] = "IP"
+      @dico["CONNECTION"] = "Connection"
+      @dico["PORT"] = "Port"
+      @dico["HOST"] = "Host"
+      @dico["JOIN"] = "Join"
+      @dico["CANCEL"] = "Cancel"
+      @dico["1V1"] = "1v1"
+      @dico["MSG_PERDRE"] = "You lost!\nYour current time is : "
+      @dico["MSG_PERDRE_FIN"] = "\nThe opponent finished the grid in : "
+      @dico["MESSAGE_DE_VICTOIRE"] = "Congratulations! You've completed the grid!\nYour time is: "
+      @dico["MESSAGE_VICTOIRE_SURVIE_DEBUT"] = "Time's up !\nYou have completed "
+      @dico["MESSAGE_VICTOIRE_CLM_DEBUT"] = "Congratulations! You've completed the grid!\nYour time is : "
+      @dico["MESSAGE_VICTOIRE_CLM_FIN"] = "\nYour stars : "
+      @dico["MESSAGE_FIN_TUTORIEL"] = "You have completed the tutorial !"
+      @dico["MESSAGE_FIN_1V1"] = "You have won !\nYour time is : "
+      @dico["PARTIE_1V1"] = "1v1 game"
+      @dico["DECO_MSG"] = "Your opponent has disconnected"
+      @dico["UNKNOWN"] = "--Undefined text--"
+      @dico["AUCUN_TEMPS"] = "No time"
+
       @dico["MESSAGE_DE_VICTOIRE"] = "Congratulations! You've won!"
       @dico["LIBRE"] = "Free play"
       @dico["CONTRELAMONTRE"] = "Time trial"
@@ -139,7 +159,28 @@ STER Maxime
      
       tmpSaver("../Parametres/EN_en.dump")
 
-@dico = Hash.new
+      @dico = Hash.new
+      @dico["IP"] = "IP"
+      @dico["CONNECTION"] = "Conexión"
+      @dico["PORT"] = "Puerto"
+      @dico["HOST"] = "Alojar"
+      @dico["JOIN"] = "Unete"
+      @dico["CANCEL"] = "Cancelar"
+      @dico["1V1"] = "1v1"
+      @dico["MSG_PERDRE"] = "¡Has perdido!\n Tu hora actual es : "
+      @dico["MSG_PERDRE_FIN"] = "\nEl oponente terminó la parrilla en : "
+      @dico["MESSAGE_DE_VICTOIRE"] = "¡Felicidades! ¡Has completado la parrilla!\nTu tiempo es : "
+      @dico["MESSAGE_VICTOIRE_SURVIE_DEBUT"] = "¡Tiempo arriba!\nHa completado "
+      @dico["MESSAGE_VICTOIRE_CLM_DEBUT"] = "¡Felicidades! ¡Has completado la parrilla!\nTu tiempo es : "
+      @dico["MESSAGE_VICTOIRE_CLM_FIN"] = "\nTus estrellas : "
+      @dico["MESSAGE_FIN_TUTORIEL"] = "¡Has completado el tutorial!"
+      @dico["MESSAGE_FIN_1V1"] = "¡Has ganado!\nTu tiempo es : "
+      @dico["PARTIE_1V1"] = "Juego 1v1"
+      @dico["DECO_MSG"] = "Tu oponente se ha desconectado"
+      @dico["UNKNOWN"] = "--Texto no definido--"
+      @dico["AUCUN_TEMPS"] = "Sin tiempo"
+
+
       @dico["MESSAGE_DE_VICTOIRE"] = "¡Felicidades! Has ganado!"
       @dico["LIBRE"] = "Juego libre"
       @dico["CONTRELAMONTRE"] = "Contrarreloj"
@@ -226,7 +267,26 @@ STER Maxime
 
 
       @dico = Hash.new
-      @dico["MESSAGE_DE_VICTOIRE"] = "Félicitations ! Vous avez gagné !"
+      @dico["IP"] = "IP"
+      @dico["CONNECTION"] = "Connexion"
+      @dico["PORT"] = "Port"
+      @dico["HOST"] = "Héberger"
+      @dico["JOIN"] = "Rejoindre"
+      @dico["CANCEL"] = "Annuler"
+      @dico["1V1"] = "1v1"
+      @dico["MSG_PERDRE"] = "Vous avez perdu !\nVotre temps actuel est de : "
+      @dico["MSG_PERDRE_FIN"] = "\nL'adversaire à fini la grille en : "
+      @dico["MESSAGE_DE_VICTOIRE"] = "Félicitations ! Vous avez complété la grille !\nVotre temps est : "
+      @dico["MESSAGE_VICTOIRE_SURVIE_DEBUT"] = "Temps écoulé !\nVous avez complété "
+      @dico["MESSAGE_VICTOIRE_CLM_DEBUT"] = "Félicitations ! Vous avez complété la grille !\nVotre temps est : "
+      @dico["MESSAGE_VICTOIRE_CLM_FIN"] = "\nVos étoiles : "
+      @dico["MESSAGE_FIN_TUTORIEL"] = "Vous avez terminé le tutoriel !"
+      @dico["MESSAGE_FIN_1V1"] = "Vous avez gagné !\nVotre temps est : "
+      @dico["PARTIE_1V1"] = "Partie 1v1"
+      @dico["DECO_MSG"] = "Votre adversaire s'est déconnecté"
+      @dico["UNKNOWN"] = "--Texte non défini--"
+      @dico["AUCUN_TEMPS"] = "Aucun temps"
+
       @dico["LIBRE"] = "Libre"
       @dico["CONTRELAMONTRE"] = "Contre-La-Montre"
       @dico["SURVIE"] = "Survie"

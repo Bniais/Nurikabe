@@ -70,7 +70,7 @@ class FenetreMenu < Fenetre
         box.add( setmargin( btnSurvie , 0, 15, 70, 70) )
 
         btn1v1 = Gtk::Button.new()
-        setBold(btn1v1, @@lg.gt("1v1") )
+        setBold(btn1v1, @@lg.gt("1V1") )
         box.add( setmargin( btn1v1 , 0, 15, 70, 70) )
 
 

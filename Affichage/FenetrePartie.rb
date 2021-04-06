@@ -82,6 +82,7 @@ class FenetrePartie < Fenetre
         Fenetre.set_subtitle( @@maPartie.getMode == Mode::LIBRE ? @@lg.gt("PARTIE_LIBRE") :
                               @@maPartie.getMode == Mode::CONTRE_LA_MONTRE ? @@lg.gt("PARTIE_CLM") :
                               @@maPartie.getMode == Mode::SURVIE ? @@lg.gt("PARTIE_SURVIE") :
+                              @@maPartie.getMode == Mode::VS ? @@lg.gt("PARTIE_1V1") :
                               @@maPartie.getMode == Mode::TUTORIEL ? @@lg.gt("PARTIE_TUTORIEL") : @@lg.gt("UNKNOWN"))
     end
 
@@ -627,10 +628,10 @@ class FenetrePartie < Fenetre
                 when Mode::LIBRE
                     msg = @@lg.gt("MESSAGE_DE_VICTOIRE") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time)
                 when Mode::SURVIE
-                    msg = @@lg.gt("MESSAGE_VICTOIRE_SURVIE_DEBUT") + @@maPartie.getNbGrilleFinis.to_s + (@@maPartie.getNbGrilleFinis < 2 ? @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN") : @@lg.gt("MESSAGE_VICTOIRE_SURVIE_FIN_PLURIEL"))
+                    msg = @@lg.gt("MESSAGE_VICTOIRE_SURVIE_DEBUT") + @@maPartie.getNbGrilleFinis.to_s + " " +(@@maPartie.getNbGrilleFinis < 2 ? @@lg.gt("GRILLE").downcase : @@lg.gt("GRILLES").downcase)
                 when Mode::CONTRE_LA_MONTRE
                     nbRecompense = @@maPartie.getNbRecompense
-                    msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time) + @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT")
+                    msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time) + @@lg.gt("MESSAGE_VICTOIRE_CLM_FIN")
                     for i in 0..2
                         if(i<nbRecompense)
                             msg += "★"
@@ -640,7 +641,6 @@ class FenetrePartie < Fenetre
                     end
                 when Mode::TUTORIEL
                     msg = @@lg.gt("MESSAGE_FIN_TUTORIEL")
-
                 when Mode::VS
                     msg = @@lg.gt("MESSAGE_FIN_1V1") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time)
                 else

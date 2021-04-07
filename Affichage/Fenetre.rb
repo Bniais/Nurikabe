@@ -39,7 +39,7 @@ class Fenetre
         SauvegardeGrille.creer("../Sauvegarde/grilles1.dump")
         Sauvegardes.creer("../Sauvegarde/save.dump")
 
-=begin
+
         #TMP TO ADD GRILLES
         ################################ GRILLES 5x5 ################################
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
@@ -258,7 +258,6 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-=end
 
 
         SauvegardeGrille.getInstance.sauvegarder( "../Sauvegarde/grilles1.dump" )

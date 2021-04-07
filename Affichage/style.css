@@ -251,3 +251,12 @@ checkbutton *{
 #detailScore,#stars-detail{
      font-size: 2.1em;
 }
+
+progressbar, progressbar*{
+    color :aqua;
+    min-height: 16px;
+}
+
+#grillesTerminees{
+    font-size: 2em;
+}

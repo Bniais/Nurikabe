@@ -8,8 +8,7 @@ class Langue
 
     @@monInstance = nil
 
-    ##
-    # Methode qui permet de creer une langue
+    # Methode qui permet de creer une grille
     def Langue.creer()
         if (@@monInstance == nil)
           @@monInstance = new()
@@ -20,22 +19,16 @@ class Langue
         return @@monInstance
     end
 
-    ##
-    # A COMPLETER
     def self.getInstance()
       return @@monInstance
     end
 
-    ##
-    # A COMPLETER
     def utiliserLangue(id)
       puts "charger langue #{id}"
       @dico = Marshal.load( File.binread(@fichiersLangues[id]) )
       @langueActuelle = id
     end
 
-    ##
-    # A COMPLETER
     def importer(chemin)
       puts "chemin : #{chemin}"
 
@@ -47,12 +40,9 @@ class Langue
 
       f = File.read(chemin)
       File.foreach(chemin) { |line| puts "aahhh #{line}" }
-
-
     end
 
-    ##
-    # Constructeur de Langue
+    # Methode privee pour l'initialisation
     def initialize()
 
       #@dico = Marshal.load( File.binread("../Parametres/Fr_fr.dump") )
@@ -82,6 +72,10 @@ class Langue
       @dico["UNKNOWN"] = "--Undefined text--"
       @dico["AUCUN_TEMPS"] = "No time"
       @dico["LOCAL_HOST"] = "Localhost"
+      @dico["AVANCEMENT_SELF"] = "My advancement :    "
+      @dico["AVANCEMENT_ENEMY"] = "Its advancement :    "
+      @dico["GRILLE_TERMINEE"] = " finished grid"
+      @dico["GRILLES_TERMINEES"] = " finished grids"
 
       @dico["MESSAGE_DE_VICTOIRE"] = "Congratulations! You've won!"
       @dico["LIBRE"] = "Free play"
@@ -189,7 +183,7 @@ STER Maxime
       @dico["JOIN"] = "Unete"
       @dico["CANCEL"] = "Cancelar"
       @dico["1V1"] = "1v1"
-      @dico["MSG_PERDRE"] = "¡Has perdido!\n Tu hora actual es : "
+      @dico["MSG_PERDRE"] = "¡Has perdido!\nTu hora actual es : "
       @dico["MSG_PERDRE_FIN"] = "\nEl oponente terminó la parrilla en : "
       @dico["MESSAGE_DE_VICTOIRE"] = "¡Felicidades! ¡Has completado la parrilla!\nTu tiempo es : "
       @dico["MESSAGE_VICTOIRE_SURVIE_DEBUT"] = "¡Tiempo arriba!\nHa completado "
@@ -202,6 +196,10 @@ STER Maxime
       @dico["UNKNOWN"] = "--Texto no definido--"
       @dico["AUCUN_TEMPS"] = "Sin tiempo"
       @dico["LOCAL_HOST"] = "Huésped local"
+      @dico["AVANCEMENT_SELF"] = "Mi avance :    "
+      @dico["AVANCEMENT_ENEMY"] = "Su avance :    "
+      @dico["GRILLE_TERMINEE"] = " rejilla terminada"
+      @dico["GRILLES_TERMINEES"] = " rejillas terminadas"
 
       @dico["MESSAGE_DE_VICTOIRE"] = "¡Felicidades! Has ganado!"
       @dico["LIBRE"] = "Juego libre"
@@ -322,6 +320,10 @@ STER Maxime
       @dico["UNKNOWN"] = "--Texte non défini--"
       @dico["AUCUN_TEMPS"] = "Aucun temps"
       @dico["LOCAL_HOST"] = "Hôte local"
+      @dico["AVANCEMENT_SELF"] = "Mon avancement :    "
+      @dico["AVANCEMENT_ENEMY"] = "Son avancement :    "
+      @dico["GRILLE_TERMINEE"] = " grille terminée"
+      @dico["GRILLES_TERMINEES"] = " grilles terminées"
 
       @dico["LIBRE"] = "Libre"
       @dico["CONTRELAMONTRE"] = "Contre-La-Montre"
@@ -429,23 +431,18 @@ STER Maxime
 
     end
 
-    ##
-    # A COMPLETER
     def tmpSaver (chemin)
       File.open(chemin, "wb") { |f| f.write(Marshal.dump(@dico) ) }
       @dico =  Marshal.load( File.binread(chemin) )
     end
 
-    ##
-    # A COMPLETER
     def gt(text)
       if ( @dico[text] == nil )
         return "UNDEF " + text.to_s
       end
       return @dico[text]
     end
-    ##
-    # A COMPLETER
+
     def to_s()
       return "#{@dico}"
     end

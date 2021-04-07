@@ -18,7 +18,6 @@ class Grille
     ##
     # Methode qui remet a zero la grille
     def raz()
-		
 		for i in 0..tabCases.size-1
 			for j in 0..tabCases.size-1
 				if tabCases[i][j].couleur == Couleur::BLANC || tabCases[i][j].couleur == Couleur::NOIR   # -1 = couleur blanche
@@ -27,6 +26,29 @@ class Grille
 			end
 		end                                                                        
     end
+
+
+	##
+	# A COMPLETER
+	def getPourcentage(grilleCmp, caseIgn)
+		nbCase = 0.0
+		nbSame = 0.0
+		for i in 0..tabCases.size - 1
+			for j in 0..tabCases.size - 1
+				if !tabCases[i][j].estIle?
+					if(tabCases[i][j] != caseIgn && tabCases[i][j].couleur == grilleCmp.tabCases[i][j].couleur)
+						nbSame += 1
+					end      
+					nbCase += 1                  
+				end                                                                          
+			end
+		end
+
+		puts "same : #{nbSame} / #{nbCase}"
+		return nbSame/nbCase
+	end
+
+
     ##
     #Retourne le nombre de récompenses du joueur
 	def getNbRecompense(tps)

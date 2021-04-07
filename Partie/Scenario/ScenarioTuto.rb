@@ -63,7 +63,7 @@ class ScenarioTuto < Scenario
 
           [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::ILE_2, 2, 5),
               Case.creer(Couleur::NOIR, 3, 5), Case.creer(Couleur::ILE_1, 4, 5),Case.creer(Couleur::BLANC, 5, 5)],
-      ])
+        ])
 
 
         # Grille Tuto 2

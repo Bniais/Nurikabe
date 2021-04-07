@@ -51,15 +51,17 @@ class PartieSurvie < PartieMalus
 
       nextGrille = SauvegardeGrille.getInstance.getGrilleAt(indice)
 
-      @grilleBase = nextGrille
-   
-      @tabCoup = Array.new(0);
+      if(nextGrille != nil)
+        @grilleBase = nextGrille
+    
+        @tabCoup = Array.new(0);
 
-      @nbAideUtilise = 0
-      @indiceCoup = 0
+        @nbAideUtilise = 0
+        @indiceCoup = 0
 
-      @grilleEnCours = Marshal.load( Marshal.dump(@grilleBase) )
-      @grilleEnCours.raz()
+        @grilleEnCours = Marshal.load( Marshal.dump(@grilleBase) )
+        @grilleEnCours.raz()
+      end
       
       return nextGrille
     end

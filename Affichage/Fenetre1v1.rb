@@ -28,8 +28,6 @@ class Fenetre1v1 < Fenetre
         return self
     end
 
-    ##
-    # A COMPLETER
     def self.getSocket()
         return @@socket
     end
@@ -154,16 +152,29 @@ class Fenetre1v1 < Fenetre
                             Fenetre.remove(box)
                             FenetrePartie.afficheToiSelec(Fenetre1v1, Partie1v1.creer(SauvegardeGrille.getInstance.getGrilleAt(grilleId.to_i)) )
                            
-                            while line = @@socket.gets
-                                if(line.include?("dc"))
-                                    FenetrePartie.getInstance.deco()
-                                elsif line.include?("ez")
-                                    FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
+                            while 1 < 2
+                                line = @@socket.gets
+                                puts line
+                                if(line != nil)
+                                    if(line.include?("av"))
+                                        puts "11"
+                                        FenetrePartie.getInstance.setAvancementEnemy(line.delete_prefix("av"))
+                                    else
+                                        if(line.include?("dc"))
+                                            puts "22"
+                                            FenetrePartie.getInstance.deco()
+                                        elsif line.include?("ez")
+                                            puts "33"
+                                            FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
+                                        end
+                                        puts "sad"
+                                        @@socket.puts "im sad"
+                                        @@socket.close
+                                        break
+                                    end
                                 end
-                                @@socket.puts "im sad"
-                                @@socket.close
-                                break
                             end
+                            puts "end" 
                             
                         else
                             buttonJoin.set_sensitive(true)
@@ -213,17 +224,30 @@ class Fenetre1v1 < Fenetre
                             break
                         end
 
-                        while line = @@socket.gets
+                        while 1 < 2
+                            line = @@socket.gets
                             puts line
-                            if(line.include?("dc"))
-                                FenetrePartie.getInstance.deco()
-                            elsif line.include?("ez")
-                                FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
+                            if(line != nil)
+                                if(line.include?("av"))
+                                    puts "1"
+                                    FenetrePartie.getInstance.setAvancementEnemy(line.delete_prefix("av"))
+                                else
+                                    if(line.include?("dc"))
+                                        puts "2"
+                                        FenetrePartie.getInstance.deco()
+                                    elsif line.include?("ez")
+                                        puts "3"
+                                        FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
+                                    end
+                                    puts "sad"
+                                    @@socket.puts "im sad"
+                                    @@socket.close
+                                    break
+                                end
+                                
                             end
-                            @@socket.puts "im sad"
-                            @@socket.close
-                            break
-                        end   
+                        end  
+                        puts "end" 
                     else
                         buttonJoin.set_sensitive(true)
                         buttonHost.set_sensitive(true)
@@ -263,14 +287,10 @@ class Fenetre1v1 < Fenetre
         return box
     end
 
-    ##
-    # A COMPLETER
     def threadAttenteClient
         
     end
 
-    ##
-    # Definir le titre de la fenêtre
     def titleLabel(unLabel)
         label = Gtk::Label.new()
         label.set_markup("<span size='25000' >" + unLabel.to_s + "</span>")

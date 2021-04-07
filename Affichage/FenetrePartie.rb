@@ -148,11 +148,70 @@ class FenetrePartie < Fenetre
         @box.add(creeToolbar)#ADD
 
         ## Nom de la grille
+        boxTop = Gtk::Box.new(:horizontal)
+        
+        boxTop.set_margin_top 20
+        boxTop.set_margin_bottom 10
+        boxTop.set_homogeneous(true)
+
         nomGrille = Gtk::Label.new()
         nomGrille.set_markup("<span size='25000' > " + @@lg.gt("GRILLE") + " #" + @@maPartie.grilleBase.numero.to_s + "</span>")
-        nomGrille.set_margin_top(20)
-        nomGrille.set_margin_bottom(10)
-        @box.add(nomGrille)#ADD
+        nomGrille.halign = :end
+
+        boxTop.add( nomGrille)
+        
+        if(@@maPartie.getMode == Mode::VS)
+            labelBox = Gtk::Box.new(:vertical)
+            labelBox.set_homogeneous(true)
+            
+            labelProgressSelf = Gtk::Label.new(@@lg.gt("AVANCEMENT_SELF"))
+            labelProgressSelf.halign = :end
+            labelProgressSelf.valign = :center
+
+            labelProgressEnemy = Gtk::Label.new(@@lg.gt("AVANCEMENT_ENEMY"))
+            labelProgressEnemy.halign = :end
+            labelProgressEnemy.valign = :center
+
+
+            labelBox.add(labelProgressSelf)
+            labelBox.add(labelProgressEnemy)
+
+
+            progressBox = Gtk::Box.new(:vertical)
+            progressBox.set_homogeneous(true)
+
+            @progressSelf = Gtk::ProgressBar.new()
+            @progressSelf.halign = :start
+            @progressSelf.valign = :center
+
+            @progressEnemy = Gtk::ProgressBar.new()
+            @progressEnemy.halign = :start
+            @progressEnemy.valign = :center
+
+            progressBox.add(@progressSelf)
+            progressBox.add(@progressEnemy)
+
+            boxTop.add (labelBox)
+            boxTop.add (progressBox)
+            nomGrille.halign = :end
+            boxTop.set_margin_left(20)
+            boxTop.set_margin_right(20)
+
+
+        elsif(@@maPartie.getMode == Mode::SURVIE)
+            #boxTop.add(Gtk::Label.new(""))
+            label =Gtk::Label.new(@@maPartie.getNbGrilleFinis.to_s + (@@maPartie.getNbGrilleFinis < 2 ? @@lg.gt("GRILLE_TERMINEE") : @@lg.gt("GRILLES_TERMINEES")) )
+            label.halign= :end
+            nomGrille.halign = :start
+            label.name = "grillesTerminees"
+            boxTop.add(label)        
+            boxTop.set_margin_left 120
+            boxTop.set_margin_right 120
+        else
+            nomGrille.halign = :center
+        end
+  
+        @box.add( boxTop )#ADD
 
         #GRILLE
         @frameGrille = creeGrille
@@ -206,6 +265,16 @@ class FenetrePartie < Fenetre
 
     def deco
         @@deco = true
+    end
+
+    def setAvancementEnemy(avancement)
+        puts avancement
+        puts avancement.to_f
+        @progressEnemy.fraction = avancement.to_f
+    end
+
+    def setAvancementSelf(avancement)
+        @progressSelf.fraction = avancement
     end
 
     def perdreMsg
@@ -285,7 +354,7 @@ class FenetrePartie < Fenetre
                 if(socket != nil)
                     socket.puts "dc"
                 else
-                    puts "aie"
+                    puts "aieFP"
                 end
             end
             quitter

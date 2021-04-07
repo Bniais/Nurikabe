@@ -3,6 +3,8 @@
 
 class ScenarioTuto < Scenario
 
+    ##
+    # Constructeur de ScenarioTuto
     def initialize()
         initialiserGrilles()
         creerGrillesCorrigees()
@@ -11,6 +13,8 @@ class ScenarioTuto < Scenario
         demarrerTuto()
     end
 
+    ##
+    # Initialise les différentes étapes du tutoriel
     def initialiserEtapes()
         @@etapes = Array.new()
 
@@ -37,6 +41,8 @@ class ScenarioTuto < Scenario
 
     end
 
+    ##
+    # Initialise les différentes grilles du tutoriel
     def initialiserGrilles()
         # Grille Tuto 1
         @@grille1 = Grille.creer(1,[
@@ -154,6 +160,8 @@ class ScenarioTuto < Scenario
         @@tabGrilles << @@grille5
     end
 
+    ##
+    # A COMPLETER
     def creerGrillesCorrigees()
          # Grille Tuto 1
         @@grille1Corr = = Grille.creer(1,[
@@ -272,6 +280,8 @@ class ScenarioTuto < Scenario
         @@tabGrillesCorr << @@grille5Corr
     end
 
+    ##
+    # Met le tutoriel à l'état initial et parcours les différentes étapes
     def demarrerTuto()
         indice = 0
         @@grilleActuelle = @@tabGrilles.at(indice)
@@ -285,12 +295,12 @@ class ScenarioTuto < Scenario
             passerGrilleSuivante()
         end
     end
-
+    ##
     # Methode qui permet de verifier si la grille est terminee
     def grilleTerminee?(indice)
         return (@@grilleActuelle == @@tabGrillesCorr[indice])
     end
-
+    ##
     # Methode qui permet de passer a la grille suivante
     def passerGrilleSuivante(numGrille)
         # Verification que la grille est terminee avant de passer a la suivante
@@ -304,12 +314,12 @@ class ScenarioTuto < Scenario
             puts "Bravo le tuto est termine !"
         end
     end
-
+    ##
     # Methode qui permet de passer a l'etape suivante
     def chargerEtapeSuivante(indice)
         return @@etapes[indice+1]
     end
-
+    ##
     # Methode qui permet de savoir si une etape est valide
     def etapeValidee?(indice)
         #

@@ -119,7 +119,7 @@ class FenetreMenu < Fenetre
 
         btnTutoriel.signal_connect('clicked') {
             Fenetre.remove(box);
-            FenetrePartie.afficheToiSelec(FenetreMenu, PartieTuto.creer(SauvegardeGrille.getInstance.getGrilleAt(rand(1..SauvegardeGrille.getInstance.getNombreGrille))) )
+            FenetrePartie.afficheToiSelec(FenetreMenu, PartieTuto.creer() )
         }
 
         # AJOUT SEPARATEUR

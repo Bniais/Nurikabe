@@ -1,10 +1,14 @@
 class ChronoDecompte < Chrono
     CHRONO_BASE_DECOMPTE = 5*60 #5mins
 
+    ##
+    # Crée un chronometre avec un decompte de 5 minutes
     def ChronoDecompte.creer()
       new()
     end
 
+    ##
+    # Constructeur de ChronoDecompte
     def initialize()
       super()
       @time = CHRONO_BASE_DECOMPTE

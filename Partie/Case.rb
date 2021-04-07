@@ -24,14 +24,14 @@ class Case
   private_class_method :new
 
   ##
-  #change la couleur de la case
+  #Change la couleur de la case
   def setCouleur( nouvelleCouleur )
     #return void
     @couleur = nouvelleCouleur
 
   end
   ##
-  # dit si la case est une ile
+  # Retourne vrai si la case est une ile, faux sinon
   def estIle?()
 
     #return bool

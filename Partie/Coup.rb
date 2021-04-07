@@ -4,7 +4,7 @@ class Coup
   attr_reader :case, :couleur, :couleurBase
 
   ##
-    # A COMPLETER
+  # A COMPLETER
   def Coup.creer(case_, couleur, couleurBase)
     new(case_, couleur, couleurBase)
   end

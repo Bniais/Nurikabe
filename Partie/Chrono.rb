@@ -33,13 +33,13 @@ class Chrono
     end
     
     ##
-    #savoir sir le chrono est nul
+    #Savoir sir le chrono est nul
     def estNul?()
       return @time <= 0
     end
 
     ##
-    #lance le chrono
+    #Lance le chrono
     def demarrer()
       @pause = false
       @starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
@@ -47,7 +47,7 @@ class Chrono
     end
 
     ##
-    #met en pause le chrono
+    #Met en pause le chrono
     def mettreEnPause()
       top()
       @pause = true

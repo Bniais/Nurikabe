@@ -57,7 +57,7 @@ class Grille
 		return nil
     end
     ##
-    #renvoie le nombre d'erreur dans la grille 
+    #Renvoie le nombre d'erreur dans la grille 
     def nbDifference(grilleCmp)
 		#return int
 		erreur = 0
@@ -75,6 +75,8 @@ class Grille
 
     end
 
+    ##
+    # A COMPLETER
 	def nbDifferenceBrut(grilleCmp)
 		#return int
 		erreur = 0
@@ -90,7 +92,7 @@ class Grille
 
     end
     ##
-    #renvoie la premiere erreur trouver dans la grille
+    #Renvoie la premiere erreur trouver dans la grille
     def firstDifference(grilleCmp)
 		#return case
 		for i in 0..tabCases.size - 1

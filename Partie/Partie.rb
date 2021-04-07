@@ -123,7 +123,7 @@ class Partie
 
 
   ##
-  #remet a 0 une grille
+  #Remet a 0 une grille
   def raz()#TOTEST
     @grilleEnCours.raz()
     @indiceCoup = 0
@@ -137,7 +137,7 @@ class Partie
 
 
   ##
-  #methode pour termier la partie
+  #Methode pour termier la partie
   def terminerPartie()#TODO
     #supprimer sauvegarde si elle existe
     #sauvegarder score si besoin
@@ -151,7 +151,7 @@ class Partie
   end
 
   ##
-  #affiche le nombre de blocs
+  #Affiche le nombre de blocs
   def afficherNbBloc(case_)#TOTEST
     #Dit à l'interface d'afficher
     vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)}
@@ -227,13 +227,13 @@ class Partie
   end
 
   ##
-  #donne la position de l'erreur au joueur
+  #Donne la position de l'erreur au joueur
   def donnerErreur()#TOTEST
     return @grilleEnCours.firstDifference(@grilleBase)
   end
 
   ##
-  #revient a la dernière bonne position de jeu
+  #Revient a la dernière bonne position de jeu
   def revenirPositionBonne() #TOTEST
     while verifierErreur(false) != 0 && retourArriere()[0] == true
       #Retour en arrière tant que c'est encore possible et que la grille est fausse
@@ -243,7 +243,7 @@ class Partie
   end
 
   ##
-  #donne un indice sur un coup a jouer
+  #Donne un indice sur un coup a jouer
   def donneIndice()
     #Verifier différents cas où une technique peut être appliquée, optimiser en parcourant la grille qu'une fois ?
   
@@ -833,12 +833,12 @@ class Partie
     return nil
   end
   ##
-  #chercher tous les chemins possibles liant une case blanche non-reliée aux iles accessibles, et si une case en commun parmis tous ces chemins, on peut la colorier
+  #Chercher tous les chemins possibles liant une case blanche non-reliée aux iles accessibles, et si une case en commun parmis tous ces chemins, on peut la colorier
   def indiceContinuiteIle()#WONTDO
     return nil
   end
   ##
-  #chercher tous les chemins possibles liant une case noire non-reliée à un autre mur, et si une case en commun parmis tous ces chemins, on peut la colorier
+  #Chercher tous les chemins possibles liant une case noire non-reliée à un autre mur, et si une case en commun parmis tous ces chemins, on peut la colorier
   def indiceContinuiteMur() #WONTDO
     return nil
   end

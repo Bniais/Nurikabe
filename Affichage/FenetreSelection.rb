@@ -1,17 +1,21 @@
 require './Fenetre.rb'
 
 
-# Classe qui gere la fenetre 'A propos'
+# Classe qui gere la fenetre de selection des grilles en mode Libre
 class FenetreSelection < Fenetre
 
     @@easyActivate = true
     @@mediumActivate = true
     @@hardActivate = true
 
+    ##
+    # Constructeur de FenetreSelection
     def initialize()
         self
     end
 
+    ##
+    # A COMPLETER
     def self.afficheToi( lastView )
         Fenetre.set_subtitle(@@lg.gt("SELECTION_MODE_LIBRE"))
         Fenetre.add( FenetreSelection.new().creationInterface( lastView ) )
@@ -19,6 +23,8 @@ class FenetreSelection < Fenetre
         return self
     end
 
+    ##
+    # Initialise tous éléments de la fenêtre de selections
     def creationInterface( lastView )
 
         box = Gtk::Box.new(:vertical)
@@ -100,6 +106,8 @@ class FenetreSelection < Fenetre
     end
 
 
+    ##
+    # A COMPLETER
     def ajouterGrille(box )
         vBoxGrille = Gtk::Box.new(:vertical , 20)
 
@@ -159,12 +167,16 @@ class FenetreSelection < Fenetre
         return vBoxGrille
     end
 
+    ##
+    # Ajoute un titre à la fenêtre
     def titleLabel(unLabel)
         label = Gtk::Label.new()
         label.set_markup("<span size='25000' >" + unLabel.to_s + "</span>")
         return label
     end
 
+    ##
+    # Generer un conteneur horizontal
     private
     def generateHbox( grille1, grille2)
         hBox = Gtk::Box.new(:horizontal,15)
@@ -178,7 +190,8 @@ class FenetreSelection < Fenetre
         return hBox
     end
 
-
+    ##
+    # A COMPLETER
     def generateFrame( uneGrille , mainBox , numero , enCours )
         btnFrame = Gtk::Button.new()
         btnFrame.name = "bg-FenetreSelection"
@@ -235,6 +248,8 @@ class FenetreSelection < Fenetre
         return btnFrame
     end
 
+    ##
+    # Ajoute un bouton avec une icône renseignée en paramètre
     private
     def generateBtnWithIcon(iconName)
         btn = Gtk::Button.new()
@@ -242,8 +257,8 @@ class FenetreSelection < Fenetre
         btn.add(image)
         return btn
     end
-
-    ## METHODE QUI CREE UNE GRILLE
+    ##
+    # Methode qui cree une grille
     def creeGrille( uneGrille )
         # Frame exterieur pour que les rebord et la meme epaisseur
         maFrame = Gtk::Frame.new()
@@ -269,8 +284,8 @@ class FenetreSelection < Fenetre
         return maFrame
     end
 
-    # Methode qui permet de cree
-    # une cellule destiner a la grille
+    ##
+    # Methode qui permet de créer une cellule destinée a la grille
     private
     def creeCelluleGrille(color)
         if color <= 0
@@ -283,6 +298,8 @@ class FenetreSelection < Fenetre
         return btn
     end
 
+    ##
+    # Retourne un objet positionné grâce aux différents attributs (top,bottom,left,right)
     private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)

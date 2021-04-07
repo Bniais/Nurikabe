@@ -18,6 +18,8 @@ class Sauvegardes
     @sauvegardeScore = nil
     @sauvegardeLangue = nil
 
+    ##
+    # Constructeur de Sauvegardes
     def initialize(chemin)
         if File.exist?(chemin) == true 
             @@instanceSauvegarde = Marshal.load( File.binread( chemin ) )
@@ -34,6 +36,8 @@ class Sauvegardes
         @@instanceSauvegarde
     end
 
+     ##
+    # Recupère le chemin d'un fichier de sauvegardes 
     def self.creer(chemin)
         if @@instanceSauvegarde == nil
             new(chemin)
@@ -42,11 +46,14 @@ class Sauvegardes
         end
     end
 
+    ##
+    # Retourne la variable de classe d'instance de sauvegardes
     def self.getInstance()
         return @@instanceSauvegarde
     end
 
-
+    ##
+    # Sauvegarde les sauvegardes dans un chemin spécifique, ou dans un dossier préfait
     def sauvegarder(chemin)
         if chemin == nil
             chemin = "../Sauvegarde/save.dump"
@@ -55,6 +62,8 @@ class Sauvegardes
         File.open(chemin, "wb") { |f| f.write(Marshal.dump(@@instanceSauvegarde) ) }
     end
 
+    ##
+    # Renvoie une sauvegarde de Partie
     def getSauvegardePartie()
         if @sauvegardePartie == nil
             @sauvegardePartie = SauvegardesParties.new()
@@ -64,7 +73,8 @@ class Sauvegardes
         end
     end
 
-
+    ##
+    # Renvoie une sauvegarde de Parametre
     def getSauvegardeParametre()
         if @sauvegardeParametre == nil
             @sauvegardeParametre = Parametre.initialiseToi()
@@ -73,6 +83,8 @@ class Sauvegardes
         end
     end
 
+    ##
+    # Renvoie une sauvegarde de Score
     def getSauvegardeScore()
         if @sauvegardeScore == nil
             @sauvegardeScore = SauvegardesScore.new()
@@ -81,6 +93,8 @@ class Sauvegardes
         end
     end
 
+    ##
+    # Renvoie une sauvegarde de Score
     def getSauvegardeLangue
         if @sauvegardeLangue == nil
             @sauvegardeLangue = Langue.creer()

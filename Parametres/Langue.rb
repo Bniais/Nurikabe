@@ -8,7 +8,8 @@ class Langue
 
     @@monInstance = nil
 
-    # Methode qui permet de creer une grille
+    ##
+    # Methode qui permet de creer une langue
     def Langue.creer()
         if (@@monInstance == nil)
           @@monInstance = new()
@@ -19,16 +20,22 @@ class Langue
         return @@monInstance
     end
 
+    ##
+    # A COMPLETER
     def self.getInstance()
       return @@monInstance
     end
 
+    ##
+    # A COMPLETER
     def utiliserLangue(id)
       puts "charger langue #{id}"
       @dico = Marshal.load( File.binread(@fichiersLangues[id]) )
       @langueActuelle = id
     end
 
+    ##
+    # A COMPLETER
     def importer(chemin)
       puts "chemin : #{chemin}"
 
@@ -44,7 +51,8 @@ class Langue
 
     end
 
-    # Methode privee pour l'initialisation
+    ##
+    # Constructeur de Langue
     def initialize()
 
       #@dico = Marshal.load( File.binread("../Parametres/Fr_fr.dump") )
@@ -421,18 +429,23 @@ STER Maxime
 
     end
 
+    ##
+    # A COMPLETER
     def tmpSaver (chemin)
       File.open(chemin, "wb") { |f| f.write(Marshal.dump(@dico) ) }
       @dico =  Marshal.load( File.binread(chemin) )
     end
 
+    ##
+    # A COMPLETER
     def gt(text)
       if ( @dico[text] == nil )
         return "UNDEF " + text.to_s
       end
       return @dico[text]
     end
-
+    ##
+    # A COMPLETER
     def to_s()
       return "#{@dico}"
     end

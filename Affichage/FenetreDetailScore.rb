@@ -3,10 +3,14 @@ require './Fenetre.rb'
 
 class FenetreDetailScore < Fenetre
 
+    ##
+    # Contructeur de FenetreDetailScore
     def initialize()
         self
     end
 
+    ##
+    # A COMPLETER
     def self.afficheToiSelec( lastView, numero)
         Fenetre.set_subtitle( @@lg.gt("DETAIL_SCORE") )
         Fenetre.add( FenetreDetailScore.new().creationInterface( lastView, numero ) )
@@ -45,6 +49,8 @@ class FenetreDetailScore < Fenetre
         return box
     end
 
+    ##
+    # A COMPLETER
     def creeScores(paliers, record, etoiles)
         puts etoiles
         box = Gtk::Box.new(:vertical)
@@ -78,6 +84,8 @@ class FenetreDetailScore < Fenetre
         return box
     end
 
+    ##
+    # A COMPLETER
     def creeLigneScore(temps, etoiles)
         box = Gtk::Box.new(:horizontal)
         setmargin(box, 4,4,0,0)
@@ -112,6 +120,8 @@ class FenetreDetailScore < Fenetre
         return box
     end
 
+    ##
+    # A COMPLETER
     def creeGrille( uneGrille )
         box = Gtk::Box.new(:vertical)
         setmargin(box,10,10,190,190)
@@ -147,6 +157,8 @@ class FenetreDetailScore < Fenetre
         return box
     end
 
+    ##
+    # A COMPLETER
     def creeCelluleGrille(color)
         if color <= 0
             color = ""

@@ -5,10 +5,14 @@ class SauvegardesParties
 
     @mesParties = nil
 
+    ##
+    # Constructeur de SauvegardesPartie
     def initialize()
         @mesParties = Array.new
     end
 
+    ##
+    # A COMPLETER
     def resetAll(unePartie)
         @mesParties = Array.new
         if(unePartie != nil)
@@ -16,22 +20,31 @@ class SauvegardesParties
         end
     end
 
+    ##
+    # Retourne une partie du table à un indice en paramètre
     def getPartie( indice )
         return @mesParties[indice]
     end
 
+    ##
+    # Ajoute une partie au tableau
     def ajouterSauvegardePartie( unePartie )
         @mesParties.push(unePartie)
     end
-
+    ##
+    # Supprime une partie du tableau
     def supprimerSauvegardePartie( unePartie )
         @mesParties.delete(unePartie)
     end
 
+    ##
+    # Retourne le nombre de parties sauvegardées
     def nbPartieSauvegarder()
         return @mesParties.size
     end
 
+    ##
+    # Retourne le nombre de parties sauvegardées en mode Libre
     def nbPartieSauvegarderLibre()
         compteur = 0;
         for i in 0...nbPartieSauvegarder
@@ -41,7 +54,7 @@ class SauvegardesParties
         end
         compteur
     end
-
+    ##
     # Methode qui permet de renvoyer un tableau 
     # qui indique si une grille est en cours ou pas
     def getListPartieLibreEnCours()
@@ -53,7 +66,7 @@ class SauvegardesParties
         end
         return monTab
     end
-
+    ##
     # Methode qui permet de retrouver si une sauvegarde
     # existe pour un numero de grille particulier
     # pour le mode libre
@@ -67,6 +80,8 @@ class SauvegardesParties
         return indice
     end
 
+    ##
+    # Retourne le nombre de parties sauvegardées en mode Survie
     def nbPartieSauvegarderSurvie()
         compteur = 0;
         for i in 0...nbPartieSauvegarder
@@ -77,6 +92,8 @@ class SauvegardesParties
         compteur
     end
 
+    ##
+    # Retourne l'indice de la première partie en mode Survie
     def getIndicePartieSauvegarderSurvie()
         for i in 0...nbPartieSauvegarder
             if @mesParties[i].getMode == Mode::SURVIE
@@ -86,6 +103,8 @@ class SauvegardesParties
         return -1;
     end
 
+    ##
+    # Retourne le nombre de parties sauvegardées en mode Contre La Montre
     def nbPartieSauvegarderContreLaMontre()
         compteur = 0;
         for i in 0...nbPartieSauvegarder
@@ -96,6 +115,8 @@ class SauvegardesParties
         compteur
     end
 
+    ##
+    # Retourne l'indice de la première partie en mode Contre La Montre
     def getIndicePartieSauvegarderContreLaMontre()
         for i in 0...nbPartieSauvegarder
             if @mesParties[i].getMode == Mode::CONTRE_LA_MONTRE
@@ -105,6 +126,8 @@ class SauvegardesParties
         return -1;
     end
 
+    ##
+    # Retourne le nombre de parties sauvegardées en mode Tutoriel
     def nbPartieSauvegarderTutoriel()
         compteur = 0;
         for i in 0...nbPartieSauvegarder
@@ -115,6 +138,8 @@ class SauvegardesParties
         compteur
     end 
 
+    ##
+    # Retourne l'indice de la première partie en mode Tutoriel
     def getIndicePartieSauvegarderTutoriel()
         for i in 0...nbPartieSauvegarder
             if @mesParties[i].getMode == Mode::TUTORIEL

@@ -28,6 +28,8 @@ class Fenetre1v1 < Fenetre
         return self
     end
 
+    ##
+    # A COMPLETER
     def self.getSocket()
         return @@socket
     end
@@ -261,10 +263,14 @@ class Fenetre1v1 < Fenetre
         return box
     end
 
+    ##
+    # A COMPLETER
     def threadAttenteClient
         
     end
 
+    ##
+    # Definir le titre de la fenêtre
     def titleLabel(unLabel)
         label = Gtk::Label.new()
         label.set_markup("<span size='25000' >" + unLabel.to_s + "</span>")

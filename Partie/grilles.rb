@@ -41,7 +41,7 @@
             [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::ILE_1, 1, 1), Case.creer(Couleur::NOIR, 2, 1),Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::NOIR, 4, 1)],
             [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::BLANC, 2, 2),Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::ILE_1, 4, 2)],
             [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::ILE_3, 1, 3), Case.creer(Couleur::BLANC, 2, 3),Case.creer(Couleur::NOIR, 3, 3), Case.creer(Couleur::NOIR, 4, 3)],
-            [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::NOIR, 2, 4),Case.creer(Couleur::ILE_2, 3, 4), Case.creer(Couleur::NOIR, 4, 4)]
+            [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::NOIR, 2, 4),Case.creer(Couleur::ILE_2, 3, 4), Case.creer(Couleur::BLANC, 4, 4)]
         ], [45,35,25]) )
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille

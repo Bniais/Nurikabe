@@ -54,14 +54,6 @@ class Cell < Gtk::Button
         end
     end
 
-    def resetCell()
-        self.name = "grid-cell"
-        if self.label == "●"
-            self.set_label("")
-        end
-
-    end
-
 end
 
 
@@ -441,10 +433,7 @@ class FenetrePartie < Fenetre
                                 @@maGrille[i][j].name = "grid-cell-portee-ile-black"
                             end
                         elsif @@maPartie.grilleEnCours.tabCases[i][j].estIle?
-
-
-                                @@maGrille[i][j].name = "grid-cell-portee-ile-ile"
-
+                                @@maGrille[i][j].name = "grid-cell-portee-ile-ile"                          
                         elsif @@maPartie.grilleEnCours.tabCases[i][j].couleur == Couleur::BLANC
                             if(@@maGrille[i][j].name.include?("red"))
                                 @@maGrille[i][j].name = "grid-cell-portee-ile-round-red"

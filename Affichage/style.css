@@ -37,7 +37,7 @@ separator {
 
 /* _____ Fenetre Partie _____ */
 
-#grid-cell,#grid-cell-ile, #grid-cell-block, #grid-cell-round , #grid-cell-red, #grid-cell-red-block,
+#grid-cell,#grid-cell-ile, #grid-cell-block, #grid-cell-round ,#grid-cell-round-red, #grid-cell-red, #grid-cell-red-block, #grid-cell-round-red
 #grid-cell-appartient-ile, #grid-cell-ile-appartient-ile,
 #grid-cell-portee-ile-round,#grid-cell-portee-ile-round-red,#grid-cell-portee-ile, #grid-cell-portee-ile-red, #grid-cell-portee-ile-ile, #grid-cell-portee-ile-black, #grid-cell-portee-ile-black-red{
     background-image: none;
@@ -59,7 +59,7 @@ separator {
 }
 
 /** red */
-#grid-cell-red, #grid-cell-portee-ile-round-red, #grid-cell-ile-red, #grid-cell-round-red, #grid-cell-portee-ile-red, #grid-cell-portee-ile-black-red, #grid-cell-red-block, #grid-cell-red-appartient{
+#grid-cell-red, #grid-cell-portee-ile-round-red,#grid-cell-portee-ile-ile-red, #grid-cell-ile-red, #grid-cell-round-red, #grid-cell-portee-ile-red, #grid-cell-portee-ile-black-red, #grid-cell-red-block, #grid-cell-red-appartient{
     border-color: red;
     border-width: 3px;
 }
@@ -79,11 +79,11 @@ separator {
 }
 
 #grid-cell-portee-ile-black, #grid-cell-portee-ile-black-red{
-    background:rgb(23, 20, 12);
+    background:rgb(56, 49, 29);
 }
 
 /* Iles */
-#grid-cell-portee-ile-ile, #grid-cell-ile-appartient-ile, #grid-cell-ile, #grid-cell-ile-red{
+#grid-cell-portee-ile-ile, #grid-cell-portee-ile-ile-red,  #grid-cell-ile-appartient-ile, #grid-cell-ile-appartient-ile-red, #grid-cell-ile, #grid-cell-ile-red{
     font-size: 35px;
 }
 
@@ -165,8 +165,6 @@ button:hover {
 messagedialog {
     font-size: 20px;
 }
-
-
 
 #text, #text *{
     font-size: 20px;

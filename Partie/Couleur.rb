@@ -11,6 +11,12 @@ class Couleur
     ILE_7 = 7
     ILE_8 = 8
     ILE_9 = 9
+    ILE_10 = 10
+    ILE_11 = 11
+    ILE_12 = 12
+    ILE_13 = 13
+    ILE_14 = 14
+    ILE_15 = 15
     ##
     #Permet de savoir si une case est une ile
     #Renvoi un booléen 

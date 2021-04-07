@@ -111,6 +111,16 @@
 
 
 
+        SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
+            [Case.creer(Couleur::ILE_1, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::NOIR, 4, 0)],
+            [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::BLANC, 2, 1),Case.creer(Couleur::BLANC, 3, 1), Case.creer(Couleur::NOIR, 4, 1)],
+            [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::BLANC, 2, 2),Case.creer(Couleur::ILE_6, 3, 2), Case.creer(Couleur::NOIR, 4, 2)],
+            [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::ILE_1, 1, 3), Case.creer(Couleur::NOIR, 2, 3),Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::NOIR, 4, 3)],
+            [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::NOIR, 2, 4),Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4)]
+        ], [45,35,25]) )
+
+        Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
+
 
 
 

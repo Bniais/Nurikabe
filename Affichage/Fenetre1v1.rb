@@ -170,6 +170,7 @@ class Fenetre1v1 < Fenetre
                                         puts "sad"
                                         @@socket.puts "im sad"
                                         @@socket.close
+                                        @@server.close
                                         break
                                     end
                                 end

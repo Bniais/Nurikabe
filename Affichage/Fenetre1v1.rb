@@ -12,6 +12,8 @@ class Fenetre1v1 < Fenetre
     @@socket = nil
     @@attente = nil
     @@server = nil
+    @@port = ""
+    @@ip = ""
     ##
     # Methode privee pour l'initialisation
     def initialize()
@@ -59,7 +61,6 @@ class Fenetre1v1 < Fenetre
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => @@lg.gt("RETOUR"))
         btnBack.name = "btnBack"
-        btnBack.signal_connect("clicked") { Fenetre.remove(box) ; lastView.afficheToi( nil ) ; }
         lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
@@ -84,6 +85,7 @@ class Fenetre1v1 < Fenetre
         ipEntry = Gtk::Entry.new()
         ipEntry.width_chars = 15
         ipEntry.max_length = 15
+        ipEntry.text = @@ip
         ipBox.add(ipEntry)
 
         vBox.add(ipBox)
@@ -99,6 +101,7 @@ class Fenetre1v1 < Fenetre
         portEntry = Gtk::Entry.new()
         portEntry.width_chars = 15
         portEntry.max_length = 15
+        portEntry.text = @@port
 
         portBox.add(portEntry)
 
@@ -123,9 +126,9 @@ class Fenetre1v1 < Fenetre
         
         #signals
         buttonHost.signal_connect("clicked"){
-            port = portEntry.text.to_i
-            if(port > 0 && port < 65536)
-                @@server = TCPServer.new (port)
+            @@port = portEntry.text
+            if(@@port.to_i > 0 && @@port.to_i < 65536)
+                @@server = TCPServer.new (@@port.to_i)
                 if(@@server != nil)
                     buttonHost.set_sensitive(false)
                     buttonJoin.set_sensitive(false)
@@ -137,6 +140,7 @@ class Fenetre1v1 < Fenetre
                     rescue
                         ipEntry.text = @@lg.gt("LOCAL_HOST")
                     end
+                    @@ip = ipEntry.text
 
                     if(@@attente != nil)
                         @@attente.exit
@@ -199,8 +203,8 @@ class Fenetre1v1 < Fenetre
         }
 
         buttonJoin.signal_connect("clicked"){
-            port = portEntry.text.to_i
-            if(port > 0 && port < 65536)
+            @@port = portEntry.text
+            if(@@port.to_i > 0 && @@port.to_i < 65536)
                 buttonHost.set_sensitive(false)
                 buttonJoin.set_sensitive(false)
                 ipEntry.editable = false
@@ -213,11 +217,12 @@ class Fenetre1v1 < Fenetre
                     end
 
                     if !!(ipEntry.text =~ Resolv::IPv4::Regex)
-                        @@socket = TCPSocket.new( ipEntry.text, portEntry.text.to_i)
+                        @@socket = TCPSocket.new( ipEntry.text, @@port.to_i)
                     else
                         ipEntry.text = @@lg.gt("LOCAL_HOST")
-                        @@socket = TCPSocket.new('localhost', portEntry.text.to_i)
+                        @@socket = TCPSocket.new('localhost', @@port.to_i)
                     end
+                    @@ip = ipEntry.text
 
                     if(@@socket != nil)
 
@@ -284,6 +289,8 @@ class Fenetre1v1 < Fenetre
             ipEntry.editable = true
             portEntry.editable = true
         }
+
+        btnBack.signal_connect("clicked") { Fenetre.remove(box) ; lastView.afficheToi( nil ) ; @@port = portEntry.text ; @@ip =  ipEntry.text}
 
 
         box.add(vBox)

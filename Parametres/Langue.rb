@@ -46,13 +46,13 @@ class Langue
 
     # Methode privee pour l'initialisation
     def initialize()
-      
+
       #@dico = Marshal.load( File.binread("../Parametres/Fr_fr.dump") )
 
 
-      
 
-     
+
+
       @dico = Hash.new
       @dico["IP"] = "IP"
       @dico["CONNECTION"] = "Connection"
@@ -118,6 +118,19 @@ class Langue
       @dico["NON"] = "No"
       @dico["REPRENDRE_SAUVEGARDE"] = "Do you want to resume your saving ?"
       @dico["PARTIE_TUTORIEL"] = "Tutorial"
+      @dico["ILE_1"] = "There is a cell next to an island with a value of 1, so it cannot be white"
+      @dico["ILE_ADJACENTE"] = "There is a cell next to two islands, so it cannot be white otherwise the two islands would touch"
+      @dico["ILE_ADJACENTE_DIAG"] ="There is a cell next to two islands, so it cannot be white otherwise the two islands would touch"
+      @dico["ILE_COMPLETE"] = "There is a cell next to a completed island, so it cannot be white otherwise the island would be too big"
+      @dico["CASE_ISOLEE"] = "There is an isolated cell: there is no path connecting it to an island "
+      @dico["EXPANSION_MUR"] = "There is a cell that has to be expanded to prevent a wall from being isolated"
+      @dico["CONTINUITE_MUR"] = "There is a cell that has to be expanded to prevent two walls from being separated"
+      @dico["EXPANSION_ILE"] = "There is a cell that has to be expanded for an island to develop"
+      @dico["EXPANSION_2D"] = "There is an almost finished island that can only expand in two direcitons, both having an adjacent cell in common that cannot be white"
+      @dico["EXPANSION_CACHEE"] = "There is a cell that has to be expanded for an island to develop enough"
+      @dico["EVITER_2x2"] = "There is almost a 2x2 wall block, so the remaining cell cannot be black"
+      @dico["CONTINUITE_ILE"] = "A white cell not connected to an island has to go through a cell to get to the island"
+      @dico["ILE_INATTEIGNABLE"] = "A cell is too far from any island and cannot be reached"
       @dico["APROPOSCONTENT"] = "
 Nurikabe (ぬりかべ) is a Japanese puzzle in the style of sudoku.
 
@@ -157,7 +170,7 @@ RICHEFEU Mattéo
 STER Maxime
 
       "
-     
+
       tmpSaver("../Parametres/EN_en.dump")
 
       @dico = Hash.new
@@ -225,6 +238,19 @@ STER Maxime
       @dico["NON"] = "No"
       @dico["REPRENDRE_SAUVEGARDE"] = "¿Quiere reanudar su ahorro?"
       @dico["PARTIE_TUTORIEL"] = "Tutorial"
+      @dico["ILE_1"] = "Il existe une case adjacente à une île de valeur 1, et qui ne peut donc pas être blanche"
+      @dico["ILE_ADJACENTE"] = "Il existe une case adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées"
+      @dico["ILE_ADJACENTE_DIAG"] ="Il existe une case adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées"
+      @dico["ILE_COMPLETE"] = "Il existe une case adjacente à une île complète, elle ne peut donc pas être blanche, sinon l'île déborderait"
+      @dico["CASE_ISOLEE"] = "Il existe une case isolée : il n'y a aucun chemin qui la mène vers une île"
+      @dico["EXPANSION_MUR"] = "Il existe une case d'expansion obligée pour éviter qu'un mur se retrouve isolé"
+      @dico["CONTINUITE_MUR"] = "Il existe une case d'expansion obligée pour éviter que deux murs soient séparés"
+      @dico["EXPANSION_ILE"] = "Il existe une case d'expansion obligée pour qu'une île se développe"
+      @dico["EXPANSION_2D"] = "Il existe une île presque terminée qui ne peut s'étendre que dans deux direction, les deux ayant une case adjacente en commun qui ne pourra donc pas être blanche"
+      @dico["EXPANSION_CACHEE"] = "Il existe une case d'expansion obligée pour qu'une île se dévelope assez"
+      @dico["EVITER_2x2"] = "Il y a un presque un bloc de mur 2x2, la case restante ne peut donc pas être noire"
+      @dico["CONTINUITE_ILE"] = "Une case blanche qui n'est pas reliée à une île passe nécessairement par une case pour rejoindre l'île"
+      @dico["ILE_INATTEIGNABLE"] = "Une case est trop loin de toute île et est donc inatteignable"
       @dico["APROPOSCONTENT"] = "
 Nurikabe (ぬりかべ) es un rompecabezas japonés al estilo del sudoku.
 
@@ -331,6 +357,20 @@ STER Maxime
       @dico["NON"] = "Non"
       @dico["REPRENDRE_SAUVEGARDE"] = "Voulez-vous reprendre la sauvegarde ?"
       @dico["PARTIE_TUTORIEL"] = "Tutoriel"
+      @dico["ILE_1"] = "Il existe une case adjacente à une île de valeur 1, et qui ne peut donc pas être blanche"
+      @dico["ILE_ADJACENTE"] = "Il existe une case adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées"
+      @dico["ILE_ADJACENTE_DIAG"] ="Il existe une case adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées"
+      @dico["ILE_COMPLETE"] = "Il existe une case adjacente à une île complète, elle ne peut donc pas être blanche, sinon l'île déborderait"
+      @dico["CASE_ISOLEE"] = "Il existe une case isolée : il n'y a aucun chemin qui la mène vers une île"
+      @dico["EXPANSION_MUR"] = "Il existe une case d'expansion obligée pour éviter qu'un mur se retrouve isolé"
+      @dico["CONTINUITE_MUR"] = "Il existe une case d'expansion obligée pour éviter que deux murs soient séparés"
+      @dico["EXPANSION_ILE"] = "Il existe une case d'expansion obligée pour qu'une île se développe"
+      @dico["EXPANSION_2D"] = "Il existe une île presque terminée qui ne peut s'étendre que dans deux direction, les deux ayant une case adjacente en commun qui ne pourra donc pas être blanche"
+      @dico["EXPANSION_CACHEE"] = "Il existe une case d'expansion obligée pour qu'une île se dévelope assez"
+      @dico["EVITER_2x2"] = "Il y a un presque un bloc de mur 2x2, la case restante ne peut donc pas être noire"
+      @dico["CONTINUITE_ILE"] = "Une case blanche qui n'est pas reliée à une île passe nécessairement par une case pour rejoindre l'île"
+      @dico["ILE_INATTEIGNABLE"] = "Une case est trop loin de toute île et est donc inatteignable"
+
       @dico["APROPOSCONTENT"] = "
 Le Nurikabe (ぬりかべ) est un puzzle japonais dans le style du sudoku.
 
@@ -377,8 +417,8 @@ STER Maxime
       @langues = ["Français", "English", "Español"]
       @fichiersLangues = ["../Parametres/FR_fr.dump", "../Parametres/EN_en.dump" , "../Parametres/ES_es.dump"]
       @langueActuelle = 0
-     
-      
+
+
     end
 
     def tmpSaver (chemin)

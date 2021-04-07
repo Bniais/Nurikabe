@@ -40,5 +40,5 @@ class Indice
 		"Il existe une case d'expension obligée pour qu'une île se dévellope assez",
 		"Il y a un presque un bloc de mur 2x2, la case restante ne peut donc pas être noire",
 		"Une case blanche qui n'est pas reliée à une île passe nécessairement par une case pour rejoindre l'île",
-		"Une case est trop loin de toutes île et est donc inatteignable"]
+		"Une case est trop loin de toute île et est donc inatteignable"]
 end

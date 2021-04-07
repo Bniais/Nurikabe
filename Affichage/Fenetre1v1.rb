@@ -170,7 +170,9 @@ class Fenetre1v1 < Fenetre
                                         puts "sad"
                                         @@socket.puts "im sad"
                                         @@socket.close
+                                        @@socket = nil
                                         @@server.close
+                                        @@server = nil
                                         break
                                     end
                                 end
@@ -243,6 +245,7 @@ class Fenetre1v1 < Fenetre
                                     puts "sad"
                                     @@socket.puts "im sad"
                                     @@socket.close
+                                    @@socket = nil
                                     break
                                 end
                                 

@@ -248,14 +248,17 @@ class FenetreMenu < Fenetre
             Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
-            indiceRand = rand(1..(nbGrille/3)) #TOTEST si 1/3
+            indiceRand = rand(1..(nbGrille/3))
+    
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
         hBox.children[1].signal_connect("clicked"){
             Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
-            indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))#TOTEST si 1/3
+            indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))
+            
+
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
 
@@ -263,7 +266,8 @@ class FenetreMenu < Fenetre
             Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
-            indiceRand = rand((1+2*nbGrille/3)..nbGrille)#TOTEST si 1/3
+            indiceRand = rand((1+2*nbGrille/3)..nbGrille)
+
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
 
@@ -302,22 +306,121 @@ class FenetreMenu < Fenetre
             Fenetre.remove(box);
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
-            indiceRand = rand(1..(nbGrille/3))
+            gridsId = (1..(nbGrille/3)).to_a.shuffle
+            puts gridsId
+            indiceRand = -1
+            gridsId.each{ |id|
+                if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 0)
+                    indiceRand = id
+                    break
+                end
+            }
+
+            if(indiceRand == -1 )
+                gridsId.each{ |id|
+                    if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 1)
+                        indiceRand = id
+                        break
+                    end
+                }
+            end
+
+            if(indiceRand == -1 )
+                gridsId.each{ |id|
+                    if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 2)
+                        indiceRand = id
+                        break
+                    end
+                }
+            end
+
+            if(indiceRand == -1 )
+                indiceRand = gridsId[0]
+            end
+
+
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
         hBox.children[1].signal_connect("clicked"){
             Fenetre.remove(box);
 
+
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
-            indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))
+            gridsId = ((1 + nbGrille/3)..(2*nbGrille/3)).to_a.shuffle
+            puts gridsId
+            indiceRand = -1
+            gridsId.each{ |id|
+                if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 0)
+                    indiceRand = id
+                    break
+                end
+            }
+
+            if(indiceRand == -1 )
+                gridsId.each{ |id|
+                    if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 1)
+                        indiceRand = id
+                        break
+                    end
+                }
+            end
+
+            if(indiceRand == -1 )
+                gridsId.each{ |id|
+                    if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 2)
+                        indiceRand = id
+                        break
+                    end
+                }
+            end
+
+            if(indiceRand == -1 )
+                indiceRand = gridsId[0]
+            end
+
+            
+
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
 
         hBox.children[2].signal_connect("clicked"){
             Fenetre.remove(box);
 
+            
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
-            indiceRand = rand((1+2*nbGrille/3)..nbGrille)
+            gridsId = ((1 + 2*nbGrille/3)..nbGrille).to_a.shuffle
+            puts gridsId
+            indiceRand = -1
+            gridsId.each{ |id|
+                if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 0)
+                    indiceRand = id
+                    break
+                end
+            }
+
+            if(indiceRand == -1 )
+                gridsId.each{ |id|
+                    if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 1)
+                        indiceRand = id
+                        break
+                    end
+                }
+            end
+
+            if(indiceRand == -1 )
+                gridsId.each{ |id|
+                    if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 2)
+                        indiceRand = id
+                        break
+                    end
+                }
+            end
+
+            if(indiceRand == -1 )
+                indiceRand = gridsId[0]
+            end
+            
+
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
 

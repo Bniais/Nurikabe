@@ -1,5 +1,5 @@
 # Classe qui gere les langues
-
+0
 class Langue
     # nom de la langue
     attr_reader :langues, :langueActuelle
@@ -76,6 +76,7 @@ class Langue
       @dico["AVANCEMENT_ENEMY"] = "Its advancement :    "
       @dico["GRILLE_TERMINEE"] = " finished grid"
       @dico["GRILLES_TERMINEES"] = " finished grids"
+      @dico["DETAIL_SCORE"] = "Score details"
 
       @dico["MESSAGE_DE_VICTOIRE"] = "Congratulations! You've won!"
       @dico["LIBRE"] = "Free play"
@@ -200,6 +201,7 @@ STER Maxime
       @dico["AVANCEMENT_ENEMY"] = "Su avance :    "
       @dico["GRILLE_TERMINEE"] = " rejilla terminada"
       @dico["GRILLES_TERMINEES"] = " rejillas terminadas"
+      @dico["DETAIL_SCORE"] = "Detalles de la puntuación"
 
       @dico["MESSAGE_DE_VICTOIRE"] = "¡Felicidades! Has ganado!"
       @dico["LIBRE"] = "Juego libre"
@@ -324,6 +326,7 @@ STER Maxime
       @dico["AVANCEMENT_ENEMY"] = "Son avancement :    "
       @dico["GRILLE_TERMINEE"] = " grille terminée"
       @dico["GRILLES_TERMINEES"] = " grilles terminées"
+      @dico["DETAIL_SCORE"] = "Détails du score"
 
       @dico["LIBRE"] = "Libre"
       @dico["CONTRELAMONTRE"] = "Contre-La-Montre"

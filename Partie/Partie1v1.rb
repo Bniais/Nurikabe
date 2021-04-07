@@ -56,7 +56,6 @@ class Partie1v1 < Partie
       tabCoup.push(coup)
       @indiceCoup += 1
 
-      FenetrePartie.getInstance.setAvancementSelf(@grilleEnCours.getPourcentage(@grilleBase, coup.case))
       socket = Fenetre1v1.getSocket
       if(socket != nil)
         socket.puts ("av" + @grilleEnCours.getPourcentage(@grilleBase, nil).to_s )

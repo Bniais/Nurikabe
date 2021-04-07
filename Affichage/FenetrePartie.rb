@@ -158,37 +158,29 @@ class FenetrePartie < Fenetre
         nomGrille.set_markup("<span size='25000' > " + @@lg.gt("GRILLE") + " #" + @@maPartie.grilleBase.numero.to_s + "</span>")
         nomGrille.halign = :end
 
-        boxTop.add( nomGrille)
+        
         
         if(@@maPartie.getMode == Mode::VS)
+            boxTop.add( nomGrille)
             labelBox = Gtk::Box.new(:vertical)
             labelBox.set_homogeneous(true)
             
-            labelProgressSelf = Gtk::Label.new(@@lg.gt("AVANCEMENT_SELF"))
-            labelProgressSelf.halign = :end
-            labelProgressSelf.valign = :center
 
             labelProgressEnemy = Gtk::Label.new(@@lg.gt("AVANCEMENT_ENEMY"))
             labelProgressEnemy.halign = :end
             labelProgressEnemy.valign = :center
+            labelProgressEnemy.name = "avancementLabel"
 
-
-            labelBox.add(labelProgressSelf)
             labelBox.add(labelProgressEnemy)
 
 
             progressBox = Gtk::Box.new(:vertical)
             progressBox.set_homogeneous(true)
 
-            @progressSelf = Gtk::ProgressBar.new()
-            @progressSelf.halign = :start
-            @progressSelf.valign = :center
-
             @progressEnemy = Gtk::ProgressBar.new()
             @progressEnemy.halign = :start
             @progressEnemy.valign = :center
 
-            progressBox.add(@progressSelf)
             progressBox.add(@progressEnemy)
 
             boxTop.add (labelBox)
@@ -199,6 +191,7 @@ class FenetrePartie < Fenetre
 
 
         elsif(@@maPartie.getMode == Mode::SURVIE)
+            boxTop.add( nomGrille)
             #boxTop.add(Gtk::Label.new(""))
             label =Gtk::Label.new(@@maPartie.getNbGrilleFinis.to_s + (@@maPartie.getNbGrilleFinis < 2 ? @@lg.gt("GRILLE_TERMINEE") : @@lg.gt("GRILLES_TERMINEES")) )
             label.halign= :end
@@ -207,7 +200,17 @@ class FenetrePartie < Fenetre
             boxTop.add(label)        
             boxTop.set_margin_left 120
             boxTop.set_margin_right 120
+         elsif(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
+            boxTop.add(Gtk::Label.new(""))
+            boxTop.add( nomGrille)
+            @labelStars = Gtk::Label.new("★★★")
+            @labelStars.halign= :end
+            @labelStars.set_margin_right(68)
+            nomGrille.halign = :center
+            @labelStars.name = "stars-actuelles"
+            boxTop.add(@labelStars)        
         else
+            boxTop.add( nomGrille)
             nomGrille.halign = :center
         end
   
@@ -271,10 +274,6 @@ class FenetrePartie < Fenetre
         puts avancement
         puts avancement.to_f
         @progressEnemy.fraction = avancement.to_f
-    end
-
-    def setAvancementSelf(avancement)
-        @progressSelf.fraction = avancement
     end
 
     def perdreMsg
@@ -556,50 +555,6 @@ class FenetrePartie < Fenetre
         end
     end
 
-=begin
-    def afficherMur2x2()
-        res = @@maPartie.afficherMur2x2
-        for i in 0...@@maPartie.grilleEnCours.tabCases.size
-            for j in 0...@@maPartie.grilleEnCours.tabCases.size
-                if(res[i][j] > 0)
-                    #changer style
-
-                    if(j-1 < 0 || !res[i][j-1]) #pas noir en haut
-                        if(i-1 < 0  || res[i-1][j] != res[i][j]) #pas noir à gauche
-                            #top-left : rien en haut et à gauche
-                            @@maGrille[i][j].name = "top-left"
-                        elsif(i+1 >= @@maPartie.grilleEnCours.tabCases.size || res[i+1][j] != res[i][j])#pas noir à droite
-                            #top-right : rien en haut et à droite
-                             @@maGrille[i][j].name = "top-right"
-                        else
-                            #top : rien en haut et des choses sur le côté
-                             @@maGrille[i][j].name = "top"
-                        end
-
-                    elsif(j-1 < 0 || !res[i][j-1]) #pas noir en bas
-                        if(i-1 < 0 || !res[i-1][j]) #pas noir à gauche
-                            #bot-left : rien en haut et à gauche
-                            @@maGrille[i][j].name = "bot-left"
-                        elsif(i+1 >= @@maPartie.grilleEnCours.tabCases.size || res[i+1][j] != res[i][j])#pas noir à droite
-                            #bot-right : rien en haut et à droite
-                             @@maGrille[i][j].name = "bot-right"
-                        else
-                            #bot : rien en haut et des choses sur le côté
-                             @@maGrille[i][j].name = "bot"
-                        end
-                    elsif(i-1 < 0 || !res[i-1][j]) #pas noir à gauche
-                        #left : noir en bas et haut mais pas gauche
-                        @@maGrille[i][j].name = "left"
-                    elsif(i+1 >= @@maPartie.grilleEnCours.tabCases.size || res[i+1][j] != res[i][j]) #pas noir à droite
-                        #right : noir en bas et haut mais pas droite
-                        @@maGrille[i][j].name = "right"
-                    end
-
-                end
-            end
-        end
-    end
-=end
 
     # Methode qui permet de cree
     # une cellule destiner a la grille
@@ -986,6 +941,21 @@ class FenetrePartie < Fenetre
                     else
                         @indiceMalusPopover += 1
                     end
+                end
+
+                #stars
+                if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE && @indiceRespiration%5==0)
+                    nbRecompense = @@maPartie.getNbRecompense
+                    msg = ""
+                    for i in 0..2
+                        if(i<nbRecompense)
+                            msg += "★"
+                        else
+                            msg += "☆"
+                        end
+                    end
+
+                    @labelStars.label = msg
                 end
 
                 sleep(0.1)

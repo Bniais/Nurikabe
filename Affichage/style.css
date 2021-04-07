@@ -235,7 +235,7 @@ popover *{
     font-size: 1.7em;
 }
 
-#stars, #stars-detail{
+#stars, #stars-detail,#stars-actuelles{
     color:rgb(221, 187, 34);
 }
 
@@ -254,9 +254,17 @@ checkbutton *{
 
 progressbar, progressbar*{
     color :aqua;
-    min-height: 16px;
+    min-height: 24px;
 }
 
 #grillesTerminees{
     font-size: 2em;
+}
+
+#avancementLabel{
+    font-size: 1.5em;
+}
+
+#stars-actuelles{
+    font-size: 3em;
 }

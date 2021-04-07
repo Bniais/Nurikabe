@@ -97,11 +97,6 @@ class FenetreParametre < Fenetre
         stack.add_named(vueInterface, title)
         stack.child_set_property(vueInterface, "title", title)
 
-        # AUDIO
-        title = @@lg.gt("AUDIO")
-        vueAudio = creationVueAudio
-        stack.add_named(vueAudio, title)
-        stack.child_set_property(vueAudio, "title", title)
        
         if fromLangue
             puts "from"
@@ -144,12 +139,6 @@ class FenetreParametre < Fenetre
         @switchAffichagePortee.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_affichagePortee(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("AFFICHERPORTER") + " :" , @switchAffichagePortee) ) #ADD
 
-        # AIDE MURS 2x2
-        @switch2x2 = Gtk::Switch.new()
-        @switch2x2.halign = :start
-        @switch2x2.set_active( Sauvegardes.getInstance.getSauvegardeParametre.mur2x2? )
-        @switch2x2.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_mur2x2(s.active?) }
-        box.add( creationBoxVerticalPourVue(@@lg.gt("MURS2x2") + " :" , @switch2x2) ) #ADD
         return box
     end
 
@@ -252,14 +241,6 @@ class FenetreParametre < Fenetre
             Fenetre.show_all
         }
 
-        # IMPORT LANGUE
-        picker = Gtk::FileChooserButton.new(@@lg.gt("CHOISIRFICHIER"),:open)
-        picker.signal_connect("file-set"){Sauvegardes.getInstance.getSauvegardeLangue.importer(picker.filename)}
-
-        picker.halign = :fill
-        picker.local_only = true
-        box.add( creationBoxVerticalPourVue(@@lg.gt("IMPORTERLANGUE") + " :" , picker) ) #ADD
-
         return box
     end
 
@@ -269,19 +250,6 @@ class FenetreParametre < Fenetre
     def switchModeSombre(s)
         Fenetre.set_modeSombre(s.active?)
     end
-
-    ##
-    # Methode qui creer la vue 'audio'
-    private
-    def creationVueAudio
-        box = Gtk::Box.new(:vertical)
-        title = Gtk::Label.new()
-        title.set_markup("<span size='25000'>" + @@lg.gt("AUDIO") + "</span>")
-        setmargin(title,15,10,0,0)
-        box.add(title)
-        return box
-    end
-
 
 
     ##

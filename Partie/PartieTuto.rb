@@ -2,17 +2,17 @@ class PartieTuto < Partie
   private_class_method :new
   attr_accessor :grille, :progression, :senarios
   ##
-  #ceer une partie en mode survie
+  #Creer une partie en mode survie
   def PartieTuto.creer(grille)
     new(grille)
   end
   ##
-  #Contructeur de PartieTuto
+  #Constructeur de PartieTuto
   def initalize()
     super(grille)
   end
   ##
-  #Tire lla prochaine grille
+  #Tire la prochaine grille
   def grilleSuivante()
     return nil
     #redef

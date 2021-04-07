@@ -1,7 +1,7 @@
 require_relative "PartieMalus.rb"
 class PartieSurvie < PartieMalus
     ##
-    #ceer une partie en mode survie
+    #Creer une partie en mode survie
     def PartieSurvie.creer(grille)
       new(grille)
     end
@@ -41,7 +41,7 @@ class PartieSurvie < PartieMalus
     end
 
     ##
-    #Tire lla prochaine grille
+    #Tire la prochaine grille
     def grilleSuivante()
       @nbGrilleFinis += 1
       indice = @grilles.delete_at(0)

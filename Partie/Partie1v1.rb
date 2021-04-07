@@ -39,14 +39,20 @@ class Partie1v1 < Partie
     return term == 0
   end
 
+  ##
+  # A COMPLETER
   def verifierErreur(fromUser)#TOTEST
     return 0
   end   
   
+  ##
+  # A COMPLETER
   def revenirPositionBonne() #TOTEST
     self
   end
 
+  ##
+  # A COMPLETER
   def donneIndice()
     nil
   end

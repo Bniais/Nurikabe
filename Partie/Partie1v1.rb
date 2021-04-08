@@ -31,8 +31,6 @@ class Partie1v1 < Partie
         if(socket != nil)
           mettrePause
           socket.puts ("ez" + Chrono.getTpsFormatPrecis(@chrono.time))
-        else
-            puts "aieTE"
         end
     end
 
@@ -51,7 +49,7 @@ class Partie1v1 < Partie
   def ajouterCoup(coup)
      if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1) 
       coup.case.couleur = coup.couleur
-
+      @grilleRaz = nil
       tabCoup.pop(tabCoup.size - @indiceCoup) #supprimer les coups annulés
       tabCoup.push(coup)
       @indiceCoup += 1
@@ -59,13 +57,79 @@ class Partie1v1 < Partie
       socket = Fenetre1v1.getSocket
       if(socket != nil)
         socket.puts ("av" + @grilleEnCours.getPourcentage(@grilleBase, nil).to_s )
-      else
-          puts "aieAJ"
       end
 
       return true
     end
     return false
+  end
+
+  ##
+  # Methode qui revient en avant(le coup)
+  def retourAvant()#TOTEST
+    if(@indiceCoup < tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
+      #On annule en passant au coup suivant
+      coupSuivant = tabCoup.at(@indiceCoup)
+      @grilleEnCours.tabCases[coupSuivant.case.positionY][coupSuivant.case.positionX].setCouleur(coupSuivant.couleur)
+      @grilleRaz = nil
+
+      @indiceCoup += 1 #On passe au coup suivant
+
+      socket = Fenetre1v1.getSocket
+      if(socket != nil)
+        socket.puts ("av" + @grilleEnCours.getPourcentage(@grilleBase, nil).to_s )
+      end
+    end
+
+    return [peutRetourAvant?, coupSuivant.case] #Pour dire aux fonctions appelantes si on peut encore aller en avant
+  end
+
+  ##
+  # Methode qui retourne en arrière (le coup)
+  def retourArriere()#TOTEST
+    if(@grilleRaz != nil)
+      @grilleEnCours = Marshal.load(Marshal.dump(@grilleRaz))    
+      @tabCoup = Marshal.load(Marshal.dump(@tabCoupRaz))
+      @indiceCoup = Marshal.load(Marshal.dump(@indiceCoupRaz))
+
+      @grilleRaz = nil
+
+      socket = Fenetre1v1.getSocket
+      if(socket != nil)
+        socket.puts ("av" + @grilleEnCours.getPourcentage(@grilleBase, nil).to_s )
+      end
+      return nil
+    else
+      if(@indiceCoup > 0) #vérification normalement inutile puisque le bouton devrait être disable
+        coupPrecedent = tabCoup.at(@indiceCoup-1)
+        @grilleEnCours.tabCases[coupPrecedent.case.positionY][coupPrecedent.case.positionX].setCouleur(coupPrecedent.couleurBase)
+        
+        @indiceCoup -= 1 #On passe au coup précédent  
+        socket = Fenetre1v1.getSocket
+        if(socket != nil)
+          socket.puts ("av" + @grilleEnCours.getPourcentage(@grilleBase, nil).to_s )
+        end
+        return [peutRetourArriere?, coupPrecedent.case]  
+      end
+      return nil#Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
+    end
+  end
+
+  ##
+  #Remet a 0 une grille
+  def raz()#TOTEST
+    @grilleRaz = Marshal.load(Marshal.dump(@grilleEnCours))
+    @indiceCoupRaz = Marshal.load(Marshal.dump(@indiceCoup))
+    @tabCoupRaz = Marshal.load(Marshal.dump(@tabCoup))
+
+    @grilleEnCours.raz()
+    @indiceCoup = 0
+    @tabCoup = Array.new(0);
+
+    socket = Fenetre1v1.getSocket
+    if(socket != nil)
+      socket.puts ("av" + @grilleEnCours.getPourcentage(@grilleBase, nil).to_s )
+    end
   end
   
   ##

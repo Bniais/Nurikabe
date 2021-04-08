@@ -105,7 +105,6 @@ class FenetrePartie < Fenetre
 
 
         @@maFenetrePartie.threadChronometre
-        puts self
         return self
     end
 
@@ -271,8 +270,6 @@ class FenetrePartie < Fenetre
     end
 
     def setAvancementEnemy(avancement)
-        puts avancement
-        puts avancement.to_f
         @progressEnemy.fraction = avancement.to_f
     end
 
@@ -290,7 +287,6 @@ class FenetrePartie < Fenetre
     end
 
     def decoMsg
-        puts "deco msg"
         if(@@maPartie != nil)
             if(@popover != nil)
                 @popover.visible = false
@@ -352,8 +348,6 @@ class FenetrePartie < Fenetre
                 socket = Fenetre1v1.getSocket
                 if(socket != nil)
                     socket.puts "dc"
-                else
-                    puts "aieFP"
                 end
             end
             quitter
@@ -708,14 +702,32 @@ class FenetrePartie < Fenetre
     def retourArriere
         enleverPortee(nil, nil)
         cacherNbErreur
-        enableBtn(@btnRedo)
+
         statut = @@maPartie.retourArriere
-        @@maGrille[statut[1].positionY][statut[1].positionX].changerStatut( @@maPartie.grilleEnCours.tabCases[statut[1].positionY][statut[1].positionX].couleur, true )
-        if statut[0] == false
-             disableBtn(@btnUndo);
-             disableBtn(@btnUndoUndo);
+
+        if(statut != nil)
+            enableBtn(@btnRedo)
+            
+            @@maGrille[statut[1].positionY][statut[1].positionX].changerStatut( @@maPartie.grilleEnCours.tabCases[statut[1].positionY][statut[1].positionX].couleur, true )
+            if statut[0] == false
+                disableBtn(@btnUndo);
+                disableBtn(@btnUndoUndo);
+            end
+            disableBtn(@btnHelpLocation)
+        else
+            if(@@maPartie.peutRetourArriere?)
+                enableBtn(@btnUndo)
+            else
+                disableBtn(@btnUndo)
+            end
+
+            if(@@maPartie.peutRetourAvant?)
+                enableBtn(@btnRedo)
+            else
+                disableBtn(@btnRedo)
+            end
+            enleverNbCase
         end
-        disableBtn(@btnHelpLocation)
     end
 
     private 
@@ -847,10 +859,11 @@ class FenetrePartie < Fenetre
                 @@maGrille[i][j].changerStatut(@@maPartie.grilleEnCours.tabCases[i][j].couleur, true)
             end
         end
-        disableBtn(@btnUndo)
+        #disableBtn(@btnUndo)
         disableBtn(@btnRedo)
         disableBtn(@btnUndoUndo)
         disableBtn(@btnHelpLocation)
+        enableBtn(@btnUndo)
     end
 
     # EVENT VERIFIER LA GRILLE

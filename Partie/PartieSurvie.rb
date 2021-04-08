@@ -43,6 +43,7 @@ class PartieSurvie < PartieMalus
     ##
     #Tire la prochaine grille
     def grilleSuivante()
+      @grilleRaz = nil
       @nbGrilleFinis += 1
       indice = @grilles.delete_at(0)
       if(indice == nil)

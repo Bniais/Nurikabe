@@ -118,13 +118,6 @@ class FenetreParametre < Fenetre
 
         box.add(title) #ADD
 
-        # AIDE CASES GRISES
-        @switchCaseGrises = Gtk::Switch.new()
-        @switchCaseGrises.halign = :start
-        @switchCaseGrises.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
-        @switchCaseGrises.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?) }
-        box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , @switchCaseGrises) ) #ADD
-
         # AIDE COMPTEUR D'ILOT
         @switchCompteurIlot = Gtk::Switch.new()
         @switchCompteurIlot.halign = :start
@@ -224,6 +217,13 @@ class FenetreParametre < Fenetre
         @switchDarkMode.set_active( Sauvegardes.getInstance.getSauvegardeParametre.modeSombre? )
         @switchDarkMode.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_modeSombre(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("MODESOMBRE") + " :" , @switchDarkMode) ) #ADD
+
+        # AIDE CASES GRISES
+        @switchCaseGrises = Gtk::Switch.new()
+        @switchCaseGrises.halign = :start
+        @switchCaseGrises.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
+        @switchCaseGrises.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?) }
+        box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , @switchCaseGrises) ) #ADD
 
         # CHOOSE LANGUE
         combo = Gtk::ComboBoxText.new()

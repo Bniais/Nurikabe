@@ -18,11 +18,13 @@ class Partie
   #Constructeur de Grille
   def initialize(grille) #Créer une nouvelle partie
     @grilleBase = grille
-   
+    @grilleRaz = nil
     @tabCoup = Array.new(0);
+    @tabCoupRaz = nil
 
     @nbAideUtilise = 0
     @indiceCoup = 0
+    @indiceCoupRaz = nil
     @chrono = Chrono.creer()
     @chrono.demarrer()
 
@@ -49,19 +51,29 @@ class Partie
   end
 
   def peutRetourArriere?()
-    return @indiceCoup > 0
+    return @indiceCoup > 0 || @grilleRaz != nil
   end
 
   ##
   # Methode qui retourne en arrière (le coup)
   def retourArriere()#TOTEST
-    if(@indiceCoup > 0) #vérification normalement inutile puisque le bouton devrait être disable
-      coupPrecedent = tabCoup.at(@indiceCoup-1)
-      coupPrecedent.case.setCouleur(coupPrecedent.couleurBase)
-      
-      @indiceCoup -= 1 #On passe au coup précédent    
+    if(@grilleRaz != nil)
+      @grilleEnCours = Marshal.load(Marshal.dump(@grilleRaz))    
+      @tabCoup = Marshal.load(Marshal.dump(@tabCoupRaz))
+      @indiceCoup = Marshal.load(Marshal.dump(@indiceCoupRaz))
+
+      @grilleRaz = nil
+      return nil
+    else
+      if(@indiceCoup > 0) #vérification normalement inutile puisque le bouton devrait être disable
+        coupPrecedent = tabCoup.at(@indiceCoup-1)
+        @grilleEnCours.tabCases[coupPrecedent.case.positionY][coupPrecedent.case.positionX].setCouleur(coupPrecedent.couleurBase)
+        
+        @indiceCoup -= 1 #On passe au coup précédent  
+        return [peutRetourArriere?, coupPrecedent.case]  
+      end
+      return nil#Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
     end
-    return [peutRetourArriere?, coupPrecedent.case] #Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
   end
 
   ##
@@ -77,8 +89,8 @@ class Partie
     if(@indiceCoup < tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
       #On annule en passant au coup suivant
       coupSuivant = tabCoup.at(@indiceCoup)
-      coupSuivant.case.setCouleur(coupSuivant.couleur)
-      
+      @grilleEnCours.tabCases[coupSuivant.case.positionY][coupSuivant.case.positionX].setCouleur(coupSuivant.couleur)
+      @grilleRaz = nil
 
       @indiceCoup += 1 #On passe au coup suivant
     end
@@ -100,6 +112,7 @@ class Partie
   ##
   #Tire lla prochaine grille
   def grilleSuivante()
+    @grilleRaz = nil
     return nil #pas de prochaine
   end
 
@@ -112,7 +125,7 @@ class Partie
   def ajouterCoup(coup)#TOTEST
     if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1) 
       coup.case.couleur = coup.couleur
-
+      @grilleRaz = nil
       tabCoup.pop(tabCoup.size - @indiceCoup) #supprimer les coups annulés
       tabCoup.push(coup)
       @indiceCoup += 1
@@ -125,6 +138,10 @@ class Partie
   ##
   #Remet a 0 une grille
   def raz()#TOTEST
+    @grilleRaz = Marshal.load(Marshal.dump(@grilleEnCours))
+    @indiceCoupRaz = Marshal.load(Marshal.dump(@indiceCoup))
+    @tabCoupRaz = Marshal.load(Marshal.dump(@tabCoup))
+
     @grilleEnCours.raz()
     @indiceCoup = 0
     @tabCoup = Array.new(0);

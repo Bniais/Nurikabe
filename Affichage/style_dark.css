@@ -19,12 +19,11 @@ separator {
     color: rgb(156, 156, 156);
     transition-duration: 0.5s
 }
-
-
 /* _____ Fenetre Partie _____ */
 
-#grid-cell,#grid-cell-ile, #grid-cell-block, #grid-cell-round , #grid-cell-red, #grid-cell-red-block,
-#grid-cell-appartient-ile, #grid-cell-ile-appartient-ile,  
+#grid-cell-portee-ile-ile-small,  #grid-cell-ile-appartient-ile-small, #grid-cell-ile-small,
+#grid-cell,#grid-cell-ile, #grid-cell-block, #grid-cell-round ,#grid-cell-round-red, #grid-cell-red, #grid-cell-red-block, #grid-cell-round-red
+#grid-cell-appartient-ile, #grid-cell-ile-appartient-ile,
 #grid-cell-portee-ile-round,#grid-cell-portee-ile-round-red,#grid-cell-portee-ile, #grid-cell-portee-ile-red, #grid-cell-portee-ile-ile, #grid-cell-portee-ile-black, #grid-cell-portee-ile-black-red{
     background-image: none;
     border-width: 1px;
@@ -35,32 +34,21 @@ separator {
 }
 
 
-#grid-cell-ile-appartient-ile{
-    font-size: 35px;
-}
-
 /** black */
 
 #grid-cell-block,#grid-cell-red-block{
-     background:  rgb(49, 49, 49);
+    background:  rgb(49, 49, 49);
 }
-
-/** red */
-#grid-cell-red, #grid-cell-portee-ile-round-red, #grid-cell-ile-red, #grid-cell-round-red, #grid-cell-portee-ile-red, #grid-cell-portee-ile-black-red, #grid-cell-red-block, #grid-cell-red-appartient{
-    border-color: red;
-    border-width: 3px;
-}
-
 
 /** nbBlocIle */
-#grid-cell-appartient-ile, #grid-cell-ile-appartient-ile, #grid-cell-red-appartient{
+#grid-cell-appartient-ile, #grid-cell-ile-appartient-ile, #grid-cell-ile-appartient-ile-small, #grid-cell-red-appartient{
 
     background:rgb(152, 168, 186);
     font-size: 22px;
 }
 
 /** Portee Ile */
-#grid-cell-portee-ile,#grid-cell-portee-ile-round,#grid-cell-portee-ile-round-red, #grid-cell-portee-ile-red, #grid-cell-portee-ile-ile{
+#grid-cell-portee-ile, #grid-cell-portee-ile-ile-small, #grid-cell-portee-ile-round,#grid-cell-portee-ile-round-red, #grid-cell-portee-ile-red, #grid-cell-portee-ile-ile{
     background:rgb(189, 168, 141);
 
 }
@@ -70,9 +58,17 @@ separator {
 }
 
 /* Iles */
-#grid-cell-portee-ile-ile, #grid-cell-ile-appartient-ile, #grid-cell-ile, #grid-cell-ile-red{
+#grid-cell-portee-ile-ile,  #grid-cell-ile-appartient-ile, #grid-cell-ile{
     font-size: 35px;
 }
+
+/* Iles small */
+#grid-cell-portee-ile-ile-small,  #grid-cell-ile-appartient-ile-small, #grid-cell-ile-small{
+    font-size: 18px;
+}
+
+/* _____ Fin Fenetre Partie _____ */
+
 
 
 #grid-cell * , #grid-cell-round *{
@@ -107,7 +103,7 @@ button:hover {
 popover * {
     color :black;
 
-    
+
 }
 
 popover {

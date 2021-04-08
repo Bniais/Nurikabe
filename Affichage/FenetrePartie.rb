@@ -18,13 +18,11 @@ class Cell < Gtk::Button
     end
 
     def changerStatut(color, forceEnleverRouge)
-        if color >= Couleur::ILE_1
-            if(!forceEnleverRouge && self.name.include?("red"))
-                self.name = "grid-cell-ile-red"
-            else
-                self.name = "grid-cell-ile"
-            end
-
+        if color >= Couleur::ILE_9
+            self.name = "grid-cell-ile-small"
+            self.set_label(color.to_s)
+        elsif color >= Couleur::ILE_1
+            self.name = "grid-cell-ile"
             self.set_label(color.to_s)
         elsif color == Couleur::NOIR
             if(!forceEnleverRouge && self.name.include?("red"))
@@ -96,7 +94,7 @@ class FenetrePartie < Fenetre
 
         self.metSousTitre
         @@maFenetrePartie = FenetrePartie.new()
-       
+
         Fenetre.add( @@maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
 
@@ -148,7 +146,7 @@ class FenetrePartie < Fenetre
 
         ## Nom de la grille
         boxTop = Gtk::Box.new(:horizontal)
-        
+
         boxTop.set_margin_top 20
         boxTop.set_margin_bottom 10
         boxTop.set_homogeneous(true)
@@ -157,13 +155,13 @@ class FenetrePartie < Fenetre
         nomGrille.set_markup("<span size='25000' > " + @@lg.gt("GRILLE") + " #" + @@maPartie.grilleBase.numero.to_s + "</span>")
         nomGrille.halign = :end
 
-        
-        
+
+
         if(@@maPartie.getMode == Mode::VS)
             boxTop.add( nomGrille)
             labelBox = Gtk::Box.new(:vertical)
             labelBox.set_homogeneous(true)
-            
+
 
             labelProgressEnemy = Gtk::Label.new(@@lg.gt("AVANCEMENT_ENEMY"))
             labelProgressEnemy.halign = :end
@@ -196,7 +194,7 @@ class FenetrePartie < Fenetre
             label.halign= :end
             nomGrille.halign = :start
             label.name = "grillesTerminees"
-            boxTop.add(label)        
+            boxTop.add(label)
             boxTop.set_margin_left 120
             boxTop.set_margin_right 120
          elsif(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
@@ -207,12 +205,12 @@ class FenetrePartie < Fenetre
             @labelStars.set_margin_right(68)
             nomGrille.halign = :center
             @labelStars.name = "stars-actuelles"
-            boxTop.add(@labelStars)        
+            boxTop.add(@labelStars)
         else
             boxTop.add( nomGrille)
             nomGrille.halign = :center
         end
-  
+
         @box.add( boxTop )#ADD
 
         #GRILLE
@@ -279,7 +277,7 @@ class FenetrePartie < Fenetre
                 @popover.visible = false
             end
             pause
-            
+
             show_standard_message_dialog(@@lg.gt("MSG_PERDRE") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time) + @@lg.gt("MSG_PERDRE_FIN" ) + @tpsEnemi)
 
             quitter
@@ -292,7 +290,7 @@ class FenetrePartie < Fenetre
                 @popover.visible = false
             end
             pause
-            
+
             show_standard_message_dialog(@@lg.gt("DECO_MSG"))
 
             quitter
@@ -343,7 +341,7 @@ class FenetrePartie < Fenetre
         @btnHelpLocation.signal_connect("clicked") { aideLocation }
         @btnClear.signal_connect("clicked")     { raz } # REMISE A ZERO DE LA GRILLE
         @btnVerif.signal_connect("clicked")     { verifier } # VERFIER LA GRILLE
-        btnQuit.signal_connect("clicked")       { 
+        btnQuit.signal_connect("clicked")       {
             if @@maPartie.getMode == Mode::VS
                 socket = Fenetre1v1.getSocket
                 if(socket != nil)
@@ -351,7 +349,7 @@ class FenetrePartie < Fenetre
                 end
             end
             quitter
-            
+
           } # QUITTER LA PARTIE
 
 
@@ -367,7 +365,7 @@ class FenetrePartie < Fenetre
         box.add(@btnClear);      box.add(@btnVerif)
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(btnQuit)
-        
+
 
         mainToolbar.add(box)
         mainToolbar.add( Gtk::Separator.new(:horizontal) )
@@ -429,7 +427,11 @@ class FenetrePartie < Fenetre
                         if res[1][i][j]
 
                             if(@@maPartie.grilleEnCours.tabCases[i][j].estIle?)
-                                @@maGrille[i][j].name = "grid-cell-ile-appartient-ile"
+                                if(@@maPartie.grilleEnCours.tabCases[i][j].couleur > Couleur::ILE_9)
+                                    @@maGrille[i][j].name = "grid-cell-ile-appartient-ile-small"
+                                else
+                                    @@maGrille[i][j].name = "grid-cell-ile-appartient-ile"
+                                end
                             else
                                 if( @@maGrille[i][j].name.include?("red"))
                                     @@maGrille[i][j].name = "grid-cell-red-appartient"
@@ -440,23 +442,23 @@ class FenetrePartie < Fenetre
 
 
                             if !found && @@maPartie.grilleEnCours.tabCases[i][j].estIle?
-                                #trouver direction popover
-                                if( i-1 < 0 || !res[1][i-1][j])
-                                    @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
-                                elsif(i+1 >= @@maPartie.grilleEnCours.tabCases.size || !res[1][i+1][j])
-                                    @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :bottom)
-                                elsif(j-1 < 0 || !res[1][i][j-1])
-                                    @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :left)
-                                elsif(j+1 >= @@maPartie.grilleEnCours.tabCases.size || !res[1][i][j+1])
-                                    @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :right)
-                                else
-                                    @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
-                                end
-
-
+                                @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
                                 @popover.modal = false
                                 @popover.visible = true
                                 found = true
+                            end
+                        end
+                    end
+                end
+
+                if(!found)
+                    for i in 0...@@maPartie.grilleEnCours.tabCases.size
+                        for j in 0...@@maPartie.grilleEnCours.tabCases.size
+                            if !found &&res[1][i][j]
+                              @popover = create_popover(@@maGrille[i][j], Gtk::Label.new(res[0].to_s), :top)
+                              @popover.modal = false
+                              @popover.visible = true
+                              found = true
                             end
                         end
                     end
@@ -495,7 +497,12 @@ class FenetrePartie < Fenetre
                                 @@maGrille[i][j].name = "grid-cell-portee-ile-black"
                             end
                         elsif @@maPartie.grilleEnCours.tabCases[i][j].estIle?
-                                @@maGrille[i][j].name = "grid-cell-portee-ile-ile"                          
+                            if(@@maPartie.grilleEnCours.tabCases[i][j].couleur > Couleur::ILE_9)
+                                @@maGrille[i][j].name = "grid-cell-portee-ile-ile-small"
+                            else
+                                @@maGrille[i][j].name = "grid-cell-portee-ile-ile"
+                            end
+
                         elsif @@maPartie.grilleEnCours.tabCases[i][j].couleur == Couleur::BLANC
                             if(@@maGrille[i][j].name.include?("red"))
                                 @@maGrille[i][j].name = "grid-cell-portee-ile-round-red"
@@ -572,7 +579,7 @@ class FenetrePartie < Fenetre
                 if(prochaineCouleur < Couleur::ILE_1 )
                     enleverPortee(nil, nil)
                     if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
-                        
+
                         cacherNbErreur
                         handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur , true)
                         enableBtn(@btnUndo)
@@ -707,7 +714,7 @@ class FenetrePartie < Fenetre
 
         if(statut != nil)
             enableBtn(@btnRedo)
-            
+
             @@maGrille[statut[1].positionY][statut[1].positionX].changerStatut( @@maPartie.grilleEnCours.tabCases[statut[1].positionY][statut[1].positionX].couleur, true )
             if statut[0] == false
                 disableBtn(@btnUndo);
@@ -730,7 +737,7 @@ class FenetrePartie < Fenetre
         end
     end
 
-    private 
+    private
     def enableBtnIfNot1v1(btn)
         if(@@maPartie.getMode != Mode::VS)
             enableBtn(btn)
@@ -738,7 +745,7 @@ class FenetrePartie < Fenetre
             disableBtn(btn)
         end
     end
-    
+
 
     # EVENT REDO
     private
@@ -746,7 +753,7 @@ class FenetrePartie < Fenetre
         enleverPortee(nil, nil)
         cacherNbErreur
         enableBtn(@btnUndo)
-        
+
         enableBtnIfNot1v1(@btnUndoUndo)
         disableBtn(@btnHelpLocation)
         statut = @@maPartie.retourAvant

@@ -39,7 +39,7 @@ class Fenetre
         SauvegardeGrille.creer("../Sauvegarde/grilles1.dump")
         Sauvegardes.creer("../Sauvegarde/save.dump")
 
-=begin
+
         #TMP TO ADD GRILLES
         ################################ GRILLES 5x5 ################################
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
@@ -52,7 +52,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
         SauvegardeGrille.getInstance.ajouterGrille(Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
             [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 4, 0)],
@@ -64,7 +64,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
         SauvegardeGrille.getInstance.ajouterGrille(Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
             [Case.creer(Couleur::NOIR, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::BLANC, 4, 0)],
@@ -76,7 +76,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
 
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
@@ -89,7 +89,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
             [Case.creer(Couleur::ILE_1, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::NOIR, 4, 0)],
@@ -101,7 +101,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
             [Case.creer(Couleur::ILE_3, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::BLANC, 4, 0)],
@@ -113,7 +113,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
     ################################ GRILLES 7x7 ################################
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
@@ -128,7 +128,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
 
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
@@ -143,7 +143,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
 
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
@@ -158,7 +158,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
 
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
@@ -173,7 +173,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
             [Case.creer(Couleur::NOIR, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::NOIR, 2, 0), Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::NOIR, 4, 0), Case.creer(Couleur::NOIR, 5, 0), Case.creer(Couleur::NOIR, 6, 0) ],
@@ -187,8 +187,8 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
-        
+
+
     ################################ GRILLES 8x8 ################################
 
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
@@ -204,7 +204,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
 
     ################################ GRILLES 10x10 ################################
@@ -224,7 +224,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
             [Case.creer(Couleur::ILE_2, 0, 0) ,Case.creer(Couleur::BLANC, 1, 0),Case.creer(Couleur::NOIR, 2, 0), Case.creer(Couleur::ILE_2, 3, 0), Case.creer(Couleur::NOIR, 4, 0), Case.creer(Couleur::ILE_3, 5, 0), Case.creer(Couleur::NOIR, 6, 0), Case.creer(Couleur::ILE_2, 7, 0), Case.creer(Couleur::BLANC, 8, 0), Case.creer(Couleur::NOIR, 9, 0)],
@@ -241,7 +241,7 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-        
+
 
         SauvegardeGrille.getInstance.ajouterGrille( Grille.creer(SauvegardeGrille.getInstance.getNombreGrille + 1, [
         [Case.creer(Couleur::NOIR, 0, 0) ,Case.creer(Couleur::NOIR, 1, 0),Case.creer(Couleur::NOIR, 2, 0), Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::NOIR, 4, 0), Case.creer(Couleur::NOIR, 5, 0), Case.creer(Couleur::BLANC, 6, 0), Case.creer(Couleur::BLANC, 7, 0), Case.creer(Couleur::NOIR, 8, 0), Case.creer(Couleur::BLANC, 9, 0)],
@@ -258,10 +258,10 @@ class Fenetre
 
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 
-=end
+
 
         SauvegardeGrille.getInstance.sauvegarder( "../Sauvegarde/grilles1.dump" )
-        
+
 
 
         @@lg = Sauvegardes.getInstance.getSauvegardeLangue

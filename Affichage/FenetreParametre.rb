@@ -227,6 +227,7 @@ class FenetreParametre < Fenetre
 
         # CHOOSE LANGUE
         combo = Gtk::ComboBoxText.new()
+        combo.wrap_width = 3
         combo.halign = :fill
         for i in 0...Sauvegardes.getInstance.getSauvegardeLangue.langues.size
             combo.append("FR_fr", Sauvegardes.getInstance.getSauvegardeLangue.langues[i])

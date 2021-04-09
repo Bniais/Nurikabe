@@ -70,7 +70,7 @@ class FenetreClassement < Fenetre
         comboBox = Gtk::ComboBoxText.new()
         comboBox.prepend_text(@@lg.gt("CONTRELAMONTRE"))
         comboBox.append_text(@@lg.gt("SURVIE"))
-
+        comboBox.wrap_width = 1
 
 
         comboBox.set_active(0)

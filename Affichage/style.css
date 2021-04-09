@@ -248,3 +248,13 @@ progressbar, progressbar*{
 #stars-actuelles{
     font-size: 3em;
 }
+
+combobox*{
+    padding-left : 1.5px;
+    padding-right : 1.5px;
+    margin : 2px;
+}
+
+combobox > *> *> *{
+    border-radius: 3px;
+}

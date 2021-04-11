@@ -13,12 +13,13 @@ class PartieTuto < Partie
   def initialize()
 
     @grilleActuel = 0
+    @ordreDeClicCpt = 0
     @tabGrille = [
 
       Grille.creer(1,[
             [Case.creer(Couleur::ILE_1, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::NOIR, 2, 0), Case.creer(Couleur::BLANC, 3, 0)],
 
-            [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::BLANC, 2, 1), Case.creer(Couleur::ILE_3, 3, 1)],
+            [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::BLANC, 2, 1), Case.creer(33, 3, 1)],
 
             [Case.creer(Couleur::ILE_2, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::NOIR, 2, 2), Case.creer(Couleur::NOIR, 3, 2)],
 
@@ -77,7 +78,7 @@ class PartieTuto < Partie
       Grille.creer(1,[
             [Case.creer(Couleur::ILE_1, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::NOIR, 2, 0), Case.creer(Couleur::BLANC, 3, 0)],
 
-            [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(Couleur::ILE_3, 3, 1)],
+            [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::GRIS, 2, 1), Case.creer(33, 3, 1)],
 
             [Case.creer(Couleur::ILE_2, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::NOIR, 2, 2), Case.creer(Couleur::NOIR, 3, 2)],
 
@@ -128,48 +129,31 @@ class PartieTuto < Partie
 
     @coupAutoriser = [
       [
-        [false , false , false , false],[ false , false , true , false ],[false , false , false , false],[false , false , false , false]
+        [999 , 999 , 999 , 999],[ 999 , 999 , 1 , 0 ],[999 , 999 , 999 , 999],[999 , 999 , 999 , 999]
       ],
       [
-        [false , true , true , false],[ false , true , true , false ],[ false , true , true , false ],[ false , true , true , false ]       
+        [999 , 999 , 999 , 999],[ 999 , 999 , 1 , 0 ],[999 , 999 , 999 , 999],[999 , 999 , 999 , 999]       
       ],
       [
-        [false , true , true , false],[ false , true , true , false ],[ false , true , true , false ],[ false , true , true , false ]
+        [999 , 999 , 999 , 999],[ 999 , 999 , 1 , 0 ],[999 , 999 , 999 , 999],[999 , 999 , 999 , 999]
       ],
       [
-        [false , true , true , false],[ false , true , true , false ],[ false , true , true , false ],[ false , true , true , false ]        
+        [999 , 999 , 999 , 999],[ 999 , 999 , 1 , 0 ],[999 , 999 , 999 , 999],[999 , 999 , 999 , 999]       
       ],
       [
-        [false , true , true , false],[ false , true , true , false ],[ false , true , true , false ],[ false , true , true , false ]        
+        [999 , 999 , 999 , 999],[ 999 , 999 , 1 , 0 ],[999 , 999 , 999 , 999],[999 , 999 , 999 , 999]       
       ]
     ]
 
     @aidePourEtape = [
-      [false,false,false,false,false,false,false,false,false,false,false],
-      [false,false,false,false,false,false,false,false,false,false,false],
-      [false,false,false,false,false,false,false,false,false,false,false],
-      [false,false,false,false,false,false,false,false,false,false,false],
-      [false,false,false,false,false,false,false,false,false,false,false]
+      [false,false,false,false,false,false,false,false,false,false,true],
+      [false,false,false,false,false,false,false,false,false,false,true],
+      [false,false,false,false,false,false,false,false,false,false,true],
+      [false,false,false,false,false,false,false,false,false,false,true],
+      [false,false,false,false,false,false,false,false,false,false,true]
     ]
 
-    # Retourne un tableau de case a focus
-    @caseFocus = [
-      [ 
-          [2,1],[3,1]
-      ],
-      [
-          [0,0],[1,1],[2,2],[3,3]
-      ],
-      [
-          [0,0]
-      ],
-      [
-          [0,0],[2,2]
-      ],
-      [
-        nil
-      ]
-    ]
+
 
     @messageEtape = [
       "Survoler la case en surbrillant vous permets de connaitre la taille d'une ile\n Cliquer dessus vous donnez la porter",
@@ -191,8 +175,8 @@ class PartieTuto < Partie
   ##
   #Tire lla prochaine grille
   def grilleSuivante()
-    puts "Je suis la"
     @grilleActuel += 1
+    @ordreDeClicCpt = 0;
 
     if @grilleActuel < @tabGrille.size() 
       @grilleBase = @tabGrille[@grilleActuel]
@@ -216,21 +200,52 @@ class PartieTuto < Partie
     return @aidePourEtape[@grilleActuel];
   end
 
-  # Retourne les coordonnees d'une case que l'on voudront encadrer en rouge
-  def getCaseFocus()
-    return @caseFocus[@grilleActuel];
-  end
 
-  def ajouterCoup(coup)#TOTEST
-    if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1 && @coupAutoriser[@grilleActuel][coup.case.positionY][coup.case.positionX] ) 
-      coup.case.couleur = coup.couleur
 
-      tabCoup.pop(tabCoup.size - @indiceCoup) #supprimer les coups annulés
-      tabCoup.push(coup)
-      @indiceCoup += 1
+  def ajouterCoup(coup) #TOTEST
+
+    # @ordreDeClicCpt
+    find = false
+    for x in 0...@grilleEnCours.tabCases.size
+      for y in 0...@grilleEnCours.tabCases.size
+        if ( @coupAutoriser[@grilleActuel][y][x] == @ordreDeClicCpt )
+          find = true;
+        end
+      end
+    end
+
+
+    if !find
+      @ordreDeClicCpt += 1;
+    end
+
+    if ( @coupAutoriser[@grilleActuel][coup.case.positionY][coup.case.positionX] == @ordreDeClicCpt )
+
+      if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1) 
+        coup.case.couleur = coup.couleur
+        tabCoup.pop(tabCoup.size - @indiceCoup) #supprimer les coups annulés
+        tabCoup.push(coup)
+        @indiceCoup += 1
+
+        if( @grilleEnCours.tabCases[coup.case.positionY][coup.case.positionX].couleur == @grilleBase.tabCases[coup.case.positionY][coup.case.positionX].couleur )
+          @coupAutoriser[@grilleActuel][coup.case.positionY][coup.case.positionX] = 999;
+        end
+
+      else 
+        @coupAutoriser[@grilleActuel][coup.case.positionY][coup.case.positionX] = 999;
+      end
+      
       return true
     end
+
+  
     return false
+  end
+
+  ##
+  # Retourne le tableau de coup autoriser
+  def getCoupAutoriser
+    return @coupAutoriser[@grilleActuel];
   end
 
   ##

@@ -55,13 +55,33 @@ class FenetrePartie < Fenetre
         if( @@maPartie.getMode == Mode::TUTORIEL)
             @@maFenetrePartie.show_standard_message_dialog( @@maPartie.getMessageAide );
             @@maFenetrePartie.setBtnStatut( @@maPartie.aideADesactiver() ) # DESACTIVE LES AIDES
-            for i in 0...@@maPartie.getCaseFocus().size
-                @@maGrille[ @@maPartie.getCaseFocus()[i][1] ][ @@maPartie.getCaseFocus()[i][0] ].name = "grid-cell-red"
-            end
+            @@maFenetrePartie.mettreCasesEnRouge()
         end
 
         @@maFenetrePartie.threadChronometre
         return self
+    end
+
+    #######
+    def mettreCasesEnRouge
+        tabAutoriser = @@maPartie.getCoupAutoriser()
+        min = tabAutoriser.map {|a| a.min}.min
+
+        if( min != 999)
+            for x in 0...@@maPartie.grilleEnCours.tabCases.size
+                for y in 0...@@maPartie.grilleEnCours.tabCases.size
+                    if ( tabAutoriser[x][y] == min )
+                        if @@maPartie.grilleEnCours.tabCases[x][y].couleur == Couleur::NOIR
+                            @@maGrille[ x ][ y ].name = "grid-cell-red-block"
+                        elsif  @@maPartie.grilleEnCours.tabCases[x][y].estIle?
+                            @@maGrille[ x ][ y ].name = "grid-cell-red-ile"
+                        else
+                            @@maGrille[ x ][ y ].name = "grid-cell-red"
+                        end
+                    end
+                end
+            end
+        end
     end
 
     def self.getInstance
@@ -360,7 +380,7 @@ class FenetrePartie < Fenetre
         # Frame exterieur pour que les rebord et la meme epaisseur
         maFrame = Gtk::Frame.new()
         maFrame.name = "fenetreGrille"
-        maFrame.set_margin_left(70); maFrame.set_margin_right(70); maFrame.set_margin_top(15)
+        maFrame.set_margin_left(50); maFrame.set_margin_right(50); maFrame.set_margin_top(15)
 
         # grid pour placer la grille de jeu dedans
         maGrille = Gtk::Grid.new()
@@ -397,11 +417,19 @@ class FenetrePartie < Fenetre
                         if res[1][i][j]
 
                             if(@@maPartie.grilleEnCours.tabCases[i][j].estIle?)
-                                if(@@maPartie.grilleEnCours.tabCases[i][j].couleur > Couleur::ILE_9)
-                                    @@maGrille[i][j].name = "grid-cell-ile-appartient-ile-small"
-                                else
-                                    @@maGrille[i][j].name = "grid-cell-ile-appartient-ile"
-                                end
+                                if( @@maGrille[i][j].name.include?("red"))
+                                    if(@@maPartie.grilleEnCours.tabCases[i][j].couleur > Couleur::ILE_9)
+                                        @@maGrille[i][j].name = "grid-cell-ile-appartient-ile-small-red"
+                                    else
+                                        @@maGrille[i][j].name = "grid-cell-ile-appartient-ile-red"
+                                    end
+                                else 
+                                    if(@@maPartie.grilleEnCours.tabCases[i][j].couleur > Couleur::ILE_9)
+                                        @@maGrille[i][j].name = "grid-cell-ile-appartient-ile-small"
+                                    else
+                                        @@maGrille[i][j].name = "grid-cell-ile-appartient-ile"
+                                    end
+                                end 
                             else
                                 if( @@maGrille[i][j].name.include?("red"))
                                     @@maGrille[i][j].name = "grid-cell-red-appartient"
@@ -467,10 +495,18 @@ class FenetrePartie < Fenetre
                                 @@maGrille[i][j].name = "grid-cell-portee-ile-black"
                             end
                         elsif @@maPartie.grilleEnCours.tabCases[i][j].estIle?
-                            if(@@maPartie.grilleEnCours.tabCases[i][j].couleur > Couleur::ILE_9)
-                                @@maGrille[i][j].name = "grid-cell-portee-ile-ile-small"
-                            else
-                                @@maGrille[i][j].name = "grid-cell-portee-ile-ile"
+                            if( @@maGrille[i][j].name.include?("red") )
+                                if(@@maPartie.grilleEnCours.tabCases[i][j].couleur > Couleur::ILE_9)
+                                    @@maGrille[i][j].name = "grid-cell-portee-ile-ile-small-red"
+                                else
+                                    @@maGrille[i][j].name = "grid-cell-portee-ile-ile-red"
+                                end
+                            else 
+                                if(@@maPartie.grilleEnCours.tabCases[i][j].couleur > Couleur::ILE_9)
+                                    @@maGrille[i][j].name = "grid-cell-portee-ile-ile-small"
+                                else
+                                    @@maGrille[i][j].name = "grid-cell-portee-ile-ile"
+                                end
                             end
 
                         elsif @@maPartie.grilleEnCours.tabCases[i][j].couleur == Couleur::BLANC
@@ -540,14 +576,16 @@ class FenetrePartie < Fenetre
             if @@maPartie.chrono.pause == false # PEUT INTERRAGIR UNIQUEMENT SI LA PARTIE N EST PAS EN PAUSE
                 maCellule = @@maPartie.grilleEnCours.tabCases[handler.y][handler.x]
 
-
+                
                 prochaineCouleur = maCellule.couleur + 1
                 if prochaineCouleur == 0
                     prochaineCouleur = Couleur::GRIS
                 end
+                
 
                 if(prochaineCouleur < Couleur::ILE_1 )
                     enleverPortee(nil, nil)
+                
                     if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
 
                         cacherNbErreur
@@ -560,12 +598,14 @@ class FenetrePartie < Fenetre
 
                     #afficherMur2x2
 
-
-                    if  @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
-                        afficherNbCase(handler.y, handler.x)
-                    elsif !@@maPartie.grilleEnCours.tabCases[handler.y][handler.x].estIle?
-                        enleverNbCase()
+                    if @@maPartie.getMode != Mode::TUTORIEL
+                        if  @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC 
+                            afficherNbCase(handler.y, handler.x)
+                        elsif !@@maPartie.grilleEnCours.tabCases[handler.y][handler.x].estIle?
+                            enleverNbCase()
+                        end
                     end
+                    
 
                     if(@@perdu)
                         perdreMsg()
@@ -580,24 +620,39 @@ class FenetrePartie < Fenetre
                         end
                     end
 
-
+                    if @@maPartie.getMode == Mode::TUTORIEL
+                        mettreCasesEnRouge()
+                    end
 
                 else
-                    if(!@porteeAffichee)
-                        afficherPortee(handler.y, handler.x)
+                    
+                    if ( @@maPartie.getMode == Mode::TUTORIEL  )
+                        if( @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) ) && !@porteeAffichee )
+                            mettreCasesEnRouge()
+                            handler.changerStatut( maCellule.couleur , true )
+                            afficherPortee(handler.y, handler.x)
+                        else
+                            enleverPortee(handler.y, handler.x)
+                        end
                     else
-                        enleverPortee(handler.y, handler.x)
+                        if(!@porteeAffichee)
+                            afficherPortee(handler.y, handler.x)
+                        else
+                            enleverPortee(handler.y, handler.x)
+                        end
                     end
+
+
+                    
                 end
 
                 ##
                 # FOR TUTO
                 # SI ON EST EN MODE TUTO ON ACTIVE QUE LES AIDES 
                 # NECESSAIRE AU MODE DE JEU DE L'AIDE
-                if( @@maPartie.getMode == Mode::TUTORIEL )
+                if( @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL )
                     setBtnStatut(@@maPartie.aideADesactiver() )
                 end
-
             end
         end
 
@@ -1056,10 +1111,18 @@ class Cell < Gtk::Button
 
     def changerStatut(color, forceEnleverRouge)
         if color >= Couleur::ILE_9
-            self.name = "grid-cell-ile-small"
+            if( !forceEnleverRouge && self.name.include?("red") )
+                self.name = "grid-cell-ile-small-red"
+            else 
+                self.name = "grid-cell-ile-small"
+            end
             self.set_label(color.to_s)
         elsif color >= Couleur::ILE_1
-            self.name = "grid-cell-ile"
+            if( !forceEnleverRouge && self.name.include?("red") )
+                self.name = "grid-cell-ile-red"
+            else 
+                self.name = "grid-cell-ile"
+            end
             self.set_label(color.to_s)
         elsif color == Couleur::NOIR
             if(!forceEnleverRouge && self.name.include?("red"))

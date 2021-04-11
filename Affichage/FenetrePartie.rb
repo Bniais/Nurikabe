@@ -2,60 +2,6 @@
 require "./Fenetre.rb"
 require "./../Partie/Partie.rb"
 
-# TAMPORAIRE EN ATTENDANT LA CLASS CELL
-## TAMPORAIRE EN ATTENDANT LA CLASS CELL
-### TAMPORAIRE EN ATTENDANT LA CLASS CELL
-#### TAMPORAIRE EN ATTENDANT LA CLASS CELL
-class Cell < Gtk::Button
-    attr_reader :x, :y
-
-    def set_x(x)
-        @x = x
-    end
-
-    def set_y(y)
-        @y = y
-    end
-
-    def changerStatut(color, forceEnleverRouge)
-        if color >= Couleur::ILE_9
-            self.name = "grid-cell-ile-small"
-            self.set_label(color.to_s)
-        elsif color >= Couleur::ILE_1
-            self.name = "grid-cell-ile"
-            self.set_label(color.to_s)
-        elsif color == Couleur::NOIR
-            if(!forceEnleverRouge && self.name.include?("red"))
-                 self.name = "grid-cell-red-block"
-            else
-                 self.name = "grid-cell-block"
-            end
-
-            self.set_label("")
-
-        elsif color == Couleur::GRIS
-            self.set_label("")
-            if(!forceEnleverRouge && self.name.include?("red"))
-                self.name = "grid-cell-red"
-            else
-                self.name = "grid-cell"
-            end
-        elsif color == Couleur::BLANC
-            if(!forceEnleverRouge && self.name.include?("red"))
-                self.name = "grid-cell-round-red"
-            else
-                 self.name = "grid-cell-round"
-            end
-            if(!Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
-                self.set_label("●")
-            end
-        end
-    end
-
-end
-
-
-
 # Classe qui gere la fenetre 'A propos'
 class FenetrePartie < Fenetre
 
@@ -101,6 +47,18 @@ class FenetrePartie < Fenetre
         @@maPartie.reprendrePartie
         @@maFenetrePartie.play
 
+        ##
+        # FOR TUTO 
+        # CHARGE LE MESSAGE 
+        # CHARGE LES AIDES A ACTIVER / DESACTIVER
+        # CASE A FOCUS
+        if( @@maPartie.getMode == Mode::TUTORIEL)
+            @@maFenetrePartie.show_standard_message_dialog( @@maPartie.getMessageAide );
+            @@maFenetrePartie.setBtnStatut( @@maPartie.aideADesactiver() ) # DESACTIVE LES AIDES
+            for i in 0...@@maPartie.getCaseFocus().size
+                @@maGrille[ @@maPartie.getCaseFocus()[i][1] ][ @@maPartie.getCaseFocus()[i][0] ].name = "grid-cell-red"
+            end
+        end
 
         @@maFenetrePartie.threadChronometre
         return self
@@ -133,10 +91,10 @@ class FenetrePartie < Fenetre
         return @@maPartie
     end
 
+    
     ################################################################
     ################## CREATION DE L INTERFACE #####################
     ################################################################
-
     def creationInterface( lastView )
         @indiceMalusPopover = -1
         @box = Gtk::Box.new(:vertical)
@@ -297,6 +255,18 @@ class FenetrePartie < Fenetre
         end
     end
 
+    ##
+    # 
+    # Activer / Desactiver les fonctions d'un
+    # btn en fonction d'un tableau qui renvoi
+    # des booleans
+    def setBtnStatut( unTabDeBoolean )
+        tmpTabOfBtn = [ @btnSetting , @btnRedo, @btnUndo, @btnUndoUndo, @btnPlay, @btnPause, @btnHelp, @btnHelpLocation , @btnClear, @btnVerif, @btnQuit ];
+        for i in 0...unTabDeBoolean.size
+            unTabDeBoolean[i] == true ? enableBtn(tmpTabOfBtn[i]) : disableBtn(tmpTabOfBtn[i])
+        end
+    end
+
     # Methode qui permet de cree
     # la toolbar
     private
@@ -307,12 +277,12 @@ class FenetrePartie < Fenetre
         box = Gtk::Box.new(:horizontal, 0)
         box.set_height_request(50)
         # creation des boutons de mode de jeu
-        btnSetting = creeBouttonToolbar("document-properties")
+        @btnSetting = creeBouttonToolbar("document-properties")
         @btnUndo = creeBouttonToolbar("undo");             @btnRedo = creeBouttonToolbar("redo")
         @btnUndoUndo = creeBouttonToolbar("start");@btnPlay = creeBouttonToolbar("player_play");
         @btnPause = creeBouttonToolbar("player_pause");    @btnHelp = creeBouttonToolbar("help"); @btnHelpLocation = creeBouttonToolbar("hint");
         @btnClear = creeBouttonToolbar("gtk-clear");       @btnVerif = creeBouttonToolbar("gtk-apply")
-        btnQuit = creeBouttonToolbar("gtk-quit")
+        @btnQuit = creeBouttonToolbar("gtk-quit")
         # Disable btn att bottom of game
 
         # SET BTN ENABLE/DISABLE
@@ -326,12 +296,12 @@ class FenetrePartie < Fenetre
         end
 
         enableBtnIfNot1v1(@btnPause)
-        enableBtnIfNot1v1(btnSetting)
+        enableBtnIfNot1v1(@btnSetting)
         enableBtnIfNot1v1(@btnHelp)
 
 
         #Gestion des evenemeents
-        btnSetting.signal_connect("clicked")    { ouvrirReglage  } # LANCER LES REGLAGLES
+        @btnSetting.signal_connect("clicked")    { ouvrirReglage  } # LANCER LES REGLAGLES
         @btnUndo.signal_connect("clicked")      { retourArriere } # RETOURNER EN ARRIERE
         @btnRedo.signal_connect("clicked")      { retourAvant } # RETOURNER EN AVANT
         @btnUndoUndo.signal_connect("clicked")  {  retourPositionBonne } # RETOURNER A LA DERNIERE POSITION BONNE
@@ -341,7 +311,7 @@ class FenetrePartie < Fenetre
         @btnHelpLocation.signal_connect("clicked") { aideLocation }
         @btnClear.signal_connect("clicked")     { raz } # REMISE A ZERO DE LA GRILLE
         @btnVerif.signal_connect("clicked")     { verifier } # VERFIER LA GRILLE
-        btnQuit.signal_connect("clicked")       {
+        @btnQuit.signal_connect("clicked")       {
             if @@maPartie.getMode == Mode::VS
                 socket = Fenetre1v1.getSocket
                 if(socket != nil)
@@ -354,7 +324,7 @@ class FenetrePartie < Fenetre
 
 
         # attachement des boutons de mode de jeu
-        box.add(btnSetting);    box.add(creerSeparatorToolbar)  # SEPARATOR
+        box.add(@btnSetting);    box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(@btnUndo);       box.add(@btnRedo)
         box.add(@btnUndoUndo);
         box.add(creerSeparatorToolbar)  # SEPARATOR
@@ -364,7 +334,7 @@ class FenetrePartie < Fenetre
         box.add(creerSeparatorToolbar)  # SEPARATOR
         box.add(@btnClear);      box.add(@btnVerif)
         box.add(creerSeparatorToolbar)  # SEPARATOR
-        box.add(btnQuit)
+        box.add(@btnQuit)
 
 
         mainToolbar.add(box)
@@ -586,7 +556,6 @@ class FenetrePartie < Fenetre
                         enableBtnIfNot1v1(@btnUndoUndo)
                         disableBtn(@btnRedo)
                         disableBtn(@btnHelpLocation)
-
                     end
 
                     #afficherMur2x2
@@ -619,6 +588,14 @@ class FenetrePartie < Fenetre
                     else
                         enleverPortee(handler.y, handler.x)
                     end
+                end
+
+                ##
+                # FOR TUTO
+                # SI ON EST EN MODE TUTO ON ACTIVE QUE LES AIDES 
+                # NECESSAIRE AU MODE DE JEU DE L'AIDE
+                if( @@maPartie.getMode == Mode::TUTORIEL )
+                    setBtnStatut(@@maPartie.aideADesactiver() )
                 end
 
             end
@@ -1057,4 +1034,58 @@ class FenetrePartie < Fenetre
         return monSeparateur
     end
 
+end
+
+
+
+
+# TAMPORAIRE EN ATTENDANT LA CLASS CELL
+## TAMPORAIRE EN ATTENDANT LA CLASS CELL
+### TAMPORAIRE EN ATTENDANT LA CLASS CELL
+#### TAMPORAIRE EN ATTENDANT LA CLASS CELL
+class Cell < Gtk::Button
+    attr_reader :x, :y
+
+    def set_x(x)
+        @x = x
+    end
+
+    def set_y(y)
+        @y = y
+    end
+
+    def changerStatut(color, forceEnleverRouge)
+        if color >= Couleur::ILE_9
+            self.name = "grid-cell-ile-small"
+            self.set_label(color.to_s)
+        elsif color >= Couleur::ILE_1
+            self.name = "grid-cell-ile"
+            self.set_label(color.to_s)
+        elsif color == Couleur::NOIR
+            if(!forceEnleverRouge && self.name.include?("red"))
+                 self.name = "grid-cell-red-block"
+            else
+                 self.name = "grid-cell-block"
+            end
+
+            self.set_label("")
+
+        elsif color == Couleur::GRIS
+            self.set_label("")
+            if(!forceEnleverRouge && self.name.include?("red"))
+                self.name = "grid-cell-red"
+            else
+                self.name = "grid-cell"
+            end
+        elsif color == Couleur::BLANC
+            if(!forceEnleverRouge && self.name.include?("red"))
+                self.name = "grid-cell-round-red"
+            else
+                 self.name = "grid-cell-round"
+            end
+            if(!Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
+                self.set_label("●")
+            end
+        end
+    end
 end

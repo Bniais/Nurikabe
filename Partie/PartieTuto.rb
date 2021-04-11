@@ -155,24 +155,16 @@ class PartieTuto < Partie
     # Retourne un tableau de case a focus
     @caseFocus = [
       [ 
-        [
-          [2,1]
-        ]
+          [2,1],[3,1]
       ],
       [
-        [
           [0,0],[1,1],[2,2],[3,3]
-        ]
       ],
       [
-        [
           [0,0]
-        ]
       ],
       [
-        [
           [0,0],[2,2]
-        ]
       ],
       [
         nil
@@ -180,7 +172,7 @@ class PartieTuto < Partie
     ]
 
     @messageEtape = [
-      "message pour grille 1",
+      "Survoler la case en surbrillant vous permets de connaitre la taille d'une ile\n Cliquer dessus vous donnez la porter",
       "message pour grille 2",
       "message pour grille 3",
       "message pour grille 4",
@@ -220,7 +212,7 @@ class PartieTuto < Partie
   end
 
   # Retourne un tableau qui defini l'etat des differentes aides
-  def aiderDesactiver()
+  def aideADesactiver()
     return @aidePourEtape[@grilleActuel];
   end
 

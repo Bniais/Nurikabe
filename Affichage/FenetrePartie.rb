@@ -620,12 +620,11 @@ class FenetrePartie < Fenetre
                         end
                     end
 
-                    if @@maPartie.getMode == Mode::TUTORIEL
+                    if @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL
                         mettreCasesEnRouge()
                     end
 
                 else
-                    
                     if ( @@maPartie.getMode == Mode::TUTORIEL  )
                         if( @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) ) && !@porteeAffichee )
                             mettreCasesEnRouge()
@@ -756,6 +755,7 @@ class FenetrePartie < Fenetre
         else
             if(@@maPartie.peutRetourArriere?)
                 enableBtn(@btnUndo)
+                enableBtn(@btnUndoUndo)
             else
                 disableBtn(@btnUndo)
             end
@@ -902,7 +902,11 @@ class FenetrePartie < Fenetre
         disableBtn(@btnRedo)
         disableBtn(@btnUndoUndo)
         disableBtn(@btnHelpLocation)
-        enableBtn(@btnUndo)
+        if(@@maPartie.peutRetourArriereReelAhky?)
+            enableBtn(@btnUndo)
+        else
+            disableBtn(@btnUndo)
+        end
     end
 
     # EVENT VERIFIER LA GRILLE

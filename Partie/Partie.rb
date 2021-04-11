@@ -54,6 +54,10 @@ class Partie
     return @indiceCoup > 0 || @grilleRaz != nil
   end
 
+  def peutRetourArriereReelAhky?()
+    return @indiceCoupRaz != nil && @indiceCoupRaz > 0;
+  end
+
   ##
   # Methode qui retourne en arrière (le coup)
   def retourArriere()#TOTEST

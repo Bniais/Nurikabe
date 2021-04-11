@@ -68,60 +68,62 @@ class Fenetre1v1 < Fenetre
 
 
         vBox = Gtk::Box.new(:vertical)
+        vBox = setmargin(vBox,0,0,70,70)
         
         #titre
-        vBox.add(titleLabel(@@lg.gt("CONNECTION")))
+        vBox.add( setmargin( titleLabel(@@lg.gt("CONNECTION")) , 15,15,0,0 )  )
         
         
         #ip
-        ipBox = Gtk::Box.new(:horizontal)
-        ipBox.halign = :center
-        ipBox.set_homogeneous(true)
-        
-        ipLabel = Gtk::Label.new(@@lg.gt("IP"))
-        ipBox.add(ipLabel)
-
+        #ipLabel = Gtk::Label.new(@@lg.gt("IP") + " : ")
+        entryBox = Gtk::Box.new(:horizontal)
+        entryBox.set_homogeneous(false)
+        entryBox.set_height_request(40)
+        entryBox.halign = :center
 
         ipEntry = Gtk::Entry.new()
+        ipEntry.halign = :fill
+        ipEntry.set_placeholder_text("127.0.0.1")
         ipEntry.width_chars = 15
         ipEntry.max_length = 15
         ipEntry.text = @@ip
-        ipBox.add(ipEntry)
+        ipEntry.set_width_request(300)
 
-        vBox.add(ipBox)
+
+        entryBox.add( setmargin( ipEntry ,0,0,0,5) )
+
         
         #port
-        portBox = Gtk::Box.new(:horizontal)
-        portBox.halign = :center
-        portBox.set_homogeneous(true)
-        
-        portLabel = Gtk::Label.new(@@lg.gt("PORT"))
-        portBox.add(portLabel)
+       # portLabel = Gtk::Label.new(@@lg.gt("PORT") + " : ")
 
         portEntry = Gtk::Entry.new()
+        portEntry.set_placeholder_text("65553")
+        portEntry.halign = :fill
         portEntry.width_chars = 15
         portEntry.max_length = 15
         portEntry.text = @@port
 
-        portBox.add(portEntry)
 
-        vBox.add(portBox)
+        entryBox.add( portEntry )
+
+        vBox.add( setmargin( entryBox,20,10,20,20 ) );
 
         #buttons
 
         buttonBox = Gtk::Box.new(:horizontal)
-        buttonBox.halign = :center
+        buttonBox.set_homogeneous(true)
+        buttonBox.set_height_request(50)
         
         buttonHost = Gtk::Button.new(:label => @@lg.gt("HOST"))
-        buttonBox.add(buttonHost)
+        buttonBox.add( setmargin( buttonHost,0,0,0,5 ) )
 
         buttonJoin = Gtk::Button.new(:label => @@lg.gt("JOIN"))
-        buttonBox.add(buttonJoin)
+        buttonBox.add( setmargin( buttonJoin,0,0,0,5 ) )
 
         buttonCancel = Gtk::Button.new(:label => @@lg.gt("CANCEL"))
         buttonBox.add(buttonCancel)
 
-        vBox.add(buttonBox)
+        vBox.add( setmargin( buttonBox,20,10,20,20 ) )
 
         
         #signals

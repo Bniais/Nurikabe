@@ -206,8 +206,6 @@ class FenetreClassement < Fenetre
     # en fonction de l'activation des boutons de niveau actifs
     def ajouterGrille(box)
         vBoxGrille = Gtk::Box.new(:vertical , 20)
-
-        puts " nb : #{SauvegardeGrille.getInstance.getNombreGrille}"
         tabPartieEnCours = Sauvegardes.getInstance.getSauvegardePartie.getListPartieLibreEnCours
 
         # Si le bouton 'facile' est actif => affichage des scores pour les grilles du niveau 'facile'
@@ -293,7 +291,6 @@ class FenetreClassement < Fenetre
     ##
     # Methode qui permet de gerer l'affichage d'une grille
     def generateFrame( uneGrille , mainBox )
-        puts uneGrille.numero
         btnFrame = Gtk::Button.new()
         btnFrame.name = "bg-FenetreSelection"
 
@@ -338,7 +335,6 @@ class FenetreClassement < Fenetre
         btnFrame.signal_connect("clicked") {
             Fenetre.remove(mainBox);
             indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieLibreSauvegarder(uneGrille.numero)
-            puts indice
             FenetreDetailScore.afficheToiSelec( FenetreClassement , uneGrille.numero)
         }
         tps = Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[uneGrille.numero][0]

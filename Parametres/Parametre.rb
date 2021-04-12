@@ -41,8 +41,6 @@ class Parametre
     def self.initialiseToi()
         if @@instanceParametre == nil
             @@instanceParametre = new()
-        else
-            puts "Parametre already initalize"
         end
     end
 

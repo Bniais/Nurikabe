@@ -12,8 +12,6 @@ class Langue
     def Langue.creer()
         if (@@monInstance == nil)
           @@monInstance = new()
-        else
-          puts "instance lg already exist"
         end
 
         return @@monInstance
@@ -24,32 +22,12 @@ class Langue
     end
 
     def utiliserLangue(id)
-      puts "charger langue #{id}"
       @dico = Marshal.load( File.binread(@fichiersLangues[id]) )
       @langueActuelle = id
     end
 
-    def importer(chemin)
-      puts "chemin : #{chemin}"
-
-      fichier = chemin.split('/').last
-      if(fichier == chemin)
-        fichier = chemin.split('\\').last
-      end
-      puts "fichier : #{fichier}"
-
-      f = File.read(chemin)
-      File.foreach(chemin) { |line| puts "aahhh #{line}" }
-    end
-
     # Methode privee pour l'initialisation
     def initialize()
-
-      #@dico = Marshal.load( File.binread("../Parametres/Fr_fr.dump") )
-
-
-
-
 
       @dico = Hash.new
       @dico["IP"] = "IP"

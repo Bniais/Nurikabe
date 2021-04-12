@@ -23,8 +23,6 @@ class SauvegardeGrille
     def self.creer(chemin)
         if @@instanceSauvegardeGrille == nil
             new(chemin)
-        else 
-            puts "SauvegardeGrille already exist"
         end
     end
 
@@ -40,7 +38,6 @@ class SauvegardeGrille
         if chemin == nil
             chemin = "../Sauvegarde/grilles.dump"
         end
-        puts "JE SAUVEGARDE LES GRILLES"
         File.open(chemin, "wb") { |f| f.write(Marshal.dump(@@instanceSauvegardeGrille) ) }
     end
 

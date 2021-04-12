@@ -47,8 +47,6 @@ class FenetreParametre < Fenetre
 
         # VUE PRINCIPAL
         @box.add( creationStack(fromLangue) ) #ADD
-
-        puts "fini"
         return @box
     end
 
@@ -107,7 +105,6 @@ class FenetreParametre < Fenetre
 
        
         if fromLangue
-            puts "from"
              vueInterface.show
             stack.visible_child = vueInterface
         end

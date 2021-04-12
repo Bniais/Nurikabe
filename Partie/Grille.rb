@@ -43,8 +43,6 @@ class Grille
 				end                                                                          
 			end
 		end
-
-		puts "same : #{nbSame} / #{nbCase}"
 		return nbSame/nbCase
 	end
 
@@ -52,9 +50,7 @@ class Grille
     ##
     #Retourne le nombre de récompenses du joueur
 	def getNbRecompense(tps)
-    puts "new call"
     for i in 0..2
-      puts "i : #{i}"
       if(paliers[2-i] >= tps)
         return (2-i)+1
       end

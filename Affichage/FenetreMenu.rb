@@ -176,7 +176,6 @@ class FenetreMenu < Fenetre
 
         if mode == Mode::LIBRE
             btnResume.signal_connect("clicked") {
-                puts Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size.to_s + "size"
                 if Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size > 1
                     box.remove(btnResume)
                     comboBox = Gtk::ComboBoxText.new
@@ -307,7 +306,6 @@ class FenetreMenu < Fenetre
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             gridsId = (1..(nbGrille/3)).to_a.shuffle
-            puts gridsId
             indiceRand = -1
             gridsId.each{ |id|
                 if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 0)
@@ -347,7 +345,7 @@ class FenetreMenu < Fenetre
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             gridsId = ((1 + nbGrille/3)..(2*nbGrille/3)).to_a.shuffle
-            puts gridsId
+
             indiceRand = -1
             gridsId.each{ |id|
                 if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 0)
@@ -389,7 +387,7 @@ class FenetreMenu < Fenetre
             
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             gridsId = ((1 + 2*nbGrille/3)..nbGrille).to_a.shuffle
-            puts gridsId
+
             indiceRand = -1
             gridsId.each{ |id|
                 if(Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[id][1] == 0)

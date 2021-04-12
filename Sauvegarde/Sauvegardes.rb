@@ -41,8 +41,6 @@ class Sauvegardes
     def self.creer(chemin)
         if @@instanceSauvegarde == nil
             new(chemin)
-        else 
-            puts "Save already exist"
         end
     end
 
@@ -58,7 +56,6 @@ class Sauvegardes
         if chemin == nil
             chemin = "../Sauvegarde/save.dump"
         end
-        puts "JE SAUVEGARDE"
         File.open(chemin, "wb") { |f| f.write(Marshal.dump(@@instanceSauvegarde) ) }
     end
 

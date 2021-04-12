@@ -675,10 +675,10 @@ class FenetrePartie < Fenetre
                 when Mode::SURVIE
                     msg = @@lg.gt("MESSAGE_VICTOIRE_SURVIE_DEBUT") + @@maPartie.getNbGrilleFinis.to_s + " " +(@@maPartie.getNbGrilleFinis < 2 ? @@lg.gt("GRILLE").downcase : @@lg.gt("GRILLES").downcase)
                 when Mode::CONTRE_LA_MONTRE
-                    nbRecompense = @@maPartie.getNbRecompense
+                    @nbRecompense = @@maPartie.getNbRecompense
                     msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time) + @@lg.gt("MESSAGE_VICTOIRE_CLM_FIN")
                     for i in 0..2
-                        if(i<nbRecompense)
+                        if(i<@nbRecompense)
                             msg += "★"
                         else
                             msg += "☆"
@@ -1000,11 +1000,11 @@ class FenetrePartie < Fenetre
                 end
 
                 #stars
-                if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE && @indiceRespiration%5==0)
-                    nbRecompense = @@maPartie.getNbRecompense
+                if(@nbRecompense == nil || (@nbRecompense != 0 && @@maPartie.getMode == Mode::CONTRE_LA_MONTRE && @indiceRespiration%5==0) )
+                    @nbRecompense = @@maPartie.getNbRecompense
                     msg = ""
                     for i in 0..2
-                        if(i<nbRecompense)
+                        if(i<@nbRecompense)
                             msg += "★"
                         else
                             msg += "☆"

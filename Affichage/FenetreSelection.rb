@@ -237,7 +237,7 @@ class FenetreSelection < Fenetre
         btnFrame.signal_connect("clicked") {
             Fenetre.remove(mainBox);
             indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieLibreSauvegarder(numero)
-            puts indice
+
             if indice != -1
                 FenetrePartie.afficheToiChargerPartie( FenetreSelection ,  indice   )
             else

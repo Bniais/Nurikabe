@@ -160,20 +160,15 @@ class Fenetre1v1 < Fenetre
                            
                             while 1 < 2
                                 line = @@socket.gets
-                                puts line
                                 if(line != nil)
                                     if(line.include?("av"))
-                                        puts "11"
                                         FenetrePartie.getInstance.setAvancementEnemy(line.delete_prefix("av"))
                                     else
                                         if(line.include?("dc"))
-                                            puts "22"
                                             FenetrePartie.getInstance.deco()
                                         elsif line.include?("ez")
-                                            puts "33"
                                             FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
                                         end
-                                        puts "sad"
                                         @@socket.puts "im sad"
                                         @@socket.close
                                         @@socket = nil
@@ -182,9 +177,7 @@ class Fenetre1v1 < Fenetre
                                         break
                                     end
                                 end
-                            end
-                            puts "end" 
-                            
+                            end                     
                         else
                             buttonJoin.set_sensitive(true)
                             buttonHost.set_sensitive(true)
@@ -236,20 +229,15 @@ class Fenetre1v1 < Fenetre
 
                         while 1 < 2
                             line = @@socket.gets
-                            puts line
                             if(line != nil)
                                 if(line.include?("av"))
-                                    puts "1"
                                     FenetrePartie.getInstance.setAvancementEnemy(line.delete_prefix("av"))
                                 else
                                     if(line.include?("dc"))
-                                        puts "2"
                                         FenetrePartie.getInstance.deco()
                                     elsif line.include?("ez")
-                                        puts "3"
                                         FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
                                     end
-                                    puts "sad"
                                     @@socket.puts "im sad"
                                     @@socket.close
                                     @@socket = nil
@@ -258,7 +246,6 @@ class Fenetre1v1 < Fenetre
                                 
                             end
                         end  
-                        puts "end" 
                     else
                         buttonJoin.set_sensitive(true)
                         buttonHost.set_sensitive(true)

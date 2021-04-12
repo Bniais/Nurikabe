@@ -52,12 +52,8 @@ class FenetreDetailScore < Fenetre
     ##
     # A COMPLETER
     def creeScores(paliers, record, etoiles)
-        puts etoiles
         box = Gtk::Box.new(:vertical)
         box.halign = :center
-
-       
-
 
         if(etoiles == 3)
             box.add(creeLigneScore(record, -1))

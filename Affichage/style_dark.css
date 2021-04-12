@@ -120,3 +120,40 @@ popover {
 checkbutton *{
     transition-duration: 0s;
 }
+
+
+/* Settings grille */
+
+#buttonBlanc, #buttonIle, #buttonGris , #buttonNoir, #buttonNoirSurligne , #buttonBlancSurligne, #buttonBlancNb, #buttonIleNb {
+    background-image: none;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 0px;
+    color: rgb(0, 0, 0);
+    background:rgb(173, 171, 171);
+
+    box-shadow: none;
+    border-radius: 0px;
+    font-size: 22px;
+    transition-duration: 0s;
+}
+
+#buttonIle, #buttonIleNb {
+    font-size: 35px;
+}
+
+#buttonNoir {
+    background:rgb(49, 49, 49);
+}
+
+#buttonNoirSurligne {
+    background: rgb(39, 26, 26);
+}
+
+#buttonBlancSurligne {
+    background: rgb(177, 120, 120);
+}
+
+#buttonBlancNb,#buttonIleNb {
+    background:rgb(152, 168, 186);
+}

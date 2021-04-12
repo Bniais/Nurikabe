@@ -1152,6 +1152,8 @@ class Cell < Gtk::Button
             end
             if(!Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
                 self.set_label("●")
+            else
+                 self.set_label("")
             end
         end
     end

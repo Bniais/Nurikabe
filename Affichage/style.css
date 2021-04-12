@@ -130,6 +130,7 @@ button:hover {
     box-shadow: 0px 0px 5px 0.8px rgb(255, 255, 255);
 }
 
+
 #btnQuitter, #btnQuitter * {
     background: rgb(243, 73, 51);
     color:white;
@@ -142,6 +143,7 @@ button:hover {
 #hide {
     opacity: 0.0;
 }
+
 
 messagedialog {
     font-size: 20px;
@@ -258,4 +260,40 @@ combobox*{
 
 combobox > *> *> *{
     border-radius: 3px;
+}
+
+
+/* Settings grille */
+
+#buttonBlanc, #buttonIle, #buttonGris , #buttonNoir, #buttonNoirSurligne , #buttonBlancSurligne, #buttonBlancNb, #buttonIleNb {
+    background-image: none;
+    border-width: 1px;
+    border-color: rgb(22, 10, 1);
+    border-radius: 0px;
+    background:rgb(238, 238, 238);
+    border-color:  rgb(22, 22, 22);
+    box-shadow: none;
+    border-radius: 0px;
+    font-size: 22px;
+    transition-duration: 0s;
+}
+
+#buttonIle, #buttonIleNb {
+    font-size: 35px;
+}
+
+#buttonNoir {
+    background: rgb(0, 0, 0);
+}
+
+#buttonNoirSurligne {
+    background: rgb(39, 26, 26);
+}
+
+#buttonBlancSurligne {
+    background: rgb(206, 140, 140);
+}
+
+#buttonBlancNb,#buttonIleNb {
+    background: rgb(204, 212, 224);
 }

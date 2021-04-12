@@ -1,4 +1,5 @@
 require './Fenetre.rb'
+require '../Sauvegarde/SauvegardeGrille.rb'
 
 ##
 # Classe qui gere l'affichage de la fenetre des parametres
@@ -46,6 +47,7 @@ class FenetreParametre < Fenetre
 
         # VUE PRINCIPAL
         @box.add( creationStack(fromLangue) ) #ADD
+
         puts "fini"
         return @box
     end
@@ -97,12 +99,52 @@ class FenetreParametre < Fenetre
         stack.add_named(vueInterface, title)
         stack.child_set_property(vueInterface, "title", title)
 
+         # Regles
+        title = @@lg.gt("REGLES")
+        vueRegles = creationVueRegle
+        stack.add_named(vueRegles, title)
+        stack.child_set_property(vueRegles, "title", title)
+
        
         if fromLangue
             puts "from"
              vueInterface.show
             stack.visible_child = vueInterface
         end
+
+        stack.signal_connect("notify::visible-child"){
+            if(stack.visible_child == vueRegles)
+                @timer = GLib::Timeout.add(300) {
+  
+                    @popover3.popup
+
+                    #@popover2.popdown
+                    @popover2.popup
+
+                    #@popover1.popdown
+                    @popover1.popup
+
+                    @popover1.visible = true
+                    @popover2.visible = true
+                    @popover3.visible = true
+                    @popover1.modal = false 
+                    @popover2.modal = false 
+                    @popover3.modal = false 
+
+                    GLib::Source.remove(@timer)
+                }                
+            else
+                @popover1.visible = false
+                @popover2.visible = false
+                @popover3.visible = false
+                @popover1.popdown
+                @popover2.popdown
+                @popover3.popdown
+
+            end
+        }
+
+        stack.set_visible_child(vueRegles)
 
         return box
     end
@@ -222,7 +264,12 @@ class FenetreParametre < Fenetre
         @switchCaseGrises = Gtk::Switch.new()
         @switchCaseGrises.halign = :start
         @switchCaseGrises.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
-        @switchCaseGrises.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?) }
+        @switchCaseGrises.signal_connect('notify::active') { |s| 
+            Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?) 
+            for child in @maGrilleRegle.children
+                child.changerStatut( @maGrilleRegleBacked[@maGrilleRegle.child_get_property(child, 'left-attach')][@maGrilleRegle.child_get_property(child, 'top-attach')].couleur)
+            end
+        }
         box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , @switchCaseGrises) ) #ADD
 
         # CHOOSE LANGUE
@@ -244,6 +291,7 @@ class FenetreParametre < Fenetre
 
         return box
     end
+    
 
     ##
     # SIGNAL CONNECT DE INTERFACE : MODE SOMBRE
@@ -278,8 +326,125 @@ class FenetreParametre < Fenetre
         return obj
     end
 
+    ##
+    # Methode qui creer la vue 'règles'
+    private
+    def creationVueRegle
+        box = Gtk::Box.new(:vertical)
+        title = Gtk::Label.new()
+        title.set_markup("<span size='25000'>"+@@lg.gt("REGLES")+"</span>")
+        setmargin(title,15,10,0,0)
+
+        box.add(title) #ADD
+
+        box.add(creeGrilleImmuable)
+        
+       
+
+        return box
+    end
+
+    private
+    def creeGrilleImmuable()
+        # Frame exterieur pour que les rebord et la meme epaisseur
+        maFrame = Gtk::Frame.new()
+        maFrame.name = "fenetreGrille"
+        maFrame.set_margin_left(50); maFrame.set_margin_right(50); maFrame.set_margin_top(85)
+
+        # grid pour placer la grille de jeu dedans
+        @maGrilleRegle = Gtk::Grid.new()
+        @maGrilleRegle.set_height_request(671-140-140);   @maGrilleRegle.set_width_request(671-140-140)
+        @maGrilleRegle.set_row_homogeneous(true);     @maGrilleRegle.set_column_homogeneous(true)
+
+        @maGrilleRegleBacked = SauvegardeGrille.getInstance.getGrilleAt(2).tabCases
+        # boucle pour cree la fenetre de jeu
+        for ligne in 0...@maGrilleRegleBacked.size
+            for colonne in 0...@maGrilleRegleBacked.size
+                cell =  creeCelluleGrilleImmuable(ligne,colonne, @maGrilleRegleBacked[colonne][ligne].couleur, @maGrilleRegleBacked)
+                if( ligne>2 && colonne >2)
+                    if(cell.name.include?("Blanc"))
+                        cell.name = "buttonBlancSurligne" 
+                    else
+                        cell.name = "buttonNoirSurligne"
+                    end
+                elsif( ligne<2 && colonne <2)
+                    if(cell.name.include?("Ile"))
+                        cell.name = "buttonIleNb" 
+                        @popover1 = create_popover(cell, Gtk::Label.new(@@lg.gt("MSG_REGLE_ILE")), :top)
+                    else
+                        cell.name = "buttonBlancNb" 
+                    end
+                end
+
+                
+
+                @maGrilleRegle.attach( cell , ligne,colonne,1,1)
+
+                if(ligne == 1 && colonne == 3)
+                    @popover2 = create_popover( cell, Gtk::Label.new(@@lg.gt("MSG_REGLE_MUR")), :bottom)
+                end
+
+                if(ligne == 4 && colonne == 4)
+                    @popover3 = create_popover(cell, Gtk::Label.new("MSG_REGLE_2x2"), :bottom)
+                end
+            end
+        end
+        maFrame.add(@maGrilleRegle)
+
+        return maFrame
+    end
+
+    private
+    def create_popover(parent, child, pos)
+        popover = Gtk::Popover.new(parent)
+        popover.position = pos
+        popover.add(child)
+        child.margin = 6
+        child.show
+        popover
+     end
+
+    # Methode qui permet de cree
+    # une cellule destiner a la grille
+    private
+    def creeCelluleGrilleImmuable(line,colonne,color, grille)
+        btn = CellImmuable.new()
+        btn.changerStatut( grille[colonne][line].couleur)
+        btn.set_x(line);    btn.set_y(colonne); btn.set_height_request(5);  btn.set_width_request(5)
+        return btn
+    end
 end
 
+class CellImmuable < Gtk::Button
+    attr_reader :x, :y
+
+    def set_x(x)
+        @x = x
+    end
+
+    def set_y(y)
+        @y = y
+    end
+
+    def changerStatut(color)
+        if color >= Couleur::ILE_1
+            self.name = "buttonIle"
+            self.set_label(color.to_s)
+        elsif color == Couleur::NOIR
+            self.name = "buttonNoir"
+            self.set_label("")
+        elsif color == Couleur::GRIS
+            self.name = "buttonGris"
+        elsif color == Couleur::BLANC
+            self.name = "buttonBlanc"
+            if(!Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
+                self.set_label("●")
+            else
+                self.set_label("")
+            end
+        end
+    end
+end
 =begin
 FenetreParametre.afficheToi( FenetreParame tre )
 Fenetre.show_all()

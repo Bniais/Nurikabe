@@ -228,7 +228,6 @@ class FenetreParametre < Fenetre
             Sauvegardes.getInstance.getSauvegardeParametre.resetAll
             Sauvegardes.getInstance.sauvegarder(nil)
             @switchDarkMode.set_active(false)
-            @switch2x2.set_active(false)
             @switchCompteurIlot.set_active(true)
             @switchCaseGrises.set_active(false)
             @switchAffichagePortee.set_active(true)

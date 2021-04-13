@@ -2,7 +2,7 @@ require_relative "SauvegardeGrille.rb"
 
 class SauvegardesScore
 
-    attr_reader :scoresContreLaMontre, :scoresSurvie
+    attr_reader :scoresContreLaMontre, :scoresSurvie, :nbEtoiles
 
     @scoresContreLaMontre = nil
     @scoresSurvie = nil

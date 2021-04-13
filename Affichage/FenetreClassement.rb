@@ -38,14 +38,27 @@ class FenetreClassement < Fenetre
         # BACK BUTTON
 
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
-        btnBoxH.layout = :start
+        btnBoxH.halign = :fill
         btnBack = Gtk::Button.new(:label => @@lg.gt("RETOUR"))
         btnBack.name = "btnBack"
         btnBack.signal_connect("clicked") { Fenetre.remove(box) ; lastView.afficheToi( nil ) ; }
         lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
+
+        boxStar = Gtk::Box.new(:horizontal)
+        boxStar.halign = :end
+
+        labelStar = Gtk::Label.new()
+
+        labelStar.set_markup("<span size='20000' >" + Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles.to_s + "★</span>")
+        labelStar.name = "stars"
+        boxStar.add(labelStar)
+        
+        btnBoxH.add( setmargin( boxStar, 0,0,0,20 ) )
+
         box.add(btnBoxH) #ADD
+
 
         # SEPARATOR
         box.add( Gtk::Separator.new(:vertical) ) #ADD
@@ -131,7 +144,7 @@ class FenetreClassement < Fenetre
         }
         # ScrollView qui comprends les grilles
 
-        scroll.set_size_request(200, 658)
+        scroll.set_size_request(200, 648)
 
         boxGrille = ajouterGrille(box)
         scroll.add_with_viewport( boxGrille )
@@ -344,16 +357,6 @@ class FenetreClassement < Fenetre
         setmargin(textTps,5,5,0,0)
         box.add(textTps)
         return btnFrame
-    end
-
-    ##
-    # Methode qui permet de creer un bouton avec un icone
-    private
-    def generateBtnWithIcon(iconName)
-        btn = Gtk::Button.new()
-        image = Gtk::Image.new(:icon_name => iconName, :size => :LARGE_TOOLBAR)
-        btn.add(image)
-        return btn
     end
 
     ##

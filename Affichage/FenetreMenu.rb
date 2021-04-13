@@ -64,13 +64,48 @@ class FenetreMenu < Fenetre
         setBold(btnContreLaMontre, @@lg.gt("CONTRELAMONTRE") )
         box.add( setmargin( btnContreLaMontre , 0, 15, 70, 70) )
 
-
+        # BTN SURVIE
         btnSurvie = Gtk::Button.new()
-        setBold(btnSurvie, @@lg.gt("SURVIE") )
+        btnSurvie.set_height_request(60)
+
+        boxSurvie = Gtk::Box.new(:horizontal)
+        boxSurvie.set_homogeneous(true)
+        boxSurvie.add( Gtk::Label.new(""))
+        
+
+        btnSurvieLabel = Gtk::Label.new()
+        btnSurvieLabel.halign = :center
+        btnSurvieLabel.set_markup("<span weight = 'ultrabold'>#{@@lg.gt("SURVIE")}</span>")
+        boxSurvie.add( btnSurvieLabel )
+
+        btnSurvieLabelStar = Gtk::Label.new()
+        btnSurvieLabelStar.set_markup("<span weight = 'ultrabold'> #{ "%02d" % Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles.to_s}/5 ★</span>")
+        btnSurvieLabelStar.name = "stars"
+        boxSurvie.add( btnSurvieLabelStar )
+
+        btnSurvie.add( boxSurvie )
         box.add( setmargin( btnSurvie , 0, 15, 70, 70) )
 
+
+        # BTN 1 V 1
         btn1v1 = Gtk::Button.new()
-        setBold(btn1v1, @@lg.gt("1V1") )
+        btn1v1.set_height_request(60)
+
+        box1v1 = Gtk::Box.new(:horizontal)
+        box1v1.set_homogeneous(true)
+        box1v1.add( Gtk::Label.new(""))
+
+
+        btn1v1Label = Gtk::Label.new()
+        btn1v1Label.set_markup("<span weight = 'ultrabold'>#{@@lg.gt("1V1")}</span>")
+        box1v1.add( btn1v1Label )
+
+        btn1v1LabelStar = Gtk::Label.new()
+        btn1v1LabelStar.set_markup("<span weight = 'ultrabold'>#{ "%02d" % Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles.to_s}/10 ★</span>")
+        btn1v1LabelStar.name = "stars"
+        box1v1.add(  btn1v1LabelStar   )
+
+        btn1v1.add(box1v1)
         box.add( setmargin( btn1v1 , 0, 15, 70, 70) )
 
 

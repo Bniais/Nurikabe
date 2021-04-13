@@ -84,7 +84,7 @@ class FenetreDetailScore < Fenetre
     # A COMPLETER
     def creeLigneScore(temps, etoiles)
         box = Gtk::Box.new(:horizontal)
-        setmargin(box, 4,4,0,0)
+        box.set_homogeneous(true)
         
         if(etoiles >= 0)
             etoilesTxt = ""
@@ -106,7 +106,7 @@ class FenetreDetailScore < Fenetre
         
         etoilesLabel.name = "stars-detail"
         etoilesLabel.halign = :start
-        box.add(etoilesLabel)
+        box.add( etoilesLabel )
 
         tpsLabel = Gtk::Label.new(Chrono.getTpsFormatPrecis(temps))
         tpsLabel.name = "detailScore"

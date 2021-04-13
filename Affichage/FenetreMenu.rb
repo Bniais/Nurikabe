@@ -68,6 +68,7 @@ class FenetreMenu < Fenetre
         btnSurvie = Gtk::Button.new()
         btnSurvie.set_height_request(60)
 
+
         boxSurvie = Gtk::Box.new(:horizontal)
         boxSurvie.set_homogeneous(true)
         boxSurvie.add( Gtk::Label.new(""))
@@ -78,10 +79,15 @@ class FenetreMenu < Fenetre
         btnSurvieLabel.set_markup("<span weight = 'ultrabold'>#{@@lg.gt("SURVIE")}</span>")
         boxSurvie.add( btnSurvieLabel )
 
-        btnSurvieLabelStar = Gtk::Label.new()
-        btnSurvieLabelStar.set_markup("<span weight = 'ultrabold'> #{ "%02d" % Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles.to_s}/5 ★</span>")
+        btnSurvieLabelStar = Gtk::Label.new("")
         btnSurvieLabelStar.name = "stars"
         boxSurvie.add( btnSurvieLabelStar )
+
+        if Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles < 5 
+            btnSurvie.set_sensitive(false)
+            btnSurvieLabelStar.set_markup("<span weight = 'ultrabold'> #{ Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles.to_s}/5 ★</span>")
+
+        end
 
         btnSurvie.add( boxSurvie )
         box.add( setmargin( btnSurvie , 0, 15, 70, 70) )
@@ -100,8 +106,7 @@ class FenetreMenu < Fenetre
         btn1v1Label.set_markup("<span weight = 'ultrabold'>#{@@lg.gt("1V1")}</span>")
         box1v1.add( btn1v1Label )
 
-        btn1v1LabelStar = Gtk::Label.new()
-        btn1v1LabelStar.set_markup("<span weight = 'ultrabold'>#{ "%02d" % Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles.to_s}/10 ★</span>")
+        btn1v1LabelStar = Gtk::Label.new("")
         btn1v1LabelStar.name = "stars"
         box1v1.add(  btn1v1LabelStar   )
 
@@ -112,6 +117,12 @@ class FenetreMenu < Fenetre
         btnTutoriel = Gtk::Button.new()
         setBold(btnTutoriel, @@lg.gt("TUTORIEL") )
         box.add( setmargin( btnTutoriel , 0, 10, 70, 70) )
+
+        if Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles < 10 
+            btn1v1.set_sensitive(false)
+            btn1v1LabelStar.set_markup("<span weight = 'ultrabold'>#{ Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles.to_s}/10 ★</span>")
+
+        end
 
 
         # gestion des évènements des boutons

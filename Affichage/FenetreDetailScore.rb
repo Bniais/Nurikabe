@@ -10,7 +10,8 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # A COMPLETER
+    # Methode de class qui permet 
+    # d'afficher la fentre Detail d'un score
     def self.afficheToiSelec( lastView, numero)
         Fenetre.set_subtitle( @@lg.gt("DETAIL_SCORE") )
         Fenetre.add( FenetreDetailScore.new().creationInterface( lastView, numero ) )
@@ -50,7 +51,10 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # A COMPLETER
+    # Methhode qui cree l'affichage 
+    # des temps de jeu de maniere ordonner
+    # pour que le temps du jours soit afficher 
+    # entre les temps possible
     def creeScores(paliers, record, etoiles)
         box = Gtk::Box.new(:vertical)
         box.halign = :center
@@ -81,7 +85,8 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # A COMPLETER
+    # Methode qui genere le code pour afficher
+    # une ligne qui comprends nbEtoile et temps associer
     def creeLigneScore(temps, etoiles)
         box = Gtk::Box.new(:horizontal)
         box.set_homogeneous(true)
@@ -117,7 +122,8 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # A COMPLETER
+    # A Methode qui cree la grille
+    # a afficher et qui renvoi la box qui comprends la grille
     def creeGrille( uneGrille )
         box = Gtk::Box.new(:vertical)
         setmargin(box,10,10,190,190)

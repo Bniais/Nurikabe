@@ -1,5 +1,5 @@
-require './Fenetre.rb'
-require '../Sauvegarde/SauvegardeGrille.rb'
+require_relative './Fenetre.rb'
+require_relative '../Sauvegarde/SauvegardeGrille.rb'
 
 ##
 # Classe qui gere l'affichage de la fenetre des parametres

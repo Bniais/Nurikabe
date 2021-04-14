@@ -1,13 +1,13 @@
-require './Fenetre.rb'
-require './FenetreParametre.rb'
-require './FenetreAPropos.rb'
-require './FenetreClassement.rb'
-require './FenetrePartie.rb'
-require './Fenetre1v1.rb'
-require './FenetreSelection.rb'
-require "./../Partie/PartieSurvie.rb"
-require "./../Partie/PartieTuto.rb"
-require "./../Partie/PartieContreLaMontre.rb"
+require_relative './Fenetre.rb'
+require_relative './FenetreParametre.rb'
+require_relative './FenetreAPropos.rb'
+require_relative './FenetreClassement.rb'
+require_relative './FenetrePartie.rb'
+require_relative './Fenetre1v1.rb'
+require_relative './FenetreSelection.rb'
+require_relative "./../Partie/PartieSurvie.rb"
+require_relative "./../Partie/PartieTuto.rb"
+require_relative "./../Partie/PartieContreLaMontre.rb"
 
 ##
 # Classe qui gere l'affichage de la fenetre du menu

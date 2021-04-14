@@ -1,4 +1,4 @@
-require './Fenetre.rb'
+require_relative './Fenetre.rb'
 
 
 class FenetreDetailScore < Fenetre

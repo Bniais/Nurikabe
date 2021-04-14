@@ -2,7 +2,6 @@ require_relative 'Grille.rb'
 require_relative 'Chrono.rb'
 require_relative 'Mode.rb'
 require_relative 'Coup.rb'
-require_relative 'Indice/Indice.rb'
 require 'digest'
 
 
@@ -363,13 +362,13 @@ class Partie
         if @grilleEnCours.tabCases[i][j].couleur == Couleur::ILE_1
           #On regarde les cases autours
           if i+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS #On ne corrige pas les erreurs donc on ne traite pas les cases blanches
-            return [Indice::INDICE_ILE_1, grilleEnCours.tabCases[i+1][j]]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_1"), grilleEnCours.tabCases[i+1][j]]
           elsif j+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-            return [Indice::INDICE_ILE_1, @grilleEnCours.tabCases[i][j+1]]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_1"), @grilleEnCours.tabCases[i][j+1]]
           elsif j-1 >= 0 && @grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-            return [Indice::INDICE_ILE_1, @grilleEnCours.tabCases[i][j-1]]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_1"), @grilleEnCours.tabCases[i][j-1]]
           elsif i-1 >= 0 && @grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-            return [Indice::INDICE_ILE_1, @grilleEnCours.tabCases[i-1][j]]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_1"), @grilleEnCours.tabCases[i-1][j]]
           end
         end
       end
@@ -386,13 +385,13 @@ class Partie
         if @grilleEnCours.tabCases[i][j].estIle?()
           #On regarde si les cases à 2 distances sont des iles et que la case au milieu n'est pas noire
           if i+2 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS && @grilleEnCours.tabCases[i+2][j].estIle?()
-            return [Indice::INDICE_ILE_ADJACENTE, @grilleEnCours.tabCases[i+1][j]]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE"), @grilleEnCours.tabCases[i+1][j]]
           elsif j+2 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS && @grilleEnCours.tabCases[i][j+2].estIle?()
-            return [Indice::INDICE_ILE_ADJACENTE, @grilleEnCours.tabCases[i][j+1]]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE"), @grilleEnCours.tabCases[i][j+1]]
           elsif j-2 >= 0 && @grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS && @grilleEnCours.tabCases[i][j-2].estIle?()
-            return [Indice::INDICE_ILE_ADJACENTE, @grilleEnCours.tabCases[i][j-1]]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE"), @grilleEnCours.tabCases[i][j-1]]
           elsif i-2 >= 0 && @grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS && @grilleEnCours.tabCases[i-2][j].estIle?()
-            return [Indice::INDICE_ILE_ADJACENTE, @grilleEnCours.tabCases[i-1][j]]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE"), @grilleEnCours.tabCases[i-1][j]]
           end
         end
       end
@@ -411,33 +410,33 @@ class Partie
           #On regarde si les cases à 2 distances sont des iles et que la case au milieu n'est pas noire
           if i+1 < @grilleEnCours.tabCases.size && j+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i+1][j+1].estIle?()
             if @grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i+1][j]]
+              return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE_DIAG"), @grilleEnCours.tabCases[i+1][j]]
             elsif @grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i][j+1]]
+              return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE_DIAG"), @grilleEnCours.tabCases[i][j+1]]
             end
           end
 
           if i+1 < @grilleEnCours.tabCases.size && j-1 >= 0 && @grilleEnCours.tabCases[i+1][j-1].estIle?()
             if @grilleEnCours.tabCases[i+1][j].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i+1][j]]
+              return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE_DIAG"), @grilleEnCours.tabCases[i+1][j]]
             elsif @grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i][j-1]]
+              return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE_DIAG"), @grilleEnCours.tabCases[i][j-1]]
             end
           end
 
           if i-1 >= 0 && j+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[i-1][j+1].estIle?()
             if @grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i-1][j]]
+              return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE_DIAG"), @grilleEnCours.tabCases[i-1][j]]
             elsif @grilleEnCours.tabCases[i][j+1].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i][j+1]]
+              return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE_DIAG"), @grilleEnCours.tabCases[i][j+1]]
             end
           end
 
           if i-1 >= 0 && j-1 >= 0 && @grilleEnCours.tabCases[i-1][j-1].estIle?()
             if @grilleEnCours.tabCases[i-1][j].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i-1][j]]
+              return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE_DIAG"), @grilleEnCours.tabCases[i-1][j]]
             elsif @grilleEnCours.tabCases[i][j-1].couleur == Couleur::GRIS
-              return [Indice::INDICE_ILE_ADJACENTE_DIAG, @grilleEnCours.tabCases[i][j-1]]
+              return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_ADJACENTE_DIAG"), @grilleEnCours.tabCases[i][j-1]]
             end
           end
         end
@@ -463,13 +462,13 @@ class Partie
                 if(vu[x][y]) 
                   #On regarde si une case frontalière à l'île est grise
                   if x+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[x+1][y].couleur == Couleur::GRIS #On ne corrige pas les erreurs donc on ne traite pas les cases blanches
-                    return [Indice::INDICE_ILE_COMPLETE, @grilleEnCours.tabCases[x+1][y]]
+                    return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_COMPLETE"), @grilleEnCours.tabCases[x+1][y]]
                   elsif y+1 < @grilleEnCours.tabCases.size && @grilleEnCours.tabCases[x][y+1].couleur == Couleur::GRIS
-                    return [Indice::INDICE_ILE_COMPLETE, @grilleEnCours.tabCases[x][y+1]]
+                    return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_COMPLETE"), @grilleEnCours.tabCases[x][y+1]]
                   elsif y-1 >= 0 && @grilleEnCours.tabCases[x][y-1].couleur == Couleur::GRIS
-                    return [Indice::INDICE_ILE_COMPLETE, @grilleEnCours.tabCases[x][y-1]]
+                    return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_COMPLETE"), @grilleEnCours.tabCases[x][y-1]]
                   elsif x-1 >= 0 && @grilleEnCours.tabCases[x-1][y].couleur == Couleur::GRIS
-                    return [Indice::INDICE_ILE_COMPLETE, @grilleEnCours.tabCases[x-1][y]]
+                    return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_COMPLETE"), @grilleEnCours.tabCases[x-1][y]]
                   end
                   
                 end
@@ -563,7 +562,7 @@ class Partie
           end
 
           if(!found)
-            return [Indice::INDICE_CASE_ISOLEE, @grilleEnCours.tabCases[i][j]]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("CASE_ISOLEE"), @grilleEnCours.tabCases[i][j]]
           end
         end
       end
@@ -652,7 +651,7 @@ class Partie
           end
 
           if(caseGrise != nil && autreBloc == true && plusieursVoisins == false)
-            return [Indice::INDICE_EXPENSION_MUR, caseGrise]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("EXPENSION_MUR"), caseGrise]
           end
 
         end
@@ -741,7 +740,7 @@ class Partie
           end
 
           if(nbIle < @grilleEnCours.tabCases[i][j].couleur && caseGrise != nil && plusieursVoisins == false)
-            return [Indice::INDICE_EXPENSION_ILE, caseGrise]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("EXPENSION_ILE"), caseGrise]
           end
 
         end
@@ -841,9 +840,9 @@ class Partie
             if (caseGrise.positionX - caseGrise2.positionX).abs == 1 && (caseGrise.positionY - caseGrise2.positionY).abs == 1
               #verif la case adjacentes est blanche 
               if @grilleEnCours.tabCases[caseGrise.positionY][caseGrise2.positionX].couleur == Couleur::GRIS
-                return [Indice::INDICE_EXPENSION_2D, @grilleEnCours.tabCases[caseGrise.positionY][caseGrise2.positionX]]
+                return [Sauvegardes.getInstance.getSauvegardeLangue.gt("EXPENSION_2D"), @grilleEnCours.tabCases[caseGrise.positionY][caseGrise2.positionX]]
               elsif @grilleEnCours.tabCases[caseGrise2.positionY][caseGrise.positionX].couleur == Couleur::GRIS
-                return [Indice::INDICE_EXPENSION_2D, @grilleEnCours.tabCases[caseGrise2.positionY][caseGrise.positionX]]
+                return [Sauvegardes.getInstance.getSauvegardeLangue.gt("EXPENSION_2D"), @grilleEnCours.tabCases[caseGrise2.positionY][caseGrise.positionX]]
               end
             end 
           end
@@ -909,7 +908,7 @@ class Partie
       for j in 0..@grilleEnCours.tabCases.size-2
         result = verifPresque2x2(i,j)
         if(result != nil)
-          return [Indice::INDICE_EVITER_2x2, result]
+          return [Sauvegardes.getInstance.getSauvegardeLangue.gt("EVITER_2x2"), result]
         end
       end
     end
@@ -979,7 +978,7 @@ class Partie
             depth+=1
           end
           if(!found)
-            return [Indice::INDICE_ILE_INATTEIGNABLE, @grilleEnCours.tabCases[j][i]]
+            return [Sauvegardes.getInstance.getSauvegardeLangue.gt("ILE_INATTEIGNABLE"), @grilleEnCours.tabCases[j][i]]
           end
         end
       end
@@ -987,34 +986,3 @@ class Partie
     return nil
   end
 end
-=begin    
-p = Partie.creer(Grille.creer(4, 
-    [
-  [Case.creer(Couleur::BLANC, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::BLANC, 4, 0)],
-      [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::BLANC, 4, 1)],
-      [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::BLANC, 4, 2)],
-      [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::NOIR, 3, 3), Case.creer(Couleur::BLANC, 4, 3)],
-      [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::BLANC, 1, 4), Case.creer(Couleur::BLANC, 2, 4), Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4)]
-    ]), nil, nil)
-
-Partie.creer(Grille.creer(4, 
-[
-  [Case.creer(Couleur::GRIS, 0, 0) ,Case.creer(Couleur::ILE_4, 1, 0),Case.creer(Couleur::NOIR, 2, 0),Case.creer(Couleur::ILE_5, 3, 0), Case.creer(Couleur::GRIS, 4, 0)],
-  [Case.creer(Couleur::GRIS, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1)],
-  [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::ILE_1, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::GRIS, 4, 2)],
-  [Case.creer(Couleur::ILE_4, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::NOIR, 2, 3), Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3)],
-  [Case.creer(Couleur::GRIS, 0, 4), Case.creer(Couleur::GRIS, 1, 4), Case.creer(Couleur::GRIS, 2, 4), Case.creer(Couleur::GRIS, 3, 4), Case.creer(Couleur::GRIS, 4, 4)]
-]), nil, nil)
-
-p.grilleEnCours.afficher
-
-puts p.partieTerminee?
-
-
-id = p.indiceInatteignable()
-if(id != nil)
-  print [Indice::MESSAGES[id [0]], id[1].positionX, id [1].positionY] #fait une erreur si pas d'indice trouvé
-end
-
-=end
-

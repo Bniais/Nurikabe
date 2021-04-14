@@ -1,14 +1,13 @@
-##
 # Classe qui gere les langues
+0
 class Langue
-    ##
     # nom de la langue
     attr_reader :langues, :langueActuelle
 
     private_class_method :new
 
     @@monInstance = nil
-    ##
+
     # Methode qui permet de creer une grille
     def Langue.creer()
         if (@@monInstance == nil)
@@ -18,20 +17,15 @@ class Langue
         return @@monInstance
     end
 
-    ##
-    # Getter de la variable de classe @@monInstance
     def self.getInstance()
       return @@monInstance
     end
 
-    ##
-    # Met à jour le language du jeu en fonction de l'id de la langue en paramètre
     def utiliserLangue(id)
       @dico = Marshal.load( File.binread(@fichiersLangues[id]) )
       @langueActuelle = id
     end
 
-    ##
     # Methode privee pour l'initialisation
     def initialize()
 
@@ -62,7 +56,6 @@ class Langue
       @dico["GRILLES_TERMINEES"] = " finished grids"
       @dico["DETAIL_SCORE"] = "Score details"
 
-      @dico["MESSAGE_DE_VICTOIRE"] = "Congratulations! You've won!"
       @dico["LIBRE"] = "Free play"
       @dico["CONTRELAMONTRE"] = "Time trial"
       @dico["SURVIE"] = "Survival"
@@ -111,11 +104,11 @@ class Langue
       @dico["ILE_ADJACENTE_DIAG"] ="There is a cell next to two islands, so it cannot be white otherwise the two islands would touch"
       @dico["ILE_COMPLETE"] = "There is a cell next to a completed island, so it cannot be white otherwise the island would be too big"
       @dico["CASE_ISOLEE"] = "There is an isolated cell: there is no path connecting it to an island "
-      @dico["EXPANSION_MUR"] = "There is a cell that has to be expanded to prevent a wall from being isolated"
+      @dico["EXPENSION_MUR"] = "There is a cell that has to be expanded to prevent a wall from being isolated"
       @dico["CONTINUITE_MUR"] = "There is a cell that has to be expanded to prevent two walls from being separated"
-      @dico["EXPANSION_ILE"] = "There is a cell that has to be expanded for an island to develop"
-      @dico["EXPANSION_2D"] = "There is an almost finished island that can only expand in two direcitons, both having an adjacent cell in common that cannot be white"
-      @dico["EXPANSION_CACHEE"] = "There is a cell that has to be expanded for an island to develop enough"
+      @dico["EXPENSION_ILE"] = "There is a cell that has to be expanded for an island to develop"
+      @dico["EXPENSION_2D"] = "There is an almost finished island that can only expand in two direcitons, both having an adjacent cell in common that cannot be white"
+      @dico["EXPENSION_CACHEE"] = "There is a cell that has to be expanded for an island to develop enough"
       @dico["EVITER_2x2"] = "There is almost a 2x2 wall block, so the remaining cell cannot be black"
       @dico["CONTINUITE_ILE"] = "A white cell not connected to an island has to go through a cell to get to the island"
       @dico["ILE_INATTEIGNABLE"] = "A cell is too far from any island and cannot be reached"
@@ -240,11 +233,11 @@ STER Maxime
       @dico["ILE_ADJACENTE_DIAG"] ="Hay una casilla adyacente a dos islas, por lo que no puede ser blanco, de lo contrario las dos islas quedarían atascadas"
       @dico["ILE_COMPLETE"] = "Hay una casilla adyacente a una isla completa, por lo que no puede ser blanco, de lo contrario la isla se desbordará"
       @dico["CASE_ISOLEE"] = "Hay una casilla aislada: no hay un camino que la lleve a una isla"
-      @dico["EXPANSION_MUR"] = "Hay un espacio de expansión obligatorio para evitar que un muro quede aislada"
+      @dico["EXPENSION_MUR"] = "Hay un espacio de expansión obligatorio para evitar que un muro quede aislada"
       @dico["CONTINUITE_MUR"] = "Se requiere un espacio de expansión para evitar que dos muros se separen"
-      @dico["EXPANSION_ILE"] = "Se requiere un espacio de expansión para que una isla se desarrolle"
-      @dico["EXPANSION_2D"] = "Hay una isla casi terminada que solo puede expandirse en dos direcciones, las cuales tienen un cuadrado adyacente en común que por lo tanto no puede ser blanco."
-      @dico["EXPANSION_CACHEE"] = "Se requiere un espacio de expansión para que una isla crezca lo suficiente"
+      @dico["EXPENSION_ILE"] = "Se requiere un espacio de expansión para que una isla se desarrolle"
+      @dico["EXPENSION_2D"] = "Hay una isla casi terminada que solo puede expandirse en dos direcciones, las cuales tienen un cuadrado adyacente en común que por lo tanto no puede ser blanco."
+      @dico["EXPENSION_CACHEE"] = "Se requiere un espacio de expansión para que una isla crezca lo suficiente"
       @dico["EVITER_2x2"] = "Hay un bloque de muro de casi 2x2, por lo que el cuadrado restante no puede ser negro"
       @dico["CONTINUITE_ILE"] = "Un casilla blanco que no está conectado a una isla pasa necesariamente por una casilla para llegar a la isla"
       @dico["ILE_INATTEIGNABLE"] = "Una casilla está demasiado lejos de cualquier isla y, por lo tanto, es inalcanzable"
@@ -368,11 +361,11 @@ STER Maxime
       @dico["ILE_ADJACENTE_DIAG"] ="Il existe une case adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées"
       @dico["ILE_COMPLETE"] = "Il existe une case adjacente à une île complète, elle ne peut donc pas être blanche, sinon l'île déborderait"
       @dico["CASE_ISOLEE"] = "Il existe une case isolée : il n'y a aucun chemin qui la mène vers une île"
-      @dico["EXPANSION_MUR"] = "Il existe une case d'expansion obligée pour éviter qu'un mur se retrouve isolé"
+      @dico["EXPENSION_MUR"] = "Il existe une case d'expansion obligée pour éviter qu'un mur se retrouve isolé"
       @dico["CONTINUITE_MUR"] = "Il existe une case d'expansion obligée pour éviter que deux murs soient séparés"
-      @dico["EXPANSION_ILE"] = "Il existe une case d'expansion obligée pour qu'une île se développe"
-      @dico["EXPANSION_2D"] = "Il existe une île presque terminée qui ne peut s'étendre que dans deux direction, les deux ayant une case adjacente en commun qui ne pourra donc pas être blanche"
-      @dico["EXPANSION_CACHEE"] = "Il existe une case d'expansion obligée pour qu'une île se dévelope assez"
+      @dico["EXPENSION_ILE"] = "Il existe une case d'expansion obligée pour qu'une île se développe"
+      @dico["EXPENSION_2D"] = "Il existe une île presque terminée qui ne peut s'étendre que dans deux direction, les deux ayant une case adjacente en commun qui ne pourra donc pas être blanche"
+      @dico["EXPENSION_CACHEE"] = "Il existe une case d'expansion obligée pour qu'une île se dévelope assez"
       @dico["EVITER_2x2"] = "Il y a un presque un bloc de mur 2x2, la case restante ne peut donc pas être noire"
       @dico["CONTINUITE_ILE"] = "Une case blanche qui n'est pas reliée à une île passe nécessairement par une case pour rejoindre l'île"
       @dico["ILE_INATTEIGNABLE"] = "Une case est trop loin de toute île et est donc inatteignable"
@@ -445,6 +438,3 @@ STER Maxime
       return "#{@dico}"
     end
 end
-
-#Langue.creer("../Parametres/ES_es.dump")
-#Langue.getInstance.tmpSaver("../Parametres/FR_fr.dump")

@@ -1,5 +1,6 @@
 # Classe qui gere les effets sonores
 class Son
+    ##
     # chemin pour acceder au fichier du son
     attr_reader :chemin
 

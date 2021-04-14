@@ -2,25 +2,32 @@ require './../Sauvegarde/Sauvegardes.rb'
 
 # Classe qui gere les parametres
 class Parametre
+    ##
     # option d'affichage
     attr_accessor :casesGrises
-
+    ##
     # AIDES VISUELLES
     # affichage de la taille d'une ile
     attr_accessor :compteurIlot
+    ##
     # affichage de la portee d'une aide
     attr_accessor :affichagePortee
+    ##
     # affichage des murs 2x2
     attr_accessor :murs2x2
-
+    ##
     # comportement de la souris choisi
     attr_accessor :comportementSouris
+    ##
     # raccourcis clavier choisi
     attr_accessor :raccourcisClavier
+    ##
     # tableau des langues dispos
     attr_accessor :langue
+    ##
     # indice de la langue choisie
     attr_accessor :indiceLangueChoisi
+    ##
     # volume
     attr_accessor :volume
 

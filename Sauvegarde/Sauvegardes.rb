@@ -22,9 +22,9 @@ class Sauvegardes
 
     ##
     # Constructeur de Sauvegardes
-    def initialize(chemin)
-        if File.exist?(chemin) == true 
-            @@instanceSauvegarde = Marshal.load( File.binread( chemin ) )
+    def initialize()
+        if File.exist?("../Sauvegarde/save.dump") == true 
+            @@instanceSauvegarde = Marshal.load( File.binread( "../Sauvegarde/save.dump" ) )
         else
             @@instanceSauvegarde = self
         end
@@ -40,9 +40,9 @@ class Sauvegardes
 
      ##
     # Recupère le chemin d'un fichier de sauvegardes 
-    def self.creer(chemin)
+    def self.creer()
         if @@instanceSauvegarde == nil
-            new(chemin)
+            new()
         end
     end
 
@@ -54,11 +54,8 @@ class Sauvegardes
 
     ##
     # Sauvegarde les sauvegardes dans un chemin spécifique, ou dans un dossier préfait
-    def sauvegarder(chemin)
-        if chemin == nil
-            chemin = "../Sauvegarde/save.dump"
-        end
-        File.open(chemin, "wb") { |f| f.write(Marshal.dump(@@instanceSauvegarde) ) }
+    def sauvegarder()
+        File.open("../Sauvegarde/save.dump", "wb") { |f| f.write(Marshal.dump(@@instanceSauvegarde) ) }
     end
 
     ##
@@ -98,7 +95,7 @@ class Sauvegardes
         if @sauvegardeLangue == nil
             @sauvegardeLangue = Langue.creer()
         else
-            @sauvegardeLangue    
+            @sauvegardeLangue
         end
     end
 

@@ -31,7 +31,7 @@ class SauvegardesScore
     # Ajoute une grille au tableau
     def ajouterGrille()
         @scoresContreLaMontre.append([-1,0])
-        Sauvegardes.getInstance.sauvegarder(nil)
+        Sauvegardes.getInstance.sauvegarder()
     end
 
 

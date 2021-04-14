@@ -8,9 +8,9 @@ class SauvegardeGrille
 
     ##
     # Constructeur de SauvegardeGrille
-    def initialize(chemin)
-        if File.exist?(chemin) == true 
-            @@instanceSauvegardeGrille = Marshal.load( File.binread( chemin ) )
+    def initialize()
+        if File.exist?("../Sauvegarde/grilles.dump") == true 
+            @@instanceSauvegardeGrille = Marshal.load( File.binread( "../Sauvegarde/grilles.dump" ) )
         else
             @mesGrilles = [nil]
             @@instanceSauvegardeGrille = self
@@ -20,9 +20,9 @@ class SauvegardeGrille
 
     ##
     # Recupère le chemin d'un fichier de sauvegarde de grille
-    def self.creer(chemin)
+    def self.creer()
         if @@instanceSauvegardeGrille == nil
-            new(chemin)
+            new()
         end
     end
 
@@ -34,11 +34,8 @@ class SauvegardeGrille
 
     ##
     # Sauvegarde les grilles dans un chemin spécifique, ou dans un dossier préfait
-    def sauvegarder(chemin)
-        if chemin == nil
-            chemin = "../Sauvegarde/grilles.dump"
-        end
-        File.open(chemin, "wb") { |f| f.write(Marshal.dump(@@instanceSauvegardeGrille) ) }
+    def sauvegarder()
+        File.open("../Sauvegarde/grilles.dump", "wb") { |f| f.write(Marshal.dump(@@instanceSauvegardeGrille) ) }
     end
 
     ##

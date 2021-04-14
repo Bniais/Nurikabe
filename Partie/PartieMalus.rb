@@ -3,16 +3,17 @@ require_relative "Malus.rb"
 
 class PartieMalus < Partie
 
-    private_class_method :new
+    #Classe abstraite ne pouvait être instanciée
+    private_class_method :new 
 
     ##
-    # Constructeur de PartieMalus
-    def initalize()
+    # Définit comment les sous-classes seront initialisées
+    def initalize(grille)
         super(grille)
     end
 
     ##
-    # A COMPLETER
+    # Redéfinition
     def verifierErreur(fromUser)
         if(fromUser)
             ajouterMalus(Malus::MALUS_VERIFICATION)

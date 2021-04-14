@@ -1,13 +1,16 @@
 require_relative "PartieMalus.rb"
 class PartieSurvie < PartieMalus
+
+    private_class_method :new
+
     ##
-    #Creer une partie en mode survie
+    # Creer une partie en mode survie, puisque new est private
     def PartieSurvie.creer(grille)
       new(grille)
     end
 
     ##
-    #Constructeur de PartieSurvie
+    # Initialise une partie survie, en mettant en place une liste aléatoires de grilles de la difficulté voulue
     def initialize(grille) #Créer une nouvelle partie
       super(grille)
       @chrono = ChronoDecompte.creer()
@@ -41,7 +44,7 @@ class PartieSurvie < PartieMalus
     end
 
     ##
-    #Tire la prochaine grille
+    # Passe à la prochaine grille tout en la renvoyant
     def grilleSuivante()
       @grilleRaz = nil
       @nbGrilleFinis += 1
@@ -68,14 +71,13 @@ class PartieSurvie < PartieMalus
     end
 
     ##
-    #Retourne le nombre de grille réalisées
+    # Retourne le nombre de grille terminée
     def getNbGrilleFinis
       return @nbGrilleFinis
     end
 
-
     ##
-    #Retourne le mode Survie
+    #Retourne le mode de la partie : Survie
     def getMode
       return Mode::SURVIE
     end

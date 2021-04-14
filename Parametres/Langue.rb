@@ -75,6 +75,7 @@ class Langue
       @dico["JEU"] = "Game"
       @dico["UTILISATEUR"] = "User"
       @dico["INTERFACE"] = "Interface"
+      @dico["REGLES"] = "Rules"
       @dico["AUDIO"] = "Audio"
       @dico["GRILLE"] = "Grid"
       @dico["PARTIE"] = "Game"
@@ -112,6 +113,9 @@ class Langue
       @dico["EVITER_2x2"] = "There is almost a 2x2 wall block, so the remaining cell cannot be black"
       @dico["CONTINUITE_ILE"] = "A white cell not connected to an island has to go through a cell to get to the island"
       @dico["ILE_INATTEIGNABLE"] = "A cell is too far from any island and cannot be reached"
+      @dico["MSG_REGLE_ILE"] = "An island of size 4 must contain 4\nwhite cells surrounded by a black wall"
+      @dico["MSG_REGLE_MUR"] = "The black wall must surround the\nislands and be continuous"
+      @dico["MSG_REGLE_2x2"] = "The black wall cannot form 2x2 blocks"
       @dico["APROPOSCONTENT"] = "
 Nurikabe (ぬりかべ) is a Japanese puzzle in the style of sudoku.
 
@@ -200,6 +204,7 @@ STER Maxime
       @dico["JEU"] = "Juego"
       @dico["UTILISATEUR"] = "Usuario"
       @dico["INTERFACE"] = "Interfaz"
+      @dico["REGLES"] = "Reglas"
       @dico["AUDIO"] = "Audio"
       @dico["GRILLE"] = "Rejilla"
       @dico["PARTIE"] = "Juego"
@@ -224,19 +229,22 @@ STER Maxime
       @dico["NON"] = "No"
       @dico["REPRENDRE_SAUVEGARDE"] = "¿Quiere reanudar su ahorro?"
       @dico["PARTIE_TUTORIEL"] = "Tutorial"
-      @dico["ILE_1"] = "Il existe une case adjacente à une île de valeur 1, et qui ne peut donc pas être blanche"
-      @dico["ILE_ADJACENTE"] = "Il existe une case adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées"
-      @dico["ILE_ADJACENTE_DIAG"] ="Il existe une case adjacente à deux îles, elle ne peut donc pas être blanche sinon les deux îles seraient collées"
-      @dico["ILE_COMPLETE"] = "Il existe une case adjacente à une île complète, elle ne peut donc pas être blanche, sinon l'île déborderait"
-      @dico["CASE_ISOLEE"] = "Il existe une case isolée : il n'y a aucun chemin qui la mène vers une île"
-      @dico["EXPANSION_MUR"] = "Il existe une case d'expansion obligée pour éviter qu'un mur se retrouve isolé"
-      @dico["CONTINUITE_MUR"] = "Il existe une case d'expansion obligée pour éviter que deux murs soient séparés"
-      @dico["EXPANSION_ILE"] = "Il existe une case d'expansion obligée pour qu'une île se développe"
-      @dico["EXPANSION_2D"] = "Il existe une île presque terminée qui ne peut s'étendre que dans deux direction, les deux ayant une case adjacente en commun qui ne pourra donc pas être blanche"
-      @dico["EXPANSION_CACHEE"] = "Il existe une case d'expansion obligée pour qu'une île se dévelope assez"
-      @dico["EVITER_2x2"] = "Il y a un presque un bloc de mur 2x2, la case restante ne peut donc pas être noire"
-      @dico["CONTINUITE_ILE"] = "Une case blanche qui n'est pas reliée à une île passe nécessairement par une case pour rejoindre l'île"
-      @dico["ILE_INATTEIGNABLE"] = "Une case est trop loin de toute île et est donc inatteignable"
+      @dico["ILE_1"] = "Hay una casilla adyacente a una isla con un valor de 1 que por lo tanto no puede ser blanco"
+      @dico["ILE_ADJACENTE"] = "Hay una casilla adyacente a dos islas, por lo que no puede ser blanco, de lo contrario las dos islas quedarían atascadas"
+      @dico["ILE_ADJACENTE_DIAG"] ="Hay una casilla adyacente a dos islas, por lo que no puede ser blanco, de lo contrario las dos islas quedarían atascadas"
+      @dico["ILE_COMPLETE"] = "Hay una casilla adyacente a una isla completa, por lo que no puede ser blanco, de lo contrario la isla se desbordará"
+      @dico["CASE_ISOLEE"] = "Hay una casilla aislada: no hay un camino que la lleve a una isla"
+      @dico["EXPANSION_MUR"] = "Hay un espacio de expansión obligatorio para evitar que un muro quede aislada"
+      @dico["CONTINUITE_MUR"] = "Se requiere un espacio de expansión para evitar que dos muros se separen"
+      @dico["EXPANSION_ILE"] = "Se requiere un espacio de expansión para que una isla se desarrolle"
+      @dico["EXPANSION_2D"] = "Hay una isla casi terminada que solo puede expandirse en dos direcciones, las cuales tienen un cuadrado adyacente en común que por lo tanto no puede ser blanco."
+      @dico["EXPANSION_CACHEE"] = "Se requiere un espacio de expansión para que una isla crezca lo suficiente"
+      @dico["EVITER_2x2"] = "Hay un bloque de muro de casi 2x2, por lo que el cuadrado restante no puede ser negro"
+      @dico["CONTINUITE_ILE"] = "Un casilla blanco que no está conectado a una isla pasa necesariamente por una casilla para llegar a la isla"
+      @dico["ILE_INATTEIGNABLE"] = "Una casilla está demasiado lejos de cualquier isla y, por lo tanto, es inalcanzable"
+      @dico["MSG_REGLE_ILE"] = "Una isla de tamaño 4 debe constar de 4\ncasillas blancos rodeados de muros negras"
+      @dico["MSG_REGLE_MUR"] = "El muro de casillas negros debe rodear las islas y estar intacto"
+      @dico["MSG_REGLE_2x2"] = "El muro de casillas negros no debe formar casillas de tamaño 2x2"
       @dico["APROPOSCONTENT"] = "
 Nurikabe (ぬりかべ) es un rompecabezas japonés al estilo del sudoku.
 
@@ -324,6 +332,7 @@ STER Maxime
       @dico["JEU"] = "Jeu"
       @dico["UTILISATEUR"] = "Utilisateur"
       @dico["INTERFACE"] = "Interface"
+      @dico["REGLES"] = "Règles"
       @dico["AUDIO"] = "Audio"
       @dico["GRILLE"] = "Grille"
       @dico["PARTIE"] = "Partie"
@@ -361,7 +370,9 @@ STER Maxime
       @dico["EVITER_2x2"] = "Il y a un presque un bloc de mur 2x2, la case restante ne peut donc pas être noire"
       @dico["CONTINUITE_ILE"] = "Une case blanche qui n'est pas reliée à une île passe nécessairement par une case pour rejoindre l'île"
       @dico["ILE_INATTEIGNABLE"] = "Une case est trop loin de toute île et est donc inatteignable"
-
+      @dico["MSG_REGLE_ILE"] = "Une île de taille 4 doit être constituée de 4\ncases blanches entourées de murs noirs."
+      @dico["MSG_REGLE_MUR"] = "Le mur de cases noires doit entourer\nles îles et être ininterrompu"
+      @dico["MSG_REGLE_2x2"] = "Le mur de cases noires ne doit pas\nformer de carrés de taille 2x2"
       @dico["APROPOSCONTENT"] = "
 Le Nurikabe (ぬりかべ) est un puzzle japonais dans le style du sudoku.
 
@@ -378,7 +389,7 @@ Le puzzle se résout sur une grille rectangulaire de cellules, dont certaines co
 des nombres.
 
 
-Deux cellules sont connectées si elles sont adjacentes verticalemen ou horizontalement,
+Deux cellules sont connectées si elles sont adjacentes verticalement ou horizontalement,
 mais pas en diagonale.
 
 
@@ -391,7 +402,7 @@ Le joueur marque d'un point les cellules sans numéro dont il est sûr qu'elles 
 
 
 
-Cette application a été dévellopée dans le cadre d'un projet universitaire par :
+Cette application a été dévelopée dans le cadre d'un projet universitaire par :
 
 BOUHANDI Asmae
 CHAUMULON Cassandra

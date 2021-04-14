@@ -1,6 +1,6 @@
 
-require "./Fenetre.rb"
-require "./../Partie/Partie.rb"
+require_relative "./Fenetre.rb"
+require_relative "./../Partie/Partie.rb"
 
 ##
 # Classe qui gere l'affichage de la partie

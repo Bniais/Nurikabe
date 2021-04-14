@@ -34,8 +34,11 @@ class SauvegardeGrille
 
     ##
     # Sauvegarde les grilles dans un chemin spécifique, ou dans un dossier préfait
-    def sauvegarder()
-        File.open("../Sauvegarde/grilles.dump", "wb") { |f| f.write(Marshal.dump(@@instanceSauvegardeGrille) ) }
+    def sauvegarder(chemin)
+        if chemin == nil
+            chemin = "../Sauvegarde/grilles.dump"
+        end
+        File.open(chemin, "wb") { |f| f.write(Marshal.dump(@@instanceSauvegardeGrille) ) }
     end
 
     ##

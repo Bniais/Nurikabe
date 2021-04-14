@@ -2,18 +2,26 @@
 require "./Fenetre.rb"
 require "./../Partie/Partie.rb"
 
-# Classe qui gere la fenetre 'A propos'
+##
+# Classe qui gere l'affichage de la partie
 class FenetrePartie < Fenetre
 
+    ##
+    # Variable de classe
     @@maPartie = nil
     @@maGrille = nil
     @@vraiPause = false
     @@perdu = false
     @@deco = false
+
+
     def initialize()
         self
     end
 
+    ##
+    # Fonction qui met les donnees 
+    # de la headerbar a jours
     def self.metSousTitre
         Fenetre.set_subtitle( @@maPartie.getMode == Mode::LIBRE ? @@lg.gt("PARTIE_LIBRE") :
                               @@maPartie.getMode == Mode::CONTRE_LA_MONTRE ? @@lg.gt("PARTIE_CLM") :
@@ -22,14 +30,18 @@ class FenetrePartie < Fenetre
                               @@maPartie.getMode == Mode::TUTORIEL ? @@lg.gt("PARTIE_TUTORIEL") : @@lg.gt("UNKNOWN"))
     end
 
+    ##
+    # Methode qui permet d'afficher la fenetre
     def self.afficheToi(lastView)
         self.afficheToiSelec(lastView, nil)
     end
 
-    # Lancer une nouvelle partie avec un mode specifique ? A FAIRE
+    ##
+    # Lancer une nouvelle partie avec un mode specifique 
     def self.afficheToiSelec( lastView, unePartie )
         @@perdu = false
         @@deco = false
+        # Verifier qu'on a pas recu une partie nil..
         if(unePartie != nil)
             @@maPartie = unePartie
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
@@ -38,13 +50,13 @@ class FenetrePartie < Fenetre
             end
         end
 
-        self.metSousTitre
+        self.metSousTitre # Mettre les sous titre
         @@maFenetrePartie = FenetrePartie.new()
 
-        Fenetre.add( @@maFenetrePartie.creationInterface( lastView ) )
+        Fenetre.add( @@maFenetrePartie.creationInterface( lastView ) ) # Creation de l'interface
         Fenetre.show_all
 
-        @@maPartie.reprendrePartie
+        @@maPartie.reprendrePartie 
         @@maFenetrePartie.play
 
         ##
@@ -58,14 +70,19 @@ class FenetrePartie < Fenetre
             @@maFenetrePartie.mettreCasesEnRouge()
         end
 
+        ##
+        # Lancer le chrono
         @@maFenetrePartie.threadChronometre
         return self
     end
 
-    #######
+    ##
+    # Methode liee au tutoriel 
+    # qui permet de mettre les cases
+    # a focus en rouge 
     def mettreCasesEnRouge
-        tabAutoriser = @@maPartie.getCoupAutoriser()
-        min = tabAutoriser.map {|a| a.min}.min
+        tabAutoriser = @@maPartie.getCoupAutoriser() # tab de coup autoriser du tuto
+        min = tabAutoriser.map {|a| a.min}.min # plus petit nombre
 
         if( min != 999)
             for x in 0...@@maPartie.grilleEnCours.tabCases.size
@@ -84,16 +101,19 @@ class FenetrePartie < Fenetre
         end
     end
 
+    ##
+    # Retourne l'instance de partie
     def self.getInstance
         return @@maFenetrePartie
     end
 
-    ## Charger une partie specifique presente dans la sauvegarde
+    ##
+    # Charger une partie specifique presente dans la sauvegarde
     def self.afficheToiChargerPartie( lastView , loadAtIndice )
         @@perdu = false
         @@deco = false
-        @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie( loadAtIndice )
-        @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
+        @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie( loadAtIndice ) # charge une sauvegarde
+        @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)} # Charge une grille
 
         self.metSousTitre
         @@maFenetrePartie = FenetrePartie.new()
@@ -107,6 +127,9 @@ class FenetrePartie < Fenetre
     end
 
 
+    ##
+    # Methode accesseur sur une 
+    # variable de class en lecture
     def self.getPartie
         return @@maPartie
     end
@@ -115,6 +138,10 @@ class FenetrePartie < Fenetre
     ################################################################
     ################## CREATION DE L INTERFACE #####################
     ################################################################
+
+    ##
+    # Methode qui permet de cree 
+    # l'interface de la partie
     def creationInterface( lastView )
         @indiceMalusPopover = -1
         @box = Gtk::Box.new(:vertical)
@@ -133,8 +160,8 @@ class FenetrePartie < Fenetre
         nomGrille.set_markup("<span size='25000' > " + @@lg.gt("GRILLE") + " #" + @@maPartie.grilleBase.numero.to_s + "</span>")
         nomGrille.halign = :end
 
-
-
+        ##
+        # Affichage specifique pour le mode 1V1
         if(@@maPartie.getMode == Mode::VS)
             boxTop.add( nomGrille)
             labelBox = Gtk::Box.new(:vertical)
@@ -231,24 +258,36 @@ class FenetrePartie < Fenetre
         return @box
     end
 
+    ##
+    # Affiche une nouvelle grille 
+    # Sur la fenetre
     def afficherNextGrille
         Fenetre.remove(@box)
         FenetrePartie.afficheToiSelec( FenetreMenu, @@maPartie )
     end
 
+    ##
+    # Partie perdu
     def perdre(tpsEnemi)
         @@perdu = true
         @tpsEnemi = tpsEnemi
     end
 
+    ##
+    # Methode qui set l'état deco
     def deco
         @@deco = true
     end
 
+    ##
+    # Methode propre au mode 1V1
+    # permet de mettre a jour la barre de progression adverse
     def setAvancementEnemy(avancement)
         @progressEnemy.fraction = avancement.to_f
     end
 
+    ##
+    # Affiche un message en cas de defaite
     def perdreMsg
         if(@@maPartie != nil)
             if(@popover != nil)
@@ -262,6 +301,9 @@ class FenetrePartie < Fenetre
         end
     end
 
+    ##
+    # Affiche un message en cas de deconnexion
+    # propre au mide 1V1 uniquement
     def decoMsg
         if(@@maPartie != nil)
             if(@popover != nil)
@@ -276,7 +318,6 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # 
     # Activer / Desactiver les fonctions d'un
     # btn en fonction d'un tableau qui renvoi
     # des booleans
@@ -287,6 +328,7 @@ class FenetrePartie < Fenetre
         end
     end
 
+    ##
     # Methode qui permet de cree
     # la toolbar
     private
@@ -362,6 +404,7 @@ class FenetrePartie < Fenetre
         return mainToolbar
     end
 
+    ##
     #Methode qui permet de cree un bouton
     #qui sera dans la toolbar
     private
@@ -375,6 +418,7 @@ class FenetrePartie < Fenetre
     end
 
 
+    ##
     ## METHODE QUI CREE UNE GRILLE
     def creeGrille()
         # Frame exterieur pour que les rebord et la meme epaisseur
@@ -406,6 +450,11 @@ class FenetrePartie < Fenetre
         return maFrame
     end
 
+    ##
+    # Methode qui est liee 
+    # a l'aide compteur d'ilot
+    # elle permet donc d'afficher
+    # cette aide sur le plateau de jeu
     def afficherNbCase(x, y)
         if(Sauvegardes.getInstance.getSauvegardeParametre.compteurIlot)
             res = @@maPartie.afficherNbBloc(@@maPartie.grilleEnCours.tabCases[x][y])
@@ -465,6 +514,11 @@ class FenetrePartie < Fenetre
         end
     end
 
+    ##
+    # Methode complementaire a
+    # afficherNbCase sauf que ca
+    # enleve l'afficha du nombre d'ilot de 
+    # la grille
     def enleverNbCase()
         #if(Sauvegardes.getInstance.getSauvegardeParametre.compteurIlot)
             if(@popover != nil)
@@ -479,6 +533,9 @@ class FenetrePartie < Fenetre
         #end
     end
 
+    ##
+    # Methode qui Afficher la portee 
+    # d'une ile sur la grille
     def afficherPortee(x, y)
         if(Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee)
             @porteeAffichee = true
@@ -531,6 +588,9 @@ class FenetrePartie < Fenetre
 
     end
 
+    ##
+    # Methode complementaire qui 
+    # retire de l'affichage la portee d'une ile
     def enleverPortee(x, y)
         if(@porteeAffichee && Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee)
             @porteeAffichee = false
@@ -541,7 +601,8 @@ class FenetrePartie < Fenetre
         end
     end
 
-
+    ##
+    # Creation d'une popover
     def create_popover(parent, child, pos)
         popover = Gtk::Popover.new(parent)
         popover.position = pos
@@ -551,7 +612,12 @@ class FenetrePartie < Fenetre
         popover
      end
 
-
+    ##
+    # Methode semi-accesseur
+    # qui modofie le contenu des btn 
+    # gris en leur mettant soit un point
+    # soit en les mettant gris selon le 
+    # mode selectionner
     def set_modeGris(estGris)
         for i in 0...@@maGrille.size
             for j in 0...@@maGrille[i].size
@@ -562,7 +628,7 @@ class FenetrePartie < Fenetre
         end
     end
 
-
+    ##
     # Methode qui permet de cree
     # une cellule destiner a la grille
     private
@@ -655,6 +721,10 @@ class FenetrePartie < Fenetre
             end
         end
 
+        ##
+        # Methode de fin de partie victoire
+        # Elle affiche et realise les differentes action de 
+        # sauvevargde 
         def finirPartie
             if(@@maPartie != nil)
                 if(@popover != nil)
@@ -723,7 +793,8 @@ class FenetrePartie < Fenetre
     ####################### BTN EVENTS ################################
     ###################################################################
 
-    # EVENT OUVRIR REGLAGE
+    ##
+    # BTN VENT OUVRIR REGLAGE
     private
     def ouvrirReglage
         removeTimout
@@ -735,7 +806,8 @@ class FenetrePartie < Fenetre
         FenetreParametre.afficheToi( FenetrePartie );
     end
 
-    # EVENT UNDO
+    ##
+    # BTN EVENT UNDO
     private
     def retourArriere
         enleverPortee(nil, nil)
@@ -769,6 +841,8 @@ class FenetrePartie < Fenetre
         end
     end
 
+    ##
+    # BTN EVENT 1V1
     private
     def enableBtnIfNot1v1(btn)
         if(@@maPartie.getMode != Mode::VS)
@@ -779,7 +853,8 @@ class FenetrePartie < Fenetre
     end
 
 
-    # EVENT REDO
+    ##
+    # BTN EVENT REDO
     private
     def retourAvant
         enleverPortee(nil, nil)
@@ -795,7 +870,8 @@ class FenetrePartie < Fenetre
         statut[0] == false ? disableBtn(@btnRedo) : 1 ;
     end
 
-    # EVENT UNDO UNDO
+    ##
+    # BTN EVENT UNDO UNDO
     private
     def retourPositionBonne
         enleverPortee(nil, nil)
@@ -812,7 +888,8 @@ class FenetrePartie < Fenetre
         setTimout
     end
 
-    # EVENT PLAY
+    ##
+    # BTN EVENT PLAY
     public
     def play
         @@maPartie.reprendrePartie;
@@ -825,6 +902,10 @@ class FenetrePartie < Fenetre
         setTimout
     end
 
+    ##
+    # Methode qui permet de specifier
+    # et mettre en place un timeout 
+    # compte a rebours
     def setTimout()
         if(@@maPartie.getMode == Mode::SURVIE)
 
@@ -838,13 +919,18 @@ class FenetrePartie < Fenetre
         end
     end
 
+    ##
+    # methode complemenantaire de setTimeout
+    # mais qui a pour effet de le supprimer
     def removeTimout
         if(@monTimout != nil)
             GLib::Source.remove(@monTimout)
             @monTimout = nil
         end
     end
-    # EVENT PAUSE
+
+    ##
+    # BTN EVENT PAUSE
     private
     def pause
         removeTimout
@@ -861,7 +947,8 @@ class FenetrePartie < Fenetre
         @frameGrille.name = "fenetreGrilleHide"
     end
 
-    # EVENT DEMANDER UNE AIDE
+    ##
+    # BTN EVENT DEMANDER UNE AIDE
     private
     def aide
         #enleverPortee(nil, nil)
@@ -876,6 +963,8 @@ class FenetrePartie < Fenetre
 
     end
 
+    ##
+    # BTN EVENT AIDE PLUS PRECISE
     private
     def aideLocation
         indice = @@maPartie.donneIndice
@@ -887,7 +976,8 @@ class FenetrePartie < Fenetre
          disableBtn(@btnHelpLocation)
     end
 
-    # EVENT REMISE A ZERO
+    ##
+    # BTN EVENT REMISE A ZERO
     private
     def raz
         enleverPortee(nil, nil)
@@ -909,7 +999,8 @@ class FenetrePartie < Fenetre
         end
     end
 
-    # EVENT VERIFIER LA GRILLE
+    ##
+    # BTN EVENT VERIFIER LA GRILLE
     private
     def verifier
         #enleverPortee(nil, nil)
@@ -932,6 +1023,41 @@ class FenetrePartie < Fenetre
         setTimout
     end
 
+    ##
+    # BTN EVENT QUITTER LA PARTIE
+    private
+    def quitter
+        pause
+        Sauvegardes.getInstance.sauvegarder()
+        #cacherNbErreur
+        @@maPartie = nil;
+        Fenetre.deleteChildren;
+        FenetreMenu.afficheToi( FenetrePartie )
+    end
+
+    ##
+    # BTN EVENEMENT POUR DONNER LES ERREURS
+    private
+    def donnerErreur
+        enleverPortee(nil, nil)
+        uneCase = @@maPartie.donnerErreur
+        if uneCase.couleur == Couleur::NOIR
+            @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red-block"
+        else
+            @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red"
+        end
+
+        create_popover_malus(Malus::MALUS_DONNER_ERREUR)
+        setTimout
+    end
+
+    ##############################################################################
+    ####################### FUNCTION #############################################
+    ##############################################################################
+
+    ##
+    # methode qui permet de cree une 
+    # popover specifique au malus
     private
     def create_popover_malus(malus)
         if(@@maPartie.getMode == Mode::SURVIE || @@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
@@ -947,36 +1073,8 @@ class FenetrePartie < Fenetre
         end
     end
 
-    # EVENT QUITTER LA PARTIE
-    private
-    def quitter
-        pause
-        Sauvegardes.getInstance.sauvegarder(nil)
-        #cacherNbErreur
-        @@maPartie = nil;
-        Fenetre.deleteChildren;
-        FenetreMenu.afficheToi( FenetrePartie )
-    end
-
-    # EVENEMENT POUR DONNER LES ERREURS
-    private
-    def donnerErreur
-        enleverPortee(nil, nil)
-        uneCase = @@maPartie.donnerErreur
-        if uneCase.couleur == Couleur::NOIR
-            @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red-block"
-        else
-            @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red"
-        end
-
-        create_popover_malus(Malus::MALUS_DONNER_ERREUR)
-        setTimout
-    end
-    ##############################################################################
-    ####################### FUNCTION #############################################
-    ##############################################################################
-
-    ## Methode qui permet de mettre a jours de chronometre
+    ## 
+    # Methode qui permet de mettre a jours de chronometre
     public
     def threadChronometre
         Thread.new do
@@ -1000,7 +1098,7 @@ class FenetrePartie < Fenetre
                 end
 
                 #stars
-                if(@nbRecompense == nil || (@nbRecompense != 0 && @@maPartie.getMode == Mode::CONTRE_LA_MONTRE && @indiceRespiration%5==0) )
+                if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE && (@nbRecompense == nil || (@nbRecompense != 0 && @indiceRespiration%5==0)) )
                     @nbRecompense = @@maPartie.getNbRecompense
                     msg = ""
                     for i in 0..2
@@ -1019,6 +1117,9 @@ class FenetrePartie < Fenetre
         end
     end
 
+    ##
+    # Methode general qui permet 
+    # d'afficher un une boite de dialogue 
     def show_standard_message_dialog(unMessage)
         @dialog = Gtk::MessageDialog.new(:parent => @@window,
                                         :flags => [:modal, :destroy_with_parent],
@@ -1032,7 +1133,8 @@ class FenetrePartie < Fenetre
         @dialog.destroy
     end
 
-    ## CACHER LE NOMBRE D'ERREUR
+    ##
+    # CACHER LE NOMBRE D'ERREUR
     private
     def cacherNbErreur
         enleverPortee(nil, nil)
@@ -1041,6 +1143,7 @@ class FenetrePartie < Fenetre
         @btnHelpHelp.set_sensitive(false)
     end
 
+    ##
     # METHODE QUI PERMET DE GERER L ETAT DES
     # DIFFERENTS BOUTONS AU RETOUR D UNE PAUSE
     # OU AU DEBUT D UNE PARTIE SAUVEGARDER
@@ -1059,6 +1162,7 @@ class FenetrePartie < Fenetre
         enableBtnIfNot1v1(@btnVerif);
     end
 
+    ##
     # METHODE QUI PERMET DE
     # DESACTIVER LE FONCTIONNEMENT D UN BTN
     private
@@ -1067,6 +1171,7 @@ class FenetrePartie < Fenetre
         btn.set_sensitive(false)
     end
 
+    ##
     # METHODE QUI PERMET DE
     # D"ACTIVER LE FONCTIONNEMENT D UN BTN
     private
@@ -1075,6 +1180,8 @@ class FenetrePartie < Fenetre
         btn.set_sensitive(true)
     end
 
+    ##
+    # Methode generique qui set une margin a un objet
     private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)
@@ -1084,6 +1191,7 @@ class FenetrePartie < Fenetre
         return obj
     end
 
+    ##
     #Methode qui permet de cree un separateur
     #qui sera dans la toolbar
     private

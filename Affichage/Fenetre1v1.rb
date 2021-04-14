@@ -287,10 +287,14 @@ class Fenetre1v1 < Fenetre
         return box
     end
 
+    ##
+    # A COMPLETER
     def threadAttenteClient
         
     end
 
+    ##
+    # Retourne un label titre pour la fenêtre
     def titleLabel(unLabel)
         label = Gtk::Label.new()
         label.set_markup("<span size='25000' >" + unLabel.to_s + "</span>")

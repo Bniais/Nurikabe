@@ -175,6 +175,35 @@ class FenetreParametre < Fenetre
     end
 
     ##
+    # SIGNAL CONNECT DE JEU : AIDE CASES GRISES
+    private
+    def switchAideCasesGrises(s)
+        puts s
+    end
+
+    ##
+    # SIGNAL CONNECT DE JEU : AIDE COMPTEUR ILOT
+    private
+    def switchAideCompteurIlot(s)
+        puts s
+    end
+
+    ##
+    # SIGNAL CONNECT DE JEU : AIDE AFFICHAGE PORTEE
+    private
+    def switchAideAffichagePortee(s)
+        puts s
+    end
+
+    ##
+    # SIGNAL CONNECT DE JEU : AIDE MURS 2x2
+    private
+    def switchAideMurs2x2(s)
+        puts s
+    end
+
+
+    ##
     # Methode qui creer la vue 'utilisateur'
     private
     def creationVueUtilisateur
@@ -188,7 +217,7 @@ class FenetreParametre < Fenetre
         btnDeleteSave.name = "btnQuitter"
         btnDeleteSave.signal_connect("clicked") {
             Sauvegardes.getInstance.getSauvegardePartie.resetAll(FenetrePartie.getPartie)
-            Sauvegardes.getInstance.sauvegarder()
+            Sauvegardes.getInstance.sauvegarder(nil)
         }
 
         box.add( setmargin(btnDeleteSave,5,5,65,65) ) #ADD
@@ -197,7 +226,7 @@ class FenetreParametre < Fenetre
         btnResetParams.name = "btnQuitter"
         btnResetParams.signal_connect("clicked") {
             Sauvegardes.getInstance.getSauvegardeParametre.resetAll
-            Sauvegardes.getInstance.sauvegarder()
+            Sauvegardes.getInstance.sauvegarder(nil)
             @switchDarkMode.set_active(false)
             @switchCompteurIlot.set_active(true)
             @switchCaseGrises.set_active(false)
@@ -311,6 +340,8 @@ class FenetreParametre < Fenetre
         return box
     end
 
+    ##
+    # Créé et retourne une grille
     private
     def creeGrilleImmuable()
         # Frame exterieur pour que les rebord et la meme epaisseur
@@ -361,6 +392,8 @@ class FenetreParametre < Fenetre
         return maFrame
     end
 
+    ##
+    # Crée un pop-over
     private
     def create_popover(parent, child, pos)
         popover = Gtk::Popover.new(parent)
@@ -371,6 +404,7 @@ class FenetreParametre < Fenetre
         popover
      end
 
+    ## 
     # Methode qui permet de cree
     # une cellule destiner a la grille
     private
@@ -382,17 +416,25 @@ class FenetreParametre < Fenetre
     end
 end
 
+##
+# Classe qui représente une case de la grille
 class CellImmuable < Gtk::Button
     attr_reader :x, :y
 
+    ##
+    # Setter de la coordonnée X de la case
     def set_x(x)
         @x = x
     end
 
+    ##
+    # Setter de la coordonnée Y de la case
     def set_y(y)
         @y = y
     end
 
+    ##
+    # Change le statut de la case en fonction de son type mis en paramètre 
     def changerStatut(color)
         if color >= Couleur::ILE_1
             self.name = "buttonIle"

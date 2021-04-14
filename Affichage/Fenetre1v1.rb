@@ -288,12 +288,6 @@ class Fenetre1v1 < Fenetre
     end
 
     ##
-    # A COMPLETER
-    def threadAttenteClient
-        
-    end
-
-    ##
     # Retourne un label titre pour la fenêtre
     def titleLabel(unLabel)
         label = Gtk::Label.new()

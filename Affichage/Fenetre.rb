@@ -1,8 +1,9 @@
 require 'gtk3'
-require './../Parametres/Parametre.rb'
-require './../Parametres/Langue.rb'
-require './../Sauvegarde/Sauvegardes.rb'
-require './../Sauvegarde/SauvegardeGrille.rb'
+require '../Parametres/Parametre.rb'
+require '../Parametres/Langue.rb'
+require '../Sauvegarde/Sauvegardes.rb'
+require '../Sauvegarde/SauvegardeGrille.rb'
+require '../Sauvegarde/StockageGrille.rb'
 
 ##
 # Classe abstraite qui gere l'interface
@@ -36,7 +37,7 @@ class Fenetre
         @@header.title = "Nurikabe"     ;       @@header.subtitle = "-"
         @@window.titlebar = @@header #ADD HEADER
 
-        SauvegardeGrille.creer("../Sauvegarde/grilles1.dump")
+        SauvegardeGrille.creer("../Sauvegarde/grilles.dump")
         Sauvegardes.creer("../Sauvegarde/save.dump")
 
 =begin
@@ -260,8 +261,9 @@ class Fenetre
         Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille
 }
 =end
+        StockageGrille.creerGrilles();
 
-        SauvegardeGrille.getInstance.sauvegarder( "../Sauvegarde/grilles1.dump" )
+        
 
 
 
@@ -375,7 +377,7 @@ class Fenetre
         if(socket!= nil)
             socket.puts("dc")
         end
-        Sauvegardes.getInstance.sauvegarder(nil)
+        Sauvegardes.getInstance.sauvegarder()
         Gtk.main_quit
     end
 

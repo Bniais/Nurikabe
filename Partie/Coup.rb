@@ -4,7 +4,9 @@ class Coup
   attr_reader :case, :couleur, :couleurBase
 
   ##
-  # A COMPLETER
+  # Constructeur de la class Coup
+  # methode qui permet d'appeler 
+  # new sous un autre nom
   def Coup.creer(case_, couleur, couleurBase)
     new(case_, couleur, couleurBase)
   end

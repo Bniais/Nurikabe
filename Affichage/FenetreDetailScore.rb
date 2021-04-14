@@ -160,7 +160,8 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # A COMPLETER
+    # Methode complementaire de creation de la grille
+    # elle permet de cree une cellule
     def creeCelluleGrille(color)
         if color <= 0
             color = ""

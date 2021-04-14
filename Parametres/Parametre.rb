@@ -1,4 +1,4 @@
-require './../Sauvegarde/Sauvegardes.rb'
+require_relative './../Sauvegarde/Sauvegardes.rb'
 
 # Classe qui gere les parametres
 class Parametre
@@ -44,7 +44,8 @@ class Parametre
     end
 
     ##
-    # A COMPLETER
+    # Methode de class qui permet
+    # d'initialiser la class Parametre
     def self.initialiseToi()
         if @@instanceParametre == nil
             @@instanceParametre = new()
@@ -52,7 +53,9 @@ class Parametre
     end
 
     ##
-    # A COMPLETER
+    # A Methode de class 
+    # type singleton qui permet de recuperer
+    # l'instance des parametre
     def self.getInstance()
         return @@instanceParametre
     end

@@ -1,5 +1,5 @@
-require './Fenetre.rb'
-require './FenetreDetailScore.rb'
+require_relative './Fenetre.rb'
+require_relative './FenetreDetailScore.rb'
 
 ##
 # Classe qui gere l'affichage de la fenetre 'Classement'

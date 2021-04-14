@@ -1,4 +1,4 @@
-require '../Partie/Partie1v1.rb'
+require_relative '../Partie/Partie1v1.rb'
 require 'socket'
 require "resolv"
 require 'open-uri'

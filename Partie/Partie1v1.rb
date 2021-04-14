@@ -21,8 +21,8 @@ class Partie1v1 < Partie
       return Mode::VS
   end
 
-
-  # ENLEVER LES AIDES PAYANTES 
+  ##
+  # Envoie à l'adversaire une annonce de fin de partie 
   def partieTerminee?()
     term = @grilleEnCours.nbDifferenceBrut(@grilleBase)
 
@@ -38,14 +38,18 @@ class Partie1v1 < Partie
   end
 
   ##
-  # A COMPLETER
+  # Methode qui permet de verifier
+  # si la grille comporte des erreurs
+  # est desactiver car coute du temps
   def verifierErreur(fromUser)#TOTEST
     return 0
   end   
 
 
   ##
-  # A COMPLETER
+  # Methode qui permet d'ajouter
+  # un coup et qui previent l'adversaire du 
+  # pourcentage de la grille en cours
   def ajouterCoup(coup)
      if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1) 
       coup.case.couleur = coup.couleur
@@ -133,13 +137,17 @@ class Partie1v1 < Partie
   end
   
   ##
-  # A COMPLETER
+  # Methode qui empeche l'utilisatation
+  # de revenir a la derniere position bonne 
+  # en mode 1v1 car ca coute du temps
   def revenirPositionBonne() #TOTEST
     self
   end
 
   ##
-  # A COMPLETER
+  # Methode qui empeche l'utilisatation
+  # de demander un indice 1v1 car ca 
+  # coute du temps
   def donneIndice()
     nil
   end

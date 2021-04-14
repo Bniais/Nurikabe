@@ -1,9 +1,9 @@
 
-require '../Partie/Partie.rb'
-require '../Partie/PartieSurvie.rb'
-require '../Partie/PartieContreLaMontre.rb'
-require '../Partie/PartieTuto.rb'
-require '../Parametres/Parametre.rb'
+require_relative '../Partie/Partie.rb'
+require_relative '../Partie/PartieSurvie.rb'
+require_relative '../Partie/PartieContreLaMontre.rb'
+require_relative '../Partie/PartieTuto.rb'
+require_relative '../Parametres/Parametre.rb'
 require_relative 'SauvegardePartie.rb'
 require_relative 'SauvegardeScore.rb'
 

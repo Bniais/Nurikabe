@@ -954,7 +954,7 @@ class FenetrePartie < Fenetre
         #enleverPortee(nil, nil)
         indice = @@maPartie.donneIndice
         if ( indice != nil)
-            show_standard_message_dialog(Indice::MESSAGES[indice[0]])
+            show_standard_message_dialog(indice[0])
             enableBtnIfNot1v1(@btnHelpLocation)
             create_popover_malus(Malus::MALUS_INDICE)
             setTimout
@@ -1222,7 +1222,7 @@ class Cell < Gtk::Button
     end
 
     def changerStatut(color, forceEnleverRouge)
-        if color >= Couleur::ILE_9
+        if color > Couleur::ILE_9
             if( !forceEnleverRouge && self.name.include?("red") )
                 self.name = "grid-cell-ile-small-red"
             else 

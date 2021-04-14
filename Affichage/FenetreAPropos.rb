@@ -1,4 +1,4 @@
-require './Fenetre.rb'
+require_relative './Fenetre.rb'
 
 ##
 # Classe qui gere la fenetre 'A propos'

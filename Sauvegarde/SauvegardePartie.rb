@@ -11,7 +11,8 @@ class SauvegardesParties
     end
 
     ##
-    # A COMPLETER
+    # Methode qui re initialise toute 
+    # les sauvegardes de Partie
     def resetAll(unePartie)
         @mesParties = Array.new
         if(unePartie != nil)

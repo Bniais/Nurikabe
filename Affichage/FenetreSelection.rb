@@ -1,4 +1,4 @@
-require './Fenetre.rb'
+require_relative './Fenetre.rb'
 
 
 # Classe qui gere la fenetre de selection des grilles en mode Libre
@@ -15,7 +15,8 @@ class FenetreSelection < Fenetre
     end
 
     ##
-    # A COMPLETER
+    # Methode qui permet d'appeler
+    # et afficher la Fenetre de Selection de grille
     def self.afficheToi( lastView )
         Fenetre.set_subtitle(@@lg.gt("SELECTION_MODE_LIBRE"))
         Fenetre.add( FenetreSelection.new().creationInterface( lastView ) )
@@ -107,7 +108,8 @@ class FenetreSelection < Fenetre
 
 
     ##
-    # A COMPLETER
+    # Methode qui ajoute
+    # une grille a la liste de selection
     def ajouterGrille(box )
         vBoxGrille = Gtk::Box.new(:vertical , 20)
 
@@ -191,7 +193,11 @@ class FenetreSelection < Fenetre
     end
 
     ##
-    # A COMPLETER
+    # Methode qui genere une frame 
+    # qui comprendra le numero de grille
+    # le statut en cours ou nom 
+    # la grille et son lien vers le lancement 
+    # de la partie
     def generateFrame( uneGrille , mainBox , numero , enCours )
         btnFrame = Gtk::Button.new()
         btnFrame.name = "bg-FenetreSelection"
@@ -257,6 +263,7 @@ class FenetreSelection < Fenetre
         btn.add(image)
         return btn
     end
+
     ##
     # Methode qui cree une grille
     def creeGrille( uneGrille )

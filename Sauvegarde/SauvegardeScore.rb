@@ -20,7 +20,8 @@ class SauvegardesScore
     end
 
     ##
-    # A COMPLETER
+    # Methode qui re initialise toute 
+    # les scores
     def resetAll
         @nbEtoiles = 0
         @scoresContreLaMontre = Array.new(SauvegardeGrille.getInstance.getNombreGrille+1){[-1, 0]}

@@ -175,6 +175,35 @@ class FenetreParametre < Fenetre
     end
 
     ##
+    # SIGNAL CONNECT DE JEU : AIDE CASES GRISES
+    private
+    def switchAideCasesGrises(s)
+        puts s
+    end
+
+    ##
+    # SIGNAL CONNECT DE JEU : AIDE COMPTEUR ILOT
+    private
+    def switchAideCompteurIlot(s)
+        puts s
+    end
+
+    ##
+    # SIGNAL CONNECT DE JEU : AIDE AFFICHAGE PORTEE
+    private
+    def switchAideAffichagePortee(s)
+        puts s
+    end
+
+    ##
+    # SIGNAL CONNECT DE JEU : AIDE MURS 2x2
+    private
+    def switchAideMurs2x2(s)
+        puts s
+    end
+
+
+    ##
     # Methode qui creer la vue 'utilisateur'
     private
     def creationVueUtilisateur
@@ -188,7 +217,7 @@ class FenetreParametre < Fenetre
         btnDeleteSave.name = "btnQuitter"
         btnDeleteSave.signal_connect("clicked") {
             Sauvegardes.getInstance.getSauvegardePartie.resetAll(FenetrePartie.getPartie)
-            Sauvegardes.getInstance.sauvegarder()
+            Sauvegardes.getInstance.sauvegarder(nil)
         }
 
         box.add( setmargin(btnDeleteSave,5,5,65,65) ) #ADD
@@ -197,7 +226,7 @@ class FenetreParametre < Fenetre
         btnResetParams.name = "btnQuitter"
         btnResetParams.signal_connect("clicked") {
             Sauvegardes.getInstance.getSauvegardeParametre.resetAll
-            Sauvegardes.getInstance.sauvegarder()
+            Sauvegardes.getInstance.sauvegarder(nil)
             @switchDarkMode.set_active(false)
             @switchCompteurIlot.set_active(true)
             @switchCaseGrises.set_active(false)

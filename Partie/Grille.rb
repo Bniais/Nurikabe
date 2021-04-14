@@ -29,7 +29,9 @@ class Grille
 
 
 	##
-	# A COMPLETER
+	# Methode qui permet de
+	# retourner le pourcentage
+	# de complexion d'une grille
 	def getPourcentage(grilleCmp, caseIgn)
 		nbCase = 0.0
 		nbSame = 0.0
@@ -94,7 +96,9 @@ class Grille
     end
 
     ##
-    # A COMPLETER
+    # Methode qui permet de renvoyer le
+	# nombre d'erreur dans la grille
+	# avec un if moins contrainiant 
 	def nbDifferenceBrut(grilleCmp)
 		#return int
 		erreur = 0
@@ -109,6 +113,7 @@ class Grille
 		return erreur             
 
     end
+	
     ##
     #Renvoie la premiere erreur trouver dans la grille
     def firstDifference(grilleCmp)

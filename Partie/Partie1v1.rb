@@ -21,8 +21,8 @@ class Partie1v1 < Partie
       return Mode::VS
   end
 
-
-  # ENLEVER LES AIDES PAYANTES 
+  ##
+  # Envoie à l'adversaire une annonce de fin de partie 
   def partieTerminee?()
     term = @grilleEnCours.nbDifferenceBrut(@grilleBase)
 

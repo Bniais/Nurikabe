@@ -17,7 +17,9 @@ class Chrono
     end
     
     ##
-    # A COMPLETER
+    # Methode qui incremente le chronometre
+    # Elle fait la difference entre le temps
+    # de depart et le temps actuel
     def top()
       if(!@pause)
         ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)

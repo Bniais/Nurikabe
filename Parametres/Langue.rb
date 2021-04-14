@@ -1,5 +1,4 @@
 # Classe qui gere les langues
-0
 class Langue
     # nom de la langue
     attr_reader :langues, :langueActuelle

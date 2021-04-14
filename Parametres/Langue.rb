@@ -1,13 +1,14 @@
+##
 # Classe qui gere les langues
-0
 class Langue
+    ##
     # nom de la langue
     attr_reader :langues, :langueActuelle
 
     private_class_method :new
 
     @@monInstance = nil
-
+    ##
     # Methode qui permet de creer une grille
     def Langue.creer()
         if (@@monInstance == nil)
@@ -17,15 +18,20 @@ class Langue
         return @@monInstance
     end
 
+    ##
+    # Getter de la variable de classe @@monInstance
     def self.getInstance()
       return @@monInstance
     end
 
+    ##
+    # Met à jour le language du jeu en fonction de l'id de la langue en paramètre
     def utiliserLangue(id)
       @dico = Marshal.load( File.binread(@fichiersLangues[id]) )
       @langueActuelle = id
     end
 
+    ##
     # Methode privee pour l'initialisation
     def initialize()
 

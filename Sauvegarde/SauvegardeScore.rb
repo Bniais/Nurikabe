@@ -1,5 +1,7 @@
 require_relative "SauvegardeGrille.rb"
 
+##
+# Classe qui gère la sauvegarde des scores
 class SauvegardesScore
 
     attr_reader :scoresContreLaMontre, :scoresSurvie, :nbEtoiles

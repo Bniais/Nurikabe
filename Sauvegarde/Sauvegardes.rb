@@ -1,4 +1,4 @@
-# Classe qui contient l'ensemble des sauvegardes
+
 require '../Partie/Partie.rb'
 require '../Partie/PartieSurvie.rb'
 require '../Partie/PartieContreLaMontre.rb'
@@ -9,6 +9,8 @@ require_relative 'SauvegardeScore.rb'
 
 #require './SauvegardePartie.rb'
 
+##
+# Classe qui contient l'ensemble des sauvegardes
 class Sauvegardes
 
     @@instanceSauvegarde = nil

@@ -1,6 +1,5 @@
+##
 # Classe qui gere la sauvegarde de partie
-
-
 class SauvegardesParties
 
     @mesParties = nil

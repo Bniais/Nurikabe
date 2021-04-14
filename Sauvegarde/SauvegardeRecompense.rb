@@ -1,3 +1,4 @@
+##
 # Classe qui gere les recompenses
 class SauvegardeRecompense
     # solde de recompense

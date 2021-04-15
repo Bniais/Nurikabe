@@ -20,7 +20,7 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Fonction qui met les donnees 
+    # Fonction qui met les donnees
     # de la headerbar a jours
     def self.metSousTitre
         Fenetre.set_subtitle( @@maPartie.getMode == Mode::LIBRE ? @@lg.gt("PARTIE_LIBRE") :
@@ -37,7 +37,7 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Lancer une nouvelle partie avec un mode specifique 
+    # Lancer une nouvelle partie avec un mode specifique
     def self.afficheToiSelec( lastView, unePartie )
         @@perdu = false
         @@deco = false
@@ -56,12 +56,12 @@ class FenetrePartie < Fenetre
         Fenetre.add( @@maFenetrePartie.creationInterface( lastView ) ) # Creation de l'interface
         Fenetre.show_all
 
-        @@maPartie.reprendrePartie 
+        @@maPartie.reprendrePartie
         @@maFenetrePartie.play
 
         ##
-        # FOR TUTO 
-        # CHARGE LE MESSAGE 
+        # FOR TUTO
+        # CHARGE LE MESSAGE
         # CHARGE LES AIDES A ACTIVER / DESACTIVER
         # CASE A FOCUS
         if( @@maPartie.getMode == Mode::TUTORIEL)
@@ -78,9 +78,9 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Methode liee au tutoriel 
+    # Methode liee au tutoriel
     # qui permet de mettre les cases
-    # a focus en rouge 
+    # a focus en rouge
     def mettreCasesEnRouge
         tabAutoriser = @@maPartie.getCoupAutoriser() # tab de coup autoriser du tuto
         min = tabAutoriser.map {|a| a.min}.min # plus petit nombre
@@ -129,19 +129,19 @@ class FenetrePartie < Fenetre
 
 
     ##
-    # Methode accesseur sur une 
+    # Methode accesseur sur une
     # variable de class en lecture
     def self.getPartie
         return @@maPartie
     end
 
-    
+
     ################################################################
     ################## CREATION DE L INTERFACE #####################
     ################################################################
 
     ##
-    # Methode qui permet de cree 
+    # Methode qui permet de cree
     # l'interface de la partie
     def creationInterface( lastView )
         @indiceMalusPopover = -1
@@ -260,7 +260,7 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Affiche une nouvelle grille 
+    # Affiche une nouvelle grille
     # Sur la fenetre
     def afficherNextGrille
         Fenetre.remove(@box)
@@ -363,22 +363,81 @@ class FenetrePartie < Fenetre
         enableBtnIfNot1v1(@btnHelp)
 
 
-        #Gestion des evenemeents
+        #Gestion des evenements
+        @popoverBtnSetting  = create_popover(@btnSetting, Gtk::Label.new("Réglages"), :bottom) # POP UP POUR LE MODE TUTO
+        @popoverBtnSetting.modal = false
+        @popoverBtnSetting.visible = false
         @btnSetting.signal_connect("clicked")    { ouvrirReglage  } # LANCER LES REGLAGLES
-        @popoverBtnUndo = create_popover(@btnUndo, Gtk::Label.new("un message"), :bottom)
+        @btnSetting.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnSetting.visible = true  : self  }
+        @btnSetting.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnSetting.visible = false : self }
+
+        @popoverBtnUndo = create_popover(@btnUndo, Gtk::Label.new("Retour arrière"), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnUndo.modal = false
         @popoverBtnUndo.visible = false
         @btnUndo.signal_connect("clicked")      { retourArriere } # RETOURNER EN ARRIERE
         @btnUndo.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndo.visible = true  : self  }
         @btnUndo.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndo.visible = false : self }
+
+
+        @popoverBtnRedo  = create_popover(@btnRedo, Gtk::Label.new("Retour avant"), :bottom) # POP UP POUR LE MODE TUTO
+        @popoverBtnRedo.modal = false
+        @popoverBtnRedo.visible = false
         @btnRedo.signal_connect("clicked")      { retourAvant } # RETOURNER EN AVANT
+        @btnRedo.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnRedo.visible = true  : self  }
+        @btnRedo.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnRedo.visible = false : self }
+
+        @popoverBtnUndoUndo  = create_popover(@btnUndoUndo, Gtk::Label.new("Retour dernière fois sans erreur"), :bottom) # POP UP POUR LE MODE TUTO
+        @popoverBtnUndoUndo.modal = false
+        @popoverBtnUndoUndo.visible = false
         @btnUndoUndo.signal_connect("clicked")  {  retourPositionBonne } # RETOURNER A LA DERNIERE POSITION BONNE
+        @btnUndoUndo.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndoUndo.visible = true  : self  }
+        @btnUndoUndo.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndoUndo.visible = false : self }
+
+        @popoverBtnPlay  = create_popover(@btnPlay, Gtk::Label.new("Reprendre la partie"), :bottom) # POP UP POUR LE MODE TUTO
+        @popoverBtnPlay.modal = false
+        @popoverBtnPlay.visible = false
         @btnPlay.signal_connect("clicked")      { play  } # METTRE LE JEU EN PLAY
+        @btnPlay.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnPlay.visible = true  : self  }
+        @btnPlay.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnPlay.visible = false : self }
+
+        @popoverBtnPause  = create_popover(@btnPause, Gtk::Label.new("Mettre en pause"), :bottom) # POP UP POUR LE MODE TUTO
+        @popoverBtnPause.modal = false
+        @popoverBtnPause.visible = false
         @btnPause.signal_connect("clicked")     { pause } # METTRE LE JEU EN PAUSE
+        @btnPause.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnPause.visible = true  : self  }
+        @btnPause.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnPause.visible = false : self }
+
+        @popoverBtnHelp  = create_popover(@btnHelp, Gtk::Label.new("Demander une aide"), :bottom) # POP UP POUR LE MODE TUTO
+        @popoverBtnHelp.modal = false
+        @popoverBtnHelp.visible = false
         @btnHelp.signal_connect("clicked")      { aide } # DEMANDER DE L AIDER
+        @btnHelp.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnHelp.visible = true  : self  }
+        @btnHelp.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnHelp.visible = false : self }
+
+        @popoverBtnLocation  = create_popover(@btnHelpLocation, Gtk::Label.new("Afficher la localisation de l'erreur"), :bottom) # POP UP POUR LE MODE TUTO
+        @popoverBtnLocation.modal = false
+        @popoverBtnLocation.visible = false
         @btnHelpLocation.signal_connect("clicked") { aideLocation }
+        @btnHelpLocation.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnLocation.visible = true  : self  }
+        @btnHelpLocation.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnLocation.visible = false : self }
+
+        @popoverBtnClear  = create_popover(@btnClear, Gtk::Label.new("Réinitialiser la grille"), :bottom) # POP UP POUR LE MODE TUTO
+        @popoverBtnClear.modal = false
+        @popoverBtnClear.visible = false
         @btnClear.signal_connect("clicked")     { raz } # REMISE A ZERO DE LA GRILLE
+        @btnClear.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnClear.visible = true  : self  }
+        @btnClear.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnClear.visible = false : self }
+
+        @popoverBtnVerif  = create_popover(@btnVerif, Gtk::Label.new("Vérifier la grille"), :bottom) # POP UP POUR LE MODE TUTO
+        @popoverBtnVerif.modal = false
+        @popoverBtnVerif.visible = false
         @btnVerif.signal_connect("clicked")     { verifier } # VERFIER LA GRILLE
+        @btnVerif.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnVerif.visible = true  : self  }
+        @btnVerif.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnVerif.visible = false : self }
+
+        @popoverBtnQuit  = create_popover(@btnQuit, Gtk::Label.new("Quitter la partie"), :bottom) # POP UP POUR LE MODE TUTO
+        @popoverBtnQuit.modal = false
+        @popoverBtnQuit.visible = false
         @btnQuit.signal_connect("clicked")       {
             if @@maPartie.getMode == Mode::VS
                 socket = Fenetre1v1.getSocket
@@ -389,6 +448,8 @@ class FenetrePartie < Fenetre
             quitter
 
           } # QUITTER LA PARTIE
+        @btnQuit.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnQuit.visible = true  : self  }
+        @btnQuit.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnQuit.visible = false : self }
 
 
         # attachement des boutons de mode de jeu
@@ -457,7 +518,7 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Methode qui est liee 
+    # Methode qui est liee
     # a l'aide compteur d'ilot
     # elle permet donc d'afficher
     # cette aide sur le plateau de jeu
@@ -478,13 +539,13 @@ class FenetrePartie < Fenetre
                                     else
                                         @@maGrille[i][j].name = "grid-cell-ile-appartient-ile-red"
                                     end
-                                else 
+                                else
                                     if(@@maPartie.grilleEnCours.tabCases[i][j].couleur > Couleur::ILE_9)
                                         @@maGrille[i][j].name = "grid-cell-ile-appartient-ile-small"
                                     else
                                         @@maGrille[i][j].name = "grid-cell-ile-appartient-ile"
                                     end
-                                end 
+                                end
                             else
                                 if( @@maGrille[i][j].name.include?("red"))
                                     @@maGrille[i][j].name = "grid-cell-red-appartient"
@@ -523,7 +584,7 @@ class FenetrePartie < Fenetre
     ##
     # Methode complementaire a
     # afficherNbCase sauf que ca
-    # enleve l'afficha du nombre d'ilot de 
+    # enleve l'afficha du nombre d'ilot de
     # la grille
     def enleverNbCase()
         #if(Sauvegardes.getInstance.getSauvegardeParametre.compteurIlot)
@@ -540,7 +601,7 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Methode qui Afficher la portee 
+    # Methode qui Afficher la portee
     # d'une ile sur la grille
     def afficherPortee(x, y)
         if(Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee)
@@ -564,7 +625,7 @@ class FenetrePartie < Fenetre
                                 else
                                     @@maGrille[i][j].name = "grid-cell-portee-ile-ile-red"
                                 end
-                            else 
+                            else
                                 if(@@maPartie.grilleEnCours.tabCases[i][j].couleur > Couleur::ILE_9)
                                     @@maGrille[i][j].name = "grid-cell-portee-ile-ile-small"
                                 else
@@ -595,7 +656,7 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Methode complementaire qui 
+    # Methode complementaire qui
     # retire de l'affichage la portee d'une ile
     def enleverPortee(x, y)
         if(@porteeAffichee && Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee)
@@ -620,9 +681,9 @@ class FenetrePartie < Fenetre
 
     ##
     # Methode semi-accesseur
-    # qui modofie le contenu des btn 
+    # qui modofie le contenu des btn
     # gris en leur mettant soit un point
-    # soit en les mettant gris selon le 
+    # soit en les mettant gris selon le
     # mode selectionner
     def set_modeGris(estGris)
         for i in 0...@@maGrille.size
@@ -661,7 +722,7 @@ class FenetrePartie < Fenetre
 
                 if(prochaineCouleur < Couleur::ILE_1 )
                     enleverPortee(nil, nil)
-                
+
                     if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
 
                         cacherNbErreur
@@ -675,13 +736,13 @@ class FenetrePartie < Fenetre
                     #afficherMur2x2
 
                     if @@maPartie.getMode != Mode::TUTORIEL
-                        if  @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC 
+                        if  @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
                             afficherNbCase(handler.y, handler.x)
                         elsif !@@maPartie.grilleEnCours.tabCases[handler.y][handler.x].estIle?
                             enleverNbCase()
                         end
                     end
-                    
+
 
                     if(@@perdu)
                         perdreMsg()
@@ -731,7 +792,7 @@ class FenetrePartie < Fenetre
 
                 ##
                 # FOR TUTO
-                # SI ON EST EN MODE TUTO ON ACTIVE QUE LES AIDES 
+                # SI ON EST EN MODE TUTO ON ACTIVE QUE LES AIDES
                 # NECESSAIRE AU MODE DE JEU DE L'AIDE
                 if( @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL )
                     setBtnStatut(@@maPartie.aideADesactiver() )
@@ -741,8 +802,8 @@ class FenetrePartie < Fenetre
 
         ##
         # Methode de fin de partie victoire
-        # Elle affiche et realise les differentes action de 
-        # sauvevargde 
+        # Elle affiche et realise les differentes action de
+        # sauvevargde
         def finirPartie
             if(@@maPartie != nil)
                 if(@popover != nil)
@@ -922,7 +983,7 @@ class FenetrePartie < Fenetre
 
     ##
     # Methode qui permet de specifier
-    # et mettre en place un timeout 
+    # et mettre en place un timeout
     # compte a rebours
     def setTimout()
         if(@@maPartie.getMode == Mode::SURVIE)
@@ -1074,7 +1135,7 @@ class FenetrePartie < Fenetre
     ##############################################################################
 
     ##
-    # methode qui permet de cree une 
+    # methode qui permet de cree une
     # popover specifique au malus
     private
     def create_popover_malus(malus)
@@ -1091,7 +1152,7 @@ class FenetrePartie < Fenetre
         end
     end
 
-    ## 
+    ##
     # Methode qui permet de mettre a jours de chronometre
     public
     def threadChronometre
@@ -1136,8 +1197,8 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Methode general qui permet 
-    # d'afficher un une boite de dialogue 
+    # Methode general qui permet
+    # d'afficher un une boite de dialogue
     def show_standard_message_dialog(unMessage)
         @dialog = Gtk::MessageDialog.new(:parent => @@window,
                                         :flags => [:modal, :destroy_with_parent],
@@ -1243,14 +1304,14 @@ class Cell < Gtk::Button
         if color > Couleur::ILE_9
             if( !forceEnleverRouge && self.name.include?("red") )
                 self.name = "grid-cell-ile-small-red"
-            else 
+            else
                 self.name = "grid-cell-ile-small"
             end
             self.set_label(color.to_s)
         elsif color >= Couleur::ILE_1
             if( !forceEnleverRouge && self.name.include?("red") )
                 self.name = "grid-cell-ile-red"
-            else 
+            else
                 self.name = "grid-cell-ile"
             end
             self.set_label(color.to_s)

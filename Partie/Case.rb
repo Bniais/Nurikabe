@@ -1,5 +1,6 @@
 require_relative 'Couleur.rb'
-
+##
+# Classe qui représente une case d'une grille
 class Case
 
   ##
@@ -8,7 +9,7 @@ class Case
   # @positionX => Coordonnée X de la case
   # @positionY => Coordonnée Y de la case
   attr_accessor :couleur, :positionX, :positionY
-  
+
   ##
   # Crée une case avec une couleur et sa position sur la grille
   def Case.creer(uneCouleur, posX, posY)

@@ -1,7 +1,7 @@
 require_relative 'Case.rb'
 
+##
 # Classe qui gere les grilles
-
 class Grille
 
     attr_reader :numero, :tabCases, :paliers

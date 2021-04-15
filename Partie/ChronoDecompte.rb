@@ -1,4 +1,8 @@
+##
+# Classe qui représente le décompte du chrono
 class ChronoDecompte < Chrono
+    ##
+    # Constante qui représente le temps de départ du décompte
     CHRONO_BASE_DECOMPTE = 5*60 #5mins
 
     ##
@@ -29,6 +33,7 @@ class ChronoDecompte < Chrono
       end
       return estNul?()
     end
+
     ##
     #Ajoute un malus au chrono
     def ajouterMalus(n)
@@ -37,6 +42,7 @@ class ChronoDecompte < Chrono
         @time = 0
       end
     end
+
     ##
     #Retourne le temps sous forme de String
     def getTemps()

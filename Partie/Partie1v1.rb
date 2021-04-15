@@ -1,5 +1,6 @@
 
-
+##
+# Classe qui représente le mode de jeu 1 contre 1
 class Partie1v1 < Partie
   private_class_method :new
 

@@ -1,6 +1,13 @@
+##
+# Classe qui représente un coup du joueur
 class Coup
   private_class_method :new
 
+  ##
+  # Variables d'instance :
+  # @case => Case ciblée par le joueur 
+  # @couleur => A COMPLETER
+  # @couleurBase => A COMPLETER 
   attr_reader :case, :couleur, :couleurBase
 
   ##

@@ -1,12 +1,18 @@
+##
 # Classe qui gere les langues
 class Langue
+    ##
     # nom de la langue
     attr_reader :langues, :langueActuelle
 
     private_class_method :new
 
+    ##
+    # Variable de classe monInstance
+    # Représente une instance de Langue
     @@monInstance = nil
 
+    ##
     # Methode qui permet de creer une grille
     def Langue.creer()
         if (@@monInstance == nil)
@@ -16,15 +22,20 @@ class Langue
         return @@monInstance
     end
 
+    ##
+    # Getter de la variable de classe @@monInstance
     def self.getInstance()
       return @@monInstance
     end
 
+    ##
+    # Met à jour la langue du jeu en fonction de l'id de la langue en paramètre
     def utiliserLangue(id)
       @dico = Marshal.load( File.binread(@fichiersLangues[id]) )
       @langueActuelle = id
     end
 
+    ##
     # Methode privee pour l'initialisation
     def initialize()
 
@@ -421,11 +432,15 @@ STER Maxime
 
     end
 
+    ##
+    # A COMPLETER
     def tmpSaver (chemin)
       File.open(chemin, "wb") { |f| f.write(Marshal.dump(@dico) ) }
       @dico =  Marshal.load( File.binread(chemin) )
     end
 
+    ##
+    # A COMPLETER
     def gt(text)
       if ( @dico[text] == nil )
         return "UNDEF " + text.to_s
@@ -433,6 +448,8 @@ STER Maxime
       return @dico[text]
     end
 
+    ##
+    # Affichage en chaine de caractère du dictionnaire
     def to_s()
       return "#{@dico}"
     end

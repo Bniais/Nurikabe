@@ -433,14 +433,22 @@ class FenetrePartie < Fenetre
         @popoverBtnPlay  = create_popover(@btnPlay, Gtk::Label.new(@@lg.gt("POPUP_PLAY")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnPlay.modal = false
         @popoverBtnPlay.visible = false
-        @btnPlay.signal_connect("clicked")      { play  } # METTRE LE JEU EN PLAY
+        @btnPlay.signal_connect("clicked")      {
+            if @@maPartie.getMode != Mode::TUTORIEL
+                play
+            end
+        } # METTRE LE JEU EN PLAY
         @btnPlay.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnPlay.visible = true  : self  } # afficher popup quand souris dessus
         @btnPlay.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnPlay.visible = false : self } # cacher quand la souris n'est plus dessus
 
         @popoverBtnPause  = create_popover(@btnPause, Gtk::Label.new(@@lg.gt("POPUP_PAUSE")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnPause.modal = false
         @popoverBtnPause.visible = false
-        @btnPause.signal_connect("clicked")     { pause } # METTRE LE JEU EN PAUSE
+        @btnPause.signal_connect("clicked")     {
+            if @@maPartie.getMode != Mode::TUTORIEL
+                pause
+            end
+        } # METTRE LE JEU EN PAUSE
         @btnPause.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnPause.visible = true  : self  } # afficher popup quand souris dessus
         @btnPause.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnPause.visible = false : self } # cacher quand la souris n'est plus dessus
 

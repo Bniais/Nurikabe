@@ -1,8 +1,13 @@
+require_relative '../Parametres/Langue.rb'
+require_relative '../Sauvegarde/Sauvegardes.rb'
+
 class PartieTuto < Partie
   private_class_method :new
   attr_accessor :grille, :progression, :senarios
   ##
   #ceer une partie en mode survie
+
+  @@lg = nil
 
 
   def PartieTuto.creer()
@@ -11,6 +16,8 @@ class PartieTuto < Partie
   ##
   #Contructeur de PartieTuto
   def initialize()
+    Sauvegardes.creer
+    @@lg = Sauvegardes.getInstance.getSauvegardeLangue
 
     @grilleActuel = 0
     @dernierMessageDemander = -1
@@ -102,8 +109,6 @@ class PartieTuto < Partie
         ], [0,0,0]
       ),
     ]
-
-
 
     @tabGrilleDepart = [
       Grille.creer(1,[
@@ -224,33 +229,26 @@ class PartieTuto < Partie
     @messageEtape = [
       # Grille 1
       [
-        "Deux îles ne peuvent pas être connectées : elles sont forcément séparées par une case noire.",
-
-        "Lorsqu'une île a un indice de 1 (sa taille = 1), cela signifie que ses cases voisines doivent être noires.",
-
-        "Les cases entourés de murs horizontaux et verticaux ne peuvent pas appartenir à une île et doivent donc être colorés en noir pour faire partie d'un mur.",
-
-        "Tous les murs doivent former un chemin continu. Ce qui signifie que tous les murs doivent être connectés entre eux."
+        @@lg.gt("ETAPE_1_TUTO"),
+        @@lg.gt("ETAPE_2_TUTO"),
+        @@lg.gt("ETAPE_3_TUTO"),
+        @@lg.gt("ETAPE_4_TUTO")
       ],
        # Grille 2
-      [
-        " Attention, une des règles du Nurikabe interdit les murs de 2x2 cases. L'une des ces cases est forcément blanche.",
-
-        "Cette case n'est pas atteignable car elle se situe trop loin des îles. Elle fait donc partie d'un mur et elle est de couleur noire."
+      [         
+        @@lg.gt("ETAPE_5_TUTO"),
+        @@lg.gt("ETAPE_6_TUTO")
       ],
       # Grille 3
       [
-        "Lorsque 2 indices sont adjacents en diagonale chacune des 2 cases touchant les 2 indices doivent être noires.",
-
-        "Dans certains cas, une ile d'indice 2 ou le dernier carré d'une ile plus grande ne peut être agrandi que dans deux directions perpendiculaires. Dans ce cas, quelle que soit la direction dans laquelle l'expansion de l'île aura lieu, le carré diagonal doit faire partie d'un mur et est donc grisé.",
-
-        "Une île peut être agrandie directement à partir d'un indice. L'île 3 ne peut être agrandie que vers le haut et l'île 2 ne peut être agrandie que vers la droite. Nous allons marquer ces carrés avec des points pour montrer qu'ils font partie des îles respectives et ne peuvent pas faire partie d'un mur."
+        @@lg.gt("ETAPE_7_TUTO"),
+        @@lg.gt("ETAPE_8_TUTO"),
+        @@lg.gt("ETAPE_9_TUTO")
       ],
       # Grille 4
       [
-        "Le point indique qu'il s'agit d'une case qui appartient à une île car il faut éviter d'avoir un mur 2x2.",
-
-        "Si ton île est déjà complète, la case blanche adjacente doit être noire."
+        @@lg.gt("ETAPE_10_TUTO"),
+        @@lg.gt("ETAPE_11_TUTO")        
       ]
     ]
 
@@ -292,7 +290,6 @@ class PartieTuto < Partie
   # Retourne vrai si un nouveau message est disponible
   # faux sinon
   def messageDifferent?()
-    puts "dm = " + @dernierMessageDemander.to_s +  " odc = " + @ordreDeClicCpt.to_s
     return @dernierMessageDemander < @ordreDeClicCpt
   end
 

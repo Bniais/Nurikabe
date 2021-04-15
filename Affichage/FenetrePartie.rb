@@ -679,6 +679,7 @@ class FenetrePartie < Fenetre
                         decoMsg()
                     elsif @@maPartie.partieTerminee? == true
                         grilleSuivante =  @@maPartie.grilleSuivante
+                        show_standard_message_dialog( @@maPartie.getMessageAide );
                         if(grilleSuivante == nil)
                             finirPartie
                         else

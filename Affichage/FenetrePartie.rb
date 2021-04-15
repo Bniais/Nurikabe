@@ -32,7 +32,7 @@ class FenetrePartie < Fenetre
 
     ##
     # fenetre de la partie en cours
-    @@maFenetrePartie = nil
+    @@maFenetrePartie
 
     ##
     # Methode privee pour l'initialisation
@@ -411,7 +411,7 @@ class FenetrePartie < Fenetre
         @popoverBtnRedo.modal = false
         @popoverBtnRedo.visible = false
         @btnRedo.signal_connect("clicked")      {
-            if (@@maPartie.getMode != Mode::TUTORIEL)
+            if @@maPartie.getMode != Mode::TUTORIEL
                  retourAvant
             end
         } # RETOURNER EN AVANT
@@ -421,7 +421,11 @@ class FenetrePartie < Fenetre
         @popoverBtnUndoUndo  = create_popover(@btnUndoUndo, Gtk::Label.new(@@lg.gt("POPUP_UNDOUNDO")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnUndoUndo.modal = false
         @popoverBtnUndoUndo.visible = false
-        @btnUndoUndo.signal_connect("clicked")  {  retourPositionBonne } # RETOURNER A LA DERNIERE POSITION BONNE
+        @btnUndoUndo.signal_connect("clicked")  {
+            if @@maPartie.getMode != Mode::TUTORIEL
+                retourPositionBonne
+            end
+        } # RETOURNER A LA DERNIERE POSITION BONNE
         @btnUndoUndo.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndoUndo.visible = true  : self  } # afficher popup quand souris dessus
         @btnUndoUndo.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndoUndo.visible = false : self } # cacher quand la souris n'est plus dessus
 
@@ -442,14 +446,22 @@ class FenetrePartie < Fenetre
         @popoverBtnHelp  = create_popover(@btnHelp, Gtk::Label.new(@@lg.gt("POPUP_HELP")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnHelp.modal = false
         @popoverBtnHelp.visible = false
-        @btnHelp.signal_connect("clicked")      { aide } # DEMANDER DE L AIDER
+        @btnHelp.signal_connect("clicked")      {
+            if @@maPartie.getMode != Mode::TUTORIEL
+                aide
+            end
+        } # DEMANDER DE L AIDER
         @btnHelp.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnHelp.visible = true  : self  } # afficher popup quand souris dessus
         @btnHelp.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnHelp.visible = false : self } # cacher quand la souris n'est plus dessus
 
         @popoverBtnLocation  = create_popover(@btnHelpLocation, Gtk::Label.new(@@lg.gt("POPUP_HELPLOCATION")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnLocation.modal = false
         @popoverBtnLocation.visible = false
-        @btnHelpLocation.signal_connect("clicked") { aideLocation }
+        @btnHelpLocation.signal_connect("clicked") {
+            if @@maPartie.getMode != Mode::TUTORIEL
+                aideLocation
+            end
+        }
         @btnHelpLocation.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnLocation.visible = true  : self  } # afficher popup quand souris dessus
         @btnHelpLocation.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnLocation.visible = false : self } # cacher quand la souris n'est plus dessus
 
@@ -467,7 +479,11 @@ class FenetrePartie < Fenetre
         @popoverBtnVerif  = create_popover(@btnVerif, Gtk::Label.new(@@lg.gt("POPUP_CHECK")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnVerif.modal = false
         @popoverBtnVerif.visible = false
-        @btnVerif.signal_connect("clicked")     { verifier } # VERFIER LA GRILLE
+        @btnVerif.signal_connect("clicked")     {
+            if @@maPartie.getMode != Mode::TUTORIEL
+                verifier
+            end
+        } # VERFIER LA GRILLE
         @btnVerif.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnVerif.visible = true  : self  } # afficher popup quand souris dessus
         @btnVerif.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnVerif.visible = false : self } # cacher quand la souris n'est plus dessus
 

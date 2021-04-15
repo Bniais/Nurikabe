@@ -11,7 +11,7 @@ class PartieTuto < Partie
   ##
   #Contructeur de PartieTuto
   def initialize()
-    
+
     @grilleActuel = 0
     @dernierMessageDemander = -1
     @ordreDeClicCpt = 0
@@ -222,32 +222,28 @@ class PartieTuto < Partie
     ]
 
     @messageEtape = [
-      # Pop-up d'arrivée
-      [
-        "Bienvenue sur le tutoriel du Nurikabe ! Ici, nous allons te donner toutes les clés pour devenir un as de ce jeu. Avant de commencer, survole les différents boutons afin de découvrir à quoi ils servent. C'est parti !"
-      ],
       # Grille 1
       [
         "Deux îles ne peuvent pas être connectées : elles sont forcément séparées par une case noire.",
 
         "Lorsqu'une île a un indice de 1 (sa taille = 1), cela signifie que ses cases voisines doivent être noires.",
-  
+
         "Les cases entourés de murs horizontaux et verticaux ne peuvent pas appartenir à une île et doivent donc être colorés en noir pour faire partie d'un mur.",
-  
+
         "Tous les murs doivent former un chemin continu. Ce qui signifie que tous les murs doivent être connectés entre eux."
       ],
        # Grille 2
       [
         " Attention, une des règles du Nurikabe interdit les murs de 2x2 cases. L'une des ces cases est forcément blanche.",
 
-        "Cette case n'est pas atteignable car elle se situe trop loin des îles. Elle fait donc partie d'un mur et elle est de couleur noire."      
+        "Cette case n'est pas atteignable car elle se situe trop loin des îles. Elle fait donc partie d'un mur et elle est de couleur noire."
       ],
       # Grille 3
       [
         "Lorsque 2 indices sont adjacents en diagonale chacune des 2 cases touchant les 2 indices doivent être noires.",
 
         "Dans certains cas, une ile d'indice 2 ou le dernier carré d'une ile plus grande ne peut être agrandi que dans deux directions perpendiculaires. Dans ce cas, quelle que soit la direction dans laquelle l'expansion de l'île aura lieu, le carré diagonal doit faire partie d'un mur et est donc grisé.",
-  
+
         "Une île peut être agrandie directement à partir d'un indice. L'île 3 ne peut être agrandie que vers le haut et l'île 2 ne peut être agrandie que vers la droite. Nous allons marquer ces carrés avec des points pour montrer qu'ils font partie des îles respectives et ne peuvent pas faire partie d'un mur."
       ],
       # Grille 4

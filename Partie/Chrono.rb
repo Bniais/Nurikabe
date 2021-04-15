@@ -2,6 +2,10 @@ class Chrono
 
     private_class_method :new
 
+    ##
+    # Variables d'instance de Case :
+    # @pause => Booléen qui indique si la partie est en pause 
+    # @time => Temps du chronomètre 
     attr_reader :pause, :time
     ##
     #Crée un chrono initialisé au temps 0 

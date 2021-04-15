@@ -1097,7 +1097,7 @@ class FenetrePartie < Fenetre
     def threadChronometre
         Thread.new do
             @indiceRespiration = 0
-            while @@maPartie != nil
+            while @@maPartie != nil && @monTimer != nil
                 @indiceRespiration += 1
                 if @indiceRespiration%20 == 0
                     @monTimer.name = "timer"

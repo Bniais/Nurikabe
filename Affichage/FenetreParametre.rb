@@ -110,6 +110,8 @@ class FenetreParametre < Fenetre
         end
 
         stack.signal_connect("notify::visible-child"){
+            @btnDeleteSave.set_sensitive(true)
+            @btnResetParams.set_sensitive(true)
             if(stack.visible_child == vueRegles)
                 @timer = GLib::Timeout.add(300) {
                     @popover1.modal = false 
@@ -187,26 +189,28 @@ class FenetreParametre < Fenetre
         setmargin(title,15,10,0,0)
         box.add(title) # ADD
 
-        btnDeleteSave = Gtk::Button.new(:label => @@lg.gt("SUPPRIMER_SAUVEGARDE_PARTIE_EN_COURS"))
-        btnDeleteSave.name = "btnQuitter"
-        btnDeleteSave.signal_connect("clicked") {
+        @btnDeleteSave = Gtk::Button.new(:label => @@lg.gt("SUPPRIMER_SAUVEGARDE_PARTIE_EN_COURS"))
+        @btnDeleteSave.name = "btnQuitter"
+        @btnDeleteSave.signal_connect("clicked") {
             Sauvegardes.getInstance.getSauvegardePartie.resetAll(FenetrePartie.getPartie)
             Sauvegardes.getInstance.sauvegarder()
+            @btnDeleteSave.set_sensitive(false)
         }
 
-        box.add( setmargin(btnDeleteSave,5,5,65,65) ) #ADD
+        box.add( setmargin(@btnDeleteSave,5,5,65,65) ) #ADD
 
-        btnResetParams = Gtk::Button.new(:label => @@lg.gt("RESET_PARAMETRE"))
-        btnResetParams.name = "btnQuitter"
-        btnResetParams.signal_connect("clicked") {
+        @btnResetParams = Gtk::Button.new(:label => @@lg.gt("RESET_PARAMETRE"))
+        @btnResetParams.name = "btnQuitter"
+        @btnResetParams.signal_connect("clicked") {
             Sauvegardes.getInstance.getSauvegardeParametre.resetAll
             Sauvegardes.getInstance.sauvegarder()
             @switchDarkMode.set_active(false)
             @switchCompteurIlot.set_active(true)
             @switchCaseGrises.set_active(false)
             @switchAffichagePortee.set_active(true)
+            @btnResetParams.set_sensitive(false)
         }
-        box.add(setmargin(btnResetParams,5,5,65,65))
+        box.add(setmargin(@btnResetParams,5,5,65,65))
 
         return box
     end

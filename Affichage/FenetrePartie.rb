@@ -7,12 +7,27 @@ require_relative "./../Partie/Partie.rb"
 class FenetrePartie < Fenetre
 
     ##
-    # Variable de classe
+    # partie en cours
     @@maPartie = nil
+
+    ##
+    # grille actuelle
     @@maGrille = nil
+
+    ##
+    # booleen qui permet de savoir si le jeu est en pause
     @@vraiPause = false
+
+    ##
+    # booleen qui permet de savoir si le joueur a perdu
     @@perdu = false
+
+    ##
+    # booleen de la deco
     @@deco = false
+
+    ##
+    # booleen pour l'affichage du premier message du tutoriel
     @@tutoStart = true
 
     ##
@@ -67,6 +82,7 @@ class FenetrePartie < Fenetre
         # CHARGE LES AIDES A ACTIVER / DESACTIVER
         # CASE A FOCUS
         if( @@maPartie.getMode == Mode::TUTORIEL)
+            # message d'arrivee du tutoriel
             if @@tutoStart
                 @@tutoStart = false
                 @@maFenetrePartie.show_standard_message_dialog( @@lg.gt("MSG_DEBUT_TUTO") )

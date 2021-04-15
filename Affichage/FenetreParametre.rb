@@ -397,6 +397,9 @@ end
 ##
 # Classe qui représente une case de la grille
 class CellImmuable < Gtk::Button
+    ##
+    # @x => coordonnee x
+    # @y => coordonnee y
     attr_reader :x, :y
 
     ##

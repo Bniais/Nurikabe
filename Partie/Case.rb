@@ -13,19 +13,15 @@ class Case
   ##
   # Crée une case avec une couleur et sa position sur la grille
   def Case.creer(uneCouleur, posX, posY)
-      #
-      new(uneCouleur,posX,posY)
-
+    new(uneCouleur,posX,posY)
   end
 
   ##
   #Constructeur de la case
   def initialize(uneCouleur,posX,posY)
-
       @couleur = uneCouleur
       @positionX = posX
       @positionY = posY
-      
   end
 
 
@@ -34,17 +30,12 @@ class Case
   ##
   #Change la couleur de la case
   def setCouleur( nouvelleCouleur )
-    #return void
     @couleur = nouvelleCouleur
-
   end
 
   ##
   # Retourne vrai si la case est une ile, faux sinon
   def estIle?()
-
-    #return bool
-
     if couleur >= Couleur::ILE_1
       return true
     else

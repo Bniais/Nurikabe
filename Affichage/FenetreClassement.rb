@@ -6,10 +6,17 @@ require_relative './FenetreDetailScore.rb'
 #
 # Herite de la classe abstraite Fenetre
 class FenetreClassement < Fenetre
+    ##
+    # booleen de l'affichage des grilles de niveau facile
     @@easyActivated = true
-    @@mediumActivated = true
-    @@hardActivated = true
 
+    ##
+    # booleen de l'affichage des grilles de niveau moyen
+    @@mediumActivated = true
+
+    ##
+    # booleen de l'affichage des grilles de niveau difficile
+    @@hardActivated = true
 
     ##
     # Methode privee pour l'initialisation
@@ -25,7 +32,6 @@ class FenetreClassement < Fenetre
         Fenetre.show_all
         return self
     end
-
 
     ##
     # Methode qui permet de creer l'interface :
@@ -54,7 +60,7 @@ class FenetreClassement < Fenetre
         labelStar.set_markup("<span size='20000' >" + Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles.to_s + "★</span>")
         labelStar.name = "stars"
         boxStar.add(labelStar)
-        
+
         btnBoxH.add( setmargin( boxStar, 0,0,0,20 ) )
 
         box.add(btnBoxH) #ADD
@@ -74,10 +80,6 @@ class FenetreClassement < Fenetre
         # Box qui comprends 3 radios selector
         hBoxSelector = Gtk::Box.new(:horizontal)
         hBoxSelector.set_homogeneous(false)
-
-
-
-
 
 
         comboBox = Gtk::ComboBoxText.new()
@@ -160,7 +162,7 @@ class FenetreClassement < Fenetre
             @@mediumActivated = !@@mediumActivated
             Fenetre.remove(box)
             Fenetre.add(creationInterface( lastView ))
-            Fenetre.show_all         
+            Fenetre.show_all
         }
         checkButtonHard.signal_connect("clicked") {
             @@hardActivated = !@@hardActivated

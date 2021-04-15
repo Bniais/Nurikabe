@@ -72,7 +72,7 @@ class FenetreMenu < Fenetre
         boxSurvie = Gtk::Box.new(:horizontal)
         boxSurvie.set_homogeneous(true)
         boxSurvie.add( Gtk::Label.new(""))
-        
+
 
         btnSurvieLabel = Gtk::Label.new()
         btnSurvieLabel.halign = :center
@@ -83,10 +83,9 @@ class FenetreMenu < Fenetre
         btnSurvieLabelStar.name = "stars"
         boxSurvie.add( btnSurvieLabelStar )
 
-        if Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles < 5 
+        if Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles < 5
             btnSurvie.set_sensitive(false)
             btnSurvieLabelStar.set_markup("<span weight = 'ultrabold'> #{ Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles.to_s}/5 ★</span>")
-
         end
 
         btnSurvie.add( boxSurvie )
@@ -118,7 +117,7 @@ class FenetreMenu < Fenetre
         setBold(btnTutoriel, @@lg.gt("TUTORIEL") )
         box.add( setmargin( btnTutoriel , 0, 10, 70, 70) )
 
-        if Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles < 10 
+        if Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles < 10
             btn1v1.set_sensitive(false)
             btn1v1LabelStar.set_markup("<span weight = 'ultrabold'>#{ Sauvegardes.getInstance.getSauvegardeScore.nbEtoiles.to_s}/10 ★</span>")
 
@@ -294,7 +293,7 @@ class FenetreMenu < Fenetre
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand(1..(nbGrille/3))
-    
+
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
         hBox.children[1].signal_connect("clicked"){
@@ -302,7 +301,7 @@ class FenetreMenu < Fenetre
 
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             indiceRand = rand((1+nbGrille/3)..(2*nbGrille/3))
-            
+
 
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieSurvie.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
@@ -422,7 +421,7 @@ class FenetreMenu < Fenetre
                 indiceRand = gridsId[0]
             end
 
-            
+
 
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }
@@ -430,7 +429,7 @@ class FenetreMenu < Fenetre
         hBox.children[2].signal_connect("clicked"){
             Fenetre.remove(box);
 
-            
+
             nbGrille = SauvegardeGrille.getInstance.getNombreGrille
             gridsId = ((1 + 2*nbGrille/3)..nbGrille).to_a.shuffle
 
@@ -463,7 +462,7 @@ class FenetreMenu < Fenetre
             if(indiceRand == -1 )
                 indiceRand = gridsId[0]
             end
-            
+
 
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieContreLaMontre.creer(SauvegardeGrille.getInstance.getGrilleAt(indiceRand)))
         }

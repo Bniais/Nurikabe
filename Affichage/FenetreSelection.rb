@@ -3,9 +3,16 @@ require_relative './Fenetre.rb'
 
 # Classe qui gere la fenetre de selection des grilles en mode Libre
 class FenetreSelection < Fenetre
-
+    ##
+    # booleen de l'affichage des grilles de niveau facile
     @@easyActivate = true
+
+    ##
+    # booleen de l'affichage des grilles de niveau moyen
     @@mediumActivate = true
+
+    ##
+    # booleen de l'affichage des grilles de niveau difficile
     @@hardActivate = true
 
     ##
@@ -85,13 +92,13 @@ class FenetreSelection < Fenetre
             @@easyActivate = !@@easyActivate
             Fenetre.remove(box)
             Fenetre.add(creationInterface( lastView))
-            Fenetre.show_all        
+            Fenetre.show_all
         }
         checkButtonMedium.signal_connect("clicked") {
             @@mediumActivate = !@@mediumActivate
             Fenetre.remove(box)
             Fenetre.add(creationInterface( lastView ))
-            Fenetre.show_all     
+            Fenetre.show_all
         }
         checkButtonHard.signal_connect("clicked") {
             @@hardActivate = !@@hardActivate
@@ -193,10 +200,10 @@ class FenetreSelection < Fenetre
     end
 
     ##
-    # Methode qui genere une frame 
+    # Methode qui genere une frame
     # qui comprendra le numero de grille
-    # le statut en cours ou nom 
-    # la grille et son lien vers le lancement 
+    # le statut en cours ou nom
+    # la grille et son lien vers le lancement
     # de la partie
     def generateFrame( uneGrille , mainBox , numero , enCours )
         btnFrame = Gtk::Button.new()

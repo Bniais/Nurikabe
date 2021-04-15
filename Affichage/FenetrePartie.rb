@@ -65,6 +65,7 @@ class FenetrePartie < Fenetre
         # CHARGE LES AIDES A ACTIVER / DESACTIVER
         # CASE A FOCUS
         if( @@maPartie.getMode == Mode::TUTORIEL)
+            @@maFenetrePartie.show_standard_message_dialog("Bienvenue sur le tutoriel du Nurikabe ! Ici, nous allons te donner toutes les clés pour devenir un as de ce jeu. Avant de commencer, survole les différents boutons afin de découvrir à quoi ils servent. C'est parti !")
             @@maFenetrePartie.show_standard_message_dialog( @@maPartie.getMessageAide );
             @@maFenetrePartie.setBtnStatut( @@maPartie.aideADesactiver() ) # DESACTIVE LES AIDES
             @@maFenetrePartie.mettreCasesEnRouge()
@@ -364,7 +365,12 @@ class FenetrePartie < Fenetre
 
         #Gestion des evenemeents
         @btnSetting.signal_connect("clicked")    { ouvrirReglage  } # LANCER LES REGLAGLES
+        @popoverBtnUndo = create_popover(@btnUndo, Gtk::Label.new("un message"), :bottom)
+        @popoverBtnUndo.modal = false
+        @popoverBtnUndo.visible = false
         @btnUndo.signal_connect("clicked")      { retourArriere } # RETOURNER EN ARRIERE
+        @btnUndo.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndo.visible = true  : self  }
+        @btnUndo.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndo.visible = false : self }
         @btnRedo.signal_connect("clicked")      { retourAvant } # RETOURNER EN AVANT
         @btnUndoUndo.signal_connect("clicked")  {  retourPositionBonne } # RETOURNER A LA DERNIERE POSITION BONNE
         @btnPlay.signal_connect("clicked")      { play  } # METTRE LE JEU EN PLAY

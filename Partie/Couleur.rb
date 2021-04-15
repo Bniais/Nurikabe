@@ -1,4 +1,8 @@
+##
+# Classe qui représente le type d'une case
 class Couleur
+    ##
+    # Constantes de type de case
     NOIR = -2
     GRIS = -3
     BLANC = -1
@@ -17,6 +21,7 @@ class Couleur
     ILE_13 = 13
     ILE_14 = 14
     ILE_15 = 15
+
     ##
     #Permet de savoir si une case est une ile, renvoi un booléen
     def self.EstIle?(couleur)

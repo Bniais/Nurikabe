@@ -1,3 +1,5 @@
+##
+# Classe qui représente le mode de jeu Contre la montre
 class PartieContreLaMontre < PartieMalus
   private_class_method :new
   ##

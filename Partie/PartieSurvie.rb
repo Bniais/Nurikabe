@@ -1,4 +1,6 @@
 require_relative "PartieMalus.rb"
+##
+# Classe qui représente le mode de jeu Survie
 class PartieSurvie < PartieMalus
 
     private_class_method :new

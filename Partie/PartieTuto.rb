@@ -11,9 +11,9 @@ class PartieTuto < Partie
   ##
   #Contructeur de PartieTuto
   def initialize()
-    @dernierMessageDemander = -1
-
+    
     @grilleActuel = 0
+    @dernierMessageDemander = -1
     @ordreDeClicCpt = 0
     @tabGrille = [
 
@@ -338,6 +338,21 @@ class PartieTuto < Partie
 
       else
         @coupAutoriser[@grilleActuel][coup.case.positionY][coup.case.positionX] = 999;
+      end
+
+      # @ordreDeClicCpt
+      find = false
+      for x in 0...@grilleEnCours.tabCases.size
+        for y in 0...@grilleEnCours.tabCases.size
+          if ( @coupAutoriser[@grilleActuel][y][x] == @ordreDeClicCpt )
+            find = true;
+          end
+        end
+      end
+
+
+      if !find
+        @ordreDeClicCpt += 1;
       end
 
       return true

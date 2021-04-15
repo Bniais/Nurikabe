@@ -222,6 +222,10 @@ class PartieTuto < Partie
     ]
 
     @messageEtape = [
+      # Pop-up d'arrivée
+      [
+        "Bienvenue sur le tutoriel du Nurikabe ! Ici, nous allons te donner toutes les clés pour devenir un as de ce jeu. Avant de commencer, survole les différents boutons afin de découvrir à quoi ils servent. C'est parti !"
+      ],
       # Grille 1
       [
         "Deux îles ne peuvent pas être connectées : elles sont forcément séparées par une case noire.",

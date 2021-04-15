@@ -15,6 +15,61 @@ separator {
     color: rgb(156, 156, 156);
     transition-duration: 0.5s
 }
+
+
+#little, #little * {
+    padding: 0px 0px;
+    font-size: 1.4em;
+}
+
+#little {
+    border: solid 1px black;
+    background:rgb(173, 171, 171);
+}
+
+#bg-FenetreSelection {
+    background: rgb(63, 63, 63);
+}
+
+#bg-FenetreSelection:hover {
+    background: rgb(70, 70, 70);
+    box-shadow: 0px 0px 5px 0.8px rgb(54, 54, 54);
+    border-color:  rgba(22, 22, 22, 0.0);
+}
+
+#bg-FenetreSelection-title {
+    background: none;
+    padding-right: 30px;
+}
+#bg-FenetreSelection > label{
+   color: rgb(0, 0, 0);
+}
+
+#fenetreGrille * {
+    border-width: 1px;
+    border-color: black;
+}
+
+#timer, #timer_respire, #timer-clasement {
+    color: rgb(160, 72, 72);
+    box-shadow: 0px 0px 5px 0.8px rgb(143, 135, 135);
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    transition-duration: 1s;
+    font-family: 'Abyssinica SIL', serif;
+}
+
+#timer_respire {
+    box-shadow: 0px 0px 9px 2.0px rgb(168, 157, 157);
+}
+
+#timer-clasement{
+    font-size: 2.2em;
+}
+
+
+
 /* _____ Fenetre Partie _____ */
 
 #grid-cell-portee-ile-ile-small ,#grid-cell-portee-ile-ile-red, #grid-cell-portee-ile-ile-small-red,  #grid-cell-ile-appartient-ile-small, #grid-cell-ile-appartient-ile-small-red, #grid-cell-ile-small, #grid-cell-ile-small-red,
@@ -38,7 +93,7 @@ separator {
 
 /** red */
 #grid-cell-ile-small-red, #grid-cell-ile-appartient-ile-small-red, #grid-cell-ile-appartient-ile-red, #grid-cell-ile-red, #grid-cell-portee-ile-ile-red, #grid-cell-portee-ile-ile-small-red, #grid-cell-red-ile, #grid-cell-red, #grid-cell-portee-ile-round-red, #grid-cell-round-red, #grid-cell-portee-ile-red, #grid-cell-portee-ile-black-red, #grid-cell-red-block, #grid-cell-red-appartient{
-    border-color: red;
+    border-color: rgb(199, 24, 24);
     border-width: 3px;
 }
 
@@ -151,55 +206,3 @@ checkbutton *{
 #buttonBlancNb,#buttonIleNb {
     background:rgb(152, 168, 186);
 }
-
-#little, #little * {
-    padding: 0px 0px;
-    font-size: 1.4em;
-}
-
-#little {
-    border: solid 1px black;
-    background:rgb(173, 171, 171);
-}
-
-#bg-FenetreSelection {
-    background: rgb(63, 63, 63);
-}
-
-#bg-FenetreSelection:hover {
-    background: rgb(70, 70, 70);
-    box-shadow: 0px 0px 5px 0.8px rgb(54, 54, 54);
-    border-color:  rgba(22, 22, 22, 0.0);
-}
-
-#bg-FenetreSelection-title {
-    background: none;
-    padding-right: 30px;
-}
-#bg-FenetreSelection > label{
-   color: rgb(0, 0, 0);
-}
-
-#fenetreGrille * {
-    border-width: 1px;
-    border-color: black;
-}
-
-#timer, #timer_respire, #timer-clasement {
-    color: rgb(160, 72, 72);
-    box-shadow: 0px 0px 5px 0.8px rgb(143, 135, 135);
-    border-radius: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    transition-duration: 1s;
-    font-family: 'Abyssinica SIL', serif;
-}
-
-#timer_respire {
-    box-shadow: 0px 0px 9px 2.0px rgb(168, 157, 157);
-}
-
-#timer-clasement{
-    font-size: 2.2em;
-}
-

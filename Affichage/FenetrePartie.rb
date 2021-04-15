@@ -31,6 +31,10 @@ class FenetrePartie < Fenetre
     @@tutoStart = true
 
     ##
+    # fenetre de la partie en cours
+    @@maFenetrePartie = nil
+
+    ##
     # Methode privee pour l'initialisation
     def initialize()
         self

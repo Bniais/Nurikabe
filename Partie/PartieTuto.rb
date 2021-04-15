@@ -11,6 +11,7 @@ class PartieTuto < Partie
   # variable qui permet d'accéder aux langues
   @@lg = nil
 
+
   ##
   # Methode qui permet de creer une partie en mode 'tutoriel'
   def PartieTuto.creer()

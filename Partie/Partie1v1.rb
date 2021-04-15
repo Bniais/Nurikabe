@@ -4,6 +4,11 @@
 class Partie1v1 < Partie
   private_class_method :new
 
+
+  ##
+  # @indiceCoup => indice pour compter les coups
+  attr_reader :indiceCoup
+
   ##
   # Creer un partie contre la montre en prenant en compte les sauvegardes
   def Partie1v1.creer(grille)
@@ -12,7 +17,7 @@ class Partie1v1 < Partie
 
   ##
   # Constructeur de PartieContreLaMontre
-  def initialize(grille) 
+  def initialize(grille)
     super(grille)
   end
 
@@ -23,7 +28,7 @@ class Partie1v1 < Partie
   end
 
   ##
-  # Envoie à l'adversaire une annonce de fin de partie 
+  # Envoie à l'adversaire une annonce de fin de partie
   def partieTerminee?()
     term = @grilleEnCours.nbDifferenceBrut(@grilleBase)
 
@@ -44,15 +49,15 @@ class Partie1v1 < Partie
   # est desactiver car coute du temps
   def verifierErreur(fromUser)#TOTEST
     return 0
-  end   
+  end
 
 
   ##
   # Methode qui permet d'ajouter
-  # un coup et qui previent l'adversaire du 
+  # un coup et qui previent l'adversaire du
   # pourcentage de la grille en cours
   def ajouterCoup(coup)
-     if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1) 
+     if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1)
       coup.case.couleur = coup.couleur
       @grilleRaz = nil
       tabCoup.pop(tabCoup.size - @indiceCoup) #supprimer les coups annulés
@@ -93,7 +98,7 @@ class Partie1v1 < Partie
   # Methode qui retourne en arrière (le coup)
   def retourArriere()#TOTEST
     if(@grilleRaz != nil)
-      @grilleEnCours = Marshal.load(Marshal.dump(@grilleRaz))    
+      @grilleEnCours = Marshal.load(Marshal.dump(@grilleRaz))
       @tabCoup = Marshal.load(Marshal.dump(@tabCoupRaz))
       @indiceCoup = Marshal.load(Marshal.dump(@indiceCoupRaz))
 
@@ -108,13 +113,13 @@ class Partie1v1 < Partie
       if(@indiceCoup > 0) #vérification normalement inutile puisque le bouton devrait être disable
         coupPrecedent = tabCoup.at(@indiceCoup-1)
         @grilleEnCours.tabCases[coupPrecedent.case.positionY][coupPrecedent.case.positionX].setCouleur(coupPrecedent.couleurBase)
-        
-        @indiceCoup -= 1 #On passe au coup précédent  
+
+        @indiceCoup -= 1 #On passe au coup précédent
         socket = Fenetre1v1.getSocket
         if(socket != nil)
           socket.puts ("av" + @grilleEnCours.getPourcentage(@grilleBase, nil).to_s )
         end
-        return [peutRetourArriere?, coupPrecedent.case]  
+        return [peutRetourArriere?, coupPrecedent.case]
       end
       return nil#Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
     end
@@ -136,10 +141,10 @@ class Partie1v1 < Partie
       socket.puts ("av" + @grilleEnCours.getPourcentage(@grilleBase, nil).to_s )
     end
   end
-  
+
   ##
   # Methode qui empeche l'utilisatation
-  # de revenir a la derniere position bonne 
+  # de revenir a la derniere position bonne
   # en mode 1v1 car ca coute du temps
   def revenirPositionBonne() #TOTEST
     self
@@ -147,7 +152,7 @@ class Partie1v1 < Partie
 
   ##
   # Methode qui empeche l'utilisatation
-  # de demander un indice 1v1 car ca 
+  # de demander un indice 1v1 car ca
   # coute du temps
   def donneIndice()
     nil

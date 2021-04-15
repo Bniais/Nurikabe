@@ -1,4 +1,5 @@
 require_relative 'Couleur.rb'
+
 ##
 # Classe qui représente une case d'une grille
 class Case

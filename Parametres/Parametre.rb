@@ -1,37 +1,51 @@
 require_relative './../Sauvegarde/Sauvegardes.rb'
+
 ##
 # Classe qui gere les parametres
 class Parametre
     ##
-    # Variables d'instance : 
     # @casesGrises => option d'affichage
     attr_accessor :casesGrises
+
     ##
     # AIDES VISUELLES
     # @compteurIlot => affichage de la taille d'une ile
     attr_accessor :compteurIlot
+
     ##
     # @affichagePortee => affichage de la portee d'une aide
     attr_accessor :affichagePortee
+
     ##
     # @murs2x2 => affichage des murs 2x2
     attr_accessor :murs2x2
+
     ##
     # @comportementSouris => comportement de la souris choisi
     attr_accessor :comportementSouris
+
     ##
     # @raccourcisClavier => raccourcis clavier choisi
     attr_accessor :raccourcisClavier
+
     ##
     # @langue => tableau des langues dispos
     attr_accessor :langue
+
     ##
     # @indiceLangueChoisi => indice de la langue choisie
     attr_accessor :indiceLangueChoisi
+
     ##
     # @volume => volume
     attr_accessor :volume
 
+    ##
+    # @modeSombre => mode sombre
+    attr_accessor :modeSombre
+
+    ##
+    # instance des parametres
     @@instanceParametre = nil
 
     ##
@@ -54,7 +68,7 @@ class Parametre
     end
 
     ##
-    # A Methode de class 
+    # A Methode de class
     # type singleton qui permet de recuperer
     # l'instance des parametre
     def self.getInstance()
@@ -76,6 +90,7 @@ class Parametre
     def casesGrises?()
         return @casesGrises
     end
+
     ##
     # Methode qui permet de set le parametre case grise
     def set_casesGrises(statut)
@@ -83,44 +98,52 @@ class Parametre
         Fenetre.set_modeGris(@casesGrises)
         Sauvegardes.getInstance.sauvegarder()
     end
+
     ##
     # Methode qui permet de savoir si l'aide visuelle 'compteur ilots' est activee
     def compteurIlots?()
         return @compteurIlot
     end
+
     ##
     # Methode qui permet de set le parametre compteur ilots
     def set_compteurIlots(statut)
         @compteurIlot = statut
         Sauvegardes.getInstance.sauvegarder()
     end
+
     ##
     # Methode qui permet de savoir si l'aide visuelle 'afficher portee' est activee
     def affichagePortee?()
         return @affichagePortee
     end
+
     ##
     # Methode qui permet de set le parametre affichage portee
     def set_affichagePortee(statut)
         @affichagePortee = statut
         Sauvegardes.getInstance.sauvegarder()
     end
+
     ##
     # Methode qui permet de savoir si l'aide visuelle 'afficher les murs 2x2' est activee
     def mur2x2?()
         return @murs2x2
     end
+
     ##
     # Methode qui permet de set le parametre murs 2x2
     def set_mur2x2(statut)
         @murs2x2 = statut
         Sauvegardes.getInstance.sauvegarder()
     end
+
     ##
     # Methode qui permet de savoir si
     def modeSombre?()
         return @modeSombre
     end
+
     ##
     # Methode qui permet de set le mode sombre
     def set_modeSombre(statut)
@@ -128,11 +151,13 @@ class Parametre
         Fenetre.set_modeSombre(@modeSombre)
         Sauvegardes.getInstance.sauvegarder()
     end
+
     ##
     # Methode qui permet de connaitre le comportement de la souris
     def comportementSouris?()
         # return un booleen
     end
+
     ##
     # Methode qui permet de connaitre les raccourcis clavier choisis
     def raccourcisClavier?()

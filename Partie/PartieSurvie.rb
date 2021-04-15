@@ -6,6 +6,11 @@ class PartieSurvie < PartieMalus
     private_class_method :new
 
     ##
+    # @nbGrilleFinis => compteur des grilles terminees
+    # @grilles => tableau des grilles
+    attr_reader :nbGrilleFinis, :grilles
+
+    ##
     # Creer une partie en mode survie, puisque new est private
     def PartieSurvie.creer(grille)
       new(grille)
@@ -17,7 +22,7 @@ class PartieSurvie < PartieMalus
       super(grille)
       @chrono = ChronoDecompte.creer()
       @chrono.demarrer()
-      
+
       @nbGrilleFinis = 0
       @grilles = Array.new()
       nbGrille = SauvegardeGrille.getInstance.getNombreGrille
@@ -59,7 +64,7 @@ class PartieSurvie < PartieMalus
 
       if(nextGrille != nil)
         @grilleBase = nextGrille
-    
+
         @tabCoup = Array.new(0);
 
         @nbAideUtilise = 0
@@ -68,7 +73,7 @@ class PartieSurvie < PartieMalus
         @grilleEnCours = Marshal.load( Marshal.dump(@grilleBase) )
         @grilleEnCours.raz()
       end
-      
+
       return nextGrille
     end
 

@@ -12,19 +12,30 @@ require_relative 'SauvegardeScore.rb'
 class Sauvegardes
 
     ##
-    # Variable de classe : 
+    # Variable de classe :
      #@@instanceSauvegarde => Instance de Sauvegarde
     @@instanceSauvegarde = nil
-    
+
+    ##
+    # sauvegarde des parties
     @sauvegardePartie = nil
+
+    ##
+    # sauvegarde des parametres
     @sauvegardeParametre = nil
+
+    ##
+    # sauvegarde des scores
     @sauvegardeScore = nil
+
+    ##
+    # sauvegarde de la langue choisie
     @sauvegardeLangue = nil
 
     ##
     # Constructeur de Sauvegardes
     def initialize()
-        if File.exist?("../Sauvegarde/save.dump") == true 
+        if File.exist?("../Sauvegarde/save.dump") == true
             @@instanceSauvegarde = Marshal.load( File.binread( "../Sauvegarde/save.dump" ) )
         else
             @@instanceSauvegarde = self
@@ -34,13 +45,13 @@ class Sauvegardes
         @@instanceSauvegarde.getSauvegardePartie
         @@instanceSauvegarde.getSauvegardeScore
         @@instanceSauvegarde.getSauvegardeLangue
-        
-        
+
+
         @@instanceSauvegarde
     end
 
      ##
-    # Recupère le chemin d'un fichier de sauvegardes 
+    # Recupère le chemin d'un fichier de sauvegardes
     def self.creer()
         if @@instanceSauvegarde == nil
             new()
@@ -65,7 +76,7 @@ class Sauvegardes
         if @sauvegardePartie == nil
             @sauvegardePartie = SauvegardesParties.new()
             return @sauvegardePartie
-        else 
+        else
             return @sauvegardePartie
         end
     end
@@ -75,7 +86,7 @@ class Sauvegardes
     def getSauvegardeParametre()
         if @sauvegardeParametre == nil
             @sauvegardeParametre = Parametre.initialiseToi()
-        else 
+        else
             @sauvegardeParametre
         end
     end
@@ -85,8 +96,8 @@ class Sauvegardes
     def getSauvegardeScore()
         if @sauvegardeScore == nil
             @sauvegardeScore = SauvegardesScore.new()
-        else 
-            @sauvegardeScore      
+        else
+            @sauvegardeScore
         end
     end
 
@@ -101,4 +112,3 @@ class Sauvegardes
     end
 
 end
-

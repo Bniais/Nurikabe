@@ -2,10 +2,11 @@
 # Classe qui gere les langues
 class Langue
     ##
-    # Variables d'instance : 
+    # Variables d'instance :
     # @langues => Tableau qui contient les différentes langues
     # @langueActuelle => nom de la langue
-    attr_reader :langues, :langueActuelle
+    # @dico => tableau de hashage
+    attr_reader :langues, :langueActuelle, :dico
 
     private_class_method :new
 
@@ -131,7 +132,7 @@ class Langue
       @dico["ETAPE_1_TUTO"] = "Two islands can't be connected: they are separated by a wall."
       @dico["ETAPE_2_TUTO"] = "When an island has an index of 1 (its size = 1), it means that its surrounding cells must be black."
       @dico["ETAPE_3_TUTO"] = "Cells surrounded by horizontal and vertical walls cannot belong to an island and therefore must be colored in black to be part of a wall."
-      @dico["ETAPE_4_TUTO"] = "All walls must form a continuous path. This means that all walls must be connected to each other."   
+      @dico["ETAPE_4_TUTO"] = "All walls must form a continuous path. This means that all walls must be connected to each other."
       @dico["ETAPE_5_TUTO"] = "Beware, one of the rules of Nurikabe forbids walls of 2x2 squares. One of these squares must be white."
       @dico["ETAPE_6_TUTO"] = "This box is not reachable because it is too far from the islands. It is therefore part of a wall and is black."
       @dico["ETAPE_7_TUTO"] = "When 2 islands are diagonally adjacent each of the 2 cells touching the 2 islands must be black."
@@ -150,8 +151,8 @@ class Langue
       @dico["POPUP_CLEAR"] = "Reset"
       @dico["POPUP_CHECK"] = "Check the grid"
       @dico["POPUP_QUIT"] = "Exit"
-     
-     
+
+
       @dico["APROPOSCONTENT"] = "
 Nurikabe (ぬりかべ) is a Japanese puzzle in the style of sudoku.
 

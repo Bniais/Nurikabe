@@ -1,6 +1,6 @@
 require_relative './Fenetre.rb'
 
-
+##
 # Classe qui gere la fenetre de selection des grilles en mode Libre
 class FenetreSelection < Fenetre
     ##

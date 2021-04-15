@@ -14,7 +14,9 @@ class Partie
   # @grilleEnCours => grille en cours
   # @tabCoup => tableau qui stocke tous les coups de la partie
   # @chrono => chrono de la partie
-  attr_reader :grilleBase, :grilleEnCours, :tabCoup, :chrono
+  # @indiceCoupRaz => indice de remise a zero
+  # @grilleRaz => grille de remise a zero
+  attr_reader :grilleBase, :grilleEnCours, :tabCoup, :chrono, :indiceCoupRaz, :grilleRaz
 
   private_class_method :new
 

@@ -6,8 +6,8 @@ class Coup
   ##
   # Variables d'instance :
   # @case => Case ciblée par le joueur
-  # @couleur => A COMPLETER
-  # @couleurBase => A COMPLETER
+  # @couleur => nouvelle couleur de la case
+  # @couleurBase => ancienne couleur de la case
   attr_reader :case, :couleur, :couleurBase
 
   ##

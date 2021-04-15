@@ -6,7 +6,6 @@ require_relative '../Sauvegarde/Sauvegardes.rb'
 class PartieTuto < Partie
 
   private_class_method :new
-  attr_accessor :grille, :progression, :senarios
 
   ##
   # variable qui permet d'accéder aux langues

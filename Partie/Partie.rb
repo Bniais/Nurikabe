@@ -370,7 +370,7 @@ class Partie
   end
 
   ##
-  # A COMPLETER
+  # Methode qui permet d'afficher l'aide pour une ile d'indice 1 (cases noires autour)
   def indiceIle1()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -393,7 +393,8 @@ class Partie
     return nil #On n'a pas trouvé
   end
 
-  #TOTEST
+  ##
+  # Methode qui permet d'afficher l'aide pour une ile adjacente (2 iles separees par une case noire)
   def indiceIleAdjacente() #faire indice ile presque finie adjacente ?
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -416,7 +417,7 @@ class Partie
   end
 
   ##
-  # A COMPLETER
+  # Methode qui permet d'afficher l'aide pour une ile adjacente en diagonale (2 iles en diagonale separees par une case noire)
   def indiceIleAdjacenteDiagonal() #TOTEST
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -462,7 +463,7 @@ class Partie
   end
 
   ##
-  # A COMPLETER
+  # Methode qui permet d'afficher l'aide pour une ile complete (ile complete => case adjacente doit etre noire)
   def indiceIleComplete()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -523,7 +524,7 @@ class Partie
   end
 
   ##
-  #Retourn l'indice d'une case isolée
+  # Methode qui permet d'afficher l'aide pour une ile isolee (ile qui n'a pas de chemin possible == entouree par des murs)
   def indiceCaseIsolee()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -764,6 +765,7 @@ class Partie
 
     return nil
   end
+
   ##
   #On compte le nombre de cases grises adjacentes à un bloc d'ile, si deux adjacents diagonalement on renvoie un indice
   def indiceExpension2Dir()
@@ -867,16 +869,19 @@ class Partie
 
     return nil
   end
+
   ##
   #Chercher tous les chemins possibles liant une case blanche non-reliée aux iles accessibles, et si une case en commun parmis tous ces chemins, on peut la colorier
   def indiceContinuiteIle()#WONTDO
     return nil
   end
+
   ##
   #Chercher tous les chemins possibles liant une case noire non-reliée à un autre mur, et si une case en commun parmis tous ces chemins, on peut la colorier
   def indiceContinuiteMur() #WONTDO
     return nil
   end
+
   ##
   #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 3 noirs et 1 gris
   def verifPresque2x2(i,j)
@@ -917,7 +922,7 @@ class Partie
 =end
 
   ##
-  # A COMPLETER
+  # Methode qui permet d'afficher l'aide pour un mur 2x2
   def indiceEviter2x2()
     for i in 0..@grilleEnCours.tabCases.size-2 # -2 car inutil de regarder la dernière ligne et collone car pas de voisins droits et bas
       for j in 0..@grilleEnCours.tabCases.size-2
@@ -932,7 +937,7 @@ class Partie
   end
 
   ##
-  # A COMPLETER
+  # Methode qui permet d'afficher l'aide pour une case inatteignable (case isolee qui prend en compte la portee des iles)
   def indiceInatteignable() #TOFIX
     #Parcours en largeur pour trouver le chemin le plus court de chaque case vers chaque île, ou sinon simplifier en ignorant les murs et îles mais donne moins d'indice (ou faire les deux pour mêler performance et accuracy)
     for i in 0..@grilleEnCours.tabCases.size-1

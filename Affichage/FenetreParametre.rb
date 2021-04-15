@@ -112,21 +112,24 @@ class FenetreParametre < Fenetre
         stack.signal_connect("notify::visible-child"){
             if(stack.visible_child == vueRegles)
                 @timer = GLib::Timeout.add(300) {
-  
+                    @popover1.modal = false 
+                    @popover2.modal = false 
+                    @popover3.modal = false 
+
+                    @popover1.set_sensitive(false)
+                    @popover2.set_sensitive(false)
+                    @popover3.set_sensitive(false)
+
+
+                    
                     @popover3.popup
-
-                    #@popover2.popdown
                     @popover2.popup
-
-                    #@popover1.popdown
                     @popover1.popup
 
                     @popover1.visible = true
                     @popover2.visible = true
                     @popover3.visible = true
-                    @popover1.modal = false 
-                    @popover2.modal = false 
-                    @popover3.modal = false 
+
 
                     GLib::Source.remove(@timer)
                 }                

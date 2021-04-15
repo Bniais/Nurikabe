@@ -399,14 +399,22 @@ class FenetrePartie < Fenetre
         @popoverBtnUndo = create_popover(@btnUndo, Gtk::Label.new(@@lg.gt("POPUP_UNDO")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnUndo.modal = false
         @popoverBtnUndo.visible = false
-        @btnUndo.signal_connect("clicked")      { retourArriere } # RETOURNER EN ARRIERE
+        @btnUndo.signal_connect("clicked")      {
+            if @@maPartie.getMode != Mode::TUTORIEL
+                 retourArriere
+            end
+        } # RETOURNER EN ARRIERE
         @btnUndo.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndo.visible = true  : self  } # afficher popup quand souris dessus
         @btnUndo.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndo.visible = false : self } # cacher quand la souris n'est plus dessus
 
         @popoverBtnRedo  = create_popover(@btnRedo, Gtk::Label.new(@@lg.gt("POPUP_REDO")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnRedo.modal = false
         @popoverBtnRedo.visible = false
-        @btnRedo.signal_connect("clicked")      { retourAvant } # RETOURNER EN AVANT
+        @btnRedo.signal_connect("clicked")      {
+            if (@@maPartie.getMode != Mode::TUTORIEL)
+                 retourAvant
+            end
+        } # RETOURNER EN AVANT
         @btnRedo.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnRedo.visible = true  : self  } # afficher popup quand souris dessus
         @btnRedo.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnRedo.visible = false : self } # cacher quand la souris n'est plus dessus
 
@@ -448,7 +456,11 @@ class FenetrePartie < Fenetre
         @popoverBtnClear  = create_popover(@btnClear, Gtk::Label.new(@@lg.gt("POPUP_CLEAR")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnClear.modal = false
         @popoverBtnClear.visible = false
-        @btnClear.signal_connect("clicked")     { raz } # REMISE A ZERO DE LA GRILLE
+        @btnClear.signal_connect("clicked")     {
+            if @@maPartie.getMode != Mode::TUTORIEL
+                raz
+            end
+        } # REMISE A ZERO DE LA GRILLE
         @btnClear.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnClear.visible = true  : self  } # afficher popup quand souris dessus
         @btnClear.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnClear.visible = false : self } # cacher quand la souris n'est plus dessus
 

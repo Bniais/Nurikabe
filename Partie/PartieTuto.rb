@@ -11,6 +11,7 @@ class PartieTuto < Partie
   ##
   #Contructeur de PartieTuto
   def initialize()
+    @dernierMessageDemander = -1
 
     @grilleActuel = 0
     @ordreDeClicCpt = 0
@@ -284,21 +285,19 @@ class PartieTuto < Partie
     #redef
   end
 
-  ##
+   ##
   # Retourne le message specifique a l'aide pour tel partie
   def getMessageAide()
-    @indiceDernierMessage = @ordreDeClicCpt
-    if( @indiceDernierMessage >= @ordreDeClicCpt.size )
-      @indiceDernierMessage = @ordreDeClicCpt.size - 1
-    end
-    return @messageEtape[@grilleActuel][@indiceDernierMessage];
+    @dernierMessageDemander = @ordreDeClicCpt
+    return @messageEtape[@grilleActuel][@ordreDeClicCpt];
   end
 
   ##
   # Retourne vrai si un nouveau message est disponible
   # faux sinon
   def messageDifferent?()
-    return @dernierMessageDemander != @indiceDernierMessage
+    puts "dm = " + @dernierMessageDemander.to_s +  " odc = " + @ordreDeClicCpt.to_s
+    return @dernierMessageDemander < @ordreDeClicCpt
   end
 
   # Retourne un tableau qui defini l'etat des differentes aides

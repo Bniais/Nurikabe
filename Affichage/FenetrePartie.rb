@@ -13,7 +13,7 @@ class FenetrePartie < Fenetre
     @@vraiPause = false
     @@perdu = false
     @@deco = false
-
+    @@tutoStart = true
 
     def initialize()
         self
@@ -65,7 +65,10 @@ class FenetrePartie < Fenetre
         # CHARGE LES AIDES A ACTIVER / DESACTIVER
         # CASE A FOCUS
         if( @@maPartie.getMode == Mode::TUTORIEL)
-            @@maFenetrePartie.show_standard_message_dialog( @@lg.gt("MSG_DEBUT_TUTO") )
+            if @@tutoStart
+                @@tutoStart = false
+                @@maFenetrePartie.show_standard_message_dialog( @@lg.gt("MSG_DEBUT_TUTO") )
+            end
             @@maFenetrePartie.show_standard_message_dialog( @@maPartie.getMessageAide );
             @@maFenetrePartie.setBtnStatut( @@maPartie.aideADesactiver() ) # DESACTIVE LES AIDES
             @@maFenetrePartie.mettreCasesEnRouge()

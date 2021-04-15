@@ -151,13 +151,13 @@ class PartieTuto < Partie
         [Case.creer(Couleur::ILE_1, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::ILE_7, 2, 0),
             Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::BLANC, 4, 0),Case.creer(Couleur::BLANC, 5, 0)],
 
-        [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::BLANC, 2, 1),
+        [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
             Case.creer(Couleur::BLANC, 3, 1), Case.creer(Couleur::BLANC, 4, 1),Case.creer(Couleur::BLANC, 5, 1)],
 
-        [Case.creer(Couleur::BLANC, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::BLANC, 2, 2),
-            Case.creer(Couleur::BLANC, 3, 2), Case.creer(Couleur::BLANC, 4, 2),Case.creer(Couleur::BLANC, 5, 2)],
+        [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
+            Case.creer(Couleur::BLANC, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
-        [Case.creer(Couleur::BLANC, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::BLANC, 2, 3),
+        [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::NOIR, 2, 3),
             Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::ILE_2, 4, 3),Case.creer(Couleur::BLANC, 5, 3)],
 
         [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::ILE_3, 1, 4), Case.creer(Couleur::BLANC, 2, 4),
@@ -170,17 +170,17 @@ class PartieTuto < Partie
 
 
     Grille.creer(4,[
-        [Case.creer(Couleur::BLANC, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
+        [Case.creer(Couleur::NOIR, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
             Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::BLANC, 4, 0),Case.creer(Couleur::BLANC, 5, 0)],
 
-        [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
+        [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
             Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::ILE_5, 5, 1)],
 
         [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::ILE_2, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
-            Case.creer(Couleur::BLANC, 3, 2), Case.creer(Couleur::ILE_5, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
+            Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::ILE_5, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
-        [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::BLANC, 2, 3),
-            Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::BLANC, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
+        [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::BLANC, 2, 3),
+            Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
 
         [Case.creer(Couleur::ILE_1, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::NOIR, 2, 4),
             Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
@@ -199,7 +199,7 @@ class PartieTuto < Partie
         [999 , 999 , 999 , 999, 999, 999],[ 999 , 999 , 999 , 999, 0, 0],[999 , 999 , 999 , 999, 0, 0],[999 , 999 , 999 , 999, 999, 999],[999 , 999 , 999 , 999, 999, 999],[1 , 999 , 999 , 999, 999, 999]
       ],
       [
-        [999 , 999 , 999 , 999, 999, 999],[ 999 , 999 , 999 , 999, 999, 999],[999 , 999 , 999 , 1, 999, 999],[999 , 2 , 999 , 999, 999, 0],[999 , 999 , 0 , 999, 0, 999],[999 , 0 , 999 , 2, 999, 999]
+        [999 , 999 , 999 , 999, 999, 999],[ 999 , 999 , 999 , 999, 999, 999],[999 , 999 , 999 , 1, 999, 999],[999 , 999 , 999 , 999, 999, 0],[999 , 999 , 0 , 2, 0, 999],[999 , 0 , 999 , 999, 2, 999]
       ],
       [
         [999 , 1 , 999 , 999, 999, 999],[ 999 , 999 , 999 , 999, 999, 999],[999 , 999 , 999 , 0, 999, 999],[999 , 999 , 999 , 999, 0, 999],[999 , 999 , 999 , 999, 999, 999],[999 , 999 , 999 , 999, 999, 999]
@@ -207,10 +207,17 @@ class PartieTuto < Partie
     ]
 
     @aidePourEtape = [
-      [false,false,false,false,false,false,false,false,false,false,true],
-      [false,false,false,false,false,false,false,false,false,false,true],
-      [false,false,false,false,false,false,false,false,false,false,true],
-      [false,false,false,false,false,false,false,false,false,false,true]
+      [false,false,false,false,false,false,false,false,false,true,true],
+      [false,false,false,false,false,false,false,false,false,true,true],
+      [false,false,false,false,false,false,false,false,false,true,true],
+      [false,false,false,false,false,false,false,false,false,true,true],
+      [false,false,false,false,false,false,false,false,false,true,true],
+      [false,false,false,false,false,false,false,false,false,true,true],
+      [false,false,false,false,false,false,false,false,false,true,true],
+      [false,false,false,false,false,false,false,false,false,true,true],
+      [false,false,false,false,false,false,false,false,false,true,true],
+      [false,false,false,false,false,false,false,false,false,true,true],
+      [false,false,false,false,false,false,false,false,false,true,true]
     ]
 
 
@@ -224,7 +231,7 @@ class PartieTuto < Partie
 
       "Tous les murs doivent former un chemin continu. Ce qui signifie que tous les murs doivent être connectés entre eux.",
 
-       # Grille 2
+      # Grille 2
       " Attention, une des règles du Nurikabe interdit les murs de 2x2 cases. L'une des ces cases est forcément blanche.",
 
       "Cette case n'est pas atteignable car elle se situe trop loin des îles. Elle fait donc partie d'un mur et elle est de couleur noire.",
@@ -234,7 +241,7 @@ class PartieTuto < Partie
 
       "Dans certains cas, une ile d'indice 2 ou le dernier carré d'une ile plus grande ne peut être agrandi que dans deux directions perpendiculaires. Dans ce cas, quelle que soit la direction dans laquelle l'expansion de l'île aura lieu, le carré diagonal doit faire partie d'un mur et est donc grisé.",
 
-      "Une île peut être agrandie directement à partir d'un indice. L'île 3 ne peut être agrandie que vers le haut et l'île 2 ne peut être agrandie que vers la droite. Nous allons marquer ces carrés avec des points pour montrer qu'ils font partie des îles respectives et ne peuvent pas faire partie d'un mur.",
+      "Une île peut être agrandie directement à partir d'un indice. L'île 2 ne peut être agrandie que vers la droite. Les cases qui l'entourent doivent donc être des murs.",
 
        # Grille 4
       "Le point indique qu'il s'agit d'une case qui appartient à une île car il faut éviter d'avoir un mur 2x2.",

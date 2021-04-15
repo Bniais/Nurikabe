@@ -8,12 +8,26 @@ require 'open-uri'
 #
 # Herite de la classe abstraite Fenetre
 class Fenetre1v1 < Fenetre
-
+    ##
+    # socket
     @@socket = nil
+
+    ##
+    # attente
     @@attente = nil
+
+    ##
+    # serveur
     @@server = nil
+
+    ##
+    # port
     @@port = ""
+
+    ##
+    # adresse ip
     @@ip = ""
+
     ##
     # Methode privee pour l'initialisation
     def initialize()
@@ -30,6 +44,8 @@ class Fenetre1v1 < Fenetre
         return self
     end
 
+    ##
+    # getter de la socket
     def self.getSocket()
         return @@socket
     end
@@ -69,11 +85,11 @@ class Fenetre1v1 < Fenetre
 
         vBox = Gtk::Box.new(:vertical)
         vBox = setmargin(vBox,0,0,70,70)
-        
+
         #titre
         vBox.add( setmargin( titleLabel(@@lg.gt("CONNECTION")) , 15,15,0,0 )  )
-        
-        
+
+
         #ip
         #ipLabel = Gtk::Label.new(@@lg.gt("IP") + " : ")
         entryBox = Gtk::Box.new(:horizontal)
@@ -92,7 +108,7 @@ class Fenetre1v1 < Fenetre
 
         entryBox.add( setmargin( ipEntry ,0,0,0,5) )
 
-        
+
         #port
        # portLabel = Gtk::Label.new(@@lg.gt("PORT") + " : ")
 
@@ -113,7 +129,7 @@ class Fenetre1v1 < Fenetre
         buttonBox = Gtk::Box.new(:horizontal)
         buttonBox.set_homogeneous(true)
         buttonBox.set_height_request(50)
-        
+
         buttonHost = Gtk::Button.new(:label => @@lg.gt("HOST"))
         buttonBox.add( setmargin( buttonHost,0,0,0,5 ) )
 
@@ -125,7 +141,7 @@ class Fenetre1v1 < Fenetre
 
         vBox.add( setmargin( buttonBox,20,10,20,20 ) )
 
-        
+
         #signals
         buttonHost.signal_connect("clicked"){
             @@port = portEntry.text
@@ -152,12 +168,12 @@ class Fenetre1v1 < Fenetre
                     @@attente = Thread.new do
                         @@socket = @@server.accept
                         if(@@socket != nil)
-                            grilleId = rand(1..SauvegardeGrille.getInstance.getNombreGrille)  
+                            grilleId = rand(1..SauvegardeGrille.getInstance.getNombreGrille)
                             @@socket.puts grilleId.to_s
 
                             Fenetre.remove(box)
                             FenetrePartie.afficheToiSelec(Fenetre1v1, Partie1v1.creer(SauvegardeGrille.getInstance.getGrilleAt(grilleId.to_i)) )
-                           
+
                             while 1 < 2
                                 line = @@socket.gets
                                 if(line != nil)
@@ -177,7 +193,7 @@ class Fenetre1v1 < Fenetre
                                         break
                                     end
                                 end
-                            end                     
+                            end
                         else
                             buttonJoin.set_sensitive(true)
                             buttonHost.set_sensitive(true)
@@ -193,7 +209,7 @@ class Fenetre1v1 < Fenetre
                             @@server = nil
                         end
                     end
-                end   
+                end
             end
         }
 
@@ -243,9 +259,9 @@ class Fenetre1v1 < Fenetre
                                     @@socket = nil
                                     break
                                 end
-                                
+
                             end
-                        end  
+                        end
                     else
                         buttonJoin.set_sensitive(true)
                         buttonHost.set_sensitive(true)

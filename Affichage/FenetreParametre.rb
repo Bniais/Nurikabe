@@ -16,12 +16,12 @@ class FenetreParametre < Fenetre
     ##
     # Methode qui permet d'afficher la fenetre des parametres
     def self.afficheToi( lastView )
-        
+
         Fenetre.add( FenetreParametre.new().creationInterface( lastView, false) )
         Fenetre.show_all
         @@unePartie = nil
         return self
-        
+
     end
 
     ##
@@ -103,7 +103,7 @@ class FenetreParametre < Fenetre
         stack.add_named(vueRegles, title)
         stack.child_set_property(vueRegles, "title", title)
 
-       
+
         if fromLangue
              vueInterface.show
             stack.visible_child = vueInterface
@@ -114,16 +114,16 @@ class FenetreParametre < Fenetre
             @btnResetParams.set_sensitive(true)
             if(stack.visible_child == vueRegles)
                 @timer = GLib::Timeout.add(300) {
-                    @popover1.modal = false 
-                    @popover2.modal = false 
-                    @popover3.modal = false 
+                    @popover1.modal = false
+                    @popover2.modal = false
+                    @popover3.modal = false
 
                     @popover1.set_sensitive(false)
                     @popover2.set_sensitive(false)
                     @popover3.set_sensitive(false)
 
 
-                    
+
                     @popover3.popup
                     @popover2.popup
                     @popover1.popup
@@ -134,7 +134,7 @@ class FenetreParametre < Fenetre
 
 
                     GLib::Source.remove(@timer)
-                }                
+                }
             else
                 @popover1.visible = false
                 @popover2.visible = false
@@ -238,8 +238,8 @@ class FenetreParametre < Fenetre
         @switchCaseGrises = Gtk::Switch.new()
         @switchCaseGrises.halign = :start
         @switchCaseGrises.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
-        @switchCaseGrises.signal_connect('notify::active') { |s| 
-            Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?) 
+        @switchCaseGrises.signal_connect('notify::active') { |s|
+            Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?)
             for child in @maGrilleRegle.children
                 child.changerStatut( @maGrilleRegleBacked[@maGrilleRegle.child_get_property(child, 'left-attach')][@maGrilleRegle.child_get_property(child, 'top-attach')].couleur)
             end
@@ -265,7 +265,7 @@ class FenetreParametre < Fenetre
 
         return box
     end
-    
+
 
     ##
     # SIGNAL CONNECT DE INTERFACE : MODE SOMBRE
@@ -312,8 +312,8 @@ class FenetreParametre < Fenetre
         box.add(title) #ADD
 
         box.add(creeGrilleImmuable)
-        
-       
+
+
 
         return box
     end
@@ -339,20 +339,20 @@ class FenetreParametre < Fenetre
                 cell =  creeCelluleGrilleImmuable(ligne,colonne, @maGrilleRegleBacked[colonne][ligne].couleur, @maGrilleRegleBacked)
                 if( ligne>2 && colonne >2)
                     if(cell.name.include?("Blanc"))
-                        cell.name = "buttonBlancSurligne" 
+                        cell.name = "buttonBlancSurligne"
                     else
                         cell.name = "buttonNoirSurligne"
                     end
                 elsif( ligne<2 && colonne <2)
                     if(cell.name.include?("Ile"))
-                        cell.name = "buttonIleNb" 
+                        cell.name = "buttonIleNb"
                         @popover1 = create_popover(cell, Gtk::Label.new(@@lg.gt("MSG_REGLE_ILE")), :top)
                     else
-                        cell.name = "buttonBlancNb" 
+                        cell.name = "buttonBlancNb"
                     end
                 end
 
-                
+
 
                 @maGrilleRegle.attach( cell , ligne,colonne,1,1)
 
@@ -371,7 +371,7 @@ class FenetreParametre < Fenetre
     end
 
     ##
-    # Crée un pop-over
+    # Creer un pop-over
     private
     def create_popover(parent, child, pos)
         popover = Gtk::Popover.new(parent)
@@ -382,7 +382,7 @@ class FenetreParametre < Fenetre
         popover
      end
 
-    ## 
+    ##
     # Methode qui permet de cree
     # une cellule destiner a la grille
     private
@@ -412,7 +412,7 @@ class CellImmuable < Gtk::Button
     end
 
     ##
-    # Change le statut de la case en fonction de son type mis en paramètre 
+    # Change le statut de la case en fonction de son type mis en paramètre
     def changerStatut(color)
         if color >= Couleur::ILE_1
             self.name = "buttonIle"

@@ -1,16 +1,19 @@
 require_relative './Fenetre.rb'
 
-
+##
+# Classe qui gere l'affichage de la fenetre 'Detail de score'
+#
+# Herite de la classe abstraite Fenetre
 class FenetreDetailScore < Fenetre
 
     ##
-    # Contructeur de FenetreDetailScore
+    # Methode privee pour l'initialisation de FenetreDetailScore
     def initialize()
         self
     end
 
     ##
-    # Methode de class qui permet 
+    # Methode de classe qui permet
     # d'afficher la fentre Detail d'un score
     def self.afficheToiSelec( lastView, numero)
         Fenetre.set_subtitle( @@lg.gt("DETAIL_SCORE") )
@@ -45,15 +48,15 @@ class FenetreDetailScore < Fenetre
 
         #SCORES
         box.add(creeScores(grille.paliers, Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[numero][0], Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[numero][1]))
-    
+
 
         return box
     end
 
     ##
-    # Methhode qui cree l'affichage 
+    # Methhode qui cree l'affichage
     # des temps de jeu de maniere ordonner
-    # pour que le temps du jours soit afficher 
+    # pour que le temps du jours soit afficher
     # entre les temps possible
     def creeScores(paliers, record, etoiles)
         box = Gtk::Box.new(:vertical)
@@ -90,7 +93,7 @@ class FenetreDetailScore < Fenetre
     def creeLigneScore(temps, etoiles)
         box = Gtk::Box.new(:horizontal)
         box.set_homogeneous(true)
-        
+
         if(etoiles >= 0)
             etoilesTxt = ""
             for i in 0..2
@@ -107,8 +110,8 @@ class FenetreDetailScore < Fenetre
             etoilesLabel = Gtk::Label.new(etoilesTxt)
             setmargin(etoilesLabel, 0, 0, 0, 96)
         end
-        
-        
+
+
         etoilesLabel.name = "stars-detail"
         etoilesLabel.halign = :start
         box.add( etoilesLabel )
@@ -122,7 +125,7 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # A Methode qui cree la grille
+    # Methode qui cree la grille
     # a afficher et qui renvoi la box qui comprends la grille
     def creeGrille( uneGrille )
         box = Gtk::Box.new(:vertical)

@@ -1,29 +1,36 @@
 require_relative '../Parametres/Langue.rb'
 require_relative '../Sauvegarde/Sauvegardes.rb'
 
+##
+# Classe qui gere le tutoriel du jeu
 class PartieTuto < Partie
+
   private_class_method :new
   attr_accessor :grille, :progression, :senarios
-  ##
-  #ceer une partie en mode survie
 
+  ##
+  # variable qui permet d'accéder aux langues
   @@lg = nil
 
-
+  ##
+  # Methode qui permet de creer une partie en mode 'tutoriel'
   def PartieTuto.creer()
     new()
   end
+
   ##
-  #Contructeur de PartieTuto
+  # Methode privee pour l'initialisation
   def initialize()
     Sauvegardes.creer
+    ## gestion des langues
     @@lg = Sauvegardes.getInstance.getSauvegardeLangue
 
     @grilleActuel = 0
     @dernierMessageDemander = -1
     @ordreDeClicCpt = 0
-    @tabGrille = [
 
+    # tableau des grilles du tuto dans leur etats finaux
+    @tabGrille = [
       Grille.creer(1,[
             [Case.creer(Couleur::ILE_3, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
               Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::NOIR, 5, 0)],
@@ -110,6 +117,7 @@ class PartieTuto < Partie
       ),
     ]
 
+    # tableau des grilles du tuto dans leurs etats initiaux
     @tabGrilleDepart = [
       Grille.creer(1,[
         [Case.creer(Couleur::ILE_3, 0, 0), Case.creer(Couleur::GRIS, 1, 0), Case.creer(Couleur::GRIS, 2, 0),
@@ -197,6 +205,7 @@ class PartieTuto < Partie
       )
       ]
 
+    # tableau des coups autorises <=> determine les cases a modifier dans l'ordre (999 == case non modifiable / sinon : numero de l'etape dans laquelle la case sera modifiable)
     @coupAutoriser = [
       [
         [999 , 999 , 999 , 999, 1, 2],[ 999 , 999 , 3 , 1, 999, 1],[999 , 999 , 999 , 999, 1, 3],[999 , 999 , 3 , 999, 999, 3],[999 , 999 , 999 , 999, 1, 3],[999 , 999 , 999 , 0, 999, 1]
@@ -212,6 +221,7 @@ class PartieTuto < Partie
       ],
     ]
 
+    # aides disponibles par etapes
     @aidePourEtape = [
       [true, true, true, true, true, true, true, true, true, true, true],
       [true, true, true, true, true, true, true, true, true, true, true],
@@ -226,6 +236,7 @@ class PartieTuto < Partie
       [true, true, true, true, true, true, true, true, true, true, true]
     ]
 
+    # tableau des messages de chaque etape du tuto
     @messageEtape = [
       # Grille 1
       [
@@ -262,7 +273,7 @@ class PartieTuto < Partie
 
 
   ##
-  #Tire lla prochaine grille
+  # Tire la prochaine grille
   def grilleSuivante()
     @grilleActuel += 1
     @ordreDeClicCpt = 0;
@@ -279,7 +290,7 @@ class PartieTuto < Partie
     #redef
   end
 
-   ##
+  ##
   # Retourne le message specifique a l'aide pour tel partie
   def getMessageAide()
     @dernierMessageDemander = @ordreDeClicCpt
@@ -293,13 +304,15 @@ class PartieTuto < Partie
     return @dernierMessageDemander < @ordreDeClicCpt
   end
 
+  ##
   # Retourne un tableau qui defini l'etat des differentes aides
   def aideADesactiver()
     return @aidePourEtape[@grilleActuel];
   end
 
 
-
+  ##
+  # Methode qui permet d'ajouter un coup
   def ajouterCoup(coup) #TOTEST
 
     # @ordreDeClicCpt

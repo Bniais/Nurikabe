@@ -8,19 +8,30 @@ require_relative '../Sauvegarde/StockageGrille.rb'
 ##
 # Classe abstraite qui gere l'interface
 # DESIGN PATTERN SINGLETON
-
 class Fenetre
-
+    ##
+    # fenetre du jeu
     @@window = nil
+
+    ##
+    # header de la fenetre
+    @@header
+
+    ##
+    # css du mode sombre
     @@cssProviderDarkMode = Gtk::CssProvider.new
     @@cssProviderDarkMode.load(path: "style_dark.css")
 
+    ##
+    # css du mode gris
     @@cssProviderGrayMode = Gtk::CssProvider.new
     @@cssProviderGrayMode.load(path: "style_gray.css")
 
     @@cssProviderGrayDarkMode = Gtk::CssProvider.new
     @@cssProviderGrayDarkMode.load(path: "style_gray_dark.css")
 
+    ##
+    # variable pour stocker la langue choisie par l'utilisateur
     @@lg = nil
 
     ##
@@ -42,8 +53,6 @@ class Fenetre
 
         StockageGrille.creerGrilles()
         SauvegardeGrille.getInstance.sauvegarder()
-
-
 
         @@lg = Sauvegardes.getInstance.getSauvegardeLangue
 

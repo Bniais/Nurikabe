@@ -15,6 +15,8 @@ class FenetrePartie < Fenetre
     @@deco = false
     @@tutoStart = true
 
+    ##
+    # Methode privee pour l'initialisation
     def initialize()
         self
     end
@@ -366,7 +368,7 @@ class FenetrePartie < Fenetre
         enableBtnIfNot1v1(@btnHelp)
 
 
-        #Gestion des evenements
+        #Gestion des evenements + des popups sur les boutons pour le mode tutoriel
         @popoverBtnSetting  = create_popover(@btnSetting, Gtk::Label.new(@@lg.gt("POPUP_REGLAGES")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnSetting.modal = false
         @popoverBtnSetting.visible = false
@@ -474,8 +476,8 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    #Methode qui permet de cree un bouton
-    #qui sera dans la toolbar
+    # Methode qui permet de creer un bouton
+    # qui sera dans la toolbar
     private
     def creeBouttonToolbar(iconName)
         btn = Gtk::Button.new()
@@ -1294,14 +1296,20 @@ end
 class Cell < Gtk::Button
     attr_reader :x, :y
 
+    ##
+    # Setter de la coordonee x
     def set_x(x)
         @x = x
     end
 
+     ##
+    # Setter de la coordonee y
     def set_y(y)
         @y = y
     end
 
+    ##
+    # Methode qui permet de changer le statut d'une cellule
     def changerStatut(color, forceEnleverRouge)
         if color > Couleur::ILE_9
             if( !forceEnleverRouge && self.name.include?("red") )

@@ -7,12 +7,13 @@ require_relative '../Parametres/Parametre.rb'
 require_relative 'SauvegardePartie.rb'
 require_relative 'SauvegardeScore.rb'
 
-#require './SauvegardePartie.rb'
-
 ##
 # Classe qui contient l'ensemble des sauvegardes
 class Sauvegardes
 
+    ##
+    # Variable de classe : 
+     #@@instanceSauvegarde => Instance de Sauvegarde
     @@instanceSauvegarde = nil
     
     @sauvegardePartie = nil

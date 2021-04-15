@@ -2,6 +2,9 @@
 # Classe qui gere la sauvegarde de partie
 class SauvegardesParties
 
+    ##
+    # Variable d'instance :
+    # @mesParties => Tableau qui contient des instances de Partie
     @mesParties = nil
 
     ##

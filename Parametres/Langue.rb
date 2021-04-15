@@ -2,7 +2,9 @@
 # Classe qui gere les langues
 class Langue
     ##
-    # nom de la langue
+    # Variables d'instance : 
+    # @langues => Tableau qui contient les différentes langues
+    # @langueActuelle => nom de la langue
     attr_reader :langues, :langueActuelle
 
     private_class_method :new

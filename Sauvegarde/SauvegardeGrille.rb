@@ -1,9 +1,16 @@
 require_relative '../Partie/Grille.rb'
-
+##
+# Classe qui représente une sauvegarde de grille
 class SauvegardeGrille 
 
+    ##
+    # Variable de classe :
+    # @@instanceSauvegardeGrille => Instance de SauvegardeGrille
     @@instanceSauvegardeGrille = nil
 
+    ##
+    # Variable d'instance : 
+    # @mesGrilles => Tableau qui contient des grilles
     @mesGrilles = nil
 
     ##

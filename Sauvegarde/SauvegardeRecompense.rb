@@ -1,7 +1,9 @@
 ##
-# Classe qui gere les recompenses
+# Classe qui gère les recompenses
 class SauvegardeRecompense
-    # solde de recompense
+    ##
+    # Variable d'instance :
+    # @solde => solde de recompense
     attr_reader :solde
     ##
     # Methode pour l'initialisation

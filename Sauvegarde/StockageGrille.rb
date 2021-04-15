@@ -1,5 +1,9 @@
+##
+# Classe d'objet qui stock toutes les grilles du jeu
 class StockageGrille
 
+    ##
+    # Initialise toutes les grilles du jeu
     def StockageGrille.creerGrilles()
 
         if(SauvegardeGrille.getInstance.getNombreGrille == 0)

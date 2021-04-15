@@ -5,18 +5,19 @@ class Coup
 
   ##
   # Variables d'instance :
-  # @case => Case ciblée par le joueur 
+  # @case => Case ciblée par le joueur
   # @couleur => A COMPLETER
-  # @couleurBase => A COMPLETER 
+  # @couleurBase => A COMPLETER
   attr_reader :case, :couleur, :couleurBase
 
   ##
   # Constructeur de la class Coup
-  # methode qui permet d'appeler 
+  # methode qui permet d'appeler
   # new sous un autre nom
   def Coup.creer(case_, couleur, couleurBase)
     new(case_, couleur, couleurBase)
   end
+
   ##
   #Constructeur de Coup
   def initialize(case_, couleur, couleurBase)

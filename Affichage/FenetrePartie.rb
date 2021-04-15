@@ -641,13 +641,17 @@ class FenetrePartie < Fenetre
         btn.signal_connect "clicked" do |handler|
             if @@maPartie.chrono.pause == false # PEUT INTERRAGIR UNIQUEMENT SI LA PARTIE N EST PAS EN PAUSE
                 maCellule = @@maPartie.grilleEnCours.tabCases[handler.y][handler.x]
+                                        ##
 
-                
                 prochaineCouleur = maCellule.couleur + 1
                 if prochaineCouleur == 0
                     prochaineCouleur = Couleur::GRIS
                 end
-                
+
+                if( @@maPartie.getMode == Mode::TUTORIEL && prochaineCouleur != Couleur::BLANC && @popover != nil )
+                    enleverNbCase()
+                end
+
 
                 if(prochaineCouleur < Couleur::ILE_1 )
                     enleverPortee(nil, nil)
@@ -679,7 +683,6 @@ class FenetrePartie < Fenetre
                         decoMsg()
                     elsif @@maPartie.partieTerminee? == true
                         grilleSuivante =  @@maPartie.grilleSuivante
-                        show_standard_message_dialog( @@maPartie.getMessageAide );
                         if(grilleSuivante == nil)
                             finirPartie
                         else
@@ -691,6 +694,12 @@ class FenetrePartie < Fenetre
                         mettreCasesEnRouge()
                     end
 
+                    # Verifier si il y'a un nouveau message
+                    # disponible en mode tuto
+                    if ( @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL && @@maPartie.messageDifferent? )
+                        show_standard_message_dialog( @@maPartie.getMessageAide );
+                    end
+
                 else
                     if ( @@maPartie.getMode == Mode::TUTORIEL  )
                         if( @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) ) && !@porteeAffichee )
@@ -700,6 +709,11 @@ class FenetrePartie < Fenetre
                         else
                             enleverPortee(handler.y, handler.x)
                         end
+                        # Verifier si il y'a un nouveau message
+                        # disponible en mode tuto
+                        if @@maPartie.messageDifferent?
+                            show_standard_message_dialog( @@maPartie.getMessageAide );
+                        end
                     else
                         if(!@porteeAffichee)
                             afficherPortee(handler.y, handler.x)
@@ -707,9 +721,6 @@ class FenetrePartie < Fenetre
                             enleverPortee(handler.y, handler.x)
                         end
                     end
-
-
-                    
                 end
 
                 ##

@@ -261,13 +261,14 @@ class FenetrePartie < Fenetre
         bottomBox.add( @monCompteurErreur ) #ADD
 
         # TIMER
-        @monTimer = Gtk::Label.new()
-        setmargin(@monTimer,20,0,0,0)
-        @monTimer.halign = :center
-        @monTimer.name = "timer"
-        @monTimer.set_markup("<span size='25000' >00:00</span>")
-        bottomBox.add( @monTimer)
-
+        if(@@maPartie.getMode != Mode::TUTORIEL)
+            @monTimer = Gtk::Label.new()
+            setmargin(@monTimer,20,0,0,0)
+            @monTimer.halign = :center
+            @monTimer.name = "timer"
+            @monTimer.set_markup("<span size='25000' >00:00</span>")
+            bottomBox.add( @monTimer)
+        end
 
         # HELP
         @btnHelpHelp = Gtk::Button.new(:label =>"Montrer Erreur")
@@ -1342,6 +1343,9 @@ end
 ### TAMPORAIRE EN ATTENDANT LA CLASS CELL
 #### TAMPORAIRE EN ATTENDANT LA CLASS CELL
 class Cell < Gtk::Button
+    ##
+    # @x => coordonnee x
+    # @y => coordonee y
     attr_reader :x, :y
 
     ##

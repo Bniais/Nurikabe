@@ -91,7 +91,7 @@ class FenetrePartie < Fenetre
                 @@tutoStart = false
                 @@maFenetrePartie.show_standard_message_dialog( @@lg.gt("MSG_DEBUT_TUTO") )
             end
-            @@maFenetrePartie.show_standard_message_dialog( @@maPartie.getMessageAide );
+            @@maFenetrePartie.show_standard_message_dialog( @@maPartie.getMessageAide )
             @@maFenetrePartie.setBtnStatut( @@maPartie.aideADesactiver() ) # DESACTIVE LES AIDES
             @@maFenetrePartie.mettreCasesEnRouge()
         end

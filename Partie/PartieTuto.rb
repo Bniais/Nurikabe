@@ -32,19 +32,19 @@ class PartieTuto < Partie
     # tableau des grilles du tuto dans leur etats finaux
     @tabGrille = [
       Grille.creer(1,[
-            [Case.creer(Couleur::ILE_3, 0, 0), Case.creer(Couleur::BLANC, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
+            [Case.creer(Couleur::ILE_3, 0, 0), Case.creer(Couleur::GRIS, 1, 0), Case.creer(Couleur::GRIS, 2, 0),
               Case.creer(Couleur::NOIR, 3, 0), Case.creer(Couleur::NOIR, 4, 0),Case.creer(Couleur::NOIR, 5, 0)],
 
             [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
               Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::ILE_1, 4, 1),Case.creer(Couleur::NOIR, 5, 1)],
 
-            [Case.creer(Couleur::BLANC, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
+            [Case.creer(Couleur::GRIS, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
               Case.creer(Couleur::ILE_3, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
-            [Case.creer(Couleur::BLANC, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3),
-              Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::BLANC, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
+            [Case.creer(Couleur::GRIS, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3),
+              Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
 
-            [Case.creer(Couleur::ILE_4, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::BLANC, 2, 4),
+            [Case.creer(Couleur::ILE_4, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::GRIS, 2, 4),
               Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
 
             [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::ILE_2, 2, 5),
@@ -55,64 +55,64 @@ class PartieTuto < Partie
 
       Grille.creer(2,[
         [Case.creer(Couleur::NOIR, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::ILE_6, 2, 0),
-          Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::BLANC, 4, 0),Case.creer(Couleur::BLANC, 5, 0)],
+          Case.creer(Couleur::GRIS, 3, 0), Case.creer(Couleur::GRIS, 4, 0),Case.creer(Couleur::GRIS, 5, 0)],
 
         [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::ILE_2, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
-          Case.creer(Couleur::BLANC, 3, 1), Case.creer(Couleur::BLANC, 4, 1),Case.creer(Couleur::NOIR, 5, 1)],
+          Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1),Case.creer(Couleur::NOIR, 5, 1)],
 
-        [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
+        [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
           Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
         [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3),
-          Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::BLANC, 5, 3)],
+          Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::GRIS, 5, 3)],
 
         [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::ILE_1, 1, 4), Case.creer(Couleur::NOIR, 2, 4),
-          Case.creer(Couleur::ILE_2, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::BLANC, 5, 4)],
+          Case.creer(Couleur::ILE_2, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::GRIS, 5, 4)],
 
         [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::NOIR, 2, 5),
-          Case.creer(Couleur::NOIR, 3, 5), Case.creer(Couleur::ILE_4, 4, 5),Case.creer(Couleur::BLANC, 5, 5)],
+          Case.creer(Couleur::NOIR, 3, 5), Case.creer(Couleur::ILE_4, 4, 5),Case.creer(Couleur::GRIS, 5, 5)],
         ], [0,0,0]
       ),
 
       Grille.creer(3,[
         [Case.creer(Couleur::ILE_1, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::ILE_7, 2, 0),
-          Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::BLANC, 4, 0),Case.creer(Couleur::BLANC, 5, 0)],
+          Case.creer(Couleur::GRIS, 3, 0), Case.creer(Couleur::GRIS, 4, 0),Case.creer(Couleur::GRIS, 5, 0)],
 
         [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
-          Case.creer(Couleur::BLANC, 3, 1), Case.creer(Couleur::BLANC, 4, 1),Case.creer(Couleur::BLANC, 5, 1)],
+          Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1),Case.creer(Couleur::GRIS, 5, 1)],
 
-        [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::BLANC, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
+        [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
           Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
-        [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::BLANC, 1, 3), Case.creer(Couleur::NOIR, 2, 3),
-          Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::ILE_2, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
+        [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::GRIS, 1, 3), Case.creer(Couleur::NOIR, 2, 3),
+          Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::ILE_2, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
 
         [Case.creer(Couleur::NOIR, 0, 4), Case.creer(Couleur::ILE_3, 1, 4), Case.creer(Couleur::NOIR, 2, 4),
           Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::ILE_2, 5, 4)],
 
         [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::ILE_2, 2, 5),
-          Case.creer(Couleur::BLANC, 3, 5), Case.creer(Couleur::NOIR, 4, 5),Case.creer(Couleur::BLANC, 5, 5)],
+          Case.creer(Couleur::GRIS, 3, 5), Case.creer(Couleur::NOIR, 4, 5),Case.creer(Couleur::GRIS, 5, 5)],
         ], [0,0,0]
       ),
 
       Grille.creer(4,[
-        [Case.creer(Couleur::NOIR, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::BLANC, 2, 0),
-        Case.creer(Couleur::BLANC, 3, 0), Case.creer(Couleur::BLANC, 4, 0),Case.creer(Couleur::BLANC, 5, 0)],
+        [Case.creer(Couleur::NOIR, 0, 0), Case.creer(Couleur::NOIR, 1, 0), Case.creer(Couleur::GRIS, 2, 0),
+        Case.creer(Couleur::GRIS, 3, 0), Case.creer(Couleur::GRIS, 4, 0),Case.creer(Couleur::GRIS, 5, 0)],
 
-        [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::BLANC, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
+        [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::GRIS, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
         Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::ILE_5, 5, 1)],
 
         [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::ILE_2, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
-        Case.creer(Couleur::BLANC, 3, 2), Case.creer(Couleur::ILE_5, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
+        Case.creer(Couleur::GRIS, 3, 2), Case.creer(Couleur::ILE_5, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
-        [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::BLANC, 2, 3),
-        Case.creer(Couleur::BLANC, 3, 3), Case.creer(Couleur::BLANC, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
+        [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::GRIS, 2, 3),
+        Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
 
         [Case.creer(Couleur::ILE_1, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::NOIR, 2, 4),
         Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
 
         [Case.creer(Couleur::NOIR, 0, 5), Case.creer(Couleur::NOIR, 1, 5), Case.creer(Couleur::ILE_2, 2, 5),
-        Case.creer(Couleur::BLANC, 3, 5), Case.creer(Couleur::NOIR, 4, 5),Case.creer(Couleur::ILE_1, 5, 5)],
+        Case.creer(Couleur::GRIS, 3, 5), Case.creer(Couleur::NOIR, 4, 5),Case.creer(Couleur::ILE_1, 5, 5)],
         ], [0,0,0]
       ),
     ]
@@ -276,7 +276,7 @@ class PartieTuto < Partie
   # Tire la prochaine grille
   def grilleSuivante()
     @grilleActuel += 1
-    @ordreDeClicCpt = 0;
+    @ordreDeClicCpt = 0
 
     if @grilleActuel < @tabGrille.size()
       @grilleBase = @tabGrille[@grilleActuel]
@@ -294,7 +294,7 @@ class PartieTuto < Partie
   # Retourne le message specifique a l'aide pour tel partie
   def getMessageAide()
     @dernierMessageDemander = @ordreDeClicCpt
-    return @messageEtape[@grilleActuel][@ordreDeClicCpt];
+    return @messageEtape[@grilleActuel][@ordreDeClicCpt]
   end
 
   ##
@@ -307,7 +307,7 @@ class PartieTuto < Partie
   ##
   # Retourne un tableau qui defini l'etat des differentes aides
   def aideADesactiver()
-    return @aidePourEtape[@grilleActuel];
+    return @aidePourEtape[@grilleActuel]
   end
 
 

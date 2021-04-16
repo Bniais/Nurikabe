@@ -402,7 +402,8 @@ class FenetrePartie < Fenetre
         @popoverBtnUndo.visible = false
         @btnUndo.signal_connect("clicked")      {
             if @@maPartie.getMode != Mode::TUTORIEL
-                 retourArriere
+                retourArriere
+                cacherNbErreur
             end
         } # RETOURNER EN ARRIERE
         @btnUndo.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndo.visible = true  : self  } # afficher popup quand souris dessus
@@ -413,7 +414,8 @@ class FenetrePartie < Fenetre
         @popoverBtnRedo.visible = false
         @btnRedo.signal_connect("clicked")      {
             if @@maPartie.getMode != Mode::TUTORIEL
-                 retourAvant
+                retourAvant
+                cacherNbErreur
             end
         } # RETOURNER EN AVANT
         @btnRedo.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnRedo.visible = true  : self  } # afficher popup quand souris dessus
@@ -425,6 +427,7 @@ class FenetrePartie < Fenetre
         @btnUndoUndo.signal_connect("clicked")  {
             if @@maPartie.getMode != Mode::TUTORIEL
                 retourPositionBonne
+                cacherNbErreur
             end
         } # RETOURNER A LA DERNIERE POSITION BONNE
         @btnUndoUndo.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnUndoUndo.visible = true  : self  } # afficher popup quand souris dessus
@@ -480,6 +483,7 @@ class FenetrePartie < Fenetre
         @btnClear.signal_connect("clicked")     {
             if @@maPartie.getMode != Mode::TUTORIEL
                 raz
+                cacherNbErreur
             end
         } # REMISE A ZERO DE LA GRILLE
         @btnClear.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnClear.visible = true  : self  } # afficher popup quand souris dessus
@@ -1183,6 +1187,8 @@ class FenetrePartie < Fenetre
         uneCase = @@maPartie.donnerErreur
         if uneCase.couleur == Couleur::NOIR
             @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red-block"
+        elsif uneCase.couleur == Couleur::BLANC
+            @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-round-red"
         else
             @@maGrille[ uneCase.positionY ][ uneCase.positionX ].name = "grid-cell-red"
         end

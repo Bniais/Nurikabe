@@ -103,10 +103,10 @@ class PartieTuto < Partie
         Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::ILE_5, 5, 1)],
 
         [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::ILE_2, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
-        Case.creer(Couleur::GRIS, 3, 2), Case.creer(Couleur::ILE_5, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
+        Case.creer(Couleur::BLANC, 3, 2), Case.creer(Couleur::ILE_5, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
         [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::GRIS, 2, 3),
-        Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
+        Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::BLANC, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
 
         [Case.creer(Couleur::ILE_1, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::NOIR, 2, 4),
         Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],
@@ -145,10 +145,10 @@ class PartieTuto < Partie
           Case.creer(Couleur::GRIS, 3, 0), Case.creer(Couleur::GRIS, 4, 0),Case.creer(Couleur::GRIS, 5, 0)],
 
         [Case.creer(Couleur::NOIR, 0, 1), Case.creer(Couleur::ILE_2, 1, 1), Case.creer(Couleur::NOIR, 2, 1),
-          Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::NOIR, 5, 1)],
+          Case.creer(Couleur::GRIS, 3, 1), Case.creer(Couleur::GRIS, 4, 1),Case.creer(Couleur::GRIS, 5, 1)],
 
         [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::GRIS, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
-          Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::NOIR, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
+          Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::GRIS, 4, 2),Case.creer(Couleur::GRIS, 5, 2)],
 
         [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::NOIR, 2, 3),
           Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::GRIS, 5, 3)],
@@ -191,10 +191,10 @@ class PartieTuto < Partie
             Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::NOIR, 4, 1),Case.creer(Couleur::ILE_5, 5, 1)],
 
         [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::ILE_2, 1, 2), Case.creer(Couleur::NOIR, 2, 2),
-            Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::ILE_5, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
+            Case.creer(Couleur::GRIS, 3, 2), Case.creer(Couleur::ILE_5, 4, 2),Case.creer(Couleur::NOIR, 5, 2)],
 
         [Case.creer(Couleur::NOIR, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::GRIS, 2, 3),
-            Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::NOIR, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
+            Case.creer(Couleur::GRIS, 3, 3), Case.creer(Couleur::GRIS, 4, 3),Case.creer(Couleur::NOIR, 5, 3)],
 
         [Case.creer(Couleur::ILE_1, 0, 4), Case.creer(Couleur::NOIR, 1, 4), Case.creer(Couleur::NOIR, 2, 4),
             Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4),Case.creer(Couleur::NOIR, 5, 4)],

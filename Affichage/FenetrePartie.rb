@@ -393,7 +393,11 @@ class FenetrePartie < Fenetre
         @popoverBtnSetting  = create_popover(@btnSetting, Gtk::Label.new(@@lg.gt("POPUP_REGLAGES")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnSetting.modal = false
         @popoverBtnSetting.visible = false
-        @btnSetting.signal_connect("clicked")    { ouvrirReglage  } # LANCER LES REGLAGLES
+        @btnSetting.signal_connect("clicked")    {
+            if @@maPartie.getMode != Mode::TUTORIEL
+                ouvrirReglage
+            end
+        } # LANCER LES REGLAGLES
         @btnSetting.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnSetting.visible = true  : self  } # afficher popup quand souris dessus
         @btnSetting.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnSetting.visible = false : self } # cacher quand la souris n'est plus dessus
 

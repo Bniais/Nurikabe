@@ -21,22 +21,6 @@ class Parametre
     attr_accessor :murs2x2
 
     ##
-    # @comportementSouris => comportement de la souris choisi
-    attr_accessor :comportementSouris
-
-    ##
-    # @raccourcisClavier => raccourcis clavier choisi
-    attr_accessor :raccourcisClavier
-
-    ##
-    # @langue => tableau des langues dispos
-    attr_accessor :langue
-
-    ##
-    # @indiceLangueChoisi => indice de la langue choisie
-    attr_accessor :indiceLangueChoisi
-
-    ##
     # @volume => volume
     attr_accessor :volume
 
@@ -82,7 +66,7 @@ class Parametre
         set_compteurIlots(true)
         set_affichagePortee(true)
         set_mur2x2(false)
-        set_modeSombre(false)
+        setModeSombre(false)
     end
 
     ##
@@ -95,7 +79,7 @@ class Parametre
     # Methode qui permet de set le parametre case grise
     def set_casesGrises(statut)
         @casesGrises = statut
-        Fenetre.set_modeGris(@casesGrises)
+        Fenetre.setModeGris(@casesGrises)
         Sauvegardes.getInstance.sauvegarder()
     end
 
@@ -146,9 +130,9 @@ class Parametre
 
     ##
     # Methode qui permet de set le mode sombre
-    def set_modeSombre(statut)
+    def setModeSombre(statut)
         @modeSombre = statut
-        Fenetre.set_modeSombre(@modeSombre)
+        Fenetre.setModeSombre(@modeSombre)
         Sauvegardes.getInstance.sauvegarder()
     end
 

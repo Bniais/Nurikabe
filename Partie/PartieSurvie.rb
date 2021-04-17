@@ -8,7 +8,7 @@ class PartieSurvie < PartieMalus
     ##
     # @nbGrilleFinis => compteur des grilles terminees
     # @grilles => tableau des grilles
-    attr_reader :nbGrilleFinis, :grilles
+    attr_reader :nbGrilleFinis
 
     ##
     # Creer une partie en mode survie, puisque new est private

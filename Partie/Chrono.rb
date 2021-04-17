@@ -9,8 +9,7 @@ class Chrono
     # @pause => Booléen qui indique si la partie est en pause
     # @time => Temps du chronomètre
     # @starting => debut du chrono
-    # @mode => mode de jeu
-    attr_reader :pause, :time, :starting, :mode
+    attr_reader :pause, :time
 
     ##
     #Crée un chrono initialisé au temps 0

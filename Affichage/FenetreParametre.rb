@@ -231,7 +231,7 @@ class FenetreParametre < Fenetre
         @switchDarkMode = Gtk::Switch.new()
         @switchDarkMode.halign = :start
         @switchDarkMode.set_active( Sauvegardes.getInstance.getSauvegardeParametre.modeSombre? )
-        @switchDarkMode.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_modeSombre(s.active?) }
+        @switchDarkMode.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.setModeSombre(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("MODESOMBRE") + " :" , @switchDarkMode) ) #ADD
 
         # AIDE CASES GRISES
@@ -240,9 +240,6 @@ class FenetreParametre < Fenetre
         @switchCaseGrises.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
         @switchCaseGrises.signal_connect('notify::active') { |s|
             Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?)
-            for child in @maGrilleRegle.children
-                child.changerStatut( @maGrilleRegleBacked[@maGrilleRegle.child_get_property(child, 'left-attach')][@maGrilleRegle.child_get_property(child, 'top-attach')].couleur)
-            end
         }
         box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , @switchCaseGrises) ) #ADD
 
@@ -271,7 +268,7 @@ class FenetreParametre < Fenetre
     # SIGNAL CONNECT DE INTERFACE : MODE SOMBRE
     private
     def switchModeSombre(s)
-        Fenetre.set_modeSombre(s.active?)
+        Fenetre.setModeSombre(s.active?)
     end
 
 
@@ -387,57 +384,28 @@ class FenetreParametre < Fenetre
     # une cellule destiner a la grille
     private
     def creeCelluleGrilleImmuable(line,colonne,color, grille)
-        btn = CellImmuable.new()
-        btn.changerStatut( grille[colonne][line].couleur)
-        btn.set_x(line);    btn.set_y(colonne); btn.set_height_request(5);  btn.set_width_request(5)
+        btn = Gtk::Button.new()
+        btn.set_height_request(5)
+        btn.set_width_request(5)
+
+        color = grille[colonne][line].couleur
+        if color >= Couleur::ILE_1
+            btn.name = "buttonIle"
+            btn.set_label(color.to_s)
+        elsif color == Couleur::NOIR
+            btn.name = "buttonNoir"
+            btn.set_label("")
+        elsif color == Couleur::GRIS
+            btn.name = "buttonGris"
+        elsif color == Couleur::BLANC
+            btn.name = "buttonBlanc"
+            if(!Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
+                btn.set_label("●")
+            else
+                btn.set_label("")
+            end
+        end
+
         return btn
     end
 end
-
-##
-# Classe qui représente une case de la grille
-class CellImmuable < Gtk::Button
-    ##
-    # @x => coordonnee x
-    # @y => coordonnee y
-    attr_reader :x, :y
-
-    ##
-    # Setter de la coordonnée X de la case
-    def set_x(x)
-        @x = x
-    end
-
-    ##
-    # Setter de la coordonnée Y de la case
-    def set_y(y)
-        @y = y
-    end
-
-    ##
-    # Change le statut de la case en fonction de son type mis en paramètre
-    def changerStatut(color)
-        if color >= Couleur::ILE_1
-            self.name = "buttonIle"
-            self.set_label(color.to_s)
-        elsif color == Couleur::NOIR
-            self.name = "buttonNoir"
-            self.set_label("")
-        elsif color == Couleur::GRIS
-            self.name = "buttonGris"
-        elsif color == Couleur::BLANC
-            self.name = "buttonBlanc"
-            if(!Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
-                self.set_label("●")
-            else
-                self.set_label("")
-            end
-        end
-    end
-end
-=begin
-FenetreParametre.afficheToi( FenetreParame tre )
-Fenetre.show_all()
-
-Gtk.main
-=end

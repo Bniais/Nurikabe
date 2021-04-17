@@ -221,21 +221,6 @@ class PartieTuto < Partie
       ],
     ]
 
-    # aides disponibles par etapes
-    @aidePourEtape = [
-      [true, true, true, true, true, true, true, true, true, true, true],
-      [true, true, true, true, true, true, true, true, true, true, true],
-      [true, true, true, true, true, true, true, true, true, true, true],
-      [true, true, true, true, true, true, true, true, true, true, true],
-      [true, true, true, true, true, true, true, true, true, true, true],
-      [true, true, true, true, true, true, true, true, true, true, true],
-      [true, true, true, true, true, true, true, true, true, true, true],
-      [true, true, true, true, true, true, true, true, true, true, true],
-      [true, true, true, true, true, true, true, true, true, true, true],
-      [true, true, true, true, true, true, true, true, true, true, true],
-      [true, true, true, true, true, true, true, true, true, true, true]
-    ]
-
     # tableau des messages de chaque etape du tuto
     @messageEtape = [
       # Grille 1
@@ -303,13 +288,6 @@ class PartieTuto < Partie
   def messageDifferent?()
     return @dernierMessageDemander < @ordreDeClicCpt
   end
-
-  ##
-  # Retourne un tableau qui defini l'etat des differentes aides
-  def aideADesactiver()
-    return @aidePourEtape[@grilleActuel]
-  end
-
 
   ##
   # Methode qui permet d'ajouter un coup

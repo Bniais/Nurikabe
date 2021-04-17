@@ -16,7 +16,7 @@ class Partie
   # @chrono => chrono de la partie
   # @indiceCoupRaz => indice de remise a zero
   # @grilleRaz => grille de remise a zero
-  attr_reader :grilleBase, :grilleEnCours, :tabCoup, :chrono, :indiceCoupRaz, :grilleRaz
+  attr_reader :grilleBase, :grilleEnCours, :chrono
 
   private_class_method :new
 
@@ -80,7 +80,7 @@ class Partie
       return nil
     else
       if(@indiceCoup > 0) #vérification normalement inutile puisque le bouton devrait être disable
-        coupPrecedent = tabCoup.at(@indiceCoup-1)
+        coupPrecedent = @tabCoup.at(@indiceCoup-1)
         @grilleEnCours.tabCases[coupPrecedent.case.positionY][coupPrecedent.case.positionX].setCouleur(coupPrecedent.couleurBase)
 
         @indiceCoup -= 1 #On passe au coup précédent
@@ -94,15 +94,15 @@ class Partie
   #Permet de savoir si le joueur peut effectuer un retour avant
   #Renvoie un booléen
   def peutRetourAvant?()
-    return @indiceCoup < tabCoup.size
+    return @indiceCoup < @tabCoup.size
   end
 
   ##
   # Methode qui revient en avant(le coup)
   def retourAvant()#TOTEST
-    if(@indiceCoup < tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
+    if(@indiceCoup < @tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
       #On annule en passant au coup suivant
-      coupSuivant = tabCoup.at(@indiceCoup)
+      coupSuivant = @tabCoup.at(@indiceCoup)
       @grilleEnCours.tabCases[coupSuivant.case.positionY][coupSuivant.case.positionX].setCouleur(coupSuivant.couleur)
       @grilleRaz = nil
 
@@ -124,7 +124,7 @@ class Partie
   end
 
   ##
-  #Tire lla prochaine grille
+  #Tire la prochaine grille
   def grilleSuivante()
     @grilleRaz = nil
     return nil #pas de prochaine
@@ -142,8 +142,8 @@ class Partie
     if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1)
       coup.case.couleur = coup.couleur
       @grilleRaz = nil
-      tabCoup.pop(tabCoup.size - @indiceCoup) #supprimer les coups annulés
-      tabCoup.push(coup)
+      @tabCoup.pop(@tabCoup.size - @indiceCoup) #supprimer les coups annulés
+      @tabCoup.push(coup)
       @indiceCoup += 1
       return true
     end
@@ -170,15 +170,6 @@ class Partie
     return @grilleEnCours.nbDifferenceBrut(@grilleBase) == 0
   end
 
-
-  ##
-  #Methode pour termier la partie
-  def terminerPartie()#TODO
-    #supprimer sauvegarde si elle existe
-    #sauvegarder score si besoin
-    #sauvegarder Recompenses si besoin
-  end
-
   ##
   # Methode qui ajoute un malus
   def ajouterMalus(n)#TOTEST
@@ -188,7 +179,6 @@ class Partie
   ##
   #Affiche le nombre de blocs
   def afficherNbBloc(case_)#TOTEST
-    #Dit à l'interface d'afficher
     vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)}
     return [nbCaseIle(case_, vu), vu]
   end
@@ -235,27 +225,6 @@ class Partie
 
     return vu
   end
-
-  #affiche les mur de 2 bloc par 2 bloc(en carré)
-=begin
-  def afficherMur2x2()#TODO
-    nbBlocs = 1
-    vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,0)}
-    for i in 0..@grilleEnCours.tabCases.size-2
-      for j in 0..@grilleEnCours.tabCases.size-2
-        if(bloc2x2(i, j))
-          vu[i][j] = nbBlocs
-          vu[i+1][j] = nbBlocs
-          vu[i][j+1] = nbBlocs
-          vu[i+1][j+1] = nbBlocs
-          nbBlocs+=1
-        end
-      end
-    end
-
-    return vu;
-  end
-=end
 
   ##
   #Verifie l'erreur
@@ -373,6 +342,7 @@ class Partie
 
   ##
   # Methode qui permet d'afficher l'aide pour une ile d'indice 1 (cases noires autour)
+  private
   def indiceIle1()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -397,6 +367,7 @@ class Partie
 
   ##
   # Methode qui permet d'afficher l'aide pour une ile adjacente (2 iles separees par une case noire)
+  private
   def indiceIleAdjacente() #faire indice ile presque finie adjacente ?
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -420,6 +391,7 @@ class Partie
 
   ##
   # Methode qui permet d'afficher l'aide pour une ile adjacente en diagonale (2 iles en diagonale separees par une case noire)
+  private
   def indiceIleAdjacenteDiagonal() #TOTEST
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -466,6 +438,7 @@ class Partie
 
   ##
   # Methode qui permet d'afficher l'aide pour une ile complete (ile complete => case adjacente doit etre noire)
+  private 
   def indiceIleComplete()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -501,6 +474,7 @@ class Partie
 
   ##
   #Compte le nombre de cases blanches appartenant à l'île
+  public
   def nbCaseIle(case_, vu) #vu doit être
 
     i = case_.positionX
@@ -511,6 +485,7 @@ class Partie
 
   ##
   # A COMPLETER
+  private
   def parcoursIle(vu, i, j)
 
     if( i < 0 || j < 0 || i >= @grilleEnCours.tabCases.size || j >= @grilleEnCours.tabCases.size || vu[i][j] )
@@ -590,6 +565,7 @@ class Partie
 
   ##
   #On compte le nombre de cases adjacentes gris adjacentes à un bloc noir, si une seule et il existe des cases noires non-reliée, indice
+  private
   def indiceExpensionMur()
     vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
     for i in 0..@grilleEnCours.tabCases.size-1
@@ -681,6 +657,7 @@ class Partie
 
   ##
   #On compte le nombre de cases grises adjacentes à un bloc d'ile, si une seule, indice
+  private 
   def indiceExpensionIle()
     vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
     for i in 0..@grilleEnCours.tabCases.size-1
@@ -770,6 +747,7 @@ class Partie
 
   ##
   #On compte le nombre de cases grises adjacentes à un bloc d'ile, si deux adjacents diagonalement on renvoie un indice
+  private 
   def indiceExpension2Dir()
     vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
     for i in 0..@grilleEnCours.tabCases.size-1
@@ -874,18 +852,21 @@ class Partie
 
   ##
   #Chercher tous les chemins possibles liant une case blanche non-reliée aux iles accessibles, et si une case en commun parmis tous ces chemins, on peut la colorier
+  private
   def indiceContinuiteIle()#WONTDO
     return nil
   end
 
   ##
   #Chercher tous les chemins possibles liant une case noire non-reliée à un autre mur, et si une case en commun parmis tous ces chemins, on peut la colorier
+  private
   def indiceContinuiteMur() #WONTDO
     return nil
   end
 
   ##
   #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 3 noirs et 1 gris
+  private
   def verifPresque2x2(i,j)
     nbNoir = 0
     caseGrise = nil
@@ -908,23 +889,9 @@ class Partie
     end
   end
 
-=begin
-  def bloc2x2(i,j)
-    #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 4 noirs
-    for x in i..i+1
-      for y in j..j+1
-        if @grilleEnCours.tabCases[x][y].couleur != Couleur::NOIR
-          return false
-        end
-      end
-    end
-
-    return true
-  end
-=end
-
   ##
   # Methode qui permet d'afficher l'aide pour un mur 2x2
+  private
   def indiceEviter2x2()
     for i in 0..@grilleEnCours.tabCases.size-2 # -2 car inutil de regarder la dernière ligne et collone car pas de voisins droits et bas
       for j in 0..@grilleEnCours.tabCases.size-2
@@ -940,6 +907,7 @@ class Partie
 
   ##
   # Methode qui permet d'afficher l'aide pour une case inatteignable (case isolee qui prend en compte la portee des iles)
+  private
   def indiceInatteignable() #TOFIX
     #Parcours en largeur pour trouver le chemin le plus court de chaque case vers chaque île, ou sinon simplifier en ignorant les murs et îles mais donne moins d'indice (ou faire les deux pour mêler performance et accuracy)
     for i in 0..@grilleEnCours.tabCases.size-1

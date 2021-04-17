@@ -92,7 +92,7 @@ class FenetrePartie < Fenetre
                 @@maFenetrePartie.show_standard_message_dialog( @@lg.gt("MSG_DEBUT_TUTO") )
             end
             @@maFenetrePartie.show_standard_message_dialog( @@maPartie.getMessageAide )
-            @@maFenetrePartie.setBtnStatut( @@maPartie.aideADesactiver() ) # DESACTIVE LES AIDES
+            @@maFenetrePartie.activeBtnTuto( ) # Activer les aides
             @@maFenetrePartie.mettreCasesEnRouge()
         end
 
@@ -348,10 +348,10 @@ class FenetrePartie < Fenetre
     # Activer / Desactiver les fonctions d'un
     # btn en fonction d'un tableau qui renvoi
     # des booleans
-    def setBtnStatut( unTabDeBoolean )
+    def activeBtnTuto( )
         tmpTabOfBtn = [ @btnSetting , @btnRedo, @btnUndo, @btnUndoUndo, @btnPlay, @btnPause, @btnHelp, @btnHelpLocation , @btnClear, @btnVerif, @btnQuit ];
-        for i in 0...unTabDeBoolean.size
-            unTabDeBoolean[i] == true ? enableBtn(tmpTabOfBtn[i]) : disableBtn(tmpTabOfBtn[i])
+        for i in 0...tmpTabOfBtn.size
+            enableBtn(tmpTabOfBtn[i])
         end
     end
 
@@ -754,7 +754,7 @@ class FenetrePartie < Fenetre
     # gris en leur mettant soit un point
     # soit en les mettant gris selon le
     # mode selectionner
-    def set_modeGris(estGris)
+    def setModeGris(estGris)
         for i in 0...@@maGrille.size
             for j in 0...@@maGrille[i].size
                 if(@@maPartie.grilleEnCours.tabCases[i][j].couleur == Couleur::BLANC)
@@ -896,10 +896,9 @@ class FenetrePartie < Fenetre
 
             ##
             # FOR TUTO
-            # SI ON EST EN MODE TUTO ON ACTIVE QUE LES AIDES
-            # NECESSAIRE AU MODE DE JEU DE L'AIDE
+            # On active les boutons
             if( @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL )
-                setBtnStatut(@@maPartie.aideADesactiver() )
+                activeBtnTuto( )
             end
         end
     end
@@ -1062,7 +1061,7 @@ class FenetrePartie < Fenetre
          enableBtnIfNot1v1(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
         enleverNbCase
         enleverPortee(nil, nil)
-        set_modeGris(Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
+        setModeGris(Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
         setTimout
     end
 

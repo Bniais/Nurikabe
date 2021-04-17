@@ -61,7 +61,7 @@ class Fenetre
         Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
         Parametre.initialiseToi
 
-        Fenetre.set_modeSombre( Sauvegardes.getInstance.getSauvegardeParametre.modeSombre? )
+        Fenetre.setModeSombre( Sauvegardes.getInstance.getSauvegardeParametre.modeSombre? )
     end
 
     ##
@@ -119,7 +119,7 @@ class Fenetre
 
     ##
     # Méthode qui dispatch le mode sombre
-    def self.set_modeSombre(statut)
+    def self.setModeSombre(statut)
         provider = Gtk::CssProvider.new
         if statut
 
@@ -142,7 +142,7 @@ class Fenetre
 
     ##
     # Methode pour le mode gris
-    def self.set_modeGris(statut)
+    def self.setModeGris(statut)
         if statut
             if(Sauvegardes.getInstance.getSauvegardeParametre.modeSombre?)
                 Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,@@cssProviderGrayDarkMode, Gtk::StyleProvider::PRIORITY_APPLICATION)

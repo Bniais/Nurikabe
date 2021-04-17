@@ -16,7 +16,7 @@ class Partie
   # @chrono => chrono de la partie
   # @indiceCoupRaz => indice de remise a zero
   # @grilleRaz => grille de remise a zero
-  attr_reader :grilleBase, :grilleEnCours, :chrono
+  attr_reader :grilleBase, :grilleEnCours, :chrono, :tabCoup
 
   private_class_method :new
 

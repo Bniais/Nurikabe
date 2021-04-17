@@ -81,7 +81,7 @@ class Partie
     else
       if(@indiceCoup > 0) #vérification normalement inutile puisque le bouton devrait être disable
         coupPrecedent = @tabCoup.at(@indiceCoup-1)
-        @grilleEnCours.tabCases[coupPrecedent.case.positionY][coupPrecedent.case.positionX].setCouleur(coupPrecedent.couleurBase)
+        @grilleEnCours.tabCases[coupPrecedent.case.positionY][coupPrecedent.case.positionX].couleur = coupPrecedent.couleurBase
 
         @indiceCoup -= 1 #On passe au coup précédent
         return [peutRetourArriere?, coupPrecedent.case]
@@ -103,7 +103,7 @@ class Partie
     if(@indiceCoup < @tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
       #On annule en passant au coup suivant
       coupSuivant = @tabCoup.at(@indiceCoup)
-      @grilleEnCours.tabCases[coupSuivant.case.positionY][coupSuivant.case.positionX].setCouleur(coupSuivant.couleur)
+      @grilleEnCours.tabCases[coupSuivant.case.positionY][coupSuivant.case.positionX].couleur = coupSuivant.couleur
       @grilleRaz = nil
 
       @indiceCoup += 1 #On passe au coup suivant

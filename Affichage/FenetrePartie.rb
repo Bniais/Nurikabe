@@ -1133,7 +1133,7 @@ class FenetrePartie < Fenetre
         indice = @@maPartie.donneIndice
         if ( indice != nil)
             @@maGrille[indice[1].positionY][indice[1].positionX].name = "grid-cell-red"
-            create_popover_malus(Malus::MALUS_INDICE2)
+            create_popover_malus(Malus::MALUS_INDICE_POS)
             setTimout
         end
          disableBtn(@btnHelpLocation)

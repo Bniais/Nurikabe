@@ -4,11 +4,6 @@
 class Partie1v1 < Partie
   private_class_method :new
 
-
-  ##
-  # @indiceCoup => indice pour compter les coups
-  attr_reader :indiceCoup
-
   ##
   # Creer un partie contre la montre en prenant en compte les sauvegardes
   def Partie1v1.creer(grille)
@@ -44,18 +39,7 @@ class Partie1v1 < Partie
   end
 
   ##
-  # Methode qui permet de verifier
-  # si la grille comporte des erreurs
-  # est desactiver car coute du temps
-  def verifierErreur(fromUser)#TOTEST
-    return 0
-  end
-
-
-  ##
-  # Methode qui permet d'ajouter
-  # un coup et qui previent l'adversaire du
-  # pourcentage de la grille en cours
+  # Methode qui permet d'ajouter un coup et qui previent l'adversaire du pourcentage de la grille en cours
   def ajouterCoup(coup)
      if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1)
       coup.case.couleur = coup.couleur
@@ -80,7 +64,7 @@ class Partie1v1 < Partie
     if(@indiceCoup < tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
       #On annule en passant au coup suivant
       coupSuivant = tabCoup.at(@indiceCoup)
-      @grilleEnCours.tabCases[coupSuivant.case.positionY][coupSuivant.case.positionX].setCouleur(coupSuivant.couleur)
+      @grilleEnCours.tabCases[coupSuivant.case.positionY][coupSuivant.case.positionX].couleur = coupSuivant.couleur
       @grilleRaz = nil
 
       @indiceCoup += 1 #On passe au coup suivant
@@ -112,7 +96,7 @@ class Partie1v1 < Partie
     else
       if(@indiceCoup > 0) #vérification normalement inutile puisque le bouton devrait être disable
         coupPrecedent = tabCoup.at(@indiceCoup-1)
-        @grilleEnCours.tabCases[coupPrecedent.case.positionY][coupPrecedent.case.positionX].setCouleur(coupPrecedent.couleurBase)
+        @grilleEnCours.tabCases[coupPrecedent.case.positionY][coupPrecedent.case.positionX].couleur = coupPrecedent.couleurBase
 
         @indiceCoup -= 1 #On passe au coup précédent
         socket = Fenetre1v1.getSocket
@@ -140,22 +124,6 @@ class Partie1v1 < Partie
     if(socket != nil)
       socket.puts ("av" + @grilleEnCours.getPourcentage(@grilleBase, nil).to_s )
     end
-  end
-
-  ##
-  # Methode qui empeche l'utilisatation
-  # de revenir a la derniere position bonne
-  # en mode 1v1 car ca coute du temps
-  def revenirPositionBonne() #TOTEST
-    self
-  end
-
-  ##
-  # Methode qui empeche l'utilisatation
-  # de demander un indice 1v1 car ca
-  # coute du temps
-  def donneIndice()
-    nil
   end
 
 end

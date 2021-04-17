@@ -4,12 +4,16 @@ require_relative 'Couleur.rb'
 # Classe qui représente une case d'une grille
 class Case
 
+  
+  private_class_method :new
+
   ##
   # Variables d'instance de Case :
   # @couleur => type de la case
   # @positionX => Coordonnée X de la case
   # @positionY => Coordonnée Y de la case
-  attr_accessor :couleur, :positionX, :positionY
+  attr_reader :positionX, :positionY
+  attr_accessor :couleur
 
   ##
   # Crée une case avec une couleur et sa position sur la grille
@@ -23,15 +27,6 @@ class Case
       @couleur = uneCouleur
       @positionX = posX
       @positionY = posY
-  end
-
-
-  private_class_method :new
-
-  ##
-  #Change la couleur de la case
-  def setCouleur( nouvelleCouleur )
-    @couleur = nouvelleCouleur
   end
 
   ##

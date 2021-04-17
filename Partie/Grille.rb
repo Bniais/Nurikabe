@@ -67,24 +67,6 @@ class Grille
 		return 0
 	end
 
-  	##
-    # Methode qui permet d'afficher la grille
-    def afficher()
-		for i in 0..tabCases.size-1
-			for j in 0..tabCases.size-1
-				print "| #{tabCases[i][j].couleur} "
-			end
-			print "|\n"
-		end
-    end
-
-
-    ##
-    # Methode qui envoie la grille suivante
-    def grilleSuivante()
-		return nil
-    end
-
     ##
     #Renvoie le nombre d'erreur dans la grille
     def nbDifference(grilleCmp)
@@ -104,9 +86,7 @@ class Grille
     end
 
     ##
-    # Methode qui permet de renvoyer le
-	# nombre d'erreur dans la grille
-	# avec un if moins contrainiant
+    # Methode qui permet de renvoyer le nombre d'erreur dans la grille avec un if moins contrainiant
 	def nbDifferenceBrut(grilleCmp)
 		#return int
 		erreur = 0

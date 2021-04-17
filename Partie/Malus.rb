@@ -19,7 +19,7 @@ class Malus
 
 	##
    	# Malus pour avoir utilisé une deuxième fois l'indice
-	MALUS_INDICE2 = 20 #donner localisation de l'indice
+	MALUS_INDICE_POS = 20 #donner localisation de l'indice
 
 	private_class_method :new
 end

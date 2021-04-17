@@ -393,7 +393,11 @@ class FenetrePartie < Fenetre
         @popoverBtnSetting  = create_popover(@btnSetting, Gtk::Label.new(@@lg.gt("POPUP_REGLAGES")), :bottom) # POP UP POUR LE MODE TUTO
         @popoverBtnSetting.modal = false
         @popoverBtnSetting.visible = false
-        @btnSetting.signal_connect("clicked")    { ouvrirReglage  } # LANCER LES REGLAGLES
+        @btnSetting.signal_connect("clicked")    {
+            if @@maPartie.getMode != Mode::TUTORIEL
+                ouvrirReglage
+            end
+        } # LANCER LES REGLAGLES
         @btnSetting.signal_connect("enter") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnSetting.visible = true  : self  } # afficher popup quand souris dessus
         @btnSetting.signal_connect("leave") { @@maPartie.getMode == Mode::TUTORIEL ? @popoverBtnSetting.visible = false : self } # cacher quand la souris n'est plus dessus
 
@@ -770,148 +774,17 @@ class FenetrePartie < Fenetre
         btn.changerStatut( @@maPartie.grilleEnCours.tabCases[colonne][line].couleur, true)
         btn.set_x(line);    btn.set_y(colonne); btn.set_height_request(5);  btn.set_width_request(5)
 
-        btn.signal_connect "clicked" do |handler|
-            if @@maPartie.chrono.pause == false # PEUT INTERRAGIR UNIQUEMENT SI LA PARTIE N EST PAS EN PAUSE
-                maCellule = @@maPartie.grilleEnCours.tabCases[handler.y][handler.x]
-                                        ##
 
-                prochaineCouleur = maCellule.couleur + 1
-                if prochaineCouleur == 0
-                    prochaineCouleur = Couleur::GRIS
-                end
-
-                if( @@maPartie.getMode == Mode::TUTORIEL && prochaineCouleur != Couleur::BLANC && @popover != nil )
-                    enleverNbCase()
-                end
-
-
-                if(prochaineCouleur < Couleur::ILE_1 )
-                    enleverPortee(nil, nil)
-
-                    if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
-
-                        cacherNbErreur
-                        handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur , true)
-                        enableBtn(@btnUndo)
-                        enableBtnIfNot1v1(@btnUndoUndo)
-                        disableBtn(@btnRedo)
-                        disableBtn(@btnHelpLocation)
-                    end
-
-                    #afficherMur2x2
-
-                    if @@maPartie.getMode != Mode::TUTORIEL
-                        if  @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
-                            afficherNbCase(handler.y, handler.x)
-                        elsif !@@maPartie.grilleEnCours.tabCases[handler.y][handler.x].estIle?
-                            enleverNbCase()
-                        end
-                    end
-
-
-                    if(@@perdu)
-                        perdreMsg()
-                    elsif(@@deco)
-                        decoMsg()
-                    elsif @@maPartie.partieTerminee? == true
-                        grilleSuivante =  @@maPartie.grilleSuivante
-                        if(grilleSuivante == nil)
-                            finirPartie
-                        else
-                            afficherNextGrille
-                        end
-                    end
-
-                    if @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL
-                        mettreCasesEnRouge()
-                    end
-
-                    # Verifier si il y'a un nouveau message
-                    # disponible en mode tuto
-                    if ( @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL && @@maPartie.messageDifferent? )
-                        show_standard_message_dialog( @@maPartie.getMessageAide );
-                    end
-
-                else
-                    if ( @@maPartie.getMode == Mode::TUTORIEL  )
-                        if( @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) ) && !@porteeAffichee )
-                            mettreCasesEnRouge()
-                            handler.changerStatut( maCellule.couleur , true )
-                            afficherPortee(handler.y, handler.x)
-                        else
-                            enleverPortee(handler.y, handler.x)
-                        end
-                        # Verifier si il y'a un nouveau message
-                        # disponible en mode tuto
-                        if @@maPartie.messageDifferent?
-                            show_standard_message_dialog( @@maPartie.getMessageAide );
-                        end
-                    else
-                        if(!@porteeAffichee)
-                            afficherPortee(handler.y, handler.x)
-                        else
-                            enleverPortee(handler.y, handler.x)
-                        end
-                    end
-                end
-
-                ##
-                # FOR TUTO
-                # SI ON EST EN MODE TUTO ON ACTIVE QUE LES AIDES
-                # NECESSAIRE AU MODE DE JEU DE L'AIDE
-                if( @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL )
-                    setBtnStatut(@@maPartie.aideADesactiver() )
+        btn.signal_connect "button-press-event" do |handler, event|
+            if event.event_type == Gdk::EventType::BUTTON_PRESS
+                if event.button == 1 #LEFT-CLICK
+                    eventCell(handler)
+                elsif event.button == 3  #RIGHT-CLICK
+                    eventCell(handler)
+                    eventCell(handler)
                 end
             end
         end
-
-        ##
-        # Methode de fin de partie victoire
-        # Elle affiche et realise les differentes action de
-        # sauvevargde
-        def finirPartie
-            if(@@maPartie != nil)
-                if(@popover != nil)
-                    @popover.visible = false
-                end
-                pause
-                if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
-                    Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsContreLaMontre(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
-                elsif(@@maPartie.getMode == Mode::SURVIE)
-                    Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @@maPartie.getNbGrilleFinis )
-                end
-
-                Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
-
-                case @@maPartie.getMode
-                when Mode::LIBRE
-                    msg = @@lg.gt("MESSAGE_DE_VICTOIRE") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time)
-                when Mode::SURVIE
-                    msg = @@lg.gt("MESSAGE_VICTOIRE_SURVIE_DEBUT") + @@maPartie.getNbGrilleFinis.to_s + " " +(@@maPartie.getNbGrilleFinis < 2 ? @@lg.gt("GRILLE").downcase : @@lg.gt("GRILLES").downcase)
-                when Mode::CONTRE_LA_MONTRE
-                    @nbRecompense = @@maPartie.getNbRecompense
-                    msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time) + @@lg.gt("MESSAGE_VICTOIRE_CLM_FIN")
-                    for i in 0..2
-                        if(i<@nbRecompense)
-                            msg += "★"
-                        else
-                            msg += "☆"
-                        end
-                    end
-                when Mode::TUTORIEL
-                    msg = @@lg.gt("MESSAGE_FIN_TUTORIEL")
-                when Mode::VS
-                    msg = @@lg.gt("MESSAGE_FIN_1V1") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time)
-                else
-                    msg = @@lg.gt("UNKNOWN")
-                end
-
-                show_standard_message_dialog(msg)
-
-                quitter
-            end
-        end
-
 
         btn.signal_connect "enter" do |handler|
             if @@maPartie.chrono.pause == false && !@porteeAffichee
@@ -926,11 +799,158 @@ class FenetrePartie < Fenetre
                 if @@maPartie.grilleEnCours.tabCases[colonne][line].estIle? || @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
                     enleverNbCase()
                 end
-
             end
         end
 
         return btn
+    end
+
+    ##
+    # Methode liee au boutton de cellule
+    # Elle permet de lancer l'evenement liee au boutton de celulle passer en parametre
+    private
+    def eventCell(handler)
+        if @@maPartie.chrono.pause == false # PEUT INTERRAGIR UNIQUEMENT SI LA PARTIE N EST PAS EN PAUSE
+            maCellule = @@maPartie.grilleEnCours.tabCases[handler.y][handler.x]
+                                    ##
+
+            prochaineCouleur = maCellule.couleur + 1
+            if prochaineCouleur == 0
+                prochaineCouleur = Couleur::GRIS
+            end
+
+            if( @@maPartie.getMode == Mode::TUTORIEL && prochaineCouleur != Couleur::BLANC && @popover != nil )
+                enleverNbCase()
+            end
+
+
+            if(prochaineCouleur < Couleur::ILE_1 )
+                enleverPortee(nil, nil)
+
+                if @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) )
+
+                    cacherNbErreur
+                    handler.changerStatut( @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur , true)
+                    enableBtn(@btnUndo)
+                    enableBtnIfNot1v1(@btnUndoUndo)
+                    disableBtn(@btnRedo)
+                    disableBtn(@btnHelpLocation)
+                end
+
+                #afficherMur2x2
+
+                if @@maPartie.getMode != Mode::TUTORIEL
+                    if  @@maPartie.grilleEnCours.tabCases[handler.y][handler.x].couleur == Couleur::BLANC
+                        afficherNbCase(handler.y, handler.x)
+                    elsif !@@maPartie.grilleEnCours.tabCases[handler.y][handler.x].estIle?
+                        enleverNbCase()
+                    end
+                end
+
+
+                if(@@perdu)
+                    perdreMsg()
+                elsif(@@deco)
+                    decoMsg()
+                elsif @@maPartie.partieTerminee? == true
+                    grilleSuivante =  @@maPartie.grilleSuivante
+                    if(grilleSuivante == nil)
+                        finirPartie
+                    else
+                        afficherNextGrille
+                    end
+                end
+
+                if @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL
+                    mettreCasesEnRouge()
+                end
+
+                # Verifier si il y'a un nouveau message
+                # disponible en mode tuto
+                if ( @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL && @@maPartie.messageDifferent? )
+                    show_standard_message_dialog( @@maPartie.getMessageAide );
+                end
+
+            else
+                if ( @@maPartie.getMode == Mode::TUTORIEL  )
+                    if( @@maPartie.ajouterCoup( Coup.creer( maCellule  , prochaineCouleur , maCellule.couleur ) ) && !@porteeAffichee )
+                        mettreCasesEnRouge()
+                        handler.changerStatut( maCellule.couleur , true )
+                        afficherPortee(handler.y, handler.x)
+                    else
+                        enleverPortee(handler.y, handler.x)
+                    end
+                    # Verifier si il y'a un nouveau message
+                    # disponible en mode tuto
+                    if @@maPartie.messageDifferent?
+                        show_standard_message_dialog( @@maPartie.getMessageAide );
+                    end
+                else
+                    if(!@porteeAffichee)
+                        afficherPortee(handler.y, handler.x)
+                    else
+                        enleverPortee(handler.y, handler.x)
+                    end
+                end
+            end
+
+            ##
+            # FOR TUTO
+            # SI ON EST EN MODE TUTO ON ACTIVE QUE LES AIDES
+            # NECESSAIRE AU MODE DE JEU DE L'AIDE
+            if( @@maPartie != nil && @@maPartie.getMode == Mode::TUTORIEL )
+                setBtnStatut(@@maPartie.aideADesactiver() )
+            end
+        end
+    end
+
+
+     ##
+    # Methode de fin de partie victoire
+    # Elle affiche et realise les differentes action de
+    # sauvevargde
+    private
+    def finirPartie
+        if(@@maPartie != nil)
+            if(@popover != nil)
+                @popover.visible = false
+            end
+            pause
+            if(@@maPartie.getMode == Mode::CONTRE_LA_MONTRE)
+                Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsContreLaMontre(@@maPartie.grilleBase.numero, @@maPartie.chrono.time)
+            elsif(@@maPartie.getMode == Mode::SURVIE)
+                Sauvegardes.getInstance.getSauvegardeScore.ajouterTempsSurvie(@@maPartie.grilleBase.numero, @@maPartie.getNbGrilleFinis )
+            end
+
+            Sauvegardes.getInstance.getSauvegardePartie.supprimerSauvegardePartie(@@maPartie)
+
+            case @@maPartie.getMode
+            when Mode::LIBRE
+                msg = @@lg.gt("MESSAGE_DE_VICTOIRE") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time)
+            when Mode::SURVIE
+                msg = @@lg.gt("MESSAGE_VICTOIRE_SURVIE_DEBUT") + @@maPartie.getNbGrilleFinis.to_s + " " +(@@maPartie.getNbGrilleFinis < 2 ? @@lg.gt("GRILLE").downcase : @@lg.gt("GRILLES").downcase)
+            when Mode::CONTRE_LA_MONTRE
+                @nbRecompense = @@maPartie.getNbRecompense
+                msg = @@lg.gt("MESSAGE_VICTOIRE_CLM_DEBUT") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time) + @@lg.gt("MESSAGE_VICTOIRE_CLM_FIN")
+                for i in 0..2
+                    if(i<@nbRecompense)
+                        msg += "★"
+                    else
+                        msg += "☆"
+                    end
+                end
+            when Mode::TUTORIEL
+                msg = @@lg.gt("MESSAGE_FIN_TUTORIEL")
+            when Mode::VS
+                msg = @@lg.gt("MESSAGE_FIN_1V1") + Chrono.getTpsFormatPrecis(@@maPartie.chrono.time)
+            else
+                msg = @@lg.gt("UNKNOWN")
+            end
+
+            show_standard_message_dialog(msg)
+
+            quitter
+        end
     end
 
     ###################################################################

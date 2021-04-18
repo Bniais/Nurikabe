@@ -816,6 +816,7 @@ class FenetrePartie < Fenetre
 
             prochaineCouleur = maCellule.couleur + 1
             if prochaineCouleur == 0
+                prochaineCouleur = Couleur::GRIS
             end
 
             if( @@maPartie.getMode == Mode::TUTORIEL && prochaineCouleur != Couleur::BLANC && @popover != nil )

@@ -522,9 +522,4 @@ STER Maxime
       return @dico[text]
     end
 
-    ##
-    # Affichage en chaine de caractère du dictionnaire
-    def to_s()
-      return "#{@dico}"
-    end
 end

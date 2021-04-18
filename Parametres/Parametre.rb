@@ -16,9 +16,6 @@ class Parametre
     # @affichagePortee => affichage de la portee d'une aide
     attr_accessor :affichagePortee
 
-    ##
-    # @murs2x2 => affichage des murs 2x2
-    attr_accessor :murs2x2
 
     ##
     # @volume => volume
@@ -38,7 +35,6 @@ class Parametre
         @casesGrises = false
         @compteurIlot = true
         @affichagePortee = true
-        @murs2x2 = false
         @modeSombre = false
     end
 
@@ -65,7 +61,6 @@ class Parametre
         setCasesGrises(false)
         setCompteurIlots(true)
         setAffichagePortee(true)
-        setMur2x2(false)
         setModeSombre(false)
     end
 
@@ -109,18 +104,6 @@ class Parametre
         Sauvegardes.getInstance.sauvegarder()
     end
 
-    ##
-    # Methode qui permet de savoir si l'aide visuelle 'afficher les murs 2x2' est activee
-    def mur2x2?()
-        return @murs2x2
-    end
-
-    ##
-    # Methode qui permet de set le parametre murs 2x2
-    def setMur2x2(statut)
-        @murs2x2 = statut
-        Sauvegardes.getInstance.sauvegarder()
-    end
 
     ##
     # Methode qui permet de savoir si

@@ -41,17 +41,6 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Fonction qui met les donnees
-    # de la headerbar a jours
-    def self.metSousTitre
-        Fenetre.set_subtitle( @@maPartie.getMode == Mode::LIBRE ? @@lg.gt("PARTIE_LIBRE") :
-                              @@maPartie.getMode == Mode::CONTRE_LA_MONTRE ? @@lg.gt("PARTIE_CLM") :
-                              @@maPartie.getMode == Mode::SURVIE ? @@lg.gt("PARTIE_SURVIE") :
-                              @@maPartie.getMode == Mode::VS ? @@lg.gt("PARTIE_1V1") :
-                              @@maPartie.getMode == Mode::TUTORIEL ? @@lg.gt("PARTIE_TUTORIEL") : @@lg.gt("UNKNOWN"))
-    end
-
-    ##
     # Methode qui permet d'afficher la fenetre
     def self.afficheToi(lastView)
         self.afficheToiSelec(lastView, nil)
@@ -71,8 +60,8 @@ class FenetrePartie < Fenetre
             end
         end
 
-        self.metSousTitre # Mettre les sous titre
         @@maFenetrePartie = FenetrePartie.new()
+        @@maFenetrePartie.metSousTitre()
 
         Fenetre.add( @@maFenetrePartie.creationInterface( lastView ) ) # Creation de l'interface
         Fenetre.show_all
@@ -141,8 +130,8 @@ class FenetrePartie < Fenetre
         @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie( loadAtIndice ) # charge une sauvegarde
         @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)} # Charge une grille
 
-        self.metSousTitre
         @@maFenetrePartie = FenetrePartie.new()
+        @@maFenetrePartie.metSousTitre
         Fenetre.add( @@maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
 
@@ -164,6 +153,17 @@ class FenetrePartie < Fenetre
     ################################################################
     ################## CREATION DE L INTERFACE #####################
     ################################################################
+
+        ##
+    # Fonction qui met les donnees
+    # de la headerbar a jours
+    def metSousTitre
+        Fenetre.set_subtitle( @@maPartie.getMode == Mode::LIBRE ? @@lg.gt("PARTIE_LIBRE") :
+                              @@maPartie.getMode == Mode::CONTRE_LA_MONTRE ? @@lg.gt("PARTIE_CLM") :
+                              @@maPartie.getMode == Mode::SURVIE ? @@lg.gt("PARTIE_SURVIE") :
+                              @@maPartie.getMode == Mode::VS ? @@lg.gt("PARTIE_1V1") :
+                              @@maPartie.getMode == Mode::TUTORIEL ? @@lg.gt("PARTIE_TUTORIEL") : @@lg.gt("UNKNOWN"))
+    end
 
     ##
     # Methode qui permet de cree
@@ -816,7 +816,6 @@ class FenetrePartie < Fenetre
 
             prochaineCouleur = maCellule.couleur + 1
             if prochaineCouleur == 0
-                prochaineCouleur = Couleur::GRIS
             end
 
             if( @@maPartie.getMode == Mode::TUTORIEL && prochaineCouleur != Couleur::BLANC && @popover != nil )

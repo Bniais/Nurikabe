@@ -166,14 +166,14 @@ class FenetreParametre < Fenetre
         @switchCompteurIlot = Gtk::Switch.new()
         @switchCompteurIlot.halign = :start
         @switchCompteurIlot.set_active( Sauvegardes.getInstance.getSauvegardeParametre.compteurIlots? )
-        @switchCompteurIlot.signal_connect('notify::active') { |s|  Sauvegardes.getInstance.getSauvegardeParametre.set_compteurIlots(s.active?) }
+        @switchCompteurIlot.signal_connect('notify::active') { |s|  Sauvegardes.getInstance.getSauvegardeParametre.setCompteurIlots(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("COMPTEURILOTS") + " :" , @switchCompteurIlot) ) #ADD
 
         # AIDE AFFICHAGE PORTEE
         @switchAffichagePortee = Gtk::Switch.new()
         @switchAffichagePortee.halign = :start
         @switchAffichagePortee.set_active( Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee? )
-        @switchAffichagePortee.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.set_affichagePortee(s.active?) }
+        @switchAffichagePortee.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.setAffichagePortee(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("AFFICHERPORTER") + " :" , @switchAffichagePortee) ) #ADD
 
         return box
@@ -239,7 +239,7 @@ class FenetreParametre < Fenetre
         @switchCaseGrises.halign = :start
         @switchCaseGrises.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
         @switchCaseGrises.signal_connect('notify::active') { |s|
-            Sauvegardes.getInstance.getSauvegardeParametre.set_casesGrises(s.active?)
+            Sauvegardes.getInstance.getSauvegardeParametre.setCasesGrises(s.active?)
         }
         box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , @switchCaseGrises) ) #ADD
 

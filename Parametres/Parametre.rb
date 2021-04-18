@@ -62,10 +62,10 @@ class Parametre
     ##
     # Remettre à zéro les paramètres
     def resetAll()
-        set_casesGrises(false)
-        set_compteurIlots(true)
-        set_affichagePortee(true)
-        set_mur2x2(false)
+        setCasesGrises(false)
+        setCompteurIlots(true)
+        setAffichagePortee(true)
+        setMur2x2(false)
         setModeSombre(false)
     end
 
@@ -77,7 +77,7 @@ class Parametre
 
     ##
     # Methode qui permet de set le parametre case grise
-    def set_casesGrises(statut)
+    def setCasesGrises(statut)
         @casesGrises = statut
         Fenetre.setModeGris(@casesGrises)
         Sauvegardes.getInstance.sauvegarder()
@@ -91,7 +91,7 @@ class Parametre
 
     ##
     # Methode qui permet de set le parametre compteur ilots
-    def set_compteurIlots(statut)
+    def setCompteurIlots(statut)
         @compteurIlot = statut
         Sauvegardes.getInstance.sauvegarder()
     end
@@ -104,7 +104,7 @@ class Parametre
 
     ##
     # Methode qui permet de set le parametre affichage portee
-    def set_affichagePortee(statut)
+    def setAffichagePortee(statut)
         @affichagePortee = statut
         Sauvegardes.getInstance.sauvegarder()
     end
@@ -117,7 +117,7 @@ class Parametre
 
     ##
     # Methode qui permet de set le parametre murs 2x2
-    def set_mur2x2(statut)
+    def setMur2x2(statut)
         @murs2x2 = statut
         Sauvegardes.getInstance.sauvegarder()
     end
@@ -142,9 +142,4 @@ class Parametre
         # return un booleen
     end
 
-    ##
-    # Methode qui permet de connaitre les raccourcis clavier choisis
-    def raccourcisClavier?()
-        # return un booleen
-    end
 end

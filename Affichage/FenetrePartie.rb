@@ -170,6 +170,7 @@ class FenetrePartie < Fenetre
     # l'interface de la partie
     def creationInterface( lastView )
         @indiceMalusPopover = -1
+        @@tutoStart = true
         @box = Gtk::Box.new(:vertical)
 
         #TOOLBAR

@@ -21,7 +21,6 @@ class SauvegardesScore
         @nbEtoiles = 0
         @scoresContreLaMontre = Array.new(SauvegardeGrille.getInstance.getNombreGrille+1){[-1, 0]}
         @scoresSurvie = Array.new(3){-1}
-        afficher
     end
 
     ##
@@ -38,20 +37,6 @@ class SauvegardesScore
     def ajouterGrille()
         @scoresContreLaMontre.append([-1,0])
         Sauvegardes.getInstance.sauvegarder()
-    end
-
-
-    ##
-    # Affichage du score
-    def afficher
-        for g in 1..SauvegardeGrille.getInstance.getNombreGrille
-            puts "score pour grille  #{g} : #{@scoresContreLaMontre[g][0]}, ça fait #{@scoresContreLaMontre[g][1]} etoile"
-        end
-
-        puts "\n score pour survie : #{@scoresSurvie[0]} , #{@scoresSurvie[1]} , #{@scoresSurvie[2]}"
-    
-        puts "\n nbEtoiles : #{@nbEtoiles}\n"
-
     end
 
     ##

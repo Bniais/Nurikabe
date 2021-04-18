@@ -67,7 +67,9 @@ class Sauvegardes
     ##
     # Sauvegarde les sauvegardes dans un chemin spécifique, ou dans un dossier préfait
     def sauvegarder()
-        File.open("../Sauvegarde/save.dump", "wb") { |f| f.write(Marshal.dump(@@instanceSauvegarde) ) }
+        File.open("../Sauvegarde/save.dump", "wb") { |f| 
+            f.write(Marshal.dump(@@instanceSauvegarde) ) 
+        }
     end
 
     ##

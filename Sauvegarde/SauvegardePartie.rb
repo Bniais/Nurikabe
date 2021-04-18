@@ -47,17 +47,6 @@ class SauvegardesParties
     end
 
     ##
-    # Retourne le nombre de parties sauvegardées en mode Libre
-    def nbPartieSauvegarderLibre()
-        compteur = 0;
-        for i in 0...nbPartieSauvegarder
-            if @mesParties[i].getMode == Mode::LIBRE
-                compteur += 1;
-            end
-        end
-        compteur
-    end
-    ##
     # Methode qui permet de renvoyer un tableau 
     # qui indique si une grille est en cours ou pas
     def getListPartieLibreEnCours()
@@ -83,17 +72,7 @@ class SauvegardesParties
         return indice
     end
 
-    ##
-    # Retourne le nombre de parties sauvegardées en mode Survie
-    def nbPartieSauvegarderSurvie()
-        compteur = 0;
-        for i in 0...nbPartieSauvegarder
-            if @mesParties[i].getMode == Mode::SURVIE
-                compteur += 1;
-            end
-        end
-        compteur
-    end
+
 
     ##
     # Retourne l'indice de la première partie en mode Survie
@@ -106,46 +85,12 @@ class SauvegardesParties
         return -1;
     end
 
-    ##
-    # Retourne le nombre de parties sauvegardées en mode Contre La Montre
-    def nbPartieSauvegarderContreLaMontre()
-        compteur = 0;
-        for i in 0...nbPartieSauvegarder
-            if @mesParties[i].getMode == Mode::CONTRE_LA_MONTRE
-                compteur += 1;
-            end
-        end
-        compteur
-    end
 
     ##
     # Retourne l'indice de la première partie en mode Contre La Montre
     def getIndicePartieSauvegarderContreLaMontre()
         for i in 0...nbPartieSauvegarder
             if @mesParties[i].getMode == Mode::CONTRE_LA_MONTRE
-                return i;
-            end
-        end
-        return -1;
-    end
-
-    ##
-    # Retourne le nombre de parties sauvegardées en mode Tutoriel
-    def nbPartieSauvegarderTutoriel()
-        compteur = 0;
-        for i in 0...nbPartieSauvegarder
-            if @mesParties[i].getMode == Mode::TUTORIEL
-                compteur += 1;
-            end
-        end
-        compteur
-    end 
-
-    ##
-    # Retourne l'indice de la première partie en mode Tutoriel
-    def getIndicePartieSauvegarderTutoriel()
-        for i in 0...nbPartieSauvegarder
-            if @mesParties[i].getMode == Mode::TUTORIEL
                 return i;
             end
         end

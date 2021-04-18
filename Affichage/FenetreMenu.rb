@@ -219,29 +219,11 @@ class FenetreMenu < Fenetre
         btnResume.set_width_request(180)
         btnResume.name = "resumeGame"
 
-        if mode == Mode::LIBRE
-            btnResume.signal_connect("clicked") {
-                if Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size > 1
-                    box.remove(btnResume)
-                    comboBox = Gtk::ComboBoxText.new
-                    comboBox.set_width_request(180)
-                    for i in 0...Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre.size
-                        comboBox.append( "visible" , i.to_s )
-                    end
-                    comboBox.signal_connect("changed") { |cb| Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie( FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre[cb.active] )    }
-                    box.add( comboBox )
-                    Fenetre.show_all()
-                else
-                    Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie( FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderLibre[0] )
-                end
-            }
-        elsif mode == Mode::SURVIE
+        if mode == Mode::SURVIE
             btnResume.signal_connect("clicked") { Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie(FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderSurvie ) }
         elsif mode == Mode::CONTRE_LA_MONTRE
             btnResume.signal_connect("clicked") { Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie(FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderContreLaMontre ) }
-        elsif mode == Mode::TUTORIEL
-            btnResume.signal_connect("clicked") { Fenetre.remove(mainBox); FenetrePartie.afficheToiChargerPartie(FenetreMenu , Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderTutoriel ) }
-        end
+         end
 
         box.add(btnResume)
         return setmargin(box, 0, 15, 70, 70);

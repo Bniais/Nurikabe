@@ -4,38 +4,37 @@ require "resolv"
 require 'open-uri'
 
 ##
-# Classe qui gere la fenetre 'A propos'
-#
-# Herite de la classe abstraite Fenetre
+# Classe qui gere la création de l'interface de la fenêtre 'A propos'
+# Hérite de la classe Fenetre
 class Fenetre1v1 < Fenetre
     ##
-    # socket
+    # Socket pour échanger les données entre les joueurs
     @@socket = nil
 
     ##
-    # attente
+    # Thread de l'attente
     @@attente = nil
 
     ##
-    # serveur
+    # Serveur qui héberge la connection
     @@server = nil
 
     ##
-    # port
+    # Port de connection
     @@port = ""
 
     ##
-    # adresse ip
+    # IP de connection
     @@ip = ""
 
     ##
-    # Methode privee pour l'initialisation
+    # Methode pour l'initialisation
     def initialize()
         self
     end
 
     ##
-    # Methode qui permet a la fenetre de s'afficher
+    # Permet d'afficher la fenêtre de 1v1
     def self.afficheToi( lastView )
         Fenetre.set_subtitle( @@lg.gt("CONNECTION") )
         @@instance = Fenetre1v1.new()
@@ -45,15 +44,16 @@ class Fenetre1v1 < Fenetre
     end
 
     ##
-    # getter de la socket
+    # Accesseur de la socket
     def self.getSocket()
         return @@socket
     end
 
 
     ##
-    # Methode qui permet de creer l'interface
+    # Crée l'interface de la fenêtre 1v1
     def creationInterface( lastView )
+        #Fermer les connections et thread au cas où la déconnexion ne s'est pas bien passé
         if(@@socket != nil)
             @@socket.close
             @@socket = nil
@@ -69,10 +69,10 @@ class Fenetre1v1 < Fenetre
             @@server = nil
         end
 
+
         box = Gtk::Box.new(:vertical)
 
-        # BACK BUTTON
-
+        #Bouton retour
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => @@lg.gt("RETOUR"))
@@ -86,12 +86,11 @@ class Fenetre1v1 < Fenetre
         vBox = Gtk::Box.new(:vertical)
         vBox = setmargin(vBox,0,0,70,70)
 
-        #titre
+        #Titre
         vBox.add( setmargin( titleLabel(@@lg.gt("CONNECTION")) , 15,15,0,0 )  )
 
 
-        #ip
-        #ipLabel = Gtk::Label.new(@@lg.gt("IP") + " : ")
+        #IP
         entryBox = Gtk::Box.new(:horizontal)
         entryBox.set_homogeneous(false)
         entryBox.set_height_request(40)
@@ -109,9 +108,7 @@ class Fenetre1v1 < Fenetre
         entryBox.add( setmargin( ipEntry ,0,0,0,5) )
 
 
-        #port
-       # portLabel = Gtk::Label.new(@@lg.gt("PORT") + " : ")
-
+        #Port
         portEntry = Gtk::Entry.new()
         portEntry.set_placeholder_text("65553")
         portEntry.halign = :fill
@@ -124,8 +121,7 @@ class Fenetre1v1 < Fenetre
 
         vBox.add( setmargin( entryBox,20,10,20,20 ) );
 
-        #buttons
-
+        #Boutons 
         buttonBox = Gtk::Box.new(:horizontal)
         buttonBox.set_homogeneous(true)
         buttonBox.set_height_request(50)
@@ -142,7 +138,9 @@ class Fenetre1v1 < Fenetre
         vBox.add( setmargin( buttonBox,20,10,20,20 ) )
 
 
-        #signals
+        #Signaux
+
+        # Lancement de la recherche de personnes qui rejoignent, lancement et suivi de la partie 1v1
         buttonHost.signal_connect("clicked"){
             @@port = portEntry.text
             if(@@port.to_i > 0 && @@port.to_i < 65536)
@@ -177,15 +175,15 @@ class Fenetre1v1 < Fenetre
                             while 1 < 2
                                 line = @@socket.gets
                                 if(line != nil)
-                                    if(line.include?("av"))
+                                    if(line.include?("av")) #Avancement du joueur
                                         FenetrePartie.getInstance.setAvancementEnemy(line.delete_prefix("av"))
                                     else
-                                        if(line.include?("dc"))
+                                        if(line.include?("dc")) #Déconnexion du joueur
                                             FenetrePartie.getInstance.deco()
-                                        elsif line.include?("ez")
+                                        elsif line.include?("ez") #Victoire du joueur
                                             FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
                                         end
-                                        @@socket.puts "im sad"
+                                        @@socket.puts "im sad" #Prévenir qu'il quitte naturellement
                                         @@socket.close
                                         @@socket = nil
                                         @@server.close
@@ -213,6 +211,7 @@ class Fenetre1v1 < Fenetre
             end
         }
 
+        # Lancement de la recherche d'Host, lancement et suivi de la partie 1v1
         buttonJoin.signal_connect("clicked"){
             @@port = portEntry.text
             if(@@port.to_i > 0 && @@port.to_i < 65536)
@@ -237,7 +236,7 @@ class Fenetre1v1 < Fenetre
 
                     if(@@socket != nil)
 
-                        while line = @@socket.gets # Read lines from @socket
+                        while line = @@socket.gets #Lire la @socket
                             Fenetre.remove(box)
                             FenetrePartie.afficheToiSelec(Fenetre1v1, Partie1v1.creer(SauvegardeGrille.getInstance.getGrilleAt(line.to_i)) )
                             break
@@ -246,15 +245,15 @@ class Fenetre1v1 < Fenetre
                         while 1 < 2
                             line = @@socket.gets
                             if(line != nil)
-                                if(line.include?("av"))
+                                if(line.include?("av")) #Avancement du joueur
                                     FenetrePartie.getInstance.setAvancementEnemy(line.delete_prefix("av"))
                                 else
-                                    if(line.include?("dc"))
+                                    if(line.include?("dc")) #Déconnexion du joueur
                                         FenetrePartie.getInstance.deco()
-                                    elsif line.include?("ez")
+                                    elsif line.include?("ez") #Victoire du joueur
                                         FenetrePartie.getInstance.perdre(line.delete_prefix("ez"))
                                     end
-                                    @@socket.puts "im sad"
+                                    @@socket.puts "im sad" #Prévenir qu'il quitte naturellement
                                     @@socket.close
                                     @@socket = nil
                                     break
@@ -304,7 +303,7 @@ class Fenetre1v1 < Fenetre
     end
 
     ##
-    # Retourne un label titre pour la fenêtre
+    # Retourne un label au format des titres (en grand)
     def titleLabel(unLabel)
         label = Gtk::Label.new()
         label.set_markup("<span size='25000' >" + unLabel.to_s + "</span>")
@@ -312,7 +311,7 @@ class Fenetre1v1 < Fenetre
     end
 
     ##
-    # Methode qui permet de gerer les marges d'un objet
+    # Met des marges à un objet
     private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)

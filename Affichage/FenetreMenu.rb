@@ -10,20 +10,19 @@ require_relative "./../Partie/PartieTuto.rb"
 require_relative "./../Partie/PartieContreLaMontre.rb"
 
 ##
-# Classe qui gere l'affichage de la fenetre du menu
-#
-# Herite de la classe abstraite Fenetre
+# Classe qui gère la création de l'interface de la fenetre du menu
+# Herite de la classe Fenetre
 class FenetreMenu < Fenetre
 
     ##
-    # Methode privee pour l'initialisation
+    # Methode pour l'initialisation
     def initialize()
         self
     end
 
     ##
-    # Methode qui permet d'afficher la fenetre du menu
-    def self.afficheToi( _ ) # IGNORE LAST VIEW
+    # Affiche la fenêtre de menu principal
+    def self.afficheToi( _ ) #Pas de vue précédente
         Fenetre.set_subtitle(@@lg.gt("MENU"))
         Fenetre.add( FenetreMenu.new().creationInterface() )
         Fenetre.show_all
@@ -31,7 +30,7 @@ class FenetreMenu < Fenetre
     end
 
     ##
-    # Methode qui permet d'afficher une boite de dialogue
+    # Affiche une boite de dialogue contenant un message et pouvant répondre oui ou non (pour reprendre sauvegarde)
     def show_standard_message_dialog(unMessage)
         @dialog = Gtk::MessageDialog.new(:parent => @@window,
                                         :flags => [:modal, :destroy_with_parent],
@@ -46,25 +45,28 @@ class FenetreMenu < Fenetre
     end
 
     ##
-    # Methode qui gere et cree l'affichage du menu
+    # Crée l'interface du menu principal
     def creationInterface()
         box = Gtk::Box.new(:vertical, 10)
 
-        # creation du label pour le titre + ajout à la box
+        #Titre du jeu
         titre = Gtk::Label.new()
         titre.set_markup("<span weight = 'ultrabold' size = '90000' >Nurikabe</span>")
         box.add( setmargin(titre, 0, 0, 70, 70) )
 
-        # creation des boutons
+        #Boutons du menu :
+
+        #Bouton Libre
         btnLibre = Gtk::Button.new()
         setBold(btnLibre, @@lg.gt("LIBRE") )
         box.add( setmargin( btnLibre , 0, 15, 70, 70) )
 
+        #Bouton Contre La Montre
         btnContreLaMontre = Gtk::Button.new()
         setBold(btnContreLaMontre, @@lg.gt("CONTRELAMONTRE") )
         box.add( setmargin( btnContreLaMontre , 0, 15, 70, 70) )
 
-        # BTN SURVIE
+        #Bouton Survie
         btnSurvie = Gtk::Button.new()
         btnSurvie.set_height_request(60)
 
@@ -92,7 +94,7 @@ class FenetreMenu < Fenetre
         box.add( setmargin( btnSurvie , 0, 15, 70, 70) )
 
 
-        # BTN 1 V 1
+        #Bouton 1v1
         btn1v1 = Gtk::Button.new()
         btn1v1.set_height_request(60)
 
@@ -124,14 +126,15 @@ class FenetreMenu < Fenetre
         end
 
 
-        # gestion des évènements des boutons
+        #Signaux
+
+
         btnLibre.signal_connect('clicked') {
             Fenetre.remove(box); FenetreSelection.afficheToi( FenetreMenu )
         }
 
         btnContreLaMontre.signal_connect('clicked') { |btn|
-
-            # affichage d'un pop up si une sauvegarde existe
+            #Affichage d'une pop up si une sauvegarde existe
             indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderContreLaMontre
             if(indice != -1)
                 if (show_standard_message_dialog(@@lg.gt("REPRENDRE_SAUVEGARDE")) == 0)
@@ -143,8 +146,9 @@ class FenetreMenu < Fenetre
             end
             creationHBoxCLM(box,2,btn,3,btnSurvie)
         }
+
         btnSurvie.signal_connect('clicked') { |btn|
-            #popup si sauvegarde
+           #Affichage d'une pop up si une sauvegarde existe
             indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieSauvegarderSurvie
             if(indice != -1)
                 if (show_standard_message_dialog(@@lg.gt("REPRENDRE_SAUVEGARDE")) == 0)
@@ -167,49 +171,53 @@ class FenetreMenu < Fenetre
             FenetrePartie.afficheToiSelec(FenetreMenu, PartieTuto.creer() )
         }
 
-        # AJOUT SEPARATEUR
+        #Separateur
         separateur = Gtk::Separator.new(:horizontal)
-        box.add( setmargin(separateur, 0, 0, 80, 80) ) #ADD
+        box.add( setmargin(separateur, 0, 0, 80, 80) )
 
-        # ajout des boutons du bas
+        #Bouton Classemet
         btnClassement = Gtk::Button.new(label: @@lg.gt("CLASSEMENT"))
         btnClassement.set_height_request(60)
         btnClassement.signal_connect('clicked') { Fenetre.remove(box); FenetreClassement.afficheToi( FenetreMenu ) }
-        box.add( setmargin(btnClassement, 10, 10, 70, 70) ) #ADD
+        box.add( setmargin(btnClassement, 10, 10, 70, 70) )
 
-        # AJOUT SEPARATEUR
+        #Separateur
         separateur = Gtk::Separator.new(:horizontal)
-        box.add( setmargin(separateur, 0, 0, 80, 80) ) #ADD
+        box.add( setmargin(separateur, 0, 0, 80, 80) )
 
-        # TRIPLE BOUTON EN BAS
+
+        #Box contenant les boutons du bas
         hBox = Gtk::Box.new(:horizontal)
         hBox.set_homogeneous(true)
 
+        #Bouton Paramètres
         btnParam = Gtk::Button.new(label: @@lg.gt("PARAMETRES"))
         setmargin(btnParam,0,0,0,5 )
         btnParam.set_height_request(50)
         btnParam.signal_connect('clicked') { Fenetre.remove(box); FenetreParametre.afficheToi( FenetreMenu ) }
-        hBox.add(btnParam)#ADD
+        hBox.add(btnParam)
 
+        #Bouton à propos
         btnAPropos = Gtk::Button.new(label: @@lg.gt("A_PROPOS"))
         setmargin(btnAPropos,0,0,0,5 )
         btnAPropos.signal_connect('clicked') { Fenetre.remove(box); FenetreAPropos.afficheToi( FenetreMenu ) }
-        hBox.add(btnAPropos)#ADD
+        hBox.add(btnAPropos)
 
+        #Bouton quitter
         btnQuitter = Gtk::Button.new(label: @@lg.gt("QUITTER"))
         btnQuitter.name = "btnQuitter"
         setmargin(btnQuitter,0,0,0,5 )
         btnQuitter.signal_connect("clicked") { Fenetre.exit }
-        hBox.add(btnQuitter)#ADD
+        hBox.add(btnQuitter)
 
-        box.add( setmargin(hBox, 10, 0, 70, 70) ) #ADD
+        box.add( setmargin(hBox, 10, 0, 70, 70) )
 
         @bbox = box
         return box
       end
 
     ##
-    # Methode qui permet de creer une boite de dialogue pour reprendre une partie en cours
+    # Crée une boite de dialogue pour reprendre une partie en cours
     def creationHboxResumeGame( btn , mode , mainBox )
         box = Gtk::Box.new(:horizontal)
         btn.set_width_request(360)
@@ -230,7 +238,7 @@ class FenetreMenu < Fenetre
     end
 
     ##
-    # Methode qui permet de gerer les marges d'un objet
+    # Met des marges à un objet
     def setmargin(obj, top, bottom, left, right)
         obj.set_margin_top(top)
         obj.set_margin_bottom(bottom)

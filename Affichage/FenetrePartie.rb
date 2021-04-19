@@ -3,55 +3,52 @@ require_relative "./Fenetre.rb"
 require_relative "./../Partie/Partie.rb"
 
 ##
-# Classe qui gere l'affichage de la partie
+# Classe qui gère la création et l'interaction de la partie
 class FenetrePartie < Fenetre
 
     ##
-    # partie en cours
+    # La partie actuelle 
     @@maPartie = nil
 
     ##
-    # grille actuelle
+    # La grille actuelle 
     @@maGrille = nil
 
     ##
-    # booleen qui permet de savoir si le jeu est en pause
-    @@vraiPause = false
-
-    ##
-    # booleen qui permet de savoir si le joueur a perdu
+    # Booleen qui permet de savoir si le joueur a perdu en mode 1v1, car impossible de le faire perdre pendant le reçu du message de socket (car autre thread)
     @@perdu = false
 
     ##
-    # booleen de la deco
+    # Booleen qui permet de savoir si l'adversaire s'est deconnecté en mode 1v1, car impossible de le faire quitter pendant le reçu du message de socket (car autre thread)
     @@deco = false
 
     ##
-    # booleen pour l'affichage du premier message du tutoriel
+    # Indique si le tuto vient de commencer
     @@tutoStart = true
 
     ##
-    # fenetre de la partie en cours
+    # L'instance de fenêtre actuelle
     @@maFenetrePartie
 
     ##
-    # Methode privee pour l'initialisation
+    # Methode pour l'initialisation
     def initialize()
         self
     end
 
     ##
-    # Methode qui permet d'afficher la fenetre
+    # Affiche la fenêtre de partie
     def self.afficheToi(lastView)
         self.afficheToiSelec(lastView, nil)
     end
 
     ##
-    # Lancer une nouvelle partie avec un mode specifique
+    # Affiche la fenêtre depuis la selection d'une grille
     def self.afficheToiSelec( lastView, unePartie )
         @@perdu = false
         @@deco = false
-        # Verifier qu'on a pas recu une partie nil..
+
+        #Vérifier qu'on a pas recu une partie nil.
         if(unePartie != nil)
             @@maPartie = unePartie
             @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
@@ -63,43 +60,35 @@ class FenetrePartie < Fenetre
         @@maFenetrePartie = FenetrePartie.new()
         @@maFenetrePartie.metSousTitre()
 
-        Fenetre.add( @@maFenetrePartie.creationInterface( lastView ) ) # Creation de l'interface
+        Fenetre.add( @@maFenetrePartie.creationInterface( lastView ) )
         Fenetre.show_all
 
         @@maPartie.reprendrePartie
         @@maFenetrePartie.play
 
-        ##
-        # FOR TUTO
-        # CHARGE LE MESSAGE
-        # CHARGE LES AIDES A ACTIVER / DESACTIVER
-        # CASE A FOCUS
+        # Affiche le message de début du tutoriel
         if( @@maPartie.getMode == Mode::TUTORIEL)
-            # message d'arrivee du tutoriel
             if @@tutoStart
                 @@tutoStart = false
                 @@maFenetrePartie.show_standard_message_dialog( @@lg.gt("MSG_DEBUT_TUTO") )
             end
             @@maFenetrePartie.show_standard_message_dialog( @@maPartie.getMessageAide )
-            @@maFenetrePartie.activeBtnTuto( ) # Activer les aides
+            @@maFenetrePartie.activeBtnTuto( )
             @@maFenetrePartie.mettreCasesEnRouge()
         end
 
-        ##
         # Lancer le chrono
         @@maFenetrePartie.threadChronometre
         return self
     end
 
     ##
-    # Methode liee au tutoriel
-    # qui permet de mettre les cases
-    # a focus en rouge
+    # Met les cases concernées par le tutoriel en rouge pour les indiquer au joueur
     def mettreCasesEnRouge
-        tabAutoriser = @@maPartie.getCoupAutoriser() # tab de coup autoriser du tuto
-        min = tabAutoriser.map {|a| a.min}.min # plus petit nombre
+        tabAutoriser = @@maPartie.getCoupAutoriser() #Tab de coup autorisés du tuto
+        min = tabAutoriser.map {|a| a.min}.min
 
-        if( min != 999)
+        if( min != 999) #S'il n'y a pas aucun coup (ne devrait jamais arriver)
             for x in 0...@@maPartie.grilleEnCours.tabCases.size
                 for y in 0...@@maPartie.grilleEnCours.tabCases.size
                     if ( tabAutoriser[x][y] == min )
@@ -123,12 +112,12 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Charger une partie specifique presente dans la sauvegarde
+    # Charge une partie spécifique presente dans la sauvegarde
     def self.afficheToiChargerPartie( lastView , loadAtIndice )
         @@perdu = false
         @@deco = false
-        @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie( loadAtIndice ) # charge une sauvegarde
-        @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)} # Charge une grille
+        @@maPartie = Sauvegardes.getInstance.getSauvegardePartie.getPartie( loadAtIndice )
+        @@maGrille = Array.new(@@maPartie.grilleEnCours.tabCases.size) {Array.new(@@maPartie.grilleEnCours.tabCases.size,false)}
 
         @@maFenetrePartie = FenetrePartie.new()
         @@maFenetrePartie.metSousTitre
@@ -143,20 +132,16 @@ class FenetrePartie < Fenetre
 
 
     ##
-    # Methode accesseur sur une
-    # variable de class en lecture
+    # Accesseur de la partie en cours
     def self.getPartie
         return @@maPartie
     end
 
 
-    ################################################################
-    ################## CREATION DE L INTERFACE #####################
-    ################################################################
 
-        ##
-    # Fonction qui met les donnees
-    # de la headerbar a jours
+
+    ##
+    # Met le titre de la fenêtre selon le mode de la partie
     def metSousTitre
         Fenetre.set_subtitle( @@maPartie.getMode == Mode::LIBRE ? @@lg.gt("PARTIE_LIBRE") :
                               @@maPartie.getMode == Mode::CONTRE_LA_MONTRE ? @@lg.gt("PARTIE_CLM") :
@@ -166,14 +151,13 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Methode qui permet de cree
-    # l'interface de la partie
+    # Crée toute l'interface de la fenêtre de partie
     def creationInterface( lastView )
         @indiceMalusPopover = -1
         @@tutoStart = true
         @box = Gtk::Box.new(:vertical)
 
-        #TOOLBAR
+        #Barre d'outils (aides) en haut
         @box.add(creeToolbar)#ADD
 
         ## Nom de la grille
@@ -219,9 +203,8 @@ class FenetrePartie < Fenetre
             boxTop.set_margin_right(20)
 
 
-        elsif(@@maPartie.getMode == Mode::SURVIE)
+        elsif(@@maPartie.getMode == Mode::SURVIE) #Affichage du nom de grille du mode survie
             boxTop.add( nomGrille)
-            #boxTop.add(Gtk::Label.new(""))
             label =Gtk::Label.new(@@maPartie.getNbGrilleFinis.to_s + (@@maPartie.getNbGrilleFinis < 2 ? @@lg.gt("GRILLE_TERMINEE") : @@lg.gt("GRILLES_TERMINEES")) )
             label.halign= :end
             nomGrille.halign = :start
@@ -243,25 +226,24 @@ class FenetrePartie < Fenetre
             nomGrille.halign = :center
         end
 
-        @box.add( boxTop )#ADD
+        @box.add( boxTop )
 
-        #GRILLE
+        #Grille
         @frameGrille = creeGrille
-        @box.add(@frameGrille)#ADD
+        @box.add(@frameGrille)
 
-        #BOTTOM BOX
+        #Box footer
         bottomBox = Gtk::Box.new(:horizontal)
         bottomBox.set_homogeneous(true)
 
-        # NB ERREUR
-
+        #Nombre d'erreurs affichée en bas 
         @monCompteurErreur = Gtk::Label.new()
         setmargin(@monCompteurErreur,20,0,0,0)
         @monCompteurErreur.halign = :end
         @monCompteurErreur.set_markup("<span size='25000' ></span>")
-        bottomBox.add( @monCompteurErreur ) #ADD
+        bottomBox.add( @monCompteurErreur )
 
-        # TIMER
+        #Chrono
         if(@@maPartie.getMode != Mode::TUTORIEL)
             @monTimer = Gtk::Label.new()
             setmargin(@monTimer,20,0,0,0)
@@ -271,7 +253,7 @@ class FenetrePartie < Fenetre
             bottomBox.add( @monTimer)
         end
 
-        # HELP
+        #Bouton montrer erreur
         @btnHelpHelp = Gtk::Button.new(:label =>"Montrer Erreur")
         @btnHelpHelp.name = "btnQuitter"
         setmargin(@btnHelpHelp,20,0,0,0)
@@ -281,35 +263,33 @@ class FenetrePartie < Fenetre
 
         cacherNbErreur
 
-        @box.add( bottomBox )#ADD
+        @box.add( bottomBox )
 
         return @box
     end
 
     ##
-    # Affiche une nouvelle grille
-    # Sur la fenetre
+    # Affiche la prochaine grille sur la fenêtre (recrée une fenêtre de partie)
     def afficherNextGrille
         Fenetre.remove(@box)
         FenetrePartie.afficheToiSelec( FenetreMenu, @@maPartie )
     end
 
     ##
-    # Partie perdu
+    # Fait perdre le joueur en 1v1
     def perdre(tpsEnemi)
         @@perdu = true
         @tpsEnemi = tpsEnemi
     end
 
     ##
-    # Methode qui set l'état deco
+    # Message reçu de la déconection de l'adversaire
     def deco
         @@deco = true
     end
 
     ##
-    # Methode propre au mode 1V1
-    # permet de mettre a jour la barre de progression adverse
+    # Met à jour l'avancement de l'adversaire en 1v1
     def setAvancementEnemy(avancement)
         @progressEnemy.fraction = avancement.to_f
     end
@@ -330,8 +310,7 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Affiche un message en cas de deconnexion
-    # propre au mide 1V1 uniquement
+    # Affiche un message en cas de deconnection
     def decoMsg
         if(@@maPartie != nil)
             if(@popover != nil)
@@ -346,9 +325,7 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Activer / Desactiver les fonctions d'un
-    # btn en fonction d'un tableau qui renvoi
-    # des booleans
+    # Activer les boutons d'aide pour le mode tuto
     def activeBtnTuto( )
         tmpTabOfBtn = [ @btnSetting , @btnRedo, @btnUndo, @btnUndoUndo, @btnPlay, @btnPause, @btnHelp, @btnHelpLocation , @btnClear, @btnVerif, @btnQuit ];
         for i in 0...tmpTabOfBtn.size
@@ -357,25 +334,22 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Methode qui permet de cree
-    # la toolbar
+    # Methode qui permet de cree la toolbar comprenant les aides
     private
     def creeToolbar()
-        # BOX HORIZONTAL
         mainToolbar = Gtk::Box.new(:vertical, 0)
 
         box = Gtk::Box.new(:horizontal, 0)
         box.set_height_request(50)
-        # creation des boutons de mode de jeu
+        #Création des boutons de mode de jeu
         @btnSetting = creeBouttonToolbar("document-properties")
         @btnUndo = creeBouttonToolbar("undo");             @btnRedo = creeBouttonToolbar("redo")
         @btnUndoUndo = creeBouttonToolbar("start");@btnPlay = creeBouttonToolbar("player_play");
         @btnPause = creeBouttonToolbar("player_pause");    @btnHelp = creeBouttonToolbar("help"); @btnHelpLocation = creeBouttonToolbar("hint");
         @btnClear = creeBouttonToolbar("gtk-clear");       @btnVerif = creeBouttonToolbar("gtk-apply")
         @btnQuit = creeBouttonToolbar("gtk-quit")
-        # Disable btn att bottom of game
 
-        # SET BTN ENABLE/DISABLE
+        #Active ou désactive les boutons au démarrage
         disableBtn(@btnRedo); disableBtn(@btnUndo); disableBtn(@btnUndoUndo)
         if @@maPartie.chrono.pause
             @@maPartie.mettrePause; disableBtn(@btnPause); disableBtn(@btnHelp); disableBtn(@btnHelpLocation); disableBtn(@btnUndoUndo); disableBtn(@btnClear); disableBtn(@btnVerif);
@@ -962,7 +936,6 @@ class FenetrePartie < Fenetre
     private
     def ouvrirReglage
         removeTimout
-        @@vraiPause = false #décommenter pour reprendre en sortie de réglage même si pause avant
         cacherNbErreur
         @monCompteurErreur.set_markup("<span size='25000' ></span>")
         Fenetre.deleteChildren;
@@ -1059,7 +1032,8 @@ class FenetrePartie < Fenetre
         @@maPartie.reprendrePartie;
 
         cacherNbErreur
-         enableBtnIfNot1v1(@btnPause); @@vraiPause = false; activerBtnApresPause; @frameGrille.name = "fenetreGrille"
+        enableBtnIfNot1v1(@btnPause)
+        activerBtnApresPause; @frameGrille.name = "fenetreGrille"
         enleverNbCase
         enleverPortee(nil, nil)
         setModeGris(Sauvegardes.getInstance.getSauvegardeParametre.casesGrises?)
@@ -1099,13 +1073,16 @@ class FenetrePartie < Fenetre
     def pause
         removeTimout
         cacherNbErreur
-        @@maPartie.mettrePause;
-        @@vraiPause = true;
-        enableBtnIfNot1v1(@btnPlay);
-        disableBtn(@btnPause);     disableBtn(@btnHelp); disableBtn(@btnHelpLocation)
-        disableBtn(@btnUndoUndo);  disableBtn(@btnClear);
-        disableBtn(@btnVerif);     disableBtn(@btnUndo);
-        disableBtn(@btnRedo);
+        @@maPartie.mettrePause
+        enableBtnIfNot1v1(@btnPlay)
+        disableBtn(@btnPause)
+        disableBtn(@btnHelp)
+        disableBtn(@btnHelpLocation)
+        disableBtn(@btnUndoUndo)
+        disableBtn(@btnClear)
+        disableBtn(@btnVerif)
+        disableBtn(@btnUndo)
+        disableBtn(@btnRedo)
         enleverNbCase()
         enleverPortee(nil, nil)
         @frameGrille.name = "fenetreGrilleHide"
@@ -1152,7 +1129,7 @@ class FenetrePartie < Fenetre
                 @@maGrille[i][j].changerStatut(@@maPartie.grilleEnCours.tabCases[i][j].couleur, true)
             end
         end
-        #disableBtn(@btnUndo)
+
         disableBtn(@btnRedo)
         disableBtn(@btnUndoUndo)
         disableBtn(@btnHelpLocation)
@@ -1167,7 +1144,7 @@ class FenetrePartie < Fenetre
     # BTN EVENT VERIFIER LA GRILLE
     private
     def verifier
-        #enleverPortee(nil, nil)
+
         compteurErreur = @@maPartie.verifierErreur(true)
 
         @monCompteurErreur.name = ""
@@ -1193,7 +1170,7 @@ class FenetrePartie < Fenetre
     def quitter
         pause
         Sauvegardes.getInstance.sauvegarder()
-        #cacherNbErreur
+
         @@maPartie = nil;
         Fenetre.deleteChildren;
         FenetreMenu.afficheToi( FenetrePartie )
@@ -1216,10 +1193,6 @@ class FenetrePartie < Fenetre
         create_popover_malus(Malus::MALUS_DONNER_ERREUR)
         setTimout
     end
-
-    ##############################################################################
-    ####################### FUNCTION #############################################
-    ##############################################################################
 
     ##
     # methode qui permet de cree une

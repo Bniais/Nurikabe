@@ -1,5 +1,5 @@
 # Nom du projet : Nurikabe
-Projet développé dans le cadre du module de Génie Logiciel de 3ème année de Licence Informatique (Le Mans Université). Le but est dec concevoir et réaliser une application permettant la résolution et l'aide à la résolution de puzzles de type Nurikabe.
+Projet développé dans le cadre du module de Génie Logiciel de 3ème année de Licence Informatique (Le Mans Université). Le but est de concevoir et réaliser une application permettant la résolution et l'aide à la résolution de puzzles de type Nurikabe.
 
 ## Membres de l'équipe : 
 * BOUHANDI Asmae

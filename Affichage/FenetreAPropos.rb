@@ -1,19 +1,18 @@
 require_relative './Fenetre.rb'
 
 ##
-# Classe qui gere la fenetre 'A propos'
-#
-# Herite de la classe abstraite Fenetre
+# Classe qui gère la création de l'interface de la fenêtre 'A propos'
+# Herite de la classe Fenetre
 class FenetreAPropos < Fenetre
 
     ##
-    # Methode privee pour l'initialisation
+    # Methode pour l'initialisation
     def initialize()
         self
     end
 
     ##
-    # Methode qui permet a la fenetre de s'afficher
+    # Fait s'afficher la fenêtre à propos
     def self.afficheToi( lastView )
         Fenetre.set_subtitle( @@lg.gt("A_PROPOS") )
         Fenetre.add( FenetreAPropos.new().creationInterface( lastView ) )
@@ -22,12 +21,12 @@ class FenetreAPropos < Fenetre
     end
 
     ##
-    # Methode qui permet de creer l'interface
+    # Crée l'interface de la fenêtre à propos
     def creationInterface( lastView )
 
         box = Gtk::Box.new(:vertical)
 
-        # BACK BUTTON
+        #Bouton retour
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => @@lg.gt("RETOUR"))
@@ -36,28 +35,12 @@ class FenetreAPropos < Fenetre
         lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
-        box.add(btnBoxH) #ADD
+        box.add(btnBoxH)
 
-        # SEPARATOR
-        box.add( Gtk::Separator.new(:vertical) ) #ADD
+        #Separateur
+        box.add( Gtk::Separator.new(:vertical) )
 
-        # VUE PRINCIPAL
-        # EDIT HERE
-        # ADD CONTENT HERE IN BOX
-=begin
-        textBuff = Gtk::TextBuffer.new()
-        textBuff.text = @@lg.gt("APROPOSCONTENT")
-        textView = Gtk::TextView.new(textBuff)
-        textView.name = "text"
-        textView.set_editable(false)
-        textView.overwrite = false
-        textView.set_wrap_mode(Gtk::WrapMode::WORD)
-        textView.justification = Gtk::Justification::CENTER
-         textView.set_width_request(700)
-         textView.toggle_overwrite
-
-=end
-
+        #Texte à propos
         texte = Gtk::Label.new( @@lg.gt("APROPOSCONTENT") )
         texte.justify = Gtk::Justification::CENTER
         setmargin(texte, 0, 0, 10, 10)
@@ -70,7 +53,7 @@ class FenetreAPropos < Fenetre
     end
 
     ##
-    # Methode qui permet de gerer les marges d'un objet donne
+    # Met des marges à un objet
     private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)

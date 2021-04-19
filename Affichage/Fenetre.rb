@@ -10,20 +10,20 @@ require_relative '../Sauvegarde/StockageGrille.rb'
 # DESIGN PATTERN SINGLETON
 class Fenetre
     ##
-    # fenetre du jeu
+    #Fenêtre du jeu
     @@window = nil
 
     ##
-    # header de la fenetre
+    #Header de la fenetre
     @@header
 
     ##
-    # css du mode sombre
+    #Css du mode sombre
     @@cssProviderDarkMode = Gtk::CssProvider.new
     @@cssProviderDarkMode.load(path: "style_dark.css")
 
     ##
-    # css du mode gris
+    #Css du mode gris
     @@cssProviderGrayMode = Gtk::CssProvider.new
     @@cssProviderGrayMode.load(path: "style_gray.css")
 
@@ -31,7 +31,7 @@ class Fenetre
     @@cssProviderGrayDarkMode.load(path: "style_gray_dark.css")
 
     ##
-    # variable pour stocker la langue choisie par l'utilisateur
+    # Stocke la Langue actuelle
     @@lg = nil
 
     ##
@@ -43,19 +43,22 @@ class Fenetre
         @@window.signal_connect("destroy") { Fenetre.exit } ## EXIT SIGNAL
         @@window.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
 
+        #Creation header
         @@header = Gtk::HeaderBar.new
-        @@header.show_close_button = true;      @@header.name = "headerbar" #FOR CSS
-        @@header.title = "Nurikabe"     ;       @@header.subtitle = "-"
-        @@window.titlebar = @@header #ADD HEADER
+        @@header.show_close_button = true
+        @@header.name = "headerbar"
+        @@header.title = "Nurikabe"
+        @@header.subtitle = "-"
+        @@window.titlebar = @@header
 
+        #Initialiser les sauvegardes
         SauvegardeGrille.creer()
         Sauvegardes.creer()
-
         StockageGrille.creerGrilles()
         SauvegardeGrille.getInstance.sauvegarder()
-
         @@lg = Sauvegardes.getInstance.getSauvegardeLangue
 
+        #Initialiser le style
         provider = Gtk::CssProvider.new
         provider.load(path: "style.css")
         Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
@@ -65,7 +68,7 @@ class Fenetre
     end
 
     ##
-    # Méthode qui permet d'initialiser une seule fois une fenetre
+    # Permet d'initialiser une seule fois une fenetre
     def self.initialiseToi()
         puts @@window
         if @@window == nil
@@ -77,7 +80,7 @@ class Fenetre
 
 
     ##
-    # méthode qui permet d'afficher la fenetre
+    # Permet d'afficher la fenetre
     def self.show_all()
         if @@window == nil
             puts "Fenetre non initaliser"
@@ -87,26 +90,26 @@ class Fenetre
     end
 
     ##
-    # Méthode qui permet de changer les sous-titre de la fenetre
+    # Permet de changer les sous-titre de la fenetre
     def self.set_subtitle(subtitle)
         @@window.titlebar.subtitle  = subtitle
     end
 
     ##
-    # Méthode qui permet d'ajouter un element à la fenetre
+    # Permet d'ajouter un element à la fenetre
     def self.add(obj)
         @@window.add(obj)
     end
 
     ##
-    # Méthode qui permet de supprimer un element de la fenetre
+    # Permet de supprimer un element de la fenetre
     def self.remove(obj)
         @@window.remove(obj)
     end
 
 
     ##
-    # Méthode qui permet de supprimer toutes les classes filles sauf la headerbar
+    # Permet de supprimer toutes les classes filles sauf la headerbar
     def self.deleteChildren()
         i = 0
         while @@window.children.length > 1
@@ -118,7 +121,7 @@ class Fenetre
     end
 
     ##
-    # Méthode qui dispatch le mode sombre
+    # Met le mode sombre
     def self.setModeSombre(statut)
         provider = Gtk::CssProvider.new
         if statut
@@ -141,7 +144,7 @@ class Fenetre
     end
 
     ##
-    # Methode pour le mode gris
+    # Met le mode gris
     def self.setModeGris(statut)
         if statut
             if(Sauvegardes.getInstance.getSauvegardeParametre.modeSombre?)
@@ -157,9 +160,8 @@ class Fenetre
 
 
     ##
-    # Méthode pour quitter
+    # Quitter le jeu
     def self.exit()
-        # FAIRE DES TRUCS
         socket = Fenetre1v1.getSocket()
         if(socket!= nil)
             socket.puts("dc")
@@ -168,52 +170,8 @@ class Fenetre
         Gtk.main_quit
     end
 
-=begin
-
-    # Methode pour creer une fenetre
-    def Fenetre.creer(title)
-       new(title)
-    end
-
-    # Methode privee pour l'initialisation
-    def initialize(title)
-
-        @application = Gtk::Window.new(title)
-        @application.set_default_size(745,671)
-        @application.set_height_request(790)
-        @application.set_width_request(745)
-        @application.set_resizable(false)
-        @application.set_window_position(Gtk::WindowPosition::CENTER_ALWAYS)
-        # HEADERBAR
-        @header = Gtk::HeaderBar.new
-        @header.show_close_button = true
-        @header.name = "headerbar"
-        @header.subtitle = "t4est"
-        @application.titlebar = @header
-        @application.title = title
-
-        listenerQuitter
-        provider = Gtk::CssProvider.new
-        provider.load(path: "style.css")
-        Gtk::StyleContext.add_provider_for_screen(Gdk::Screen.default,provider, Gtk::StyleProvider::PRIORITY_APPLICATION)
-        @@window = @application
-    end
-
-        # Methode qui permet d'ouvrir la fenetre
-    def ouvrir()
-        @application.show_all
-    end
-
-    # Methode qui permet de fermer la fenetre
-    def listenerQuitter()
-        @application.signal_connect('destroy'){
-            Gtk.main_quit()
-        }
-    end
-=end
-
 end
 
-################## INITALISATION DE LA FENETRE ###################################
+################## INITALISATION DE LA FENETRE ####################
 Fenetre.initialiseToi()
 Parametre.initialiseToi()

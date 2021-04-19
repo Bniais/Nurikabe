@@ -1,20 +1,18 @@
 require_relative './Fenetre.rb'
 
 ##
-# Classe qui gere l'affichage de la fenetre 'Detail de score'
-#
-# Herite de la classe abstraite Fenetre
+# Classe qui gere la création de l'interface de la fenetre 'Detail de score'
+# Herite de la classe Fenetre
 class FenetreDetailScore < Fenetre
 
     ##
-    # Methode privee pour l'initialisation de FenetreDetailScore
+    # Methode pour l'initialisation de FenetreDetailScore
     def initialize()
         self
     end
 
     ##
-    # Methode de classe qui permet
-    # d'afficher la fentre Detail d'un score
+    # Affiche la fenêtre Detail d'un score
     def self.afficheToiSelec( lastView, numero)
         Fenetre.set_subtitle( @@lg.gt("DETAIL_SCORE") )
         Fenetre.add( FenetreDetailScore.new().creationInterface( lastView, numero ) )
@@ -23,12 +21,12 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # Methode qui permet de creer l'interface
+    # Crée l'interface du détail de score de la grille selon son numéro
     def creationInterface( lastView, numero )
         grille = SauvegardeGrille.getInstance.getGrilleAt(numero)
         box = Gtk::Box.new(:vertical)
 
-        # BACK BUTTON
+        #Bouton retour
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => @@lg.gt("RETOUR"))
@@ -40,13 +38,12 @@ class FenetreDetailScore < Fenetre
         box.add(btnBoxH) #ADD
         box.add( setmargin(Gtk::Separator.new(:horizontal) ,0,15,0,0) )
 
-        #GRILLE
+        #Grille
         hBox = Gtk::Box.new(:vertical)
         box.add(creeGrille(grille))
+        box.add( setmargin(Gtk::Separator.new(:horizontal) ,35,35,50,50) )
 
-         box.add( setmargin(Gtk::Separator.new(:horizontal) ,35,35,50,50) )
-
-        #SCORES
+        #Scores
         box.add(creeScores(grille.paliers, Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[numero][0], Sauvegardes.getInstance.getSauvegardeScore.scoresContreLaMontre[numero][1]))
 
 
@@ -54,10 +51,8 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # Methhode qui cree l'affichage
-    # des temps de jeu de maniere ordonner
-    # pour que le temps du jours soit afficher
-    # entre les temps possible
+    # Crée l'interface avec les temps de jeu de manière ordonnée
+    # Le temps du joueur est affiché entre les temps des paliers
     def creeScores(paliers, record, etoiles)
         box = Gtk::Box.new(:vertical)
         box.halign = :center
@@ -88,8 +83,7 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # Methode qui genere le code pour afficher
-    # une ligne qui comprends nbEtoile et temps associer
+    # Crée une ligne de score avec le label contenant le nombre d'étoiles et le temps à faire
     def creeLigneScore(temps, etoiles)
         box = Gtk::Box.new(:horizontal)
         box.set_homogeneous(true)
@@ -125,8 +119,7 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # Methode qui cree la grille
-    # a afficher et qui renvoi la box qui comprends la grille
+    # Crée la grille à afficher et qui renvoie la box qui comprend la grille
     def creeGrille( uneGrille )
         box = Gtk::Box.new(:vertical)
         setmargin(box,10,10,190,190)
@@ -141,11 +134,12 @@ class FenetreDetailScore < Fenetre
         # Frame exterieur pour que les rebord et la meme epaisseur
         maFrame = Gtk::Frame.new()
         maFrame.name = "fenetreGrille"
-        # grid pour placer la grille de jeu dedans
+        #Grid pour placer la grille de jeu dedans
         maGrille = Gtk::Grid.new()
         maGrille.set_height_request(300);   maGrille.set_width_request(300)
         maGrille.set_row_homogeneous(true);     maGrille.set_column_homogeneous(true)
 
+        #Boucle pour créer les cellules
         maGrilleDeJeu = uneGrille.tabCases
         for ligne in 0...maGrilleDeJeu.size
             for colonne in 0...maGrilleDeJeu.size
@@ -163,8 +157,7 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # Methode complementaire de creation de la grille
-    # elle permet de cree une cellule
+    # Crée une cellule de la grille
     def creeCelluleGrille(color)
         if color <= 0
             color = ""
@@ -177,7 +170,7 @@ class FenetreDetailScore < Fenetre
     end
 
     ##
-    # Methode qui permet de gerer les marges d'un objet donne
+    # Met des marges à un objet
     private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)

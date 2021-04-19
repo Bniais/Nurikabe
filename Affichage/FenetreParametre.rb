@@ -2,19 +2,18 @@ require_relative './Fenetre.rb'
 require_relative '../Sauvegarde/SauvegardeGrille.rb'
 
 ##
-# Classe qui gere l'affichage de la fenetre des parametres
-#
-# Herite de la classe abstraite Fenetre
+# Classe qui gere la création de l'interface de la fenêtre des paramètres
+# Herite de la classe Fenetre
 class FenetreParametre < Fenetre
 
     ##
-    # Methode privee pour l'initialisation
+    # Méthode pour l'initialisation
     def initialize()
         self
     end
 
     ##
-    # Methode qui permet d'afficher la fenetre des parametres
+    # Méthode qui permet d'afficher la fenêtre des parametres
     def self.afficheToi( lastView )
 
         Fenetre.add( FenetreParametre.new().creationInterface( lastView, false) )
@@ -25,13 +24,13 @@ class FenetreParametre < Fenetre
     end
 
     ##
-    # Methode qui gere l'affichage des parametres
+    # Crée l'interface des paramètres
     def creationInterface(lastView, fromLangue)
         Fenetre.set_subtitle(@@lg.gt("PARAMETRES"))
         @lastView = lastView
         @box = Gtk::Box.new(:vertical)
 
-        # BACK BUTTON
+        #Bouton retour
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
         btnBack = Gtk::Button.new(:label => @@lg.gt("RETOUR"))
@@ -42,21 +41,20 @@ class FenetreParametre < Fenetre
         btnBoxH.add(btnBack)
         @box.add(btnBoxH) #ADD
 
-        # SEPARATOR
+        #Separateur
         @box.add( Gtk::Separator.new(:vertical) ) #ADD
 
-        # VUE PRINCIPAL
+        #Vue principale
         @box.add( creationStack(fromLangue) ) #ADD
         return @box
     end
 
     ##
-    # Methode qui permet de creer une pile pour la gestion des differentes vues
-    # des parametres :
-    # * Jeu,
-    # * Utilisateur,
-    # * Interface,
-    # * Audio.
+    # Permet de créer une pile pour la gestion des differentes vues des paramètres :
+    # * Jeu
+    # * Utilisateur
+    # * Interface
+    # * Audio
     private
     def creationStack(fromLangue)
         box = Gtk::Box.new(:horizontal)
@@ -79,25 +77,25 @@ class FenetreParametre < Fenetre
 
         pages = [@@lg.gt("JEU"),@@lg.gt("UTILISATEUR"),@@lg.gt("INTERFACE"),@@lg.gt("AUDIO")]
 
-        # Jeu
+        #Jeu
         title = @@lg.gt("JEU")
         vueJeu = creationVueJeu
         stack.add_named(vueJeu, title) # ADD NAMED CHILDREN
         stack.child_set_property(vueJeu, "title", title) # SET A TITLE TO A CHILDREN
 
-        # Utilisateur
+        #Utilisateur
         title = @@lg.gt("UTILISATEUR")
         vueUtilisateur = creationVueUtilisateur
         stack.add_named(vueUtilisateur, title)
         stack.child_set_property(vueUtilisateur, "title", title)
 
-        # Interface
+        #Interface
         title = @@lg.gt("INTERFACE")
         vueInterface = creationVueInterface
         stack.add_named(vueInterface, title)
         stack.child_set_property(vueInterface, "title", title)
 
-         # Regles
+        #Règles
         title = @@lg.gt("REGLES")
         vueRegles = creationVueRegle
         stack.add_named(vueRegles, title)
@@ -152,7 +150,7 @@ class FenetreParametre < Fenetre
     end
 
     ##
-    # Methode qui creer la vue 'jeu'
+    #Crée la vue 'jeu'
     private
     def creationVueJeu
         box = Gtk::Box.new(:vertical)
@@ -162,14 +160,14 @@ class FenetreParametre < Fenetre
 
         box.add(title) #ADD
 
-        # AIDE COMPTEUR D'ILOT
+        #Compteur d'îlot
         @switchCompteurIlot = Gtk::Switch.new()
         @switchCompteurIlot.halign = :start
         @switchCompteurIlot.set_active( Sauvegardes.getInstance.getSauvegardeParametre.compteurIlots? )
         @switchCompteurIlot.signal_connect('notify::active') { |s|  Sauvegardes.getInstance.getSauvegardeParametre.setCompteurIlots(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("COMPTEURILOTS") + " :" , @switchCompteurIlot) ) #ADD
 
-        # AIDE AFFICHAGE PORTEE
+        #Affichage portée
         @switchAffichagePortee = Gtk::Switch.new()
         @switchAffichagePortee.halign = :start
         @switchAffichagePortee.set_active( Sauvegardes.getInstance.getSauvegardeParametre.affichagePortee? )
@@ -180,14 +178,14 @@ class FenetreParametre < Fenetre
     end
 
     ##
-    # Methode qui creer la vue 'utilisateur'
+    #Crée la vue 'utilisateur'
     private
     def creationVueUtilisateur
         box = Gtk::Box.new(:vertical)
         title = Gtk::Label.new()
         title.set_markup("<span size='25000'>"+ @@lg.gt("UTILISATEUR") +"</span>")
         setmargin(title,15,10,0,0)
-        box.add(title) # ADD
+        box.add(title)
 
         @btnDeleteSave = Gtk::Button.new(:label => @@lg.gt("SUPPRIMER_SAUVEGARDE_PARTIE_EN_COURS"))
         @btnDeleteSave.name = "btnQuitter"
@@ -197,7 +195,7 @@ class FenetreParametre < Fenetre
             @btnDeleteSave.set_sensitive(false)
         }
 
-        box.add( setmargin(@btnDeleteSave,5,5,65,65) ) #ADD
+        box.add( setmargin(@btnDeleteSave,5,5,65,65) )
 
         @btnResetParams = Gtk::Button.new(:label => @@lg.gt("RESET_PARAMETRE"))
         @btnResetParams.name = "btnQuitter"
@@ -217,7 +215,7 @@ class FenetreParametre < Fenetre
 
 
     ##
-    # Methode qui creer la vue 'interface'
+    #Crée la vue 'interface'
     private
     def creationVueInterface
         box = Gtk::Box.new(:vertical)
@@ -225,16 +223,16 @@ class FenetreParametre < Fenetre
         title.set_markup("<span size='25000'>"+@@lg.gt("INTERFACE")+"</span>")
         setmargin(title,15,10,0,0)
 
-        box.add(title) #ADD
+        box.add(title)
 
-        # DARK MORD
+        #Mode sombre
         @switchDarkMode = Gtk::Switch.new()
         @switchDarkMode.halign = :start
         @switchDarkMode.set_active( Sauvegardes.getInstance.getSauvegardeParametre.modeSombre? )
         @switchDarkMode.signal_connect('notify::active') { |s| Sauvegardes.getInstance.getSauvegardeParametre.setModeSombre(s.active?) }
         box.add( creationBoxVerticalPourVue(@@lg.gt("MODESOMBRE") + " :" , @switchDarkMode) ) #ADD
 
-        # AIDE CASES GRISES
+        #Cases grises
         @switchCaseGrises = Gtk::Switch.new()
         @switchCaseGrises.halign = :start
         @switchCaseGrises.set_active( Sauvegardes.getInstance.getSauvegardeParametre.casesGrises? )
@@ -243,7 +241,7 @@ class FenetreParametre < Fenetre
         }
         box.add( creationBoxVerticalPourVue( @@lg.gt("CASESGRISES") + " :" , @switchCaseGrises) ) #ADD
 
-        # CHOOSE LANGUE
+        #Choisir langue
         combo = Gtk::ComboBoxText.new()
         combo.wrap_width = 3
         combo.halign = :fill
@@ -265,7 +263,7 @@ class FenetreParametre < Fenetre
 
 
     ##
-    # SIGNAL CONNECT DE INTERFACE : MODE SOMBRE
+    # Signal de changement du mode sombre
     private
     def switchModeSombre(s)
         Fenetre.setModeSombre(s.active?)
@@ -273,7 +271,7 @@ class FenetreParametre < Fenetre
 
 
     ##
-    # Permet de creer un element nom + objet
+    # Crée un element avec son nom et son objet
     private
     def creationBoxVerticalPourVue( title, obj )
         box = Gtk::Box.new(:horizontal,20)
@@ -287,7 +285,7 @@ class FenetreParametre < Fenetre
     end
 
     ##
-    # Methode qui permet de gerer les marges d'un objet
+    # Permet de gerer les marges d'un objet
     private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)
@@ -298,7 +296,7 @@ class FenetreParametre < Fenetre
     end
 
     ##
-    # Methode qui creer la vue 'règles'
+    # Crée la vue 'règles'
     private
     def creationVueRegle
         box = Gtk::Box.new(:vertical)
@@ -306,7 +304,7 @@ class FenetreParametre < Fenetre
         title.set_markup("<span size='25000'>"+@@lg.gt("REGLES")+"</span>")
         setmargin(title,15,10,0,0)
 
-        box.add(title) #ADD
+        box.add(title)
 
         box.add(creeGrilleImmuable)
 
@@ -316,7 +314,7 @@ class FenetreParametre < Fenetre
     end
 
     ##
-    # Créé et retourne une grille
+    # Crée et retourne la grille d'explication des règles
     private
     def creeGrilleImmuable()
         # Frame exterieur pour que les rebord et la meme epaisseur
@@ -324,13 +322,13 @@ class FenetreParametre < Fenetre
         maFrame.name = "fenetreGrille"
         maFrame.set_margin_left(50); maFrame.set_margin_right(50); maFrame.set_margin_top(85)
 
-        # grid pour placer la grille de jeu dedans
+        #Grid pour placer la grille de règles
         @maGrilleRegle = Gtk::Grid.new()
         @maGrilleRegle.set_height_request(671-140-140);   @maGrilleRegle.set_width_request(671-140-140)
         @maGrilleRegle.set_row_homogeneous(true);     @maGrilleRegle.set_column_homogeneous(true)
 
         @maGrilleRegleBacked = SauvegardeGrille.getInstance.getGrilleAt(2).tabCases
-        # boucle pour cree la fenetre de jeu
+        #Boucle pour cree la grille
         for ligne in 0...@maGrilleRegleBacked.size
             for colonne in 0...@maGrilleRegleBacked.size
                 cell =  creeCelluleGrilleImmuable(ligne,colonne, @maGrilleRegleBacked[colonne][ligne].couleur, @maGrilleRegleBacked)

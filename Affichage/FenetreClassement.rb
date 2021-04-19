@@ -3,29 +3,28 @@ require_relative './FenetreDetailScore.rb'
 
 ##
 # Classe qui gere l'affichage de la fenetre 'Classement'
-#
-# Herite de la classe abstraite Fenetre
+# Herite de la classe Fenetre
 class FenetreClassement < Fenetre
     ##
-    # booleen de l'affichage des grilles de niveau facile
+    # Détermine si la case Facile est cochée
     @@easyActivated = true
 
     ##
-    # booleen de l'affichage des grilles de niveau moyen
+    # Détermine si la case Moyen est cochée
     @@mediumActivated = true
 
     ##
-    # booleen de l'affichage des grilles de niveau difficile
+    # Détermine si la case Difficile est cochée
     @@hardActivated = true
 
     ##
-    # Methode privee pour l'initialisation
+    # Methode pour l'initialisation
     def initialize()
         self
     end
 
     ##
-    # Methode qui permet a la fenetre du classement de s'afficher
+    # Affiche la fenêtre de classement
     def self.afficheToi( lastView )
         Fenetre.set_subtitle(@@lg.gt("CLASSEMENT"))
         Fenetre.add( FenetreClassement.new().creationInterface( lastView ) )
@@ -34,15 +33,14 @@ class FenetreClassement < Fenetre
     end
 
     ##
-    # Methode qui permet de creer l'interface :
+    # Crée l'interface :
     # * gestion de l'affichage des boutons, combobox
     # * gestion de l'affichage des grilles
     def creationInterface( lastView )
 
         box = Gtk::Box.new(:vertical)
 
-        # BACK BUTTON
-
+        #Bouton retour
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.halign = :fill
         btnBack = Gtk::Button.new(:label => @@lg.gt("RETOUR"))
@@ -63,21 +61,17 @@ class FenetreClassement < Fenetre
 
         btnBoxH.add( setmargin( boxStar, 0,0,0,20 ) )
 
-        box.add(btnBoxH) #ADD
+        box.add(btnBoxH)
 
 
-        # SEPARATOR
-        box.add( Gtk::Separator.new(:vertical) ) #ADD
+        #Seperateur
+        box.add( Gtk::Separator.new(:vertical) )
         scroll = Gtk::ScrolledWindow.new();
-
-        # VUE PRINCIPAL
-        # EDIT HERE
-        # ADD CONTENT HERE IN BOX
 
         # Box vertical pour stocker les deux box interne
         vBox = Gtk::Box.new(:vertical)
 
-        # Box qui comprends 3 radios selector
+        # Box qui comprends 3 checkBox et la comboBox
         hBoxSelector = Gtk::Box.new(:horizontal)
         hBoxSelector.set_homogeneous(false)
 
@@ -98,19 +92,19 @@ class FenetreClassement < Fenetre
         s.halign = :end
         hBoxSelector.add( s )
 
-        # gestion du bouton 'facile'
+        #Gestion du bouton 'facile'
         checkButtonEasy = Gtk::CheckButton.new(@@lg.gt("FACILE"))
         checkButtonEasy.active = @@easyActivated
         checkButtonEasy.name = "selecClassement"
         hBoxSelector.add( checkButtonEasy )
 
-        # gestion du bouton 'moyen'
+        #Gestion du bouton 'moyen'
         checkButtonMedium = Gtk::CheckButton.new(@@lg.gt("MOYEN"))
         checkButtonMedium.active = @@mediumActivated
         checkButtonMedium.name = "selecClassement"
         hBoxSelector.add( checkButtonMedium )
 
-        # gestion du bouton 'difficile'
+        #Gestion du bouton 'difficile'
         checkButtonHard = Gtk::CheckButton.new(@@lg.gt("DIFFICILE"))
         checkButtonHard.active = @@hardActivated
         checkButtonHard.name = "selecClassement"
@@ -119,7 +113,7 @@ class FenetreClassement < Fenetre
 
         vBox.add( hBoxSelector )
 
-        # gestion des evenements de la combobox (choix : contre-la-montre ou survie)
+        #Gestion des évènements de la combobox (choix : contre-la-montre ou survie)
         comboBox.signal_connect("changed"){
             if comboBox.active_text == @@lg.gt("CONTRELAMONTRE")
                 hBoxSelector.add( s )
@@ -144,14 +138,14 @@ class FenetreClassement < Fenetre
                 Fenetre.show_all
             end
         }
-        # ScrollView qui comprends les grilles
 
+        # ScrollView qui contient les grilles
         scroll.set_size_request(200, 648)
 
         boxGrille = ajouterGrille(box)
         scroll.add_with_viewport( boxGrille )
 
-        # gestion des evenements des boutons de check (choix des niveaux a afficher)
+        #Gestion des evenements des boutons de check (choix des niveaux a afficher)
         checkButtonEasy.signal_connect("clicked") {
             @@easyActivated = !@@easyActivated
             Fenetre.remove(box)
@@ -177,7 +171,7 @@ class FenetreClassement < Fenetre
     end
 
     ##
-    # Methode qui permet de gerer l'affichage pour le classement du mode 'survies'
+    # Ajoute les informations de records du mode survie à la fenêtre
     def ajouterSurvieInfo(box)
 
         hBoxSurvie = Gtk::Box.new(:horizontal , 20)
@@ -217,8 +211,7 @@ class FenetreClassement < Fenetre
     end
 
     ##
-    # Methode qui permet d'ajouter les grilles dans la fenetre
-    # en fonction de l'activation des boutons de niveau actifs
+    # Ajoute les grilles dans la fenetre en fonction de l'activation des boutons de niveau actifs
     def ajouterGrille(box)
         vBoxGrille = Gtk::Box.new(:vertical , 20)
         tabPartieEnCours = Sauvegardes.getInstance.getSauvegardePartie.getListPartieLibreEnCours
@@ -281,7 +274,7 @@ class FenetreClassement < Fenetre
     end
 
     ##
-    # Methode qui permet de changer la taille d'un label
+    # Change la taille d'un label en format titre
     def titleLabel(unLabel)
         label = Gtk::Label.new()
         label.set_markup("<span size='25000' >" + unLabel.to_s + "</span>")
@@ -289,7 +282,7 @@ class FenetreClassement < Fenetre
     end
 
     ##
-    # Methode qui permet de creer une box horizontal
+    # Crée une box horizontal qui contient les deux grilles de la ligne
     private
     def generateHbox( grille1, grille2)
         hBox = Gtk::Box.new(:horizontal,15)
@@ -304,7 +297,7 @@ class FenetreClassement < Fenetre
     end
 
     ##
-    # Methode qui permet de gerer l'affichage d'une grille
+    # Genère une frame qui contient les scores, les étoiles et la grille
     def generateFrame( uneGrille , mainBox )
         btnFrame = Gtk::Button.new()
         btnFrame.name = "bg-FenetreSelection"
@@ -321,7 +314,7 @@ class FenetreClassement < Fenetre
         title.halign = :start
 
 
-        # gestion de l'affichage des étoiles
+        #Affichage des étoiles
         stars = Gtk::Label.new()
         starTxt = ""
         for i in 0..2
@@ -346,7 +339,7 @@ class FenetreClassement < Fenetre
 
         btnFrame.add( box )#ADD
 
-        # gestion des evenements
+        #Evènements
         btnFrame.signal_connect("clicked") {
             Fenetre.remove(mainBox);
             indice = Sauvegardes.getInstance.getSauvegardePartie.getIndicePartieLibreSauvegarder(uneGrille.numero)
@@ -362,18 +355,18 @@ class FenetreClassement < Fenetre
     end
 
     ##
-    # Methode qui creer une grille
+    #Crée une grille pour l'affichage de son score
     def creeGrille( uneGrille )
-        # Frame exterieur pour que les rebord et la meme epaisseur
+        #Frame exterieur pour que les rebord et la meme epaisseur
         maFrame = Gtk::Frame.new()
         maFrame.name = "fenetreGrille"
-        # grid pour placer la grille de jeu dedans
+        #Grid pour placer la grille de jeu dedans
         maGrille = Gtk::Grid.new()
         maGrille.set_height_request(300);   maGrille.set_width_request(300)
         maGrille.set_row_homogeneous(true);     maGrille.set_column_homogeneous(true)
 
         maGrilleDeJeu = uneGrille.tabCases
-        # boucle pour cree la fenetre de jeu
+        #Boucle pour créer chaque cellule
         for ligne in 0...maGrilleDeJeu.size
             for colonne in 0...maGrilleDeJeu.size
                 cell =  creeCelluleGrille(maGrilleDeJeu[colonne][ligne].couleur )
@@ -381,7 +374,7 @@ class FenetreClassement < Fenetre
             end
         end
 
-        # ajout de la grille a la frame
+        #Ajout de la grille a la frame
         maFrame.add(maGrille)
 
 
@@ -389,7 +382,7 @@ class FenetreClassement < Fenetre
     end
 
     ##
-    # Methode qui permet de creer une cellule destinee a la grille
+    # Crée une cellule destinée à la grille
     private
     def creeCelluleGrille(color)
         if color <= 0
@@ -403,7 +396,7 @@ class FenetreClassement < Fenetre
     end
 
     ##
-    # Methode qui permet de gerer les marges d'un objet
+    # Met des marges à un objet
     private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)

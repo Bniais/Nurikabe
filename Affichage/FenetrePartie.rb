@@ -737,7 +737,7 @@ class FenetrePartie < Fenetre
             if event.event_type == Gdk::EventType::BUTTON_PRESS
                 if event.button == 1 #LEFT-CLICK
                     eventCell(handler, false)
-                elsif event.button == 3  #RIGHT-CLICK
+                elsif event.button == 3 && @@maPartie != nil && @@maPartie.getMode !=Mode::TUTORIEL   #RIGHT-CLICK
                     eventCell(handler, true)
                 end
             end

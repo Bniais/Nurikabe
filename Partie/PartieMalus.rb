@@ -40,7 +40,10 @@ class PartieMalus < Partie
     ##
     # Redéfinition de l'aide d'indice, en ajoutant un malus
     def donneIndice()
-        ajouterMalus(Malus::MALUS_INDICE)
-        super()
+        res = super()
+        if res != nil
+            ajouterMalus(Malus::MALUS_INDICE)
+        end
+        return res
     end
 end

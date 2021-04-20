@@ -216,8 +216,8 @@ class StockageGrille
                 [Case.creer(Couleur::BLANC, 0, 1), Case.creer(Couleur::NOIR, 1, 1), Case.creer(Couleur::NOIR, 2, 1), Case.creer(Couleur::NOIR, 3, 1), Case.creer(Couleur::NOIR, 4, 1), Case.creer(Couleur::ILE_3, 5, 1)],
                 [Case.creer(Couleur::NOIR, 0, 2), Case.creer(Couleur::NOIR, 1, 2), Case.creer(Couleur::BLANC, 2, 2), Case.creer(Couleur::NOIR, 3, 2), Case.creer(Couleur::ILE_1, 4, 2), Case.creer(Couleur::NOIR, 5, 2)],
                 [Case.creer(Couleur::BLANC, 0, 3), Case.creer(Couleur::NOIR, 1, 3), Case.creer(Couleur::ILE_2, 2, 3), Case.creer(Couleur::NOIR, 3, 3), Case.creer(Couleur::NOIR, 4, 3), Case.creer(Couleur::NOIR, 5, 3)],
-                [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::ILE_9, 1, 4), Case.creer(Couleur::NOIR, 2, 4), Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::NOIR, 4, 4), Case.creer(Couleur::NOIR, 5, 4)],
-                [Case.creer(Couleur::BLANC, 0, 5), Case.creer(Couleur::BLANC, 1, 5), Case.creer(Couleur::BLANC, 2, 5), Case.creer(Couleur::BLANC, 3, 5), Case.creer(Couleur::BLANC, 4, 5), Case.creer(Couleur::BLANC, 5, 5)]
+                [Case.creer(Couleur::BLANC, 0, 4), Case.creer(Couleur::ILE_9, 1, 4), Case.creer(Couleur::NOIR, 2, 4), Case.creer(Couleur::NOIR, 3, 4), Case.creer(Couleur::BLANC, 4, 4), Case.creer(Couleur::NOIR, 5, 4)],
+                [Case.creer(Couleur::BLANC, 0, 5), Case.creer(Couleur::BLANC, 1, 5), Case.creer(Couleur::BLANC, 2, 5), Case.creer(Couleur::BLANC, 3, 5), Case.creer(Couleur::BLANC, 4, 5), Case.creer(Couleur::NOIR, 5, 5)]
             ], [80,65,40]) )
 
             Sauvegardes.getInstance.getSauvegardeScore.ajouterGrille

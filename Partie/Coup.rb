@@ -12,14 +12,12 @@ class Coup
 
   ##
   # Constructeur de la class Coup
-  # methode qui permet d'appeler
-  # new sous un autre nom
   def Coup.creer(case_, couleur, couleurBase)
     new(case_, couleur, couleurBase)
   end
 
   ##
-  #Constructeur de Coup
+  # Initialise le coup en spécifiant la case, la couleur et la couleur de base
   def initialize(case_, couleur, couleurBase)
     @case, @couleur, @couleurBase = case_, couleur, couleurBase
   end

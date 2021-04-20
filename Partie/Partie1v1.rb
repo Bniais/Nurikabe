@@ -105,13 +105,13 @@ class Partie1v1 < Partie
         end
         return [peutRetourArriere?, coupPrecedent.case]
       end
-      return nil#Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
+      return nil
     end
   end
 
   ##
-  #Remet a 0 une grille
-  def raz()#TOTEST
+  # Remet a 0 une grille en prévenant l'adversaire du nouvel avancement
+  def raz()
     @grilleRaz = Marshal.load(Marshal.dump(@grilleEnCours))
     @indiceCoupRaz = Marshal.load(Marshal.dump(@indiceCoup))
     @tabCoupRaz = Marshal.load(Marshal.dump(@tabCoup))

@@ -6,7 +6,7 @@ class Malus
 	MALUS_VERIFICATION = 10
 
 	##
-	# Malus pour avoir utilisé l'aide d'affichage d'erreur
+	# Malus pour avoir utilisé l'aide de localisation d'erreur
 	MALUS_DONNER_ERREUR = 15
 
 	##
@@ -18,8 +18,8 @@ class Malus
 	MALUS_INDICE = 15
 
 	##
-   	# Malus pour avoir utilisé une deuxième fois l'indice
-	MALUS_INDICE_POS = 20 #donner localisation de l'indice
+   	# Malus pour avoir utilisé une deuxième fois l'indice (localisation de l'indice)
+	MALUS_INDICE_POS = 20 
 
 	private_class_method :new
 end

@@ -12,28 +12,27 @@ require_relative 'SauvegardeScore.rb'
 class Sauvegardes
 
     ##
-    # Variable de classe :
-     #@@instanceSauvegarde => Instance de Sauvegarde
+    #@@instanceSauvegarde => Instance de Sauvegarde
     @@instanceSauvegarde = nil
 
     ##
-    # sauvegarde des parties
+    # Sauvegarde des parties
     @sauvegardePartie = nil
 
     ##
-    # sauvegarde des parametres
+    # Sauvegarde des parametres
     @sauvegardeParametre = nil
 
     ##
-    # sauvegarde des scores
+    # Sauvegarde des scores
     @sauvegardeScore = nil
 
     ##
-    # sauvegarde de la langue choisie
+    # Sauvegarde de la langue choisie
     @sauvegardeLangue = nil
 
     ##
-    # Constructeur de Sauvegardes
+    # Initialise la sauvegarde, en récuperant les différentes sauvegardes ou en les créant si elles n'existent pas
     def initialize()
         if File.exist?("../Sauvegarde/save.dump") == true
             @@instanceSauvegarde = Marshal.load( File.binread( "../Sauvegarde/save.dump" ) )
@@ -50,8 +49,8 @@ class Sauvegardes
         @@instanceSauvegarde
     end
 
-     ##
-    # Recupère le chemin d'un fichier de sauvegardes
+    ##
+    # Constructeur de Sauvegardes
     def self.creer()
         if @@instanceSauvegarde == nil
             new()
@@ -59,13 +58,13 @@ class Sauvegardes
     end
 
     ##
-    # Retourne la variable de classe d'instance de sauvegardes
+    # Retourne l'unique instance de sauvegarde
     def self.getInstance()
         return @@instanceSauvegarde
     end
 
     ##
-    # Sauvegarde les sauvegardes dans un chemin spécifique, ou dans un dossier préfait
+    # Sauvegarde les différentes données de l'utilisateur
     def sauvegarder()
         File.open("../Sauvegarde/save.dump", "wb") { |f| 
             f.write(Marshal.dump(@@instanceSauvegarde) ) 
@@ -73,7 +72,7 @@ class Sauvegardes
     end
 
     ##
-    # Renvoie une sauvegarde de Partie
+    # Renvoie l'unique instance de sauvegardes de partie, ou la crée si elle n'existe pas
     def getSauvegardePartie()
         if @sauvegardePartie == nil
             @sauvegardePartie = SauvegardesParties.new()
@@ -84,7 +83,7 @@ class Sauvegardes
     end
 
     ##
-    # Renvoie une sauvegarde de Parametre
+    # Renvoie l'unique instance de sauvegardes de paramètre, ou la crée si elle n'existe pas
     def getSauvegardeParametre()
         if @sauvegardeParametre == nil
             @sauvegardeParametre = Parametre.initialiseToi()
@@ -94,7 +93,7 @@ class Sauvegardes
     end
 
     ##
-    # Renvoie une sauvegarde de Score
+    # Renvoie l'unique instance de sauvegardes de score, ou la crée si elle n'existe pas
     def getSauvegardeScore()
         if @sauvegardeScore == nil
             @sauvegardeScore = SauvegardesScore.new()
@@ -104,7 +103,7 @@ class Sauvegardes
     end
 
     ##
-    # Renvoie une sauvegarde de Score
+    # Renvoie l'unique instance de sauvegardes de la langue actuelle, ou la crée si elle n'existe pas
     def getSauvegardeLangue
         if @sauvegardeLangue == nil
             @sauvegardeLangue = Langue.creer()

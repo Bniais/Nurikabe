@@ -1,21 +1,19 @@
 ##
-# Classe qui gere la sauvegarde de partie
+# Classe qui gère la sauvegarde de partie
 class SauvegardesParties
 
     ##
-    # Variable d'instance :
-    # @mesParties => Tableau qui contient des instances de Partie
+    # @mesParties => Tableau qui contient des sauvegardes de Partie
     @mesParties = nil
 
     ##
-    # Constructeur de SauvegardesPartie
+    # Initialise la sauvegarde de partie avec un tableau de parties vide
     def initialize()
         @mesParties = Array.new
     end
 
     ##
-    # Methode qui re initialise toute 
-    # les sauvegardes de Partie
+    # Supprime toutes les sauvegardes de parties, sauf celle en cours (passée en paramètre)
     def resetAll(unePartie)
         @mesParties = Array.new
         if(unePartie != nil)
@@ -24,7 +22,7 @@ class SauvegardesParties
     end
 
     ##
-    # Retourne une partie du table à un indice en paramètre
+    # Retourne la partie présente à un indice donné
     def getPartie( indice )
         return @mesParties[indice]
     end
@@ -47,8 +45,7 @@ class SauvegardesParties
     end
 
     ##
-    # Methode qui permet de renvoyer un tableau 
-    # qui indique si une grille est en cours ou pas
+    # Renvoie un tableau de booleen qui indique si une grille est en cours ou pas
     def getListPartieLibreEnCours()
         monTab = Array.new( SauvegardeGrille.getInstance.getNombreGrille + 1 ) {false}
         for i in 0...nbPartieSauvegarder
@@ -58,10 +55,9 @@ class SauvegardesParties
         end
         return monTab
     end
+
     ##
-    # Methode qui permet de retrouver si une sauvegarde
-    # existe pour un numero de grille particulier
-    # pour le mode libre
+    # Permet de retrouver si une sauvegarde existe pour un numéro de grille particulié pour le mode libre
     def getIndicePartieLibreSauvegarder( numGrille )
         indice = -1;
         for i in 0...nbPartieSauvegarder

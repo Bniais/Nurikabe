@@ -1,29 +1,29 @@
 require_relative './Fenetre.rb'
 
 ##
-# Classe qui gere la fenetre de selection des grilles en mode Libre
+# Classe qui gère la création de l'interface de la fenêtre de sélection
+# Herite de la classe Fenetre
 class FenetreSelection < Fenetre
     ##
-    # booleen de l'affichage des grilles de niveau facile
+    # Détermine si la case Facile est cochée
     @@easyActivate = true
 
     ##
-    # booleen de l'affichage des grilles de niveau moyen
+    # Détermine si la case Moyen est cochée
     @@mediumActivate = true
 
     ##
-    # booleen de l'affichage des grilles de niveau difficile
+    # Détermine si la case Difficile est cochée
     @@hardActivate = true
 
     ##
-    # Constructeur de FenetreSelection
+    # Methode pour l'initialisation
     def initialize()
         self
     end
 
     ##
-    # Methode qui permet d'appeler
-    # et afficher la Fenetre de Selection de grille
+    # Afficher la Fenetre de Selection de grille
     def self.afficheToi( lastView )
         Fenetre.set_subtitle(@@lg.gt("SELECTION_MODE_LIBRE"))
         Fenetre.add( FenetreSelection.new().creationInterface( lastView ) )
@@ -32,12 +32,12 @@ class FenetreSelection < Fenetre
     end
 
     ##
-    # Initialise tous éléments de la fenêtre de selections
+    # Crée l'interface de la Selection de grille
     def creationInterface( lastView )
 
         box = Gtk::Box.new(:vertical)
 
-        # BACK BUTTON
+        #Bouton retour
 
         btnBoxH = Gtk::ButtonBox.new(:horizontal)
         btnBoxH.layout = :start
@@ -47,19 +47,15 @@ class FenetreSelection < Fenetre
         lastView == nil ? btnBack.set_sensitive(false) : btnBack.set_sensitive(true)
         setmargin(btnBack,5,5,5,0)
         btnBoxH.add(btnBack)
-        box.add(btnBoxH) #ADD
+        box.add(btnBoxH)
 
-        # SEPARATOR
-        box.add( Gtk::Separator.new(:vertical) ) #ADD
-
-        # VUE PRINCIPAL
-        # EDIT HERE
-        # ADD CONTENT HERE IN BOX
+        #Separateur
+        box.add( Gtk::Separator.new(:vertical) )
 
         # Box vertical pour stocker les deux box interne
         vBox = Gtk::Box.new(:vertical)
 
-        # Box qui comprends 3 radios selector
+        # Box qui comprends 3 checkBox
         hBoxSelector = Gtk::Box.new(:horizontal)
         hBoxSelector.set_homogeneous(true)
 
@@ -81,7 +77,7 @@ class FenetreSelection < Fenetre
         vBox.add( hBoxSelector )
 
 
-        # ScrollView qui comprends les grilles
+        # ScrollView qui contient les grilles
         scroll = Gtk::ScrolledWindow.new();
         scroll.set_size_request(200, 660)
 
@@ -115,8 +111,7 @@ class FenetreSelection < Fenetre
 
 
     ##
-    # Methode qui ajoute
-    # une grille a la liste de selection
+    # Ajoute une grille a la liste de grilles sélectionnables
     def ajouterGrille(box )
         vBoxGrille = Gtk::Box.new(:vertical , 20)
 
@@ -177,7 +172,7 @@ class FenetreSelection < Fenetre
     end
 
     ##
-    # Ajoute un titre à la fenêtre
+    # Met un texte au format titre (augmente sa taille)
     def titleLabel(unLabel)
         label = Gtk::Label.new()
         label.set_markup("<span size='25000' >" + unLabel.to_s + "</span>")
@@ -200,11 +195,7 @@ class FenetreSelection < Fenetre
     end
 
     ##
-    # Methode qui genere une frame
-    # qui comprendra le numero de grille
-    # le statut en cours ou nom
-    # la grille et son lien vers le lancement
-    # de la partie
+    # Génère une frame qui contient le numéro de grille, la grille, et une image si une sauvegarde existe
     def generateFrame( uneGrille , mainBox , numero , enCours )
         btnFrame = Gtk::Button.new()
         btnFrame.name = "bg-FenetreSelection"
@@ -245,7 +236,7 @@ class FenetreSelection < Fenetre
 
         box.add(  setmargin( creeGrille( uneGrille) , 0 , 5 , 0 , 0 ) )
 
-        btnFrame.add( box )#ADD
+        btnFrame.add( box )
 
         btnFrame.signal_connect("clicked") {
             Fenetre.remove(mainBox);
@@ -272,18 +263,18 @@ class FenetreSelection < Fenetre
     end
 
     ##
-    # Methode qui cree une grille
+    # Methode qui cree une grille à afficher dans la selection
     def creeGrille( uneGrille )
         # Frame exterieur pour que les rebord et la meme epaisseur
         maFrame = Gtk::Frame.new()
         maFrame.name = "fenetreGrille"
-        # grid pour placer la grille de jeu dedans
+        # grid pour placer les cellules
         maGrille = Gtk::Grid.new()
         maGrille.set_height_request(300);   maGrille.set_width_request(300)
         maGrille.set_row_homogeneous(true);     maGrille.set_column_homogeneous(true)
 
         maGrilleDeJeu = uneGrille.tabCases
-   #     # boucle pour cree la fenetre de jeu
+        ## boucle pour créer les cellules
         for ligne in 0...maGrilleDeJeu.size
             for colonne in 0...maGrilleDeJeu.size
                 cell =  creeCelluleGrille(maGrilleDeJeu[colonne][ligne].couleur )
@@ -291,7 +282,7 @@ class FenetreSelection < Fenetre
             end
         end
 
-  #      # ajout de la grille a la frame
+        ## ajout de la grille a la frame
         maFrame.add(maGrille)
 
 
@@ -299,7 +290,7 @@ class FenetreSelection < Fenetre
     end
 
     ##
-    # Methode qui permet de créer une cellule destinée a la grille
+    # Crée une cellule destinée a la grille
     private
     def creeCelluleGrille(color)
         if color <= 0
@@ -313,7 +304,7 @@ class FenetreSelection < Fenetre
     end
 
     ##
-    # Retourne un objet positionné grâce aux différents attributs (top,bottom,left,right)
+    # Met des marges à un objet
     private
     def setmargin( obj , top, bottom, left, right)
         obj.set_margin_top(top)

@@ -1,16 +1,17 @@
 ##
 # Classe qui représente le mode de jeu Contre la montre
+# Est une partieMalus
 class PartieContreLaMontre < PartieMalus
   private_class_method :new
 
   ##
-  # Creer un partie contre la montre en prenant en compte les sauvegardes
+  # Constructeur de PartieContreLaMontre
   def PartieContreLaMontre.creer(grille)
     new(grille)
   end
 
   ##
-  # Constructeur de PartieContreLaMontre
+  # Initialise la partie sans changement par rapport à une partie malus (et donc libre)
   def initialize(grille)
       super(grille)
   end
@@ -22,7 +23,7 @@ class PartieContreLaMontre < PartieMalus
   end
 
   ##
-  # Retourne le nombre de récompenses de la partie actuelle
+  # Retourne le nombre de récompenses avec le temps actuel
   def getNbRecompense
     @grilleBase.getNbRecompense(@chrono.time)
   end

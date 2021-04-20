@@ -15,7 +15,7 @@ class PartieMalus < Partie
     end
 
     ##
-    # Redéfinition de la verification des erreurs
+    # Redéfinition de la verification des erreurs, en ajoutant un malus
     def verifierErreur(fromUser)
         if(fromUser)
             ajouterMalus(Malus::MALUS_VERIFICATION)
@@ -24,21 +24,21 @@ class PartieMalus < Partie
     end
 
     ##
-    #Donne la position de l'erreur au joueur
+    # Redéfinition de l'indice sur la position de l'erreur, en ajoutant un malus
     def donnerErreur()
         ajouterMalus(Malus::MALUS_DONNER_ERREUR)
         super()
     end
 
     ##
-    #Revient a la dernière bonne position de jeu
+    #Redéfinition de l'aide de retour à la dernière bonne position de jeu, en ajoutant un malus
     def revenirPositionBonne()
         ajouterMalus(Malus::MALUS_POS_BONNE)
         super()
     end
 
     ##
-    #Donne un indice sur le meilleur coup a jouer
+    # Redéfinition de l'aide d'indice, en ajoutant un malus
     def donneIndice()
         ajouterMalus(Malus::MALUS_INDICE)
         super()

@@ -1,5 +1,5 @@
 ##
-# Classe d'objet qui stock toutes les grilles du jeu
+# Classe qui stocke toutes les grilles du jeu
 class StockageGrille
 
     ##

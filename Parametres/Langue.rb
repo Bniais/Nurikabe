@@ -4,19 +4,18 @@ class Langue
     ##
     # Variables d'instance :
     # @langues => Tableau qui contient les différentes langues
-    # @langueActuelle => nom de la langue
-    # @dico => tableau de hashage
+    # @langueActuelle => nom de la langue actuelle
+    # @dico => tableau de hashage pour avoir les textes du jeu
     attr_reader :langues, :langueActuelle, :dico
 
     private_class_method :new
 
     ##
-    # Variable de classe monInstance
-    # Représente une instance de Langue
+    # Contient l'unique instance de langue
     @@monInstance = nil
 
     ##
-    # Methode qui permet de creer une grille
+    # Constructeur de langue, en singleton
     def Langue.creer()
         if (@@monInstance == nil)
           @@monInstance = new()
@@ -26,7 +25,7 @@ class Langue
     end
 
     ##
-    # Getter de la variable de classe @@monInstance
+    # Accesseur de l'unique instance
     def self.getInstance()
       return @@monInstance
     end
@@ -39,7 +38,8 @@ class Langue
     end
 
     ##
-    # Methode privee pour l'initialisation
+    # Methode pour l'initialisation de l'instance de langue, en créant les différents dico.
+    # N'est appelé que si la sauvegarde n'a pas de langue (donc sauvegarde inexistante ou corrompue)
     def initialize()
 
       @dico = Hash.new
@@ -509,14 +509,14 @@ STER Maxime
     end
 
     ##
-    # A COMPLETER
+    # Sauvegarde un dico contenant une langue en particulier
     def tmpSaver (chemin)
       File.open(chemin, "wb") { |f| f.write(Marshal.dump(@dico) ) }
       @dico =  Marshal.load( File.binread(chemin) )
     end
 
     ##
-    # A COMPLETER
+    # Obtient le texte lié à la clé de hashage passé en paramètre, ou UNDEF si le texte n'existe pas
     def gt(text)
       if ( @dico[text] == nil )
         return "UNDEF " + text.to_s

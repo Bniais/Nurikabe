@@ -10,35 +10,35 @@ class Grille
 	# @paliers => paliers de temps pour les étoiles
     attr_reader :numero, :tabCases, :paliers
 
+	private_class_method :new
+
     ##
-    # Methode qui permet de creer une grille
+    # Constructeur de la grille
     def Grille.creer(numero, tabCases, paliers)
 		new(numero, tabCases, paliers)
     end
 
     ##
-    # Methode privee pour l'initialisation
+    # Methode d'initialisation en spécifiant le numéro de grille, le tableau de cases, et les paliers des étoiles
     def initialize(numero, tabCases, paliers)
 		@numero, @tabCases, @paliers = numero, tabCases, paliers
     end
 
     ##
-    # Methode qui remet a zero la grille
+    # Remet à zéro la grille
     def raz()
 		for i in 0..tabCases.size-1
 			for j in 0..tabCases.size-1
-				if tabCases[i][j].couleur == Couleur::BLANC || tabCases[i][j].couleur == Couleur::NOIR   # -1 = couleur blanche
-					tabCases[i][j].couleur = Couleur::GRIS                                                 # -2 = couleur grise
-				end                                                                                     # -3 = couleur noir
+				if tabCases[i][j].couleur == Couleur::BLANC || tabCases[i][j].couleur == Couleur::NOIR
+					tabCases[i][j].couleur = Couleur::GRIS
+				end
 			end
 		end
     end
 
 
 	##
-	# Methode qui permet de
-	# retourner le pourcentage
-	# de complexion d'une grille
+	# Obtient le pourcentage de complétion de la grille selon la grilleCmp
 	def getPourcentage(grilleCmp, caseIgn)
 		nbCase = 0.0
 		nbSame = 0.0
@@ -57,7 +57,7 @@ class Grille
 
 
     ##
-    #Retourne le nombre de récompenses du joueur
+    #Retourne le nombre de récompenses selon le temps passé en paramètre
 	def getNbRecompense(tps)
 		for i in 0..2
 		if(paliers[2-i] >= tps)
@@ -68,7 +68,7 @@ class Grille
 	end
 
     ##
-    #Renvoie le nombre d'erreur dans la grille
+    # Renvoie le nombre de différences entre cette grille et la grilleCmp en ignorant les cases grises
     def nbDifference(grilleCmp)
 		#return int
 		erreur = 0
@@ -86,9 +86,8 @@ class Grille
     end
 
     ##
-    # Methode qui permet de renvoyer le nombre d'erreur dans la grille avec un if moins contrainiant
+    # Renvoie le nombre de différences entre cette grille et la grilleCmp 
 	def nbDifferenceBrut(grilleCmp)
-		#return int
 		erreur = 0
 		for i in 0..tabCases.size - 1
 			for j in 0..tabCases.size - 1
@@ -103,9 +102,9 @@ class Grille
     end
 
     ##
-    #Renvoie la premiere erreur trouver dans la grille
+    # Renvoie la première différence entre cette grille et la grilleCmp.
+	# Parcours de gauche à droite et haut en bas
     def firstDifference(grilleCmp)
-		#return case
 		for i in 0..tabCases.size - 1
 			for j in 0..tabCases.size - 1
 				if tabCases[i][j].couleur != Couleur::GRIS && tabCases[i][j].couleur != grilleCmp.tabCases[i][j].couleur

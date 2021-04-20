@@ -12,13 +12,13 @@ class Chrono
     attr_reader :pause, :time
 
     ##
-    #Crée un chrono initialisé au temps 0
+    # Constructeur du chrono
     def Chrono.creer()
       new()
     end
 
     ##
-    # Constructeur du chrono
+    # Initialisation du chrono, en mettant le temps à 0
     def initialize()
       @pause = false
       @time = 0
@@ -26,9 +26,7 @@ class Chrono
     end
 
     ##
-    # Methode qui incremente le chronometre
-    # Elle fait la difference entre le temps
-    # de depart et le temps actuel
+    # Incremente le chronometre selon la différence de temps entre ce moment et le dernier appel de top
     def top()
       if(!@pause)
         ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
@@ -84,7 +82,7 @@ class Chrono
     end
 
     ##
-    # Retourne un temps passé en paramètre sous forme de String
+    # Retourne un temps passé en paramètre sous forme de String avec les millième de secondes
     def self.getTpsFormatPrecis(floatTps)
       if(floatTps == -1)
         return Sauvegardes.getInstance.getSauvegardeLangue.gt("AUCUN_TEMPS")

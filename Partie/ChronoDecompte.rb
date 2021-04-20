@@ -6,22 +6,20 @@ class ChronoDecompte < Chrono
     CHRONO_BASE_DECOMPTE = 5*60 #5mins
 
     ##
-    # Crée un chronometre avec un decompte de 5 minutes
+    # Constructeur de ChronoDecompte
     def ChronoDecompte.creer()
       new()
     end
 
     ##
-    # Constructeur de ChronoDecompte
+    # Initialise le chrono en mettant le temps à un temps fixe
     def initialize()
       super()
       @time = CHRONO_BASE_DECOMPTE
     end
 
     ##
-    # Methode qui decremente le minuteur
-    # Elle fait l'addition de la difference entre le temps
-    # de depart et le temps actuel
+    # Décremente le chronomètre selon la différence de temps entre ce moment et le dernier appel de top
     def top()
       if(!@pause)
         ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
@@ -44,7 +42,7 @@ class ChronoDecompte < Chrono
     end
 
     ##
-    #Retourne le temps sous forme de String
+    #Retourne le temps sous forme de String (arrondi différemment)
     def getTemps()
       top()
       return format("%02d", (@time.ceil/60).to_s) + ":" + format("%02d", (@time.ceil%60).to_s)

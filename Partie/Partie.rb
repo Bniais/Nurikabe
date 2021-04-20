@@ -21,55 +21,54 @@ class Partie
   private_class_method :new
 
   ##
-  #Constructeur de Grille
+  # Initialise la partie en mettant à zéro le tableau de coup, en inisitalisant le chrono, et spécifiant la grille de base
   def initialize(grille) #Créer une nouvelle partie
     @grilleBase = grille
     @grilleRaz = nil
     @tabCoup = Array.new(0);
     @tabCoupRaz = nil
 
-    @nbAideUtilise = 0
     @indiceCoup = 0
     @indiceCoupRaz = nil
     @chrono = Chrono.creer()
     @chrono.demarrer()
 
-    @grilleEnCours = Marshal.load( Marshal.dump(grille) ) #verif que ça marche
-    @grilleEnCours.raz() #recommence à 0, ne pas faire en cas de sauvegarde trouvée
+    @grilleEnCours = Marshal.load( Marshal.dump(grille) )
+    @grilleEnCours.raz()
   end
 
   ##
-  #Retourne le mode de la partie
+  # Retourne le mode de la partie
   def getMode()
     return Mode::LIBRE
   end
 
   ##
-  #Retourne le nombre de grille réalisées
+  # Retourne le nombre de grille réalisées
   def getNbGrilleFinis
       return 0
   end
 
   ##
-  # Methode qui creer une grille et prends en compte les sauvegardes
+  # Constructeur d'une partie
   def Partie.creer(grille)
     new(grille)
   end
 
   ##
-  # Methode qui permet de savoir si le retour en arriere est possible
+  # Permet de savoir si le retour en arrière est possible 
   def peutRetourArriere?()
     return @indiceCoup > 0 || @grilleRaz != nil
   end
 
   ##
-  # Methode qui permet de savoir si le joueur peut utiliser le retour en arriere
+  # Permet de savoir si le joueur peut utiliser le retour en arrière après la remise à zéro de la grille
   def peutRetourArriereReelAhky?()
-    return @indiceCoupRaz != nil && @indiceCoupRaz > 0;
+    return @indiceCoupRaz != nil;
   end
 
   ##
-  # Methode qui retourne en arrière (le coup)
+  # Methode qui retourne en arrière
   def retourArriere()#TOTEST
     if(@grilleRaz != nil)
       @grilleEnCours = Marshal.load(Marshal.dump(@grilleRaz))
@@ -84,22 +83,22 @@ class Partie
         @grilleEnCours.tabCases[coupPrecedent.case.positionY][coupPrecedent.case.positionX].couleur = coupPrecedent.couleurBase
 
         @indiceCoup -= 1 #On passe au coup précédent
-        return [peutRetourArriere?, coupPrecedent.case]
+         return [peutRetourArriere?, coupPrecedent.case] #retourne un booleen indiquant si l'on peut contiener de retourner en arrière et la case concernée
       end
-      return nil#Pour dire aux fonctions appelantes qu'on ne pourra plus aller en arrière
     end
+
+    return nil
   end
 
   ##
   #Permet de savoir si le joueur peut effectuer un retour avant
-  #Renvoie un booléen
   def peutRetourAvant?()
     return @indiceCoup < @tabCoup.size
   end
 
   ##
-  # Methode qui revient en avant(le coup)
-  def retourAvant()#TOTEST
+  # Revient en avant
+  def retourAvant()
     if(@indiceCoup < @tabCoup.size) #vérification normalement inutile puisque le bouton devrait être disable
       #On annule en passant au coup suivant
       coupSuivant = @tabCoup.at(@indiceCoup)
@@ -109,36 +108,37 @@ class Partie
       @indiceCoup += 1 #On passe au coup suivant
     end
 
-    return [peutRetourAvant?, coupSuivant.case] #Pour dire aux fonctions appelantes si on peut encore aller en avant
+    return [peutRetourAvant?, coupSuivant.case] #retourne un booleen indiquant si l'on peut contiener de retourner en avant et la case concernée
   end
 
   ##
-  # Methode qui met en pause la partie
-  def mettrePause()#TOTEST
+  # Met en pause la partie
+  def mettrePause()
     @chrono.mettreEnPause()
   end
 
-  #Methode qui reprend la partie
-  def reprendrePartie()#TOTEST
+  ##
+  # Reprend la partie
+  def reprendrePartie()
     @chrono.demarrer()
   end
 
   ##
-  #Tire la prochaine grille
+  # Tire la prochaine grille
   def grilleSuivante()
     @grilleRaz = nil
-    return nil #pas de prochaine
+    return nil
   end
 
   ##
-  # Methode qui retourne le nombre de recompenses
+  # Retourne le nombre de recompenses
   def getNbRecompense
     return 0
   end
 
   ##
-  # Methode qui ajoute un coup
-  def ajouterCoup(coup)#TOTEST
+  # Methode qui ajoute un coup en modifiant la grille
+  def ajouterCoup(coup)
     if(coup.couleur != coup.case.couleur && coup.couleur < Couleur::ILE_1)
       coup.case.couleur = coup.couleur
       @grilleRaz = nil
@@ -153,7 +153,7 @@ class Partie
 
   ##
   #Remet a 0 une grille
-  def raz()#TOTEST
+  def raz()
     @grilleRaz = Marshal.load(Marshal.dump(@grilleEnCours))
     @indiceCoupRaz = Marshal.load(Marshal.dump(@indiceCoup))
     @tabCoupRaz = Marshal.load(Marshal.dump(@tabCoup))
@@ -165,26 +165,26 @@ class Partie
 
 
   ##
-  # Methode qui permet de savoir si la grille est terminee
+  # Methode qui permet de savoir si la grille est terminée
   def partieTerminee?()
     return @grilleEnCours.nbDifferenceBrut(@grilleBase) == 0
   end
 
   ##
-  # Methode qui ajoute un malus
-  def ajouterMalus(n)#TOTEST
+  # Ajoute un malus
+  def ajouterMalus(n)
     @chrono.ajouterMalus(n)
   end
 
   ##
-  #Affiche le nombre de blocs
-  def afficherNbBloc(case_)#TOTEST
+  # Retourne le nombre de cases blanches et d'îles liées à la case passée en paramètre, et un tableau de booleens qui indique si chaque case est liée à cette case ou non
+  def afficherNbBloc(case_)
     vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)}
     return [nbCaseIle(case_, vu), vu]
   end
 
   ##
-  # Methode qui permet d'afficher la portee d'une ile
+  # Methode qui permet d'afficher la portee d'une ile en retournant un tableau qui indique si chaque case est dans la portée de l'île en position i,j
   def porteeIle(i, j)
     vu = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)}
     depth = 0
@@ -227,20 +227,20 @@ class Partie
   end
 
   ##
-  #Verifie l'erreur
-  def verifierErreur(fromUser)#TOTEST
+  # Retourne le nombre d'erreurs
+  def verifierErreur(fromUser)
     return @grilleEnCours.nbDifference(@grilleBase)
   end
 
   ##
-  #Donne la position de l'erreur au joueur
-  def donnerErreur()#TOTEST
+  #Donne la position d'une erreur
+  def donnerErreur()
     return @grilleEnCours.firstDifference(@grilleBase)
   end
 
   ##
-  #Revient a la dernière bonne position de jeu
-  def revenirPositionBonne() #TOTEST
+  # Revient à la dernière bonne position de jeu
+  def revenirPositionBonne()
     while verifierErreur(false) != 0 && retourArriere()[0] == true
       #Retour en arrière tant que c'est encore possible et que la grille est fausse
     end
@@ -249,10 +249,8 @@ class Partie
   end
 
   ##
-  #Donne un indice sur un coup a jouer
+  # Donne un indice sur un coup à jouer
   def donneIndice()
-    #Verifier différents cas où une technique peut être appliquée, optimiser en parcourant la grille qu'une fois ?
-
     result = nil
 
     #1. Island of 1
@@ -291,7 +289,7 @@ class Partie
     end
 
     #6. Surrounded square
-    result = indiceCaseIsolee() #DOESNT ALWAYS FIND
+    result = indiceCaseIsolee()
 
     if(result != nil)
       return result
@@ -312,7 +310,7 @@ class Partie
     end
 
     #13. Unreachable square
-    result = indiceInatteignable()#DOESNT ALWAYS FIND
+    result = indiceInatteignable()
 
      if(result != nil)
       return result
@@ -341,7 +339,7 @@ class Partie
   end
 
   ##
-  # Methode qui permet d'afficher l'aide pour une ile d'indice 1 (cases noires autour)
+  # Obtient l'aide d'île 1 non entourée, ou nil si pas d'aide ILE_1 trouvée
   private
   def indiceIle1()
     for i in 0..@grilleEnCours.tabCases.size-1
@@ -366,9 +364,9 @@ class Partie
   end
 
   ##
-  # Methode qui permet d'afficher l'aide pour une ile adjacente (2 iles separees par une case noire)
+  # Obtient l'aide des îles adjacentes (2 îles separées par une case grise)
   private
-  def indiceIleAdjacente() #faire indice ile presque finie adjacente ?
+  def indiceIleAdjacente()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
         if @grilleEnCours.tabCases[i][j].estIle?()
@@ -390,9 +388,9 @@ class Partie
   end
 
   ##
-  # Methode qui permet d'afficher l'aide pour une ile adjacente en diagonale (2 iles en diagonale separees par une case noire)
+  # Obtient l'aide des îles adjacentes en diagonale (2 îles en diagonale separées par une case grise)
   private
-  def indiceIleAdjacenteDiagonal() #TOTEST
+  def indiceIleAdjacenteDiagonal()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
 
@@ -437,7 +435,7 @@ class Partie
   end
 
   ##
-  # Methode qui permet d'afficher l'aide pour une ile complete (ile complete => case adjacente doit etre noire)
+  # Obtient l'aide pour une ile complete non entourée
   private 
   def indiceIleComplete()
     for i in 0..@grilleEnCours.tabCases.size-1
@@ -473,7 +471,7 @@ class Partie
   end
 
   ##
-  #Compte le nombre de cases blanches appartenant à l'île
+  #Compte le nombre de cases blanches liées à la case case_
   public
   def nbCaseIle(case_, vu) #vu doit être
 
@@ -484,7 +482,7 @@ class Partie
   end
 
   ##
-  # A COMPLETER
+  # Parcours en profondeur pour trouver les cases appartenant à l'île
   private
   def parcoursIle(vu, i, j)
 
@@ -501,7 +499,7 @@ class Partie
   end
 
   ##
-  # Methode qui permet d'afficher l'aide pour une ile isolee (ile qui n'a pas de chemin possible == entouree par des murs)
+  # Obtient l'aide pour une île isolée (ile qui n'a pas de chemin possible == entouree par des murs)
   def indiceCaseIsolee()
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -564,9 +562,10 @@ class Partie
   end
 
   ##
-  #On compte le nombre de cases adjacentes gris adjacentes à un bloc noir, si une seule et il existe des cases noires non-reliée, indice
+  # Obtient l'indice d'expension de mur ( une seule case grise adjacente à un bloc noir)
   private
   def indiceExpensionMur()
+    #On compte le nombre de cases adjacentes gris adjacentes à un bloc noir, si une seule et il existe des cases noires non-reliée, indice
     vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -656,9 +655,10 @@ class Partie
   end
 
   ##
-  #On compte le nombre de cases grises adjacentes à un bloc d'ile, si une seule, indice
+  # Obtient l'indice d'expension d'une île (une seule case grise adjacente à un bloc d'île pas complet)
   private 
   def indiceExpensionIle()
+    #On compte le nombre de cases grises adjacentes à un bloc d'ile, si une seule, indice
     vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -696,7 +696,7 @@ class Partie
             }
 
             lastChanges = Array.new(nextChanges)
-            nextChanges = Array.new(0) #FAIT CRASH
+            nextChanges = Array.new(0)
           end
 
           #compter les voisins gris
@@ -746,9 +746,10 @@ class Partie
   end
 
   ##
-  #On compte le nombre de cases grises adjacentes à un bloc d'ile, si deux adjacents diagonalement on renvoie un indice
+  # Obtient l'indice d'expenstion quand deux directions d'expensions d'une île presque terminée
   private 
   def indiceExpension2Dir()
+    #On compte le nombre de cases grises adjacentes à un bloc d'ile, si deux adjacents diagonalement on renvoie un indice
     vuBloc = Array.new(@grilleEnCours.tabCases.size) {Array.new(@grilleEnCours.tabCases.size,false)} #sauvegarder quelles cases on a parcouru
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1
@@ -851,23 +852,26 @@ class Partie
   end
 
   ##
-  #Chercher tous les chemins possibles liant une case blanche non-reliée aux iles accessibles, et si une case en commun parmis tous ces chemins, on peut la colorier
+  # Indice de continuité de mur, consiste à relier une case blanche à une île, qui ne peuvent être reliée qu'en coloriant une certaine case en blanc
   private
   def indiceContinuiteIle()#WONTDO
+    #Chercher tous les chemins possibles liant une case blanche non-reliée aux iles accessibles, et si une case en commun parmis tous ces chemins, on peut la colorier
     return nil
   end
 
   ##
-  #Chercher tous les chemins possibles liant une case noire non-reliée à un autre mur, et si une case en commun parmis tous ces chemins, on peut la colorier
+  # Indice de continuité de mur, consiste à relier des murs qui ne peuvent être relié qu'en coloriant une certaine case en noir
   private
   def indiceContinuiteMur() #WONTDO
+    #Chercher tous les chemins possibles liant une case noire non-reliée à un autre mur, et si une case en commun parmis tous ces chemins, on peut la colorier
     return nil
   end
 
   ##
-  #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 3 noirs et 1 gris
+  # Permet de regarder si un bloc de coin supérieur droit (i,j) contient 3 cases noires et 1 grise pour l'indice éviter 2x2
   private
   def verifPresque2x2(i,j)
+    #On regarde si parmis le carré 2x2 de coin supérieur droit (i,j), on a 3 noirs et 1 gris
     nbNoir = 0
     caseGrise = nil
     for x in i..i+1
@@ -890,10 +894,10 @@ class Partie
   end
 
   ##
-  # Methode qui permet d'afficher l'aide pour un mur 2x2
+  # Obtient l'aide qui indique qu'une case doit être blanche pour éviter un bloc noir 2x2
   private
   def indiceEviter2x2()
-    for i in 0..@grilleEnCours.tabCases.size-2 # -2 car inutil de regarder la dernière ligne et collone car pas de voisins droits et bas
+    for i in 0..@grilleEnCours.tabCases.size-2 # -2 car inutile de regarder la dernière ligne et collone car pas de voisins droits et bas
       for j in 0..@grilleEnCours.tabCases.size-2
         result = verifPresque2x2(i,j)
         if(result != nil)
@@ -906,9 +910,9 @@ class Partie
   end
 
   ##
-  # Methode qui permet d'afficher l'aide pour une case inatteignable (case isolee qui prend en compte la portee des iles)
+  #Obtient l'aide pour une case inatteignable (case isolee qui prend en compte la portée des iles)
   private
-  def indiceInatteignable() #TOFIX
+  def indiceInatteignable()
     #Parcours en largeur pour trouver le chemin le plus court de chaque case vers chaque île, ou sinon simplifier en ignorant les murs et îles mais donne moins d'indice (ou faire les deux pour mêler performance et accuracy)
     for i in 0..@grilleEnCours.tabCases.size-1
       for j in 0..@grilleEnCours.tabCases.size-1

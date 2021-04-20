@@ -8,18 +8,18 @@ class PartieTuto < Partie
   private_class_method :new
 
   ##
-  # variable qui permet d'accéder aux langues
+  # variable qui permet d'accéder aux langues, pour raccourcir l'écriture
   @@lg = nil
 
 
   ##
-  # Methode qui permet de creer une partie en mode 'tutoriel'
+  # Constructeur de PartieTuto
   def PartieTuto.creer()
     new()
   end
 
   ##
-  # Methode privee pour l'initialisation
+  # Initialise la PartieTuto, en créant les grilles de tuto et les coups autorisés
   def initialize()
     Sauvegardes.creer
     ## gestion des langues
@@ -164,14 +164,12 @@ class PartieTuto < Partie
     # CALL SUPER TO INIT PARTIE
     super( @tabGrille[@grilleActuel] )
 
-    # SET TO GRILLE DEPART DIFFERENTE POUR ETAPES
-    # DU TUTORIEL
     @grilleEnCours = @tabGrilleDepart[@grilleActuel]
   end
 
 
   ##
-  # Tire la prochaine grille
+  # Passe à la prochaine grille
   def grilleSuivante()
     @grilleActuel += 1
     @ordreDeClicCpt = 0
@@ -185,26 +183,24 @@ class PartieTuto < Partie
     end
 
     return nil
-    #redef
   end
 
   ##
-  # Retourne le message specifique a l'aide pour tel partie
+  # Retourne le prochain message du tutoriel
   def getMessageAide()
     @dernierMessageDemander = @ordreDeClicCpt
     return @messageEtape[@grilleActuel][@ordreDeClicCpt]
   end
 
   ##
-  # Retourne vrai si un nouveau message est disponible
-  # faux sinon
+  # Retourne vrai si un nouveau message est disponible, sinon faux
   def messageDifferent?()
     return @dernierMessageDemander < @ordreDeClicCpt
   end
 
   ##
-  # Methode qui permet d'ajouter un coup
-  def ajouterCoup(coup) #TOTEST
+  # Redéfinition de l'ajout de coup, en vérifiant si c'est un coup attendu
+  def ajouterCoup(coup)
 
     # @ordreDeClicCpt
     find = false
@@ -260,7 +256,7 @@ class PartieTuto < Partie
   end
 
   ##
-  # Retourne le tableau de coup autoriser
+  # Retourne le tableau de coup autorisés
   def getCoupAutoriser
     return @coupAutoriser[@grilleActuel];
   end

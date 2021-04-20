@@ -8,21 +8,22 @@ class Case
   private_class_method :new
 
   ##
-  # Variables d'instance de Case :
-  # @couleur => type de la case
   # @positionX => Coordonnée X de la case
   # @positionY => Coordonnée Y de la case
   attr_reader :positionX, :positionY
+
+  ##
+  # couleur : type de la case
   attr_accessor :couleur
 
   ##
-  # Crée une case avec une couleur et sa position sur la grille
+  # Constructeur de case avec une couleur et sa position sur la grille
   def Case.creer(uneCouleur, posX, posY)
     new(uneCouleur,posX,posY)
   end
 
   ##
-  #Constructeur de la case
+  # Initialise la case avec une position et une couleur
   def initialize(uneCouleur,posX,posY)
       @couleur = uneCouleur
       @positionX = posX

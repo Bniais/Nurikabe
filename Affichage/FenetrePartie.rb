@@ -812,7 +812,7 @@ class FenetrePartie < Fenetre
                     decoMsg()
                 elsif @@maPartie.partieTerminee? == true
                     grilleSuivante =  @@maPartie.grilleSuivante
-                    if(grilleSuivante == nil && finir)
+                    if(grilleSuivante == nil)
                         finirPartie
                     else
                         afficherNextGrille

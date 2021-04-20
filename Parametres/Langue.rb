@@ -316,7 +316,8 @@ Este juego, a veces llamado \"isla en la corriente\", es un rompecabezas de reso
 Uno puede decidir, para cada celda, si es blanca o negra según reglas muy precisas.
 
 
-El rompecabezas se resuelve en una cuadrícula rectangular de celdas, algunas de las cuales contienen números.
+El rompecabezas se resuelve en una cuadrícula rectangular de celdas, algunas de las cuales
+contienen números.
 
 
 Dos celdas están conectadas si son adyacentes vertical u horizontalmente,
@@ -327,7 +328,7 @@ Las celdas blancas constituyen las islas, mientras que las celdas negras conecta
 el río.
 
 
-El jugador puntúa con un punto las casillas sin números de las que está seguro que pertenecen a una isla.
+El jugador puntúa con un punto las casillas sin números de las que está seguro que
 pertenecen a una isla.
 
 

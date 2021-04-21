@@ -12,7 +12,7 @@ require_relative 'SauvegardeScore.rb'
 class Sauvegardes
 
     ##
-    #@@instanceSauvegarde => Instance de Sauvegarde
+    # Instance de Sauvegarde
     @@instanceSauvegarde = nil
 
     ##

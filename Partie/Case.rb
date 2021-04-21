@@ -8,12 +8,15 @@ class Case
   private_class_method :new
 
   ##
-  # @positionX => Coordonnée X de la case
-  # @positionY => Coordonnée Y de la case
-  attr_reader :positionX, :positionY
+  # Coordonnée X de la case
+  attr_reader :positionX
+  
+  ##
+  # Coordonnée Y de la case
+  attr_reader :positionY
 
   ##
-  # couleur : type de la case
+  # Type de la case
   attr_accessor :couleur
 
   ##

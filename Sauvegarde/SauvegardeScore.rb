@@ -5,10 +5,16 @@ require_relative "SauvegardeGrille.rb"
 class SauvegardesScore
 
     ##
-    # @scoresContreLaMontre => Tableau des scores et des étoiles en mode Contre la montre
-    # @scoresSurvie => Tableau des scores en mode Survie
-    # @nbEtoiles => Nombre d'étoiles que le joueur possède
-    attr_reader :scoresContreLaMontre, :scoresSurvie, :nbEtoiles
+    # Tableau des scores et des étoiles en mode Contre la montre
+    attr_reader :scoresContreLaMontre
+
+    ##
+    # Tableau des scores en mode Survie
+    attr_reader :scoresSurvie
+
+    ##
+    # Nombre d'étoiles que le joueur possède
+    attr_reader :nbEtoiles
 
     @scoresContreLaMontre = nil
     @scoresSurvie = nil

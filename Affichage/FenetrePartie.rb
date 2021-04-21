@@ -271,6 +271,7 @@ class FenetrePartie < Fenetre
     ##
     # Affiche la prochaine grille sur la fenêtre (recrée une fenêtre de partie)
     def afficherNextGrille
+        removeTimout
         Fenetre.remove(@box)
         FenetrePartie.afficheToiSelec( FenetreMenu, @@maPartie )
     end
@@ -1028,7 +1029,8 @@ class FenetrePartie < Fenetre
 
             removeTimout
             time = @@maPartie.chrono.time
-            if(time<=0)
+            puts time
+            if(@@maPartie.chrono.estNul?)
                 finirPartie
             else
                 @monTimout = GLib::Timeout.add(time*1000) {finirPartie}
@@ -1146,12 +1148,14 @@ class FenetrePartie < Fenetre
     # Evènement de quitter la partie
     private
     def quitter
-        pause
-        Sauvegardes.getInstance.sauvegarder()
+        if(@@maPartie != nil)
+            pause
+            Sauvegardes.getInstance.sauvegarder()
 
-        @@maPartie = nil;
-        Fenetre.deleteChildren;
-        FenetreMenu.afficheToi( FenetrePartie )
+            @@maPartie = nil
+            Fenetre.deleteChildren;
+            FenetreMenu.afficheToi( FenetrePartie )
+        end
     end
 
     ##

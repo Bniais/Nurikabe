@@ -10,13 +10,20 @@ require 'digest'
 class Partie
 
   ##
-  # @grilleBase => grille de départ
-  # @grilleEnCours => grille en cours
-  # @tabCoup => tableau qui stocke tous les coups de la partie
-  # @chrono => chrono de la partie
-  # @indiceCoupRaz => indice de remise a zero
-  # @grilleRaz => grille de remise a zero
-  attr_reader :grilleBase, :grilleEnCours, :chrono, :tabCoup
+  # Grille de départ
+  attr_reader :grilleBase
+  
+  ##
+  # Grille en cours
+  attr_reader :grilleEnCours
+
+  ##
+  # Chrono de la partie
+  attr_reader :chrono
+  
+  ##
+  # Tableau qui stocke tous les coups de la partie
+  attr_reader :tabCoup
 
   private_class_method :new
 
@@ -25,7 +32,7 @@ class Partie
   def initialize(grille) #Créer une nouvelle partie
     @grilleBase = grille
     @grilleRaz = nil
-    @tabCoup = Array.new(0);
+    @tabCoup = Array.new(0)
     @tabCoupRaz = nil
 
     @indiceCoup = 0

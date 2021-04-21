@@ -4,11 +4,16 @@ class Coup
   private_class_method :new
 
   ##
-  # Variables d'instance :
-  # @case => Case ciblée par le joueur
-  # @couleur => nouvelle couleur de la case
-  # @couleurBase => ancienne couleur de la case
-  attr_reader :case, :couleur, :couleurBase
+  # Case ciblée par le joueur
+  attr_reader :case
+  
+  ##
+  # Nouvelle couleur de la case
+  attr_reader :couleur
+  
+  ##
+  # Ancienne couleur de la case
+  attr_reader :couleurBase
 
   ##
   # Constructeur de la class Coup

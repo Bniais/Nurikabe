@@ -3,7 +3,7 @@
 class SauvegardesParties
 
     ##
-    # @mesParties => Tableau qui contient des sauvegardes de Partie
+    # Tableau qui contient des sauvegardes de Partie
     @mesParties = nil
 
     ##

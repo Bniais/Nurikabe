@@ -2,11 +2,16 @@
 # Classe qui gere les langues
 class Langue
     ##
-    # Variables d'instance :
-    # @langues => Tableau qui contient les différentes langues
-    # @langueActuelle => nom de la langue actuelle
-    # @dico => tableau de hashage pour avoir les textes du jeu
-    attr_reader :langues, :langueActuelle, :dico
+    # Tableau qui contient les différentes langues
+    attr_reader :langues
+    
+    ##
+    # Nom de la langue actuelle
+    attr_reader :langueActuelle
+    
+    ##
+    # Tableau de hashage pour avoir les textes du jeu
+    attr_reader :dico
 
     private_class_method :new
 

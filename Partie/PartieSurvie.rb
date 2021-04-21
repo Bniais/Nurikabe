@@ -7,9 +7,12 @@ class PartieSurvie < PartieMalus
     private_class_method :new
 
     ##
-    # @nbGrilleFinis => Compteur des grilles terminées
-    # @grilles => Tableau des grilles à venir
+    # Compteur des grilles terminées
     attr_reader :nbGrilleFinis
+
+    ##
+    # Tableau des grilles à venir
+    @grilles
 
     ##
     # Constructeur de PartieSurvie

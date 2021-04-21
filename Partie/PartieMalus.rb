@@ -2,7 +2,7 @@ require_relative "ChronoDecompte.rb"
 require_relative "Malus.rb"
 
 ##
-# Classe qui représente un partie qui se joue avec des malus
+# Classe abstraite qui représente un partie qui se joue avec des malus
 class PartieMalus < Partie
 
     #Classe abstraite ne pouvait être instanciée

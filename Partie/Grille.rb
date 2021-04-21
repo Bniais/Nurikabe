@@ -5,10 +5,16 @@ require_relative 'Case.rb'
 class Grille
 
 	##
-	# @numero => numero de la grille
-	# @tabCases => tableau des cases de la grille
-	# @paliers => paliers de temps pour les étoiles
-    attr_reader :numero, :tabCases, :paliers
+	# Numero de la grille
+    attr_reader :numero
+	
+	##
+	# Tableau des cases de la grille
+	attr_reader :tabCases
+	
+	##
+	# Paliers de temps pour les étoiles
+	attr_reader :paliers
 
 	private_class_method :new
 

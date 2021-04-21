@@ -311,7 +311,7 @@ class FenetrePartie < Fenetre
     end
 
     ##
-    # Affiche un message en cas de deconnection
+    # Affiche un message en cas de déconnexion
     def decoMsg
         if(@@maPartie != nil)
             if(@popover != nil)

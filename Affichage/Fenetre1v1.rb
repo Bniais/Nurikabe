@@ -16,15 +16,15 @@ class Fenetre1v1 < Fenetre
     @@attente = nil
 
     ##
-    # Serveur qui héberge la connection
+    # Serveur qui héberge la connexion
     @@server = nil
 
     ##
-    # Port de connection
+    # Port de connexion
     @@port = ""
 
     ##
-    # IP de connection
+    # IP de connexion
     @@ip = ""
 
     ##
@@ -53,7 +53,7 @@ class Fenetre1v1 < Fenetre
     ##
     # Crée l'interface de la fenêtre 1v1
     def creationInterface( lastView )
-        #Fermer les connections et thread au cas où la déconnexion ne s'est pas bien passé
+        #Fermer les connexions et thread au cas où la déconnexion ne s'est pas bien passé
         if(@@socket != nil)
             @@socket.close
             @@socket = nil

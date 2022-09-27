@@ -13,7 +13,7 @@ Projet développé dans le cadre du module de Génie Logiciel de 3ème année de
 
 ## Objectifs :
 * Apprendre à travailler en équipe
-* pratiquer les différentes phases de conception d'un logiciel
+* Pratiquer les différentes phases de conception d'un logiciel
 * "Vendre" le logiciel développé sous forme d'une présentation orale 
 
 ## Contraintes :
